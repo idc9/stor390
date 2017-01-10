@@ -1,0 +1,79 @@
+---
+title: "A bunch of interested data sets available online"
+output: html_document
+---
+
+[538's data sets](https://github.com/fivethirtyeight/data)
+
+[nasa data](http://data.nasa.gov/)
+
+[NYT labeled ingredient list](http://open.blogs.nytimes.com/2016/04/27/structured-ingredients-data-tagging/?_r=0)
+
+[yahoo user behavior](http://www.businessfinancenews.com/27319-yahoo-release-largest-cache-to-improve-machine-learning/)
+
+[UFC fighters](https://docs.google.com/spreadsheets/d/1z3QX0uWXv-XHX2Nfuj6zZHrfEeXI3A9CKWkrGaBzB8s/edit#gid=0) and [UFC fights](https://docs.google.com/spreadsheets/d/1sQOtIwkEiTe4kwwRHw5bwi72ZJHXlAVcCNMImr-Ml6U/edit#gid=0)
+
+[stock markert data (updated daily)](https://github.com/eliangcs/pystock-data)
+
+[every shot Kobe ever took](https://github.com/datadesk/kobe-every-shot-ever/blob/master/kobe-every-shot-ever.ipynb)
+
+[pokeapi](http://pokeapi.co/)
+
+[Simpsons data](https://www.kaggle.com/wcukierski/the-simpsons-by-the-data)
+
+[NYT wedding announcments](https://github.com/TheUpshot/nyt_weddings)
+
+
+[NYC data](https://data.cityofnewyork.us/login)
+
+
+[UK police data](https://data.police.uk/)
+
+
+[UPS stores](https://gist.github.com/masterofpun/c20bc7caa852b49f83e1669cadf6c999)
+
+[traffic data](http://opentraffic.io/)
+
+[1.7 billion reddit comments](https://www.reddit.com/r/datasets/comments/3bxlg7/i_have_every_publicly_available_reddit_comment/)
+
+[Uber rides in NYC](https://www.kaggle.com/fivethirtyeight/uber-pickups-in-new-york-city)
+
+[million song data set](http://labrosa.ee.columbia.edu/millionsong/)
+
+
+
+
+
+# collections
+[Kaggle datasets](https://www.kaggle.com/datasets)
+
+[data.gov](https://www.data.gov/)
+
+[KD Nuggets](http://www.kdnuggets.com/datasets/index.html)
+
+[Amazon Web Services](https://aws.amazon.com/datasets/)
+
+[Stanford Network data sets](http://snap.stanford.edu/data/)
+
+[list of 17 data sets from data quest](https://www.dataquest.io/blog/free-datasets-for-projects/)
+
+[Google BigQuery Public Datasets](https://cloud.google.com/bigquery/public-data/)
+
+
+[github list of awesome data sets](https://github.com/caesar0301/awesome-public-datasets)
+
+[UCI ML data sets](http://mlr.cs.umass.edu/ml/datasets.html)
+
+[list of data sets from Quora](https://www.quora.com/Where-can-I-find-large-datasets-open-to-the-public)
+
+
+[1001 data sets from dream to learn](https://dreamtolearn.com/ryan/1001_datasets)
+
+
+
+
+
+
+
+
+

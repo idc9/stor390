@@ -1,10 +1,11 @@
 ---
 title: "STOR 390 Course Information"
-output: html_document
+output:   
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float: true
 ---
-
-# Prerequisites
-Some coding or some statistics (STOR 155 or COMP 110)
 
 # Textbook
 We will follow [R for Data Science](http://r4ds.had.co.nz/) by Hadley Whickham (this is free online). 
@@ -12,10 +13,13 @@ We will follow [R for Data Science](http://r4ds.had.co.nz/) by Hadley Whickham (
 ![[](http://r4ds.had.co.nz/)](r4ds.png)
 
 
-
 I will provide additional resources in the lecture nodes.
 
 Google is a programmer's best friend. There is a good chance any question you have has already been asked and answered on [StackOverflow](http://stackoverflow.com/).
+
+# Prerequisites
+Some coding or some statistics (STOR 155 or COMP 110)
+
 
 # Technology
 We will use the [R](https://www.r-project.org/about.html) programming language and [R Studio](https://www.rstudio.com/). Both of these are free. Students must have a laptop and bring it to class. If this is a problem please see the instructor.
@@ -59,5 +63,8 @@ More details will be provided before the first team project.
 For labs/group activities you are encouraged to work with other people, however, you are **not allowed to copy someone else's code**. For homeworks youare encouraged to use online resources as long as you **cite a resource you borrow code from**. 
 
 
-# Getting help from the instructional staff
-Programming can be incredibly frustrating and take some time to get used to. Before you email the TA please spend some time trying to solve/Google the problem. Once you have exhausted your resources/patience ask some (rule of thumb: don't spend more than 20 minutes stuck on one problem).
+# Getting help
+Programming can be incredibly frustrating and take some time to get used to. Before you email the TA please spend some time trying to solve/Google the problem. Once you have exhausted your resources/patience ask some (rule of thumb: spend at least 5 minutes, don't spend more than 20 minutes stuck on one problem).
+
+
+

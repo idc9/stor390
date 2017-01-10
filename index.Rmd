@@ -1,8 +1,10 @@
 ---
 title: "STOR 390: Introduction to Data Science"
-output: html_document
+output:
+  html_document:
+    theme: cosmo
 ---
-## Course description
+
 
 This course is an introduction to data science with R. The first half of the semester will cover core data science programming skills in R following closely [R for Data Science](r4ds.had.co.nz/). The second half of the semester will cover a number of topics such as exploratory data analysis, web scraping, text processing and effective visualization through a series of modules. The class will provide a foundation so that you can perform basic data analysis and proceed to more advanced topics.
 
@@ -31,13 +33,13 @@ Graduate Research Consultant: [Varun Goel](http://varungoel.web.unc.edu/author/v
 - OFFICE: TODO
 - office hours: TBA
 
-## Course Material
+# Course Material
 
-You can find all of the course material on our [github repository](https://github.com/idc9/stor390) (R code, RmD documents, data, etc). Most of the course material is in the lecture notes (linked to below) -- the slides are visual aids for the lectures. 
-
-For information about STOR 390's policies please see [the course organization page](course_info/course_organization.html). 
-
-Please see the [homeworks page](homeworks.html) for information about reading, labs and assignments.
+- You can find all of the course material on our [github repository](https://github.com/idc9/stor390) (R code, RmD documents, data, etc).
+- Most of the course material is in the lecture notes (linked to below) -- the slides are visual aids for the lectures. 
+- For information about STOR 390's policies please see [the course organization page](course_info/course_organization.html). 
+- You can find the data sets used for the class [in the github repo](https://github.com/idc9/stor390/tree/master/data/)
+- Please see the [homeworks page](homeworks.html) for information about reading, labs and assignments.
 
 
 
@@ -50,7 +52,7 @@ Please see the [homeworks page](homeworks.html) for information about reading, l
 
 
 
-## Miscellaneous
+# Miscellaneous
 
 This course was made possible by a grant from the Data@Carolina initiative and a ton of [input from lots of very smart people](course_info/acknowledgments.html).
 

@@ -1,0 +1,6 @@
+---
+title: "Final Project"
+output: html_document
+---
+
+Details about the final project coming soon...
