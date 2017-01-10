@@ -1,0 +1,130 @@
+---
+title: "Getting Started with R"
+author: "Iain Carmichael"
+date: "November 5, 2016"
+output: html_document
+---
+
+
+
+# Install R
+
+Download the latest version of R from the [Comprehensive R Archive Network](https://cran.rstudio.com/) (CRAN). [R](https://www.r-project.org/about.html) is a programming language built for statistical analysis.
+
+# Install R Studio
+
+Download [R Studio](https://www.rstudio.com/products/rstudio/#Desktop) which is an [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) built for R. While you can use R without R Studio, R Studio makes life much better.
+
+TODO: add pic of R studio
+
+# Basic R commands
+You downloaded [base R](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf) from CRAN.
+
+Run the following in your R console
+```{r 11}
+1 + 1
+```
+
+```{r var}
+a <- 1
+b <- 2
+a + b
+```
+
+# Packages
+The power of R comes from the many wonderful R packages people develope. R is an [open source](https://en.wikipedia.org/wiki/Open-source_software) language meaning anyone can develope a new R package. 
+
+You can install a package from [CRAN](https://cran.r-project.org/) like this
+```{r install, eval=FALSE}
+install.packages("tidyverse")
+```
+
+There are other sources of R packags such as [Bioconductor](http://www.bioconductor.org/) and [Github](https://github.com/). Packages from CRAN and Bioconductor are vetted (though not perfectly). Packages on Github are not.
+
+To use code from an R package you need to load it
+```{r loadpackage}
+# ignore the warnings for now
+library(tidyverse)
+```
+You need to load an R package everytime you want to use it. You only need to install it once.
+
+# IMBD
+Load the [movies data set](http://www2.stat.duke.edu/~mc301/data/movies.html) generously currated by [Mine Cetinkaya-Rundel](http://www2.stat.duke.edu/~mc301/)
+```{r load movies}
+load(url('https://stat.duke.edu/~mc301/data/movies.Rdata'))
+```
+
+
+
+The first thing you should do when you get a data set is [look at it](https://www.youtube.com/watch?v=EF8GhC-T_Mo). 
+
+## numerical summaries
+
+`head()` prints the first six rows of a data set (and as many columns that will fit on the screen)
+```{r head}
+head(movies)
+```
+
+
+If you double click a data frame it will pull up R's built in spreadsheet
+![](spreadsheet.png)
+
+`str()` gives a different view of the columns and includes some metadata
+```{r str}
+str(movies)
+```
+
+`summary()` prints out some descriptive statistics of each column
+```{r summ}
+summary(movies)
+```
+
+## Vizualization
+You can only learn so much by looking a lists of numbers. Let's make some plots.
+
+There are two popular plotting systmes in R. There is the *base* R system
+
+```{r base_plot}
+plot(movies$imdb_rating, movies$critics_score)
+```
+
+and [ggplot2](http://ggplot2.org/).
+
+```{r ggplot}
+# ggplot was loaded with tidyverse
+ggplot(data = movies) + geom_point(mapping = aes(x = imdb_rating, y = critics_score))
+```
+
+We will use ggplot2 in this course (see readings below about ggplot2 vs base). ggplot2 can be a bit intimidating at first -- especially if you are used to base plotting. 
+
+```{r hist, warning=FALSE}
+ggplot(data=movies, aes(x=audience_score)) + geom_histogram()
+```
+
+ggplot2 has a ton of functionality built it and you will learn to love it when you get used to it.
+
+```{r byrating, warning=FALSE}
+ggplot(data = movies) + geom_point(mapping = aes(x = imdb_rating, y = critics_score, color=mpaa_rating))
+```
+
+# Getting help
+The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/data-visualisation.html) written by Hadley Whickham (it's free online). I have put up a long list of alternative resources (textbooks, coursera courses, etc) [HERE TOOD](). 
+
+Google and [StackOverflow](http://stackoverflow.com/) will become your best friends. If you have a question, chances are someone has already asked and answered it. If R gives you an error message you don't understand google it -- someone else has probably figured it out and posted it online.
+
+The course staff is of course here to help you. If you get stuck on something **spend at least 5 minutes Googling/hacking at it**. There is a good chance the first the one of us will do is turn to google. **Don't spend more than 20 minutes stuck on one thing** -- at this point you should as for help.
+
+# Homework
+
+## reading
+- read the secions 1, 2, 3.1-3.5 of [r4ds](http://r4ds.had.co.nz/introduction.html)
+- read Jenny Bryan's tutorial on the [R workspace](http://stat545.com/block002_hello-r-workspace-wd-project.html)
+http://stat545.com/block002_hello-r-workspace-wd-project.html
+
+## coding
+find and analyze a data set from [data.gov](https://www.data.gov/). See [TODO:]() for details
+
+# References
+- ggplot2 vs. base plotting
+    - [Why I don't use ggplot2](http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/)
+    - [Why I use ggplot2](http://varianceexplained.org/r/why-I-use-ggplot2/)

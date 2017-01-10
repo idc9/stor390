@@ -1,0 +1,18 @@
+---
+title: "Assignment 1"
+output: html_document
+---
+
+# Instructions
+- download one data set from [data.gov](https://www.data.gov/) as a .csv
+- load it into R and find something interesting
+- communicate your results in R Markdown
+    - write 1 paragraph describing the data set and what you found
+    - make one plot
+    - find one statistics ()
+
+# Deliverables
+Hand in the .Rmd and .HTML documents and the data set (as a .csv file). Name the file *first*_*last_a1.RMD (i.e. iain_carmichael_a1.csv)
+
+# Hints
+save the data set in the same folder as the .Rmd file

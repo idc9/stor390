@@ -1,0 +1,58 @@
+---
+title: "Acknowledgements"
+output: html_document
+---
+
+I was not shy about asking for help to develop STOR 390. 
+
+- [Brendan Brown](http://stat-or-old.oasis.unc.edu/people/graduate-students/brendan-brown), [Dylan Glotzer](http://stat-or-old.oasis.unc.edu/people/graduate-students/dylan-glotzer) and [Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a) developed many of the (best) lectures
+- [Shankar Bhamidi](http://shankarbhamidi.web.unc.edu/) supervised the development of this course
+
+Many people provided input for this course
+
+- Hadley Wickham (Chief Scientist at R Studio)
+- Jeff Leek (Professor of Statistics at Johns Hopkins)
+- Mine Cetinkaya-Rundel (Professor of Statistics at Duke)
+- Joe Blitzstein (Professor of Statistics at Harvard)
+- Giles Hooker (Professor of Statistics at Cornell)
+- Ryan Thornburg (Professor of Journalist at UNC)
+- David Mimno (professor of Information Science at Cornell)
+- Diane Pozefsky (Professor of Computer Science at UNC)
+- Jay Aikat (Professor of Computer Science at UNC)
+- James Wilson (Professor of Statistics at USF)
+- Abibail Panter (Senior Associate Dean for Undergraduate Education at UNC)
+- Robin Cunningham (Professor of Statistics at UNC)
+- Edward Carlstein (Professor of Statistics at UNC)
+- Marshall Markham (Data Scientist at Maxpoint)
+- Francis Tong (Data Scientist at Becton Dickinson)
+- Bryan Davis (Data Analyst at Indeed.com)
+- Rosie Scott (Data Analyst at Indeed.com)
+- Danielle Dean (Senior Data Scientist at Microsoft)
+- Ben Vigoda (CEO of Gamalon Machine Intelligence)
+- Brian Gilman (VP Business Development at Gamalon Machine Intelligence)
+- Zeydy Ortiz (Chief Data Scientist at DataCrunch Lab)
+- Ian Murry (Lead data scientist at Twitch)
+- Josh Jacobson (recovering programmer)
+- Aaron Brubaker (SILS director of IT)
+- Kelly Bodwin (Statistics PhD student at UNC)
+- John Palowitch (Statistics PhD student at UNC)
+- Jonathon Williams (Statistics PhD student at UNC)
+- Eric Friedlander (Statistics PhD student at UNC)
+- Kathryn Heal (math PhD at Harvard)
+- Arturo Fernandez (Statistics PhD student at Berkely)
+- Abby Stevens (Data Engineer at Doximity)
+- Walter Cai (CS PhD student at UW)
+- Brendan Schneiderman (Senior Associate at E3)
+- Dominic Spadacene (no one really knows what Dom is up to these days...)
+
+ and of course my parents.
+ 
+ Much of the course content was inspired by other fantastic data science courses offered around the country.
+ 
+ - [Coursera's data science specialization](https://www.coursera.org/specializations/jhu-data-science) by the Johns Hopkins guys
+ - [STAT 545](http://stat545.com/) at UBC by Jenny Bryan
+ - [Intoduction to Data Analysis](http://stat405.had.co.nz/) at Rice by Hadley Wickham
+ - [CS 109](http://cs109.github.io/2015/) at Harvard by Joe Blitzstein
+ - [A Guide to Teaching Data Science](https://arxiv.org/pdf/1612.07140v1.pdf) by Stephanie Hicks and Rafaell Irizarry
+ - [Teaching and Learning STEM: a Practical Guide](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118925815.html) by Richard Felder and Rebecca Brent
+ 

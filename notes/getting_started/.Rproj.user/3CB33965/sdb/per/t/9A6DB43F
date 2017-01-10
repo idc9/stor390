@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#Hello World in R\n#STOR666: Intoduction to Data Science, spring 2017\n#Tutorial by Iain Carmichael\n\n#This script is based on R Programming for Data Science by Roger Peng\n\n#Using a programming language allows you to save numbers as a variable\na <- 1 #assign the number 2 to the variable a\nb <- 2 \nc = 3 #you can use <- or = \nd <- 4.5\n\n\na + d\nb*c\nc/b\nc^b\nc^2\n\n\n#We can also assign text to variables. \n#Note that text data is called a \"string\" or \"characters\"\nmsg <- \"hello world\"\n\n#You can print a variable by using the print() funciton\nprint(msg)\n\n#Or just running the variable\nmsg\n\n\n#What other types of variables can we store? (There are many)\n\n#Logical. Note these are called \"boolean\" variables. \nt <- TRUE\nf <- FALSE\n\n#True or false. Note \"|\" means \"or\" in R\nt | f\n\n#True and False. Note \"&\" means \"and\"\nt & f\n\n\n#Vectors\n#Let's store the populations of the 5 largest cities in NC (from Google)\npop <- c(792862, 431746,279639, 245475,236441) \nmean(pop)\nmedian(pop)\nmin(pop)\nmax(pop)\nsd(pop) #standard deviation\npop[2] #Get the second element of the vector\n\n#If you just want a vectors of 1:n \n1:5\n\n#You can also store vectors of strings\ncities <- c(\"Charlotte\", \"Raleigh\", \"Greensboro\", \"Durham\", \"Winston-Salem\")\n\n#Or a vector of booleans\n#Cities Iain has visited. Note the order matters.\nhas_visited <- c(TRUE, TRUE, FALSE, T, F) #can use True or T (False or F)\n\n#Now let's make a data frame (picture an Excel table)\ndf <- data.frame(cities, pop, has_visited)\n\nprint(df)\ndf #these are equivalent\n\n#Much more on data frames later. For now notices the attributes\nnames(df)\n\n#we can access the colums of a data frame various different ways\ndf['pop']\ndf$pop\ndf[,2]\n\n#Or the rows\ndf[1,]\n\n#Or an individual entry\ndf[1,2]\n\n#Now let's make a plot (highlight both lines and run)\nbarplot(df$pop, names = df$cities, \n        main = \"Five largest cities in NC\", ylab = \"population\", xlab = 'city', col = 'blue')\n\n\n###################Let's read in the UNC salary data set#############################\n#Read data from the web (will cover this in much more detail later)\ndata <- read.csv(url(\"http://ryanthornburg.com/wp-content/uploads/2015/05/UNC_Salares_NandO_2015-05-06.csv\"))\n\n#Print out the first 6 rows\nhead(data)\n\n#Column names\nnames(data)\n\n#Dimensions of the data\ndim(data) \n\n#Let's install and load an r package\n#install.packages('dplyr')\nlibrary(dplyr)\n\n#Don't worry about the details right now\nby_dept <- group_by(data, dept)\ndept_sum <- summarise(by_dept, \n                     avgsal = mean(totalsal),\n                     num_emp = n(),\n                     maxsal = max(totalsal))\n\n#Look at 20 deptarments with highest average salary\nhead(dept_sum[order(dept_sum$maxsal, decreasing = T),], n= 20)\n\n#Box plot of a few departments\nnew_df<- filter(data,dept %in% \n                     c(\"Medicine\",\"Provost\", \"Kenan-Flagler Business School\"))\nnew_df$dept = as.character(new_df$dept)\nboxplot(totalsal ~ dept, new_df, xlab = \"Department\", ylab = \"Salary\")\n\n#Plot number of years emplyed against salary\nplot(data$stservyr,data$totalsal, xlab = \"Years employed\", ylab = \"Salary\", col = \"blue\")\n\n",
+    "created" : 1478374157352.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3410261908",
+    "id" : "9A6DB43F",
+    "lastKnownWriteTime" : 1466648372,
+    "last_content_update" : 1466648372,
+    "path" : "~/Dropbox/UNC/Data Science and STOR/STOR390/lectures/getting_started/hello_world.R",
+    "project_path" : "hello_world.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

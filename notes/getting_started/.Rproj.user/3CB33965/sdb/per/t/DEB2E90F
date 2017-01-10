@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "---\ntitle: \"Getting Started with R\"\nauthor: \"Iain Carmichael\"\ndate: \"November 5, 2016\"\noutput: html_document\n---\n\nDownload the latest version of [R](https://www.r-project.org/) [from here](https://cran.rstudio.com/) and [R Studio](https://www.rstudio.com/) [from here](https://www.rstudio.com/products/rstudio/#Desktop). R is the programming language and R Studio is an [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment).\n\nOpen the hello_world.R file in R Studio and go through it. The point of the script is to orient yourself to R -- you don't need to understand all of it.\n\nNow read the [Introduction from R4DS](http://r4ds.had.co.nz/introduction.html).\n\nNext do some swirl lessons [swirl tutorial](http://swirlstats.com/). Swirl is set of interactive R lessons in R Studio's console. TO get started run the following code in R Stuio. \n\n\n```{r swirl, eval=FALSE}\ninstall.packages(\"swirl\") # install the swirl package\nlibrary(swirl)\ninstall_course(\"R Programming\") # install the R Programming course\n\n# this gets swirl started in the console\nswirl()  \n```\n\nGo through the R Programming course (lessions 1-9). To leave a swirl lesson press the escape key.\n\n\n",
+    "created" : 1478373606647.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2208806561",
+    "id" : "DEB2E90F",
+    "lastKnownWriteTime" : 1478378048,
+    "last_content_update" : 1478378048095,
+    "path" : "~/Dropbox/UNC/Data Science and STOR/STOR390/lectures/getting_started/getting_started.Rmd",
+    "project_path" : "getting_started.Rmd",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

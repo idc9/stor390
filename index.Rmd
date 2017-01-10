@@ -1,10 +1,15 @@
 ---
-title: "STOR390: Introduction to Data Science"
+title: "STOR 390: Introduction to Data Science"
 output: html_document
 ---
+## Course description
 
-* Time: TuTh 5:00-6:15
-* Location: Greenlaw 101
+This course is an introduction to data science with R. The first half of the semester will cover core data science programming skills in R following closely [R for Data Science](r4ds.had.co.nz/). The second half of the semester will cover a number of topics such as exploratory data analysis, web scraping, text processing and effective visualization through a series of modules. The class will provide a foundation so that you can perform basic data analysis and proceed to more advanced topics.
+
+Class
+
+- TuTh 5:00-6:15
+- Greenlaw 101
 
 Instructor: [Iain Carmichael](http://iaincarmichael.web.unc.edu/)
 
@@ -18,12 +23,27 @@ Grader: Brendan Brown
 - Hanes 318
 - office hours: TBA
 
-Graduat Research Consultant: [Varun Goel](http://varungoel.web.unc.edu/author/varung/)
+Graduate Research Consultant: [Varun Goel](http://varungoel.web.unc.edu/author/varung/)
 
 - varung@live.unc.edu
 - OFFICE TODO
 - office hours: TBA
 
+## Course Material
+
+For information about STOR 390's policies please see [the course organization page](resources/Course_Organization.html). 
+
+Most of the course material is in the lecture notes -- the slides are visual aids for the class.
+
+| Date | Lecture | Notes | Slides | Lab | Assignment |
+|------|---------|-------|-------|------|------------|
+|January 12 |Welcome | [getting started](notes/getting_started/getting_started.html) |  | | [data.gov](assignments/gov_data/gov_data.html)|
+|January 17 | | | | | |
 
 
-For course information [go here](resources/Course_Organization.html)
+## Miscellaneous
+
+This course was made possible by a grant from the Data@Carolina initiative and a ton of [input from lots of very smart people](course_info/acknowledgments.html).
+
+This page was last updated on `r Sys.time()` Eastern Time.
+

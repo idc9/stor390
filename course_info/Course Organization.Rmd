@@ -1,5 +1,5 @@
 ---
-title: "STOR 390: Introduction to Data Science"
+title: "STOR 390 Course Information"
 output: html_document
 ---
 
@@ -7,7 +7,13 @@ output: html_document
 Some coding or some statistics (STOR 155 or COMP 110)
 
 # Textbook
-We will follow [R for Data Science](http://r4ds.had.co.nz/) by Hadley Whickham (this is free online). I will provide additional resources in the lecture nodes.
+We will follow [R for Data Science](http://r4ds.had.co.nz/) by Hadley Whickham (this is free online). 
+
+![[](http://r4ds.had.co.nz/)](r4ds.png)
+
+
+
+I will provide additional resources in the lecture nodes.
 
 Google is a programmer's best friend. There is a good chance any question you have has already been asked and answered on [StackOverflow](http://stackoverflow.com/).
 
