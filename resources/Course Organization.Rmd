@@ -3,24 +3,6 @@ title: "STOR 390: Introduction to Data Science"
 output: html_document
 ---
 
-Instructor: [Iain Carmichael](http://iaincarmichael.web.unc.edu/)
-
-- iain@unc.edu
-- Hanes B30
-- office hours: TBA
-
-Grader: Brendan Brown
-
-- bb@live.unc.edu
-- Hanes 318
-- office hours: TBA
-
-Graduat Research Consultant: [Varun Goel](http://varungoel.web.unc.edu/author/varung/)
-
-- varung@live.unc.edu
-- OFFICE TODO
-- office hours: TBA
-
 # Prerequisites
 Some coding or some statistics (STOR 155 or COMP 110)
 
