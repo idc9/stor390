@@ -1,8 +1,12 @@
 ---
 title: "Getting Started with R"
-author: "Iain Carmichael"
-date: "November 5, 2016"
-output: html_document
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+date: "January 13, 2017"
+output: 
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float: true
 ---
 
 
