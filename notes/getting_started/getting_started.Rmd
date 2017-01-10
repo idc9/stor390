@@ -120,19 +120,21 @@ ggplot(data = movies) + geom_point(mapping = aes(x = imdb_rating, y = critics_sc
 ```
 
 # Getting help
-The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/data-visualisation.html) written by Hadley Whickham (it's free online). I have put up a [long list of alternative resources](../../course_info/references.html) (textbooks, coursera courses, etc). 
+The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/data-visualisation.html) written by Hadley Whickham (it's free online). I have put up a [long list of alternative resources](https://idc9.github.io/stor390/course_info/references.html) (textbooks, coursera courses, etc). 
 
 Google and [StackOverflow](http://stackoverflow.com/) will become your best friends. If you have a question, chances are someone has already asked and answered it. If R gives you an error message you don't understand google it -- someone else has probably figured it out and posted it online.
 
 The course staff is of course here to help you. If you get stuck on something **spend at least 5 minutes Googling/hacking at it**. There is a good chance the first the one of us will do is turn to google. **Don't spend more than 20 minutes stuck on one thing** -- at this point you should as for help.
 
 # Yak Shaving
-[yak shaving](https://en.wiktionary.org/wiki/yak_shaving)
+[yak shaving](https://en.wiktionary.org/wiki/yak_shaving):
+
  > Any apparently useless activity which, by allowing you to overcome intermediate difficulties, allows you to solve a larger problem. 
  
- **I was doing a bit of yak shaving this morning, and it looks like it might have paid off.**
+ *I was doing a bit of yak shaving this morning, and it looks like it might have paid off.*
 
 Programming/data science requires a lot of yak shaving which can be quite frustrating. You will probably come across the following quote at some point
+
 > 80 percent of data science is data cleaning
 
 

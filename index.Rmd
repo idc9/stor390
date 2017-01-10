@@ -33,11 +33,15 @@ Graduate Research Consultant: [Varun Goel](http://varungoel.web.unc.edu/author/v
 
 ## Course Material
 
-For information about STOR 390's policies please see [the course organization page](resources/Course_Organization.html). 
+You can find all of the course material on our [github repository](https://github.com/idc9/stor390) (R code, RmD documents, data, etc).
 
-Most of the course material is in the lecture notes -- the slides are visual aids for the class.
+For information about STOR 390's policies please see [the course organization page](course_information/Course_Organization.html). 
 
-Please see the [homeworks page]() for information about reading, labs and assignments.
+Most of the course material is in the lecture notes (linked to below) -- the slides are visual aids for the class. 
+
+Please see the [homeworks page](homeworks.html) for information about reading, labs and assignments.
+
+
 
 | Date | Lecture | Notes | Slides |
 |------|---------|-------|-------|
