@@ -1,0 +1,23 @@
+---
+title: "STOR390: Introduction to Data Science"
+output: html_document
+---
+
+
+### Instructor
+
+  * [Iain Carmichael](http://iaincarmichael.web.unc.edu/)
+
+
+### TAs
+
+  * Varun Goel
+  * Brendan Brown
+
+### Class Information
+
+* Time: TuTh 5:00-6:15
+* Location: Greenlaw 101
+
+For course information [go here]('Course_Organization.html')
+
