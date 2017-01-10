@@ -9,13 +9,15 @@ output: html_document
 
 # Install R
 
-Download the latest version of R from the [Comprehensive R Archive Network](https://cran.rstudio.com/) (CRAN). [R](https://www.r-project.org/about.html) is a programming language built for statistical analysis.
+**Download the latest version of R from the [Comprehensive R Archive Network](https://cran.rstudio.com/)** (CRAN). [R](https://www.r-project.org/about.html) is a programming language built for statistical analysis.
 
 # Install R Studio
 
-Download [R Studio](https://www.rstudio.com/products/rstudio/#Desktop) which is an [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) built for R. While you can use R without R Studio, R Studio makes life much better.
+**Download [R Studio](https://www.rstudio.com/products/rstudio/#Desktop)** which is an [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) built for R. While you can use R without R Studio, R Studio makes life much better.
 
-TODO: add pic of R studio
+![image from http://rprogramming.net/download-and-install-rstudio/](rstudio.png)
+
+Watch the [video on this page](https://www.rstudio.com/products/RStudio/) for the basics parts of R Studio
 
 # Basic R commands
 You downloaded [base R](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf) from CRAN.
@@ -51,6 +53,7 @@ You need to load an R package everytime you want to use it. You only need to ins
 # IMBD
 Load the [movies data set](http://www2.stat.duke.edu/~mc301/data/movies.html) generously currated by [Mine Cetinkaya-Rundel](http://www2.stat.duke.edu/~mc301/)
 ```{r load movies}
+# downloads data set and loads it into R
 load(url('https://stat.duke.edu/~mc301/data/movies.Rdata'))
 ```
 
@@ -124,10 +127,9 @@ The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/d
 
 Google and [StackOverflow](http://stackoverflow.com/) will become your best friends. If you have a question, chances are someone has already asked and answered it. If R gives you an error message you don't understand google it -- someone else has probably figured it out and posted it online.
 
-The course staff is of course here to help you. If you get stuck on something **spend at least 5 minutes Googling/hacking at it**. There is a good chance the first the one of us will do is turn to google. **Don't spend more than 20 minutes stuck on one thing** -- at this point you should as for help.
+The course staff is of course here to help you. If you get stuck on something **spend at least 5 minutes Googling/hacking at it**. There is a good chance the first thing one of us will do is turn to google. **Don't spend more than 20 minutes stuck on one thing** -- at this point you should as for help.
 
-# Yak Shaving
-[yak shaving](https://en.wiktionary.org/wiki/yak_shaving):
+# [Yak Shaving](https://en.wiktionary.org/wiki/yak_shaving)
 
  > Any apparently useless activity which, by allowing you to overcome intermediate difficulties, allows you to solve a larger problem. 
  
@@ -137,17 +139,24 @@ Programming/data science requires a lot of yak shaving which can be quite frustr
 
 > 80 percent of data science is data cleaning
 
+# Literate programming and R Markdown
+
+[Literate Programming](https://en.wikipedia.org/wiki/Literate_programming) is a concept intoduced by Donal Kunth saying you should *write code that communicates primarily to hummans, not computers*. [R Markdown](http://rmarkdown.rstudio.com/) allows you easily write documents that contain: R code, text, images, links, etc. It may sounds bland at first R Markdown [is pretty amazing](http://rmarkdown.rstudio.com/gallery.html). All of my lecture notes are done in R Markdown. 
+
+Open a new R Markdown document and play around with it. We will use R Markdown quite a bit in the class. You can read more [about R Markdown in r4ds](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics). 
 
 
 # Reading
 - read the secions 1, 2, 3.1-3.5 of [r4ds](http://r4ds.had.co.nz/introduction.html)
 - read Jenny Bryan's tutorial on the [R workspace](http://stat545.com/block002_hello-r-workspace-wd-project.html)
-http://stat545.com/block002_hello-r-workspace-wd-project.html
 - [Data science done well looks easy - and that is a big problem for data scientists](http://simplystatistics.org/2015/03/17/data-science-done-well-looks-easy-and-that-is-a-big-problem-for-data-scientists/)
 
 
 
 # Additional references
+
+- [R Markdown basics](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics)
+
 - ggplot2 vs. base plotting
     - [Why I don't use ggplot2](http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/)
     - [Why I use ggplot2](http://varianceexplained.org/r/why-I-use-ggplot2/)
@@ -155,3 +164,5 @@ http://stat545.com/block002_hello-r-workspace-wd-project.html
 - Data cleaning in the New York Times
   - [For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights](https://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html)
   - and David Mimno's response [Data Carpentry](http://www.mimno.org/articles/carpentry/)
+  
+- 

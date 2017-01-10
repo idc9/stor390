@@ -1,7 +1,8 @@
 ---
-title: "Assignment 1"
+title: "Lab 1: data.gov"
 output: html_document
 ---
+Due January 17th.
 
 # Instructions
 - download one data set from [data.gov](https://www.data.gov/) as a .csv
@@ -9,7 +10,8 @@ output: html_document
 - communicate your results in R Markdown
     - write 1 paragraph describing the data set and what you found
     - make one plot
-    - find one statistics ()
+    - compute one statistic
+
 
 # Deliverables
 Hand in the .Rmd and .HTML documents and the data set (as a .csv file). Name the file *first*_*last_a1.RMD (i.e. iain_carmichael_a1.csv)
