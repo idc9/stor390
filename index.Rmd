@@ -11,6 +11,8 @@ Class
 - TuTh 5:00-6:15
 - Greenlaw 101
 
+Course Website: [https://idc9.github.io/stor390/](https://idc9.github.io/stor390/)
+
 Instructor: [Iain Carmichael](http://iaincarmichael.web.unc.edu/)
 
 - iain@unc.edu
@@ -35,10 +37,15 @@ For information about STOR 390's policies please see [the course organization pa
 
 Most of the course material is in the lecture notes -- the slides are visual aids for the class.
 
-| Date | Lecture | Notes | Slides | Lab | Assignment |
-|------|---------|-------|-------|------|------------|
-|January 12 |Welcome | [getting started](notes/getting_started/getting_started.html) |  | | [data.gov](assignments/gov_data/gov_data.html)|
-|January 17 | | | | | |
+Please see the [homeworks page]() for information about reading, labs and assignments.
+
+| Date | Lecture | Notes | Slides |
+|------|---------|-------|-------|
+|January 12 |Welcome | [getting started](notes/getting_started/getting_started.html) | | [data.gov](assignments/gov_data/gov_data.html)|
+|January 17 | | |
+
+
+
 
 
 ## Miscellaneous

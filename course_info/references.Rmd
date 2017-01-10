@@ -1,0 +1,64 @@
+---
+title: "Reference"
+output: html_document
+---
+
+This is a collection of resources for learning R/data science. If you have feedback feel free to email Iain.
+
+# R textbooks
+- [R for Data Science](http://r4ds.had.co.nz/) by Hadley Whickham
+
+- [Advanced R](http://adv-r.had.co.nz/) by Hadley Whickham
+
+- [R Programming for Data Science](https://leanpub.com/rprogramming),  [Exploratory Data Analysis with R](https://leanpub.com/exdata), and [Report Writing for Data Science in R](https://leanpub.com/reportwriting) by Roger Peng
+
+- [Computational and Inferential Thinking](http://www.inferentialthinking.com/index.html) Berkeley's data8 textbook
+
+# Statistics/Machine learning textbooks
+
+- [Introduction to Statitical Learing with R](http://www-bcf.usc.edu/~gareth/ISL/)
+
+- [Coursera's Machine Learning specialization](https://www.coursera.org/specializations/machine-learning) by Emily Fox 
+
+
+# Other data science courses
+
+- [Stat 545](http://stat545.com/index.html) taught by Jenny Bryan at UBC
+
+- [Coursera's Data Science specialization](https://www.coursera.org/specializations/jhu-data-science) by the guys at JHU
+
+- [CS109: Data Science](http://cs109.github.io/2015/) by Joe Blitzstein at Harvard
+
+- [BIO 260: Intoduction to Data Science](http://datasciencelabs.github.io/) by Rafael Irizarry and Stephanie Hicks at Harvard
+
+- [Introduction to Data Analysis](http://stat405.had.co.nz/) by Hadley Whickham at Rice
+
+- [Foundations of Data Science](https://data-8.appspot.com/sp16/course) at Berkely 
+
+- [JOMC390: Data Driven Journalism](http://ryanthornburg.com/about-contact/my-classes/syllabus-data-driven-journalism-jomc-390/) by Ryan Thornburg
+
+- [Advanced Data Science](http://jtleek.com/advdatasci/) by Jeff Leek
+
+
+
+# vizualization and communication
+
+- [Data Visualization course](http://vissoc.co/index.html) by Kiran Healy
+
+- [Edward Tufe](https://www.edwardtufte.com/tufte/)'s books 
+    - [Beautiful Evidence](http://www.amazon.com/Beautiful-Evidence-Edward-R-Tufte/dp/1930824165)
+
+- [Trees, maps and theorems](http://www.treesmapsandtheorems.com/)
+
+
+# blogs
+- [Simply Statistics](http://simplystatistics.org/) 
+
+- [Flowing data](http://flowingdata.com/) tons of data viz
+
+- [FiveThirtyEight](http://fivethirtyeight.com/)
+
+- [I quant NY](http://iquantny.tumblr.com/)
+
+- [Andrew Gelman's blog](http://andrewgelman.com/)
+

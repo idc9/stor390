@@ -60,6 +60,11 @@ The first thing you should do when you get a data set is [look at it](https://ww
 
 ## numerical summaries
 
+`str()` tells you about the data frame. First thing to note is the dimension of the data frame (651 rows by 32 columns)and the column types
+```{r str}
+str(movies)
+```
+
 `head()` prints the first six rows of a data set (and as many columns that will fit on the screen)
 ```{r head}
 head(movies)
@@ -69,18 +74,25 @@ head(movies)
 If you double click a data frame it will pull up R's built in spreadsheet
 ![](spreadsheet.png)
 
-`str()` gives a different view of the columns and includes some metadata
-```{r str}
-str(movies)
-```
-
 `summary()` prints out some descriptive statistics of each column
 ```{r summ}
 summary(movies)
 ```
 
+The `$` sign after a data frame will return a column
+```{r col}
+movies$imdb_num_votes
+```
+
+The `mean()` function computes the mean of a vector. There is also a `median`, `var`, `min`, `max`
+
+```{r mean}
+mean(movies$imdb_num_votes)
+```
+
+
 ## Vizualization
-You can only learn so much by looking a lists of numbers. Let's make some plots.
+You can only learn so much by looking lists of numbers. Let's make some plots.
 
 There are two popular plotting systmes in R. There is the *base* R system
 
@@ -108,23 +120,36 @@ ggplot(data = movies) + geom_point(mapping = aes(x = imdb_rating, y = critics_sc
 ```
 
 # Getting help
-The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/data-visualisation.html) written by Hadley Whickham (it's free online). I have put up a long list of alternative resources (textbooks, coursera courses, etc) [HERE TOOD](). 
+The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/data-visualisation.html) written by Hadley Whickham (it's free online). I have put up a [long list of alternative resources](../../course_info/references.html) (textbooks, coursera courses, etc). 
 
 Google and [StackOverflow](http://stackoverflow.com/) will become your best friends. If you have a question, chances are someone has already asked and answered it. If R gives you an error message you don't understand google it -- someone else has probably figured it out and posted it online.
 
 The course staff is of course here to help you. If you get stuck on something **spend at least 5 minutes Googling/hacking at it**. There is a good chance the first the one of us will do is turn to google. **Don't spend more than 20 minutes stuck on one thing** -- at this point you should as for help.
 
-# Homework
+# Yak Shaving
+[yak shaving](https://en.wiktionary.org/wiki/yak_shaving)
+ > Any apparently useless activity which, by allowing you to overcome intermediate difficulties, allows you to solve a larger problem. 
+ 
+ **I was doing a bit of yak shaving this morning, and it looks like it might have paid off.**
 
-## reading
+Programming/data science requires a lot of yak shaving which can be quite frustrating. You will probably come across the following quote at some point
+> 80 percent of data science is data cleaning
+
+
+
+# Reading
 - read the secions 1, 2, 3.1-3.5 of [r4ds](http://r4ds.had.co.nz/introduction.html)
 - read Jenny Bryan's tutorial on the [R workspace](http://stat545.com/block002_hello-r-workspace-wd-project.html)
 http://stat545.com/block002_hello-r-workspace-wd-project.html
+- [Data science done well looks easy - and that is a big problem for data scientists](http://simplystatistics.org/2015/03/17/data-science-done-well-looks-easy-and-that-is-a-big-problem-for-data-scientists/)
 
-## coding
-find and analyze a data set from [data.gov](https://www.data.gov/). See [TODO:]() for details
 
-# References
+
+# Additional references
 - ggplot2 vs. base plotting
     - [Why I don't use ggplot2](http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/)
     - [Why I use ggplot2](http://varianceexplained.org/r/why-I-use-ggplot2/)
+
+- Data cleaning in the New York Times
+  - [For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights](https://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html)
+  - and David Mimno's response [Data Carpentry](http://www.mimno.org/articles/carpentry/)
