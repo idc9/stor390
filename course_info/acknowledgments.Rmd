@@ -3,7 +3,7 @@ title: "Acknowledgements"
 output: html_document
 ---
 
-I was not shy about asking for help to develop STOR 390. 
+I was not shy about asking for help to develop [STOR 390](https://idc9.github.io/stor390/). 
 
 - [Brendan Brown](http://stat-or-old.oasis.unc.edu/people/graduate-students/brendan-brown), [Dylan Glotzer](http://stat-or-old.oasis.unc.edu/people/graduate-students/dylan-glotzer) and [Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a) developed many of the (best) lectures
 - [Shankar Bhamidi](http://shankarbhamidi.web.unc.edu/) supervised the development of this course
