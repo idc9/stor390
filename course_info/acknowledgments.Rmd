@@ -23,6 +23,7 @@ Many people provided input for this course
 - Danielle Dean (Senior Data Scientist at Microsoft)
 - Josh Jacobson (recovering programmer)
 - Aaron Brubaker (SILS director of IT)
+- Annie Henderson (Buisness Intelligence at Quid)
 - Dominic Spadacene (no one really knows what Dom is up to these days...)
 - Brendan Schneiderman (Senior Associate at E3)
 - Abby Stevens (Data Engineer at Doximity)
@@ -32,6 +33,7 @@ Many people provided input for this course
 - Joe Blitzstein (Professor of Statistics at Harvard)
 - Giles Hooker (Professor of Statistics at Cornell)
 - Ryan Thornburg (Professor of Journalist at UNC)
+- Steve Marron (Professor of Statistics at UNC)
 - David Mimno (Professor of Information Science at Cornell)
 - Diane Pozefsky (Professor of Computer Science at UNC)
 - Jay Aikat (Professor of Computer Science at UNC)
@@ -43,9 +45,11 @@ Many people provided input for this course
 - Kelly Bodwin (Statistics PhD student at UNC)
 - John Palowitch (Statistics PhD student at UNC)
 - Jonathon Williams (Statistics PhD student at UNC)
+- Jimmy Jin (Statistics PhD student at UNC)
 - Eric Friedlander (Statistics PhD student at UNC)
 - Kathryn Heal (Math PhD at Harvard)
 - Arturo Fernandez (Statistics PhD student at Berkely)
+- Jeffry Finkelstein (CS PhD student at BU)
 - Walter Cai (CS PhD student at UW)
 
  and of course my parents.
