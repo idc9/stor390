@@ -6,7 +6,7 @@ output:
 ---
 
 
-This course is an introduction to data science with R. The first half of the semester will cover core data science programming skills in R following closely [R for Data Science](r4ds.had.co.nz/). The second half of the semester will cover a number of topics such as exploratory data analysis, web scraping, text processing and effective visualization through a series of modules. The class will provide a foundation so that you can perform basic data analysis and proceed to more advanced topics.
+This course is an introduction to data science with R. The first half of the semester will cover core data science programming skills in R following closely [R for Data Science](http://r4ds.had.co.nz/). The second half of the semester will cover a number of topics such as exploratory data analysis, web scraping, text processing and effective visualization through a series of modules. The class will provide a foundation so that you can perform basic data analysis and proceed to more advanced topics.
 
 Class
 
@@ -34,11 +34,12 @@ Graduate Research Consultant: [Varun Goel](http://varungoel.web.unc.edu/author/v
 - office hours: TBA
 
 # Course Material
-
-- You can find all of the course material on our [github repository](https://github.com/idc9/stor390) (R code, RmD documents, data, etc).
-- Most of the course material is in the lecture notes (linked to below) -- the slides are visual aids for the lectures. 
 - For information about STOR 390's policies please see [the course organization page](course_info/course_organization.html). 
-- You can find the data sets used for the class [in the github repo](https://github.com/idc9/stor390/tree/master/data/)
+- Most of the course material is in the lecture notes (linked to below) -- the slides are visual aids for the lectures. 
+- You can find all of the course material on our [github repository](https://github.com/idc9/stor390)
+    - some [example code](https://github.com/idc9/stor390/tree/master/example_code/)
+    - [datesets used](https://github.com/idc9/stor390/tree/master/data/) in the class
+    - [couse notes](https://github.com/idc9/stor390/tree/master/data/) R Markdown files
 - Please see the [homeworks page](homeworks.html) for information about reading, labs and assignments.
 
 
