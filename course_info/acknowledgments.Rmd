@@ -16,6 +16,7 @@ Many people provided input for this course
 - Elaine McVey (Lead Data Scientist at TransLoc)
 - Ben Vigoda (CEO of Gamalon Machine Intelligence)
 - Brian Gilman (VP Business Development at Gamalon Machine Intelligence)
+- Cameron Freer (Logician and general purpose genius)
 - Francis Tong (Data Scientist at Becton Dickinson)
 - Bryan Davis (Data Analyst at Indeed.com)
 - Rosie Scott (Data Analyst at Indeed.com)

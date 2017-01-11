@@ -1,0 +1,58 @@
+---
+title: "Extra Credit"
+output:   
+  html_document:
+    theme: cosmo
+    toc: true
+    toc_float: true
+---
+
+You may complete any of the below for one point of extra credit each (5 points maximum).
+
+# Course feedback
+
+[Over 80 people](https://github.com/hadley/r4ds/graphs/contributors) have contributed to R for Data Science. Your feedback will make this course better for you and future students.
+
+- give five pieces of feedback/corrections to course material
+    - typos/spelling/grammar (there are likely many)
+    - rewording awkward/unclear language
+    - improve vizualizations
+    - point out explainations you found effective/could be better
+- post each piece of feedback as a github issue on our repo [https://github.com/idc9/stor390/issues](https://github.com/idc9/stor390/issues)
+
+Before you post a github issue you must [sign up for github](https://github.com/) and send me your username. I suggest publically associating your github profile with yourself, however, if you are strongly inclined otherwise you may sign up anonymously. 
+
+Once you have posted 5 issues send me the links to the issues and I will mark this down.
+
+# Attend an event
+
+Attend an event related to data science and send me a quick blurb about what you learned. I'll post some events below, but you are welcome to find other ones (as long as you check with me first)
+
+- [From Outlier to Insider - A Networking Event wirht Data Science Professionals](https://www.eventbrite.com/e/from-outlier-to-insider-a-networking-event-with-data-science-professionals-registration-29890863377)
+
+# Publish a blog post
+
+Write a blog post about something related to data science and post is somewhere. You can post it to [my blog](http://unsupervisedstatistics.web.unc.edu/) (or your own if you have one). However I encourage you to reach out to existing data science related to blogs (you lose nothing by sending [FiveThirtyEight](https://fivethirtyeight.com/) an email).
+
+I'm using a loose definition of a blog post, for example a coding project like one of [Google's A.I. experiments](https://aiexperiments.withgoogle.com/) counts as a blog post. You are welcome to use a project from another class/undergrad reserach as long as you add something on top of what you have already done.
+
+If you want do some an ambitious project I'm open to counting it for more than one point -- but don't go overboard. See me before you [built a self driving car in your garage](https://www.bloomberg.com/features/2015-george-hotz-self-driving-car/).
+
+Here are some blogs to use as inspiration
+
+- [Flowing data](http://flowingdata.com/)
+
+- [FiveThirtyEight](http://fivethirtyeight.com/)
+
+- [I quant NY](http://iquantny.tumblr.com/)
+
+- [Simply Statistics](http://simplystatistics.org/) 
+
+- [Andrew Gelman's blog](http://andrewgelman.com/)
+
+- [Data Science Weekly](https://www.datascienceweekly.org/)
+
+- [Partially Derivative](http://partiallyderivative.com/)
+
+
+
