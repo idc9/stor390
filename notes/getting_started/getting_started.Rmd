@@ -1,7 +1,7 @@
 ---
 title: "Getting Started with R"
 author: "[STOR 390](https://idc9.github.io/stor390/)"
-date: "January 13, 2017"
+date: "January 12, 2017"
 output: 
   html_document:
     theme: cosmo
