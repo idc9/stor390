@@ -152,9 +152,17 @@ Programming/data science requires a lot of yak shaving which can be quite frustr
 
 # Literate programming and R Markdown
 
-[Literate Programming](https://en.wikipedia.org/wiki/Literate_programming) is a concept introduced by Donald Knuth saying you should *write code that communicates primarily to hummans, not computers*. [R Markdown](http://rmarkdown.rstudio.com/) allows you easily write documents that contain: R code, text, images, links, etc. It may sounds bland at first R Markdown [is pretty amazing](http://rmarkdown.rstudio.com/gallery.html). The lecture notes and course webpage were done with R Markdown.
+[Literate Programming](https://en.wikipedia.org/wiki/Literate_programming) is a concept introduced by Donald Knuth saying you should *write code that communicates primarily to hummans, not computers*. Here are some examples:
+
+- [Jane Austen and R](https://cran.r-project.org/web/packages/tidytext/vignettes/tidytext.html)
+- [Document Clustering with Python](http://brandonrose.org/clustering)
+
+
+[R Markdown](http://rmarkdown.rstudio.com/) allows you easily write documents that contain: R code, text, images, links, etc. It may sounds bland at first R Markdown [is pretty amazing](http://rmarkdown.rstudio.com/gallery.html). The lecture notes and course webpage were done with R Markdown.
 
 Open a new R Markdown document and play around with it. We will use R Markdown quite a bit in the class. You can read more [about R Markdown in r4ds](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics). 
+
+ If you are using Python then you'll find [Jupyter notebooks](http://jupyter.org/) are the best thing since sliced bread (there are now [R notebooks](http://rmarkdown.rstudio.com/r_notebooks.html)) .
 
 
 # Additional references
@@ -162,4 +170,8 @@ Open a new R Markdown document and play around with it. We will use R Markdown q
 - ggplot2 vs. base plotting
     - [Why I don't use ggplot2](http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/)
     - [Why I use ggplot2](http://varianceexplained.org/r/why-I-use-ggplot2/)
+    
+- [R vs. Python](https://www.datacamp.com/community/tutorials/r-or-python-for-data-analysis#gs.wZYq5Q8)
+    - "better to be good at one then mediocre at first" (I've heard this from multiple sources but can't seem to find a link to one...)
+    - a priori doesn't matter -- there are cases when one is better than the other
 

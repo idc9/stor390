@@ -12,6 +12,7 @@ This is a collection of resources for learning R/data science. If you have feedb
 - [r-bloggers](https://www.r-bloggers.com/)
 
 - [Stack Overflow](http://stackoverflow.com/)
+- [chrisalbon.com](http://chrisalbon.com/) has lots of reproducible examples
 
 - [R Programming for Data Science](https://leanpub.com/rprogramming),  [Exploratory Data Analysis with R](https://leanpub.com/exdata), and [Report Writing for Data Science in R](https://leanpub.com/reportwriting) by Roger Peng
 
