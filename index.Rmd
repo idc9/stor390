@@ -21,7 +21,7 @@ See the course syllabus: **[https://idc9.github.io/stor390/course_info/syllabus.
 # **Course Material**
 
 - Most of the course material is in the lecture notes (linked to below) -- the slides are visual aids for the lectures. 
-- You can everything on our [github repository](https://github.com/idc9/stor390)
+- You can find everything on our [github repository](https://github.com/idc9/stor390)
     - [example code](https://github.com/idc9/stor390/tree/master/example_code/)
     - [datesets used](https://github.com/idc9/stor390/tree/master/data/) in the class
     - [course notes](https://github.com/idc9/stor390/tree/master/notes/) R Markdown files
