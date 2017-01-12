@@ -5,27 +5,40 @@ output: html_document
 
 This is a collection of resources for learning R/data science. If you have feedback feel free to email Iain.
 
-# R textbooks
-- [R for Data Science](http://r4ds.had.co.nz/) by Hadley Whickham
+# Learn R
 
-- [Advanced R](http://adv-r.had.co.nz/) by Hadley Whickham
+- [R for Data Science](http://r4ds.had.co.nz/) by Hadley Wickham
+
+- [r-bloggers](https://www.r-bloggers.com/)
+
+- [Stack Overflow](http://stackoverflow.com/)
 
 - [R Programming for Data Science](https://leanpub.com/rprogramming),  [Exploratory Data Analysis with R](https://leanpub.com/exdata), and [Report Writing for Data Science in R](https://leanpub.com/reportwriting) by Roger Peng
 
 - [Computational and Inferential Thinking](http://www.inferentialthinking.com/index.html) Berkeley's data8 textbook
 
+- [Coursera's Data Science specialization](https://www.coursera.org/specializations/jhu-data-science) by the guys at JHU
+
+- [how to learn R](https://www.r-bloggers.com/how-to-learn-r-2/)
+
+- [Kagge](https://www.kaggle.com/wiki/Tutorials) has a good list of R/data science tutorials
+
+- [Swirl](http://swirlstats.com/) is an interactive intro do R
+
+- [code school](https://www.codeschool.com/courses/try-r) is too
+
+- [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham
+
+
+
+
 # Statistics/Machine learning textbooks
 
 - [Introduction to Statitical Learing with R](http://www-bcf.usc.edu/~gareth/ISL/)
 
-- [Coursera's Machine Learning specialization](https://www.coursera.org/specializations/machine-learning) by Emily Fox 
-
-
 # Other data science courses
 
 - [Stat 545](http://stat545.com/index.html) taught by Jenny Bryan at UBC
-
-- [Coursera's Data Science specialization](https://www.coursera.org/specializations/jhu-data-science) by the guys at JHU
 
 - [CS109: Data Science](http://cs109.github.io/2015/) by Joe Blitzstein at Harvard
 
@@ -38,7 +51,6 @@ This is a collection of resources for learning R/data science. If you have feedb
 - [JOMC390: Data Driven Journalism](http://ryanthornburg.com/about-contact/my-classes/syllabus-data-driven-journalism-jomc-390/) by Ryan Thornburg
 
 - [Advanced Data Science](http://jtleek.com/advdatasci/) by Jeff Leek
-
 
 
 # vizualization and communication

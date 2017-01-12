@@ -43,7 +43,7 @@ a + b
 ```
 
 
-For a longer introduction see the readings linked to at the bottom of this page.
+If you are new to R I suggest reading through [before we start](http://www.datacarpentry.org/R-ecology-lesson/00-before-we-start.html) and [intro to R](http://www.datacarpentry.org/R-ecology-lesson/01-intro-to-R.html). 
 
 # Packages
 The power of R comes from the many wonderful R packages people develop. R is an [open source](https://en.wikipedia.org/wiki/Open-source_software) language meaning anyone can develop a new R package. 
@@ -157,23 +157,9 @@ Programming/data science requires a lot of yak shaving which can be quite frustr
 Open a new R Markdown document and play around with it. We will use R Markdown quite a bit in the class. You can read more [about R Markdown in r4ds](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics). 
 
 
-# Reading
-- read the sections 1, 2, 3.1-3.5 of [r4ds](http://r4ds.had.co.nz/introduction.html)
-- read Jenny Bryan's tutorial on the [R workspace](http://stat545.com/block002_hello-r-workspace-wd-project.html)
-- (optionally) read R Nuts and Bolts from [PRDS](https://leanpub.com/rprogramming)
-
-- [Data science done well looks easy - and that is a big problem for data scientists](http://simplystatistics.org/2015/03/17/data-science-done-well-looks-easy-and-that-is-a-big-problem-for-data-scientists/)
-
-
-
 # Additional references
-
-- [R Markdown basics](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics)
 
 - ggplot2 vs. base plotting
     - [Why I don't use ggplot2](http://simplystatistics.org/2016/02/11/why-i-dont-use-ggplot2/)
     - [Why I use ggplot2](http://varianceexplained.org/r/why-I-use-ggplot2/)
 
-- Data cleaning in the New York Times
-  - [For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights](https://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html)
-  - and David Mimno's response [Data Carpentry](http://www.mimno.org/articles/carpentry/)

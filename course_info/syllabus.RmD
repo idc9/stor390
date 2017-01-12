@@ -1,5 +1,6 @@
 ---
-title: "STOR 390 Syllabus, Spring 2017"
+title: 'STOR 390: Introduction to Data Science'
+subtitle: Syllabus, Spring 2017
 output:
   html_document:
     theme: cosmo
@@ -9,7 +10,6 @@ output:
     toc: no
 ---
 
-# Introduction to Data Science
 Class
 
 - TuTh 5:00-6:15
@@ -33,63 +33,44 @@ Grader: Brendan Brown
 - Office: TBA
 - Office hours: TBA
 
-All course material can be found on the course website [https://idc9.github.io/stor390/](https://idc9.github.io/stor390/) and github repository [https://github.com/idc9/stor390](https://github.com/idc9/stor390).
+All course material can be found on the course website ([https://idc9.github.io/stor390/](https://idc9.github.io/stor390/)) and github repository ([https://github.com/idc9/stor390](https://github.com/idc9/stor390)).
 
 
 # Course description
 
-This course is an application-driven introduction to data science. Statistical and computational tools are valued throughout the modern workplace from Silicon Valley startups, to marine biology labs, to Wall Street firms. These tools require technical skills such as programming and statistics. They also require professional skills such as communication, teamwork, problem solving, and critical thinking. You will learn these tools and hone these skills through hands-on experience answering questions with datasets such as: Museum of Modern Art records, TCGA Gene Expressions and the text script of Beauty and the Beast.
+This course is an application-driven introduction to data science. Statistical and computational tools are valued throughout the modern workplace from Silicon Valley startups, to marine biology labs, to Wall Street firms. These tools require technical skills such as programming and statistics. They also require professional skills such as communication, teamwork, problem solving, and critical thinking.
 
-The first half of the semester will cover R programming skills. The second half will cover a number of topics: exploratory data analysis, web scraping, text processing, and effective visualization through a series of modules. Data science can be empowering; this course provides a foundation in the core tools of the subject.
+You will learn these tools and hone these skills through hands-on experience working with datasets such as: Museum of Modern Art records, TCGA Gene Expressions and the text script of Beauty and the Beast. The first half of the semester will cover R programming skills. The second half will cover a number of topics: exploratory data analysis, web scraping, text processing, and effective visualization through a series of modules.
 
+
+# Textbook
+The primary reference for the course is [R for Data Science](http://r4ds.had.co.nz/) by Hadley Wickham (free online). 
+
+<!-- --->
+![](r4ds.png)
+<br>
+<br>
+
+We will use a number of other references (all free)
+
+- [Data Carpentry R for data analysis for Ecology](http://www.datacarpentry.org/R-ecology-lesson/) 
+- [R Programming for Data Science](https://leanpub.com/rprogramming) by Roger Peng
+- [Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/) by Tibshirani et al. 
+- [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham
+- [Tidy Text Minning with R](http://tidytextmining.com/) by Julia Silge and David Robinson
+
+I will provide additional resources in the lecture nodes.
 
 # Goals and Learning Objectives
 
-- learn core R programming skills (see first three sections of R for Data Science)
-    - visualization
-    - data manipulation
-    - data import/acquisition
-    - if/else, for/while loops, functions
-    - regular expressions, dates/times, relational data, web scraping
+- learn core R programming skills (sections 1 - 21 of R for Data Science)
 
-- utilize programming and statistical best practices i.e. comment code, identify possible sources of biases
+- practice statistical and programming best practices e.g. comment code, identify possible sources of biases
 
-- learn technical communication skills
-    - [R Markdown](http://rmarkdown.rstudio.com/)
-    - [shiny](http://shiny.rstudio.com/) for interactive visualization
-    - effective visual communication (hint: do less, not more!)
+- make use of [Literate programming](https://en.wikipedia.org/wiki/Literate_programming) with R Markdown
     
-- practice professional skills: communication, creative thinking, critical thinking, self-directed learning, and teamwork 
-    
-- additional topics
-    - regression, clustering, classification
-    - natural language processing
-    - github and reproducibility
-    - data ethics/privacy
+- develop professional skills: clear communication, creative thinking, critical thinking, self-directed learning, and effective teamwork 
 
-# Textbooks
-We will follow [R for Data Science](http://r4ds.had.co.nz/) by Hadley Wickham (free online). 
-
-![](r4ds.png)
-
-<br>
-<br>
-
-Some topics may be supplemented by [Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/) by Tibshirani et al. (also free online)
-
-![](ISLR.jpg)
-
-<br>
-<br>
-
-[R Programming for Data Science](https://leanpub.com/rprogramming) by Roger Peng is a useful alternate (free) textbook for learning R
-
-![](rp4ds.png)
-<br>
-
-I will provide additional resources in the lecture nodes. 
-
-Google is a programmer's best friend. There is a good chance any question you have has already been asked and answered on [StackOverflow](http://stackoverflow.com/).
 
 # Topics
 Many of the topics will follow R for Data Science (RDS) fairly closely. These topics are subject to change
@@ -97,26 +78,28 @@ Many of the topics will follow R for Data Science (RDS) fairly closely. These to
 - Visualization with ggplot2 (RDS ch3)
 - Data manipulation dplyr (RDS ch5)
 - R Markdown (RDS ch 29-30)
-- Programming i.e. functions, loops, if/else, comments (RDS ch 4, 6, 17, 19, 20)
+- Programming e.g. functions, loops, if/else, comments (RDS ch 4, 6, 17, 19, 20)
 - Tidy data, relational data and data import (RDS ch 11-13)
 - Strings and regular expressions (RDS ch 14)
 - Exploratory Data Analysis
-- Modeling i.e. classification, clustering and regression
+- Modeling: classification, clustering and regression
 - Web scraping
-- Text data and NLP
+- Text data and Natural Language Processing
 - Additional programming topics (if there is time)
+    - reproducibility
     - interactive graphics with shiny
+    - effective visualization for communication
     - date/time data
     - github
     - GIS data
-- Three rules of effective communication (from Trees, Maps and Theorems)
-- [Data privacy/ethics](http://www.econtalk.org/archives/2016/10/cathy_oneil_on_1.html)
+    - [data privacy/ethics](http://www.econtalk.org/archives/2016/10/cathy_oneil_on_1.html)
+- Three rules of effective communication (from [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/))
 
 
 # Prerequisites
 Some coding or some statistics (STOR 155 or COMP 110).
 
-This class will provide a foundation with essential tools, experience working with data and exposure to more advanced topics. We will use concepts from statistics, machine learning and computer science that rely on more advanced math, however, we will not go into depth into these topics. STOR 390 is meant to augment many fantaic exisiting courses such as: probability, theoretical/applied statistics, algorithms, databases etc. Following R for Data Science
+We will use concepts from statistics, machine learning and computer science that rely on more advanced math, however, we will cover these topics from a heuristic perspective. STOR 390 is meant to augment many fanatic existing courses such as: probability, theoretical/applied statistics, algorithms, databases etc. Following R for Data Science
 
 > We believe it’s important to stay ruthlessly focused on the essentials so you can get up and running as quickly as possible.
 
@@ -131,13 +114,13 @@ We will use the [R](https://www.r-project.org/about.html) programming language a
     - 4 data analyses
 - Class participation: 15%
 - Final project: 15%
-- Extra credit: upto 5%
+- Extra credit: up to 5%
 
-The **longer assignments** will be end to end data analyses i.e. get, clean, analyze, communicate. Code will be provided to make these managable.
+The **longer assignments** will be end to end data analyses i.e. get, clean, analyze, communicate. Code will be provided to make these manageable.
 
-These assigmnets are graded on a 100 point scale and will take into account: statistical rigor, coding accuracy, and communication. Note that communication includes: writing human readable code, clear visualizations and coherent writing. Detailed rubrics will be provided with each assignment. 
+These assignments are graded on a 100 point scale and will take into account: statistical rigor, coding accuracy, and communication. Note that communication includes: writing human readable code, clear visualizations and coherent writing. Detailed rubrics will be provided with each assignment. 
 
-Some of these assigmnets will be done in teams (see below for group work policy). One homework may be dropped *if you participate in [DataFest](http://www2.stat.duke.edu/datafest/)*. Assignments handed in late will lose 10 points each day past the due date.
+Some of these assignments will be done in teams (see below for group work policy). One homework may be dropped *if you participate in [DataFest](http://www2.stat.duke.edu/datafest/)*. Assignments handed in late will lose 10 points each day past the due date.
 
 **Labs** are more frequent and shorter than assignments. They are graded on a 0-3 scale
 
@@ -157,7 +140,7 @@ If you believe a homework was graded incorrectly you may appeal to the grader --
 
 ## Final grades
 
-I will curve the total grade, but not grades from individual assignments. If your final grade is about 90 you are assured an A- or A. Similarly, if your final grad is about an 80 you are assured a B- or B. I reserve the right to curve grade susing more generous cutoffs depending on the overall performace of the class. Once the final grade has been assigned it cannot be changed unless there was a numerical error in computing the final grade.
+I will curve the total grade, but not grades from individual assignments. If your final grade is about 90 you are assured an A- or A. Similarly, if your final grad is about an 80 you are assured a B- or B. I reserve the right to curve grade using more generous cutoffs depending on the overall performance of the class. Once the final grade has been assigned it cannot be changed unless there was a numerical error in computing the final grade.
 
 # Group work
 The teamwork policy comes from [Teaching and Learning STEM](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118925815.html) and applies to homeworks and the final project (not class activities).
@@ -169,15 +152,19 @@ The teamwork policy comes from [Teaching and Learning STEM](http://www.wiley.com
 More details will be provided before the first team project.
 
 
-
 # Getting help
 Programming can be incredibly frustrating and take some time to get used to. Before you email the TA please spend some time trying to solve/Google the problem. Once you have exhausted your resources/patience ask some (rule of thumb: spend at least 5 minutes, don't spend more than 20 minutes stuck on one problem).
+
+There is a large number of free R/data science resources online. I've listed a few at the top of this page and in the [references page](references.html).
+
 
 # FAQ/tips for success
 
 - Code a little bit every day. Even if you can only find 20 minutes -- write a little bit of code.
 
 - Google is your best friend for solving programming problems. I will repeat this many times.
+
+- If one of the readings isn't satisfying to you go find a different explanation! It often takes 3 different explanations (read multiple times) before I understand an unfamiliar, tricky concept. 
 
 - If you are new to programming the beginning of the course will be a big adjustment. Don't give up, you'll get the hang of it in a couple weeks.
 
@@ -187,7 +174,7 @@ Programming can be incredibly frustrating and take some time to get used to. Bef
 
 - If you have already machine learning/more advanced statistics courses there will be opportunities for you to use what you have learned/learn new things.
 
-- This class may be quite different from other STEM courses you have taken -- particularly the amount of class particiaption. [Active Learning](https://en.wikipedia.org/wiki/Active_learning) is backed up by hundreds of studies that show active learning performs better than traditional lecturing on almost every examined learning outcome (see Felder and Brent below).
+- This class may be quite different from other STEM courses you have taken -- particularly the amount of class participation. [Active Learning](https://en.wikipedia.org/wiki/Active_learning) is backed up by hundreds of studies that show active learning performs better than traditional lecturing on almost every examined learning outcome (see Felder and Brent below).
 
 - If there is something related to data science you want to learn tell me. I can at least point you to resources and may try to include it in the class!
 

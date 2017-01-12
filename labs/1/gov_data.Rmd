@@ -5,10 +5,11 @@ output: html_document
 **Due January 17th at 5pm.**
 
 # Instructions
+- do the reading from January 12th
 - find and download one data set from [data.gov](https://www.data.gov/) as a .csv
 - load it into R and find something interesting
 - communicate your results in R Markdown
-    - write 1 paragraph describing the data set and what you found
+    - write 1 paragraph describing the data set and what makes your result interesting
     - make one plot
     - compute one statistic
 
@@ -19,3 +20,6 @@ Hand in the .Rmd and .HTML documents and the data set (as a .csv file). Name the
 # Hints
 - save the data set in the same folder as the .Rmd file
 - there is lot's of example code in [chapter 3](http://r4ds.had.co.nz/data-visualisation.html) of r4ds.
+- try copy/pasting some of the code from r4ds and make various plots using the data set you have downloaded
+- simple histogram or scatter plot will probably suffice
+
