@@ -46,7 +46,7 @@ You will learn these tools and hone these skills through hands-on experience wor
 # Textbook
 The primary reference for the course is [R for Data Science](http://r4ds.had.co.nz/) by Hadley Wickham (free online). 
 
-<!-- --->
+<!--  --->
 ![](r4ds.png)
 <br>
 <br>
@@ -57,7 +57,7 @@ We will use a number of other references (all free)
 - [R Programming for Data Science](https://leanpub.com/rprogramming) by Roger Peng
 - [Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/) by Tibshirani et al. 
 - [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham
-- [Tidy Text Minning with R](http://tidytextmining.com/) by Julia Silge and David Robinson
+- [Tidy Text Mining with R](http://tidytextmining.com/) by Julia Silge and David Robinson
 
 I will provide additional resources in the lecture nodes.
 
@@ -67,7 +67,7 @@ I will provide additional resources in the lecture nodes.
 
 - practice statistical and programming best practices e.g. comment code, identify possible sources of biases
 
-- make use of [Literate programming](https://en.wikipedia.org/wiki/Literate_programming) with R Markdown
+- make use of [literate programming](https://en.wikipedia.org/wiki/Literate_programming) with R Markdown
     
 - develop professional skills: clear communication, creative thinking, critical thinking, self-directed learning, and effective teamwork 
 
@@ -143,7 +143,7 @@ If you believe a homework was graded incorrectly you may appeal to the grader --
 I will curve the total grade, but not grades from individual assignments. If your final grade is about 90 you are assured an A- or A. Similarly, if your final grad is about an 80 you are assured a B- or B. I reserve the right to curve grade using more generous cutoffs depending on the overall performance of the class. Once the final grade has been assigned it cannot be changed unless there was a numerical error in computing the final grade.
 
 # Group work
-The teamwork policy comes from [Teaching and Learning STEM](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118925815.html) and applies to homeworks and the final project (not class activities).
+The teamwork policy comes from [Teaching and Learning STEM](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118925815.html) and applies to homework and the final project (not class activities).
 
 - the instructor will assign teams
 - final grade will be adjusted by peer ratings
@@ -183,7 +183,7 @@ There is a large number of free R/data science resources online. I've listed a f
 
 All students must be familiar with and abide by the Honor Code, which covers issues such as plagiarism, falsification, unauthorized assistance, cheating, and other grievous acts of academic dishonesty. Violations of the Honor Code will not be taken lightly.
 
-For labs/group activities you are encouraged to work with other people, however, you are **not allowed to copy someone else's code**. For homeworks you are encouraged to use online resources as long as you **cite a resource you borrow code from**. 
+For labs/group activities you are encouraged to work with other people, however, you are **not allowed to copy someone else's code**. For homework you are encouraged to use online resources as long as you **cite a resource you borrow code from**. 
 
 For informal collaborations, such as labs and activities, you may help each other debug programs and develop approaches to solve a problem, but you should not directly share code. You can post questions about specific parts of a problem on Sakai if you have made several attempts to solve it. Please do not post the entire solution to a problem -- just answer the specific question being asked.
 
@@ -214,6 +214,6 @@ The following books, courses and papers were influential in the design of this c
     
 - [Introduction to Data Analysis](http://stat405.had.co.nz/) taught by Hadley Wickham at Rice
 
-- [A Guide to Teaching Data Science](https://arxiv.org/pdf/1612.07140v1.pdf) by Stephaie Hicks and Rafael Irizarry
+- [A Guide to Teaching Data Science](https://arxiv.org/pdf/1612.07140v1.pdf) by Stephanie Hicks and Rafael Irizarry
 
 - [Data Science in Statistics Curricula: Preparing Students to “Think with Data”](http://www.stat.purdue.edu/~mdw/papers/paper032.pdf) by Hardin et al.
