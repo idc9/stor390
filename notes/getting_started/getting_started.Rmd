@@ -9,19 +9,24 @@ output:
     toc_float: true
 ---
 
+# Stuff to install
 
-
-# Install R
+## R
 
 **Download the latest version of R from the [Comprehensive R Archive Network](https://cran.rstudio.com/)** (CRAN). [R](https://www.r-project.org/about.html) is a programming language built for statistical analysis.
 
-# Install R Studio
+## R Studio
 
 **Download [R Studio](https://www.rstudio.com/products/rstudio/#Desktop)** which is an [IDE](https://en.wikipedia.org/wiki/Integrated_development_environment) built for R. While you can use R without R Studio, R Studio makes life much better.
 
 ![image from http://rprogramming.net/download-and-install-rstudio/](rstudio.png)
 
+
 Watch the [video on this page](https://www.rstudio.com/products/RStudio/) for the basics parts of R Studio
+
+## Updating R/R Studio
+
+If you already have R and R Studio please update both of them. For instructions see [this page](http://bioinfo.umassmed.edu/bootstrappers/bootstrappers-courses/courses/rCourse/Additional_Resources/Updating_R.html).
 
 # Basic R commands
 You downloaded [base R](https://www.rstudio.com/wp-content/uploads/2016/05/base-r.pdf) from CRAN.
@@ -37,35 +42,37 @@ b <- 2
 a + b
 ```
 
+
+For a longer introduction see the readings linked to at the bottom of this page.
+
 # Packages
-The power of R comes from the many wonderful R packages people develope. R is an [open source](https://en.wikipedia.org/wiki/Open-source_software) language meaning anyone can develope a new R package. 
+The power of R comes from the many wonderful R packages people develop. R is an [open source](https://en.wikipedia.org/wiki/Open-source_software) language meaning anyone can develop a new R package. 
 
 You can install a package from [CRAN](https://cran.r-project.org/) like this
 ```{r install, eval=FALSE}
 install.packages("tidyverse")
 ```
 
-There are other sources of R packags such as [Bioconductor](http://www.bioconductor.org/) and [Github](https://github.com/). Packages from CRAN and Bioconductor are vetted (though not perfectly). Packages on Github are not.
+There are other sources of R packages such as [Bioconductor](http://www.bioconductor.org/) and [Github](https://github.com/). Packages from CRAN and Bioconductor are vetted (though not perfectly). Packages on Github are not.
 
 To use code from an R package you need to load it
 ```{r loadpackage}
 # ignore the warnings for now
 library(tidyverse)
 ```
-You need to load an R package everytime you want to use it. You only need to install it once.
+You need to load an R package every time you want to use it. You only need to install it once.
 
 # IMBD
-Load the [movies data set](http://www2.stat.duke.edu/~mc301/data/movies.html) generously currated by [Mine Cetinkaya-Rundel](http://www2.stat.duke.edu/~mc301/)
+Load the [movies data set](http://www2.stat.duke.edu/~mc301/data/movies.html) generously curated by [Mine Cetinkaya-Rundel](http://www2.stat.duke.edu/~mc301/)
 ```{r load movies}
 # downloads data set and loads it into R
 load(url('https://stat.duke.edu/~mc301/data/movies.Rdata'))
 ```
 
 
+The first thing you should do when you get a data set is [look at it](https://www.youtube.com/watch?v=EF8GhC-T_Mo)!
 
-The first thing you should do when you get a data set is [look at it](https://www.youtube.com/watch?v=EF8GhC-T_Mo). 
-
-## numerical summaries
+## Numerical summaries
 
 `str()` tells you about the data frame. First thing to note is the dimension of the data frame (651 rows by 32 columns)and the column types
 ```{r str}
@@ -101,7 +108,7 @@ mean(movies$imdb_num_votes)
 ## Vizualization
 You can only learn so much by looking lists of numbers. Let's make some plots.
 
-There are two popular plotting systmes in R. There is the *base* R system
+There are two popular plotting systems in R. There is the *base* R system
 
 ```{r base_plot}
 plot(movies$imdb_rating, movies$critics_score)
@@ -127,7 +134,7 @@ ggplot(data = movies) + geom_point(mapping = aes(x = imdb_rating, y = critics_sc
 ```
 
 # Getting help
-The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/data-visualisation.html) written by Hadley Whickham (it's free online). I have put up a [long list of alternative resources](https://idc9.github.io/stor390/course_info/references.html) (textbooks, coursera courses, etc). 
+The main textbook for this class is [R for Data Science](http://r4ds.had.co.nz/data-visualisation.html) written by Hadley Wickham (it's free online). I have put up a [long list of alternative resources](https://idc9.github.io/stor390/course_info/references.html) (textbooks, coursera courses, etc). 
 
 Google and [StackOverflow](http://stackoverflow.com/) will become your best friends. If you have a question, chances are someone has already asked and answered it. If R gives you an error message you don't understand google it -- someone else has probably figured it out and posted it online.
 
@@ -145,14 +152,16 @@ Programming/data science requires a lot of yak shaving which can be quite frustr
 
 # Literate programming and R Markdown
 
-[Literate Programming](https://en.wikipedia.org/wiki/Literate_programming) is a concept intoduced by Donal Kunth saying you should *write code that communicates primarily to hummans, not computers*. [R Markdown](http://rmarkdown.rstudio.com/) allows you easily write documents that contain: R code, text, images, links, etc. It may sounds bland at first R Markdown [is pretty amazing](http://rmarkdown.rstudio.com/gallery.html). All of my lecture notes are done in R Markdown. 
+[Literate Programming](https://en.wikipedia.org/wiki/Literate_programming) is a concept introduced by Donald Knuth saying you should *write code that communicates primarily to hummans, not computers*. [R Markdown](http://rmarkdown.rstudio.com/) allows you easily write documents that contain: R code, text, images, links, etc. It may sounds bland at first R Markdown [is pretty amazing](http://rmarkdown.rstudio.com/gallery.html). The lecture notes and course webpage were done with R Markdown.
 
 Open a new R Markdown document and play around with it. We will use R Markdown quite a bit in the class. You can read more [about R Markdown in r4ds](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics). 
 
 
 # Reading
-- read the secions 1, 2, 3.1-3.5 of [r4ds](http://r4ds.had.co.nz/introduction.html)
+- read the sections 1, 2, 3.1-3.5 of [r4ds](http://r4ds.had.co.nz/introduction.html)
 - read Jenny Bryan's tutorial on the [R workspace](http://stat545.com/block002_hello-r-workspace-wd-project.html)
+- (optionally) read R Nuts and Bolts from [PRDS](https://leanpub.com/rprogramming)
+
 - [Data science done well looks easy - and that is a big problem for data scientists](http://simplystatistics.org/2015/03/17/data-science-done-well-looks-easy-and-that-is-a-big-problem-for-data-scientists/)
 
 
@@ -168,5 +177,3 @@ Open a new R Markdown document and play around with it. We will use R Markdown q
 - Data cleaning in the New York Times
   - [For Big-Data Scientists, ‘Janitor Work’ Is Key Hurdle to Insights](https://www.nytimes.com/2014/08/18/technology/for-big-data-scientists-hurdle-to-insights-is-janitor-work.html)
   - and David Mimno's response [Data Carpentry](http://www.mimno.org/articles/carpentry/)
-  
-- 

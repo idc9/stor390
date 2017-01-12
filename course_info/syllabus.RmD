@@ -1,5 +1,5 @@
 ---
-title: "STOR 390 Syllabus"
+title: "STOR 390 Syllabus, Spring 2017"
 output:
   html_document:
     theme: cosmo
@@ -9,7 +9,7 @@ output:
     toc: no
 ---
 
-# Logistics
+# Introduction to Data Science
 Class
 
 - TuTh 5:00-6:15
@@ -40,7 +40,7 @@ All course material can be found on the course website [https://idc9.github.io/s
 
 This course is an application-driven introduction to data science. Statistical and computational tools are valued throughout the modern workplace from Silicon Valley startups, to marine biology labs, to Wall Street firms. These tools require technical skills such as programming and statistics. They also require professional skills such as communication, teamwork, problem solving, and critical thinking. You will learn these tools and hone these skills through hands-on experience answering questions with datasets such as: Museum of Modern Art records, TCGA Gene Expressions and the text script of Beauty and the Beast.
 
-The first half of the semester will cover R programming skills. The second half of the semester will cover a number of topics such as exploratory data analysis, web scraping, text processing and effective visualization through a series of modules. Data science can be empowering; this course will give you a foundation in the core tools of the subject.
+The first half of the semester will cover R programming skills. The second half will cover a number of topics: exploratory data analysis, web scraping, text processing, and effective visualization through a series of modules. Data science can be empowering; this course provides a foundation in the core tools of the subject.
 
 
 # Goals and Learning Objectives
@@ -200,9 +200,9 @@ All students must be familiar with and abide by the Honor Code, which covers iss
 
 For labs/group activities you are encouraged to work with other people, however, you are **not allowed to copy someone else's code**. For homeworks you are encouraged to use online resources as long as you **cite a resource you borrow code from**. 
 
-For informal collaborations, such as labs and Slack, you may help each other debug programs and develop approaches to solve a problem, but you should not directly share code. You can post questions about specific parts of a problem on Slack/github if you have made several attempts to solve it. Please do not post the entire solution to a problem -- just answer the specific question being asked.
+For informal collaborations, such as labs and activities, you may help each other debug programs and develop approaches to solve a problem, but you should not directly share code. You can post questions about specific parts of a problem on Sakai if you have made several attempts to solve it. Please do not post the entire solution to a problem -- just answer the specific question being asked.
 
-Please report any significant collaborations (just post names in a comment at the top of a script). We may use software to detect cheating and these reporting collaborations will help prevent false positives. You will be expected to explain your code by your self in class. These policies are based on COMP 401 taught by Ketan	Mayer-Patel.
+Please report any significant collaborations (just post names in a comment at the top of a script). We may use software to detect cheating and these reporting collaborations will help prevent false positives. You are expected to be able to explain your code by your self in class. These policies are based on COMP 401 taught by Ketan Mayer-Patel.
 
 
 # Students with disabilities
@@ -213,7 +213,9 @@ All accommodations are coordinated through the Accessibility Resources and Servi
 
 # References
 
-The following books, courses and papers were influential in the design of this course. See the acknowledgements page for a long list of fantastic people who provided lots of input for the class [https://idc9.github.io/stor390/course_info/acknowledgments.html](https://idc9.github.io/stor390/course_info/acknowledgments.html)
+The following books, courses and papers were influential in the design of this course. See the acknowledgements page for a long list of fantastic people who provided lots of input for the class.
+
+- [https://idc9.github.io/stor390/course_info/acknowledgments.html](https://idc9.github.io/stor390/course_info/acknowledgments.html)
 
 - [Teaching and Learning STEM: a Practical Guide](https://www.amazon.com/Teaching-Learning-STEM-Practical-Guide/dp/1118925815) by Richard Felder and Rebecca Brent
 

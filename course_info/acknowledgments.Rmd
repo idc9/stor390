@@ -3,16 +3,17 @@ title: "Acknowledgements"
 output: html_document
 ---
 
-I was not shy about asking for help to develop [STOR 390](https://idc9.github.io/stor390/). 
+A grant from the [Data@Carolina](http://data.web.unc.edu/) initiative helped make this course possible. I was not shy about asking for help to develop [STOR 390](https://idc9.github.io/stor390/). 
 
 - [Brendan Brown](http://stat-or-old.oasis.unc.edu/people/graduate-students/brendan-brown), [Dylan Glotzer](http://stat-or-old.oasis.unc.edu/people/graduate-students/dylan-glotzer) and [Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a) developed many of the (best) lectures
 - [Shankar Bhamidi](http://shankarbhamidi.web.unc.edu/) supervised the development of this course
+
 
 Many people provided input for this course
 
 - Hadley Wickham (Chief Scientist at R Studio)
 - Marshall Markham (Data Scientist at Maxpoint)
-- Ian Murry (Lead data scientist at Twitch)
+- Ian Murry (Lead Data scientist at Twitch)
 - Elaine McVey (Lead Data Scientist at TransLoc)
 - Ben Vigoda (CEO of Gamalon Machine Intelligence)
 - Brian Gilman (VP Business Development at Gamalon Machine Intelligence)
@@ -61,6 +62,5 @@ Many people provided input for this course
  - [STAT 545](http://stat545.com/) at UBC by Jenny Bryan
  - [Intoduction to Data Analysis](http://stat405.had.co.nz/) at Rice by Hadley Wickham
  - [CS 109](http://cs109.github.io/2015/) at Harvard by Joe Blitzstein
- - [A Guide to Teaching Data Science](https://arxiv.org/pdf/1612.07140v1.pdf) by Stephanie Hicks and Rafaell Irizarry
- - [Teaching and Learning STEM: a Practical Guide](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118925815.html) by Richard Felder and Rebecca Brent
+
  
