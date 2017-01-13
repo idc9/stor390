@@ -18,8 +18,10 @@ output: html_document
 Name the R Markdown file  *first*_*last*_L1.Rmd (i.e. iain_carmichael_L1.Rmd). On Sakai submit
 
 - the .Rmd file
-- the .html file
+- the .pdf file
 - the data
+
+Note: please upload a **.pdf** file, not and **.html** file. Sakai does not play well with .html.
 
 # Hints
 - do all of your analysis in an R script file then copy the code into an R Markdown document
