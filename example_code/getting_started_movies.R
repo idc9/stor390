@@ -1,20 +1,18 @@
 # STOR 390, spring 2017
 # Lecture 1 example code
 
+# instally tidyverse if it is not already on your computer
+install.packages('tidyverse')
+
 # load a package
 library(tidyverse)
 
-# read a csv file
-# NOTE: this is the 'absolute path' to the file that is on my computer
-movies <- read_csv('/Users/iaincarmichael/Dropbox/stor390/data/movies.csv')
+# You can also download the movies data from the internet
+load(url('https://stat.duke.edu/~mc301/data/movies.Rdata'))
 
 # if movies.csv were in the same directory as the R script
 # i.e. the current working directory I could import the data like
 # movies <- read_csv('movies.csv')
-
-# You can also download movies.csv from the internet
-# load(url('https://stat.duke.edu/~mc301/data/movies.Rdata'))
-
 
 # some summaries of the data
 str(movies)

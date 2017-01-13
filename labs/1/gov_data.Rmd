@@ -15,11 +15,20 @@ output: html_document
 
 
 # Deliverables
-Hand in the .Rmd and .HTML documents and the data set (as a .csv file). Name the file *first*_*last*_L1.RMD (i.e. iain_carmichael_L1.Rmd)
+Name the R Markdown file  *first*_*last*_L1.Rmd (i.e. iain_carmichael_L1.Rmd). On Sakai submit
+
+- the .Rmd file
+- the .html file
+- the data
 
 # Hints
+- do all of your analysis in an R script file then copy the code into an R Markdown document
+- some of the data on data.gov may be messy (have missing values, not load properly, not tell you what the columns mean, etc)
+    - either try cleaning the data set yourself
+    - or find a cleaner data set 
 - save the data set in the same folder as the .Rmd file
 - there is lot's of example code in [chapter 3](http://r4ds.had.co.nz/data-visualisation.html) of r4ds.
 - try copy/pasting some of the code from r4ds and make various plots using the data set you have downloaded
 - simple histogram or scatter plot will probably suffice
+
 
