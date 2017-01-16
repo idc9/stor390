@@ -28,7 +28,7 @@ Once you have posted 5 issues send me the links to the issues and I will mark th
 
 Attend an event related to data science and send me a quick blurb about what you learned. I'll post some events below, but you are welcome to find other ones (as long as you check with me first)
 
-- [From Outlier to Insider - A Networking Event wirht Data Science Professionals](https://www.eventbrite.com/e/from-outlier-to-insider-a-networking-event-with-data-science-professionals-registration-29890863377)
+- [From Outlier to Insider - A Networking Event with Data Science Professionals](https://www.eventbrite.com/e/from-outlier-to-insider-a-networking-event-with-data-science-professionals-registration-29890863377)
 
 # Publish a blog post
 
