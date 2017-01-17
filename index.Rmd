@@ -33,7 +33,7 @@ See the course syllabus: **[https://idc9.github.io/stor390/course_info/syllabus.
 | Date | Lecture | Notes | Slides |
 |------|---------|-------|-------|
 |January 12 |Welcome | [**getting started**](notes/getting_started/getting_started.html) | [lecture 1](slides/lecture1.pdf)|
-|January 17 | | |
+|January 17 | workflow + ggplot|[**workflow**](notes/workflow/workflow.html) |
 
 
 
