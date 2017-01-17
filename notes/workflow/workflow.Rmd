@@ -121,6 +121,8 @@ For this class we will use packages from the tidyverse (which you can [read more
 
 # References
 
+- there are two useful ggplot2 references: [ggplot2 cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) and  [http://docs.ggplot2.org/current/](http://docs.ggplot2.org/current/)
+
 - [Data Science at the Command Line](http://datascienceatthecommandline.com/)
 
 - [Code Academy tutorial on the command line](https://www.codecademy.com/en/courses/learn-the-command-line/lessons/navigation/exercises/your-first-command?action=lesson_resume)
