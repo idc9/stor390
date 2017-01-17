@@ -160,7 +160,7 @@ Programming/data science requires a lot of yak shaving which can be quite frustr
 
 [R Markdown](http://rmarkdown.rstudio.com/) allows you easily write documents that contain: R code, text, images, links, etc. It may sounds bland at first R Markdown [is pretty amazing](http://rmarkdown.rstudio.com/gallery.html). The lecture notes and course webpage were done with R Markdown.
 
-Open a new R Markdown document and play around with it. We will use R Markdown quite a bit in the class. You can read more [about R Markdown in r4ds](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics). 
+Open a new R Markdown document and play around with it. We will use R Markdown quite a bit in the class. You can read more [about R Markdown in r4ds](http://r4ds.had.co.nz/r-markdown.html#r-markdown-basics). This document may be helpful to get started with R Markdown: [http://stat545.com/block007_first-use-rmarkdown.html](http://stat545.com/block007_first-use-rmarkdown.html)
 
  If you are using Python then you'll find [Jupyter notebooks](http://jupyter.org/) are the best thing since sliced bread (there are now [R notebooks](http://rmarkdown.rstudio.com/r_notebooks.html)) .
 
