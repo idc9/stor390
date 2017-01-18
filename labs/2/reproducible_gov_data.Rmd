@@ -3,11 +3,11 @@ title: "Lab 2: data.gov and reproducibility"
 output: html_document
 ---
 
-This should be complete by the beggining of class on Thursday, Jan 19.
+This should be complete by the begging of class on Thursday, Jan 19.
 
 # Instructions
-- using a data set from data.gov make diffent **three** plots using ggplot.
-- include an explaination of what each plot tells you
+- using a data set from data.gov make different **three** plots using ggplot.
+- include an explanation of what each plot tells you
 - all files and variables must be named according to one of the conventions: snake case, camel case or periods (see section 4.2 from r4ds)
 - your code must run on someone else's computer
 
