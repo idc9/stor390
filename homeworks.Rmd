@@ -10,7 +10,8 @@ The due date is in the link.
 | Assigned | Labs | Assignments | In class exercises |
 |----------|------|-------------|--------------------|
 | January 12 | [data.gov](labs/1/gov_data.html) | | |
-| January 17 | | | [the command line](class_exercises/command_line/command_line.html)|
+| January 17 |[reproducible data.gov](labs/2/reproducible_gov_data.html) | | [the command line](class_exercises/command_line/command_line.html)|
+| January 19 |  | | |
 
 # Reading
 Readings should be complete by the following class period. r4ds = [R for Data Science](http://r4ds.had.co.nz/)

@@ -4,10 +4,19 @@
 
 # basic objects in R
 number <- 4
+db <- 3.776677
+
 string <- 'I am a string'
+
 boolean <- TRUE
 b <- F
+
+boolean | b
+boolean & b
+
+
 nums <- 1:5
+
 vec <- c('one', 'two', 'three')
 
 
@@ -21,8 +30,10 @@ library(tidyverse)
 getwd()
 
 # what files are in the current working directory
-list.files()
+list.files(getwd())
 
+
+setwd('/Users/iaincarmichael/Dropbox/stor390/example_code/movies')
 
 # note the movies data come from: http://www2.stat.duke.edu/~mc301/data/movies.html
 # if movies.csv were in the same directory as the R script

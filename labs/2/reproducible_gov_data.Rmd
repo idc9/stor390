@@ -1,0 +1,55 @@
+---
+title: "Lab 2: data.gov and reproducibility"
+output: html_document
+---
+
+This should be complete by the beggining of class on Thursday, Jan 19.
+
+# Instructions
+- using a data set from data.gov make diffent **three** plots using ggplot.
+- include an explaination of what each plot tells you
+- all files and variables must be named according to one of the conventions: snake case, camel case or periods (see section 4.2 from r4ds)
+- your code must run on someone else's computer
+
+The data set should be saved in the same directory as the .Rmd file and you should read the data set in like
+```{r read, eval=F}
+data <- read_csv('movies.csv')
+```
+
+
+# Deliverables
+
+- the plots must be done using ggplot
+- you can add on to lab 1 or use a new data set
+- At the beginning of class on Thursday you will email the .Rmd file and the data set to someone else. They must be able to run your code without modification to get credit. 
+
+# Hints
+- before class send your code/data to someone else in the class to make sure it runs before you are graded on this!
+- see [http://docs.ggplot2.org/current/](http://docs.ggplot2.org/current/) for a list of geoms/examples
+- the [ggplot2 cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) may also be helpful
+
+
+
+# grading instructions
+You will peer grade these assignments. Instructions for swapping assignments / submitting grades will be given in class.
+
+After reviewing someone's R Markdown document provide some feedback in the form of a comments section at the bottom of the .Rmd document and email it back them. 
+
+3 points 
+
+- .Rmd file runs without error or modification  (i.e. you don't have to change the working directory)
+- there are three plots made in ggplot2
+- the plots make sense and there is a brief written description that also makes sense
+- files and variables are named according to one of the conventions (i.e. no spaces in the file names!)
+
+2 points
+
+- one or more of the above is missing/incorrect
+
+1 point
+
+- lab only partially complete
+
+0 points
+
+- nothing handed in

@@ -43,7 +43,7 @@ The corresponding **Windows** commands are
 `mkdir`: make a new folder
 
 ### In class exercise: the command line
-Do this [tutorial in class](https://idc9.github.io/stor390/class_exercises/command_line/command_line.html) from Code Academy.
+Do this [tutorial in class](https://idc9.github.io/stor390/class_exercises/command_line/command_line.html)) from Code Academy.
 
 Now use the command line to make a new folder named `movies` in the `stor390` folder you just created.
 
