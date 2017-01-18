@@ -28,9 +28,11 @@ This is a collection of resources for learning R/data science. If you have feedb
 
 - [code school](https://www.codeschool.com/courses/try-r) is too
 
+# more R
+
 - [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham
 
-
+- Karl Broman's [Tools for Reproducible Research](http://kbroman.org/Tools4RR/pages/resources.html) is an amazing meta-resource 
 
 
 # Statistics/Machine learning textbooks
@@ -47,7 +49,7 @@ This is a collection of resources for learning R/data science. If you have feedb
 
 - [Introduction to Data Analysis](http://stat405.had.co.nz/) by Hadley Whickham at Rice
 
-- [Foundations of Data Science](https://data-8.appspot.com/sp16/course) at Berkely 
+- [Foundations of Data Science](https://data-8.appspot.com/sp16/course) at Berkeley 
 
 - [JOMC390: Data Driven Journalism](http://ryanthornburg.com/about-contact/my-classes/syllabus-data-driven-journalism-jomc-390/) by Ryan Thornburg
 

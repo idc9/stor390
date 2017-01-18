@@ -32,4 +32,6 @@ Readings should be complete by the following class period. r4ds = [R for Data Sc
 **January 17th**
 
 - read sections 3.5 - 3.10 and section 8 from r4ds
+- read [Reproducibility is not just for researchers](http://www.dataschool.io/reproducibility-is-not-just-for-researchers/)
+    - (optionally) [The Real Reason Reproducible Research is Important](http://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/)
 
