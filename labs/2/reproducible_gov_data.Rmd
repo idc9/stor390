@@ -3,7 +3,7 @@ title: "Lab 2: data.gov and reproducibility"
 output: html_document
 ---
 
-This should be complete by the begging of class on Thursday, Jan 19.
+This should be complete by the beginning of class on Thursday, Jan 19.
 
 # Instructions
 - using a data set from data.gov make different **three** plots using ggplot.
@@ -33,7 +33,7 @@ data <- read_csv('movies.csv')
 # grading instructions
 You will peer grade these assignments. Instructions for swapping assignments / submitting grades will be given in class.
 
-After reviewing someone's R Markdown document provide some feedback in the form of a comments section at the bottom of the .Rmd document and email it back them. 
+After reviewing someone's R Markdown document provide some feedback in the form of a comments section at the bottom of the .Rmd document and email it back to them. 
 
 3 points 
 
