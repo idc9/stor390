@@ -3,6 +3,11 @@ title: "Workflow"
 output: html_document
 ---
 
+The references for these notes are
+
+- [r4ds section 8](http://r4ds.had.co.nz/workflow-projects.html)
+- [Code Academy's command line tutorial](https://www.codecademy.com/en/courses/learn-the-command-line/lessons/navigation/exercises/your-first-command?action=lesson_resume)
+
 
 
 Most of the code you write will be in R scripts. Sometimes the console is useful to quickly run lines of code, but you should generally default to an R script since the code is then saved. For presenting results you should transfer your code to R Markdown. 
@@ -43,7 +48,7 @@ The corresponding **Windows** commands are
 `mkdir`: make a new folder
 
 ### In class exercise: the command line
-Do this [tutorial in class](https://idc9.github.io/stor390/class_exercises/command_line/command_line.html)) from Code Academy.
+Do this [tutorial in class](https://idc9.github.io/stor390/class_exercises/command_line/command_line.html) from Code Academy.
 
 Now use the command line to make a new folder named `movies` in the `stor390` folder you just created.
 
@@ -79,6 +84,9 @@ This may be useful at some point, but you should **not** set the working directo
 
 ## R Projects
 Each time you work on a new project create a new folder (top left of R Studio). You can read about R Projects in section 8 of r4ds. One great thing about R Projects is they automatically set your current working directory.
+
+## R Markdown
+R Markdown automatically set's the working directory as the folder where the .Rmd file is saved.
 
 ## naming convention
 There are three common used naming conventions for naming files and variables (see r4ds section 4.2).
@@ -117,7 +125,7 @@ For this class we will use packages from the tidyverse (which you can [read more
 
 
 
-# References
+# Additional references
 
 - there are two useful ggplot2 references: [ggplot2 cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/03/ggplot2-cheatsheet.pdf) and  [http://docs.ggplot2.org/current/](http://docs.ggplot2.org/current/)
 

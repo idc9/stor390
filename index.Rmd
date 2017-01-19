@@ -26,14 +26,21 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 | Date | Lecture | Notes | Slides |
 |------|---------|-------|-------|
 |January 12 |Welcome | [**getting started**](notes/getting_started/getting_started.html) | [lecture 1](slides/lecture1.pdf)|
-|January 17 | workflow |[**workflow**](notes/workflow/workflow.html) |
+|January 17 | workflow |[**workflow**](notes/workflow/workflow.html) | |
+|January 19 | dplyr part 1 | [**dplyr**](notes/dplyr/dplyr.html)| |
 
-- There are a many wonderful resources for learning R/data scinece listed on the [course references page](course_info/references.html)
-- You can find everything on our [github repository](https://github.com/idc9/stor390)
-    - [example code](https://github.com/idc9/stor390/tree/master/example_code/)
-    - [datesets used](https://github.com/idc9/stor390/tree/master/data/) in the class
-    - [course notes](https://github.com/idc9/stor390/tree/master/notes/) R Markdown files
-- Most of the course material is in the lecture notes (linked to above) -- the slides are visual aids for the lectures. 
+
+
+- There are a many wonderful resources for learning R/data scinece listed on the [**resources page**](course_info/references.html)
+
+- You the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
+
+- all of the course material is on the [github repo](https://github.com/idc9/stor390) including
+    - [.Rmd files](https://github.com/idc9/stor390/tree/master/notes/) for the notes 
+    - [example code](https://github.com/idc9/stor390/tree/master/example_code/) are also on github
+
+
+- Most of the course material is in the lecture notes (linked to above) and reading -- the slides are visual aids for the lectures. 
 
 
 
@@ -56,9 +63,15 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 
 **January 17**
 
-- read sections 3.5 - 3.10 and section 8 from r4ds
+- read sections 3.5 - 3.10 ([data viz](http://r4ds.had.co.nz/data-visualisation.html)) and section 8 ([workflow](http://r4ds.had.co.nz/workflow-projects.html)) from r4ds
 - read [Reproducibility is not just for researchers](http://www.dataschool.io/reproducibility-is-not-just-for-researchers/)
     - (optionally) [The real reason reproducible research is important](http://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/) from Simply Statistics
+
+
+**January 19**
+
+- read section 5 ([data transformation](http://r4ds.had.co.nz/transform.html)) from r4ds
+- (optionally) [the dplyr flights vignettes](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 
 
 # **Coding**
