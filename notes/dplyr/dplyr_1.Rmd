@@ -20,7 +20,7 @@ Prerequisites:
 
 
 # What you will learn
-This lecture will go through workhorse functions in the *dplyr* package, which will make altering, subsetting and summarizing data much easier than it otherwise would be.
+This lecture will go through workhorse functions in the `dplyr` package, which will make altering, subsetting and summarizing data much easier than it otherwise would be.
 
 Our main textbook source is [chapter 5 of R for Data Science](http://r4ds.had.co.nz/transform.html)
 
@@ -69,11 +69,11 @@ We will have **65,499 observations on 37 variables.**
 
 Typically you would want to spend some time figuring out exactly what each variable in your dataset represents---with the help, ideally, of a detailed guide from the data source. Here the variables we are going to use are self-explanatory and many variables we will just ignore.
 
-**We will demonstrate *dplyr* functions using this dataset. The textbook chapter linked above has examples on a different dataset, and looking at both can help you get a better sense of how to use these tools.**
+**We will demonstrate `dplyr` functions using this dataset. The textbook chapter linked above has examples on a different dataset, and looking at both can help you get a better sense of how to use these tools.**
 
 ## What do you want to know?
 
-This is always a good question to ask yourself before starting on a data science project. Here, we are just trying to demonstrate key *dplyr* functions, so the answer is less important. 
+This is always a good question to ask yourself before starting on a data science project. Here, we are just trying to demonstrate key `dplyr` functions, so the answer is less important. 
 
 To help keep us focused some basic questions:
 
@@ -87,11 +87,11 @@ To help keep us focused some basic questions:
 
 - How spread out in time were the sightings for particular species?
 
-You could think of others, but those questions will give some direction while trying to show off *dplyr* functionality.
+You could think of others, but those questions will give some direction while trying to show off `dplyr` functionality.
 
 # Into the tidyverse
 
-[Hadley Wickham](http://hadley.nz/) has created many fantastic R packages. The *tidyverse* package collects Wickham's tools for *R*, including *dplyr* and also many more
+[Hadley Wickham](http://hadley.nz/) has created many fantastic R packages. The *tidyverse* package collects Wickham's tools for *R*, including `dplyr` and also many more
 
 If you have not yet intalled tidyverse go ahead and do so
 ```{r , warning=FALSE, echo=TRUE, eval = FALSE}
@@ -117,7 +117,7 @@ The key is that:
 
 - For most purposes the two work the same.
 
-## read_csv
+## `read_csv`
 
 We discussed setting working directories in the [last lecture](https://idc9.github.io/stor390/notes/workflow/workflow.html). The code in this leture assumes the data set and R code are in the same directory.
 
@@ -134,9 +134,9 @@ tail(bison)
 
 Take a minute to glance at the information, checking out what variable types you have and getting a sense of what some of them look like.
 
-**read_csv has done some useful things automatically:**
+**`read_csv` has done some useful things automatically:**
 
-- it did not attempt to convert character-class vectors into factors, which is the default for *read.csv* from base R.
+- it did not attempt to convert character-class vectors into factors, which is the default for `read.csv` from base R.
 
 - it converted the *eventDate* variable into a date/time object. You will learn how to do this. Let's re-load the dataset using read.csv so you can learn how to create date/time vectors on your own, later.
 
@@ -158,19 +158,19 @@ Let's convert our data frame to a tibble mainly to avoid monstrous print-outs in
 bison <- as_tibble(bison)
 ```
 
-##  *read_csv* vs. *read.csv*
+##  `read_csv` vs. `read.csv`
 
-The *readr* package and *base R* can read many table-type datasets. Let's focus on csv files, but the basic principles below make sense for the more general *read_table* and *read.table* functions.
+The `readr` package and *base R* can read many table-type datasets. Let's focus on csv files, but the basic principles below make sense for the more general `read_table` and `read.table` functions.
 
 See [chapter 11 of the textbook](http://r4ds.had.co.nz/data-import.html) for more.
 
-- *read_csv* is faster so works better on larger datasets.
+- `read_csv` is faster so works better on larger datasets.
 
-- *read_csv* has some helpful defaults, such as not converting strings to factors, and warning messages.
+- `read_csv` has some helpful defaults, such as not converting strings to factors, and warning messages.
 
-- *read.csv* has less going on, so you might run into errors with *read_csv* that you don't get with the base R function. Sometimes starting with *read.csv* can be a way to see what the problem is.
+- `read.csv` has less going on, so you might run into errors with `read_csv` that you don't get with the base R function. Sometimes starting with `read.csv` can be a way to see what the problem is.
 
-- *read.csv* returns a data frame, not a tibble, which you might want.
+- `read.csv` returns a data frame, not a tibble, which you might want.
 
 Type `?read_csv` to learn more. See the textbook chapter 11.1 for some more points of comparison.
 
@@ -193,7 +193,7 @@ bison['eventDate']
 
 
 
-But what if you want to return an entire collection of variables as a new data frame? The *dplyr* function `select` let's you do that. For example you might want to remove columns from your data frame is because you only need a few variables. That's the case here, where we have many columns that are not really information we are interested in. Given the questions we set down above, we reduce the number of columns in our dataset. 
+But what if you want to return an entire collection of variables as a new data frame? The `dplyr` function `select` let's you do that. For example you might want to remove columns from your data frame is because you only need a few variables. That's the case here, where we have many columns that are not really information we are interested in. Given the questions we set down above, we reduce the number of columns in our dataset. 
 
 To select **a particular variable or set of variables by name**, type the unquoted variable name in the function after specifying the data frame you are drawing from.
 
@@ -267,7 +267,7 @@ bison <- rename(bison,
 
 *Yellow-crowned night-heron. Source: Audobon.*
 
-You have already seen how to select rows from a data frame using base R. *dplyr* gives you a variety of ways to subset rows of data easily and to do so based on logical conditions.
+You have already seen how to select rows from a data frame using base R. `dplyr` gives you a variety of ways to subset rows of data easily and to do so based on logical conditions.
 
 For example, if you wanted to extract the 51st through 60th rows of the data frame, you can do so using `slice`. See the comparison with base R functionality.
 
@@ -575,7 +575,7 @@ From now on, we will use pipes whenever convenient. Check out the textbook and e
 
 *Yellow crownbeard. Source: virginiawildflowers.org*
 
-*dplyr* function `group_by` is a helper function for a number of other tools in the package. It essentially creates hidden links between observations in your dataset based on variables you determine. 
+`dplyr` function `group_by` is a helper function for a number of other tools in the package. It essentially creates hidden links between observations in your dataset based on variables you determine. 
 
 The group identifications themselves are not variables but instead allow you to do operations constrained to each group separately in the `mutate`, `summarise` and `filter` functions.
 
@@ -623,7 +623,7 @@ Learn more about those functions and check out some examples at the window funct
 
 Let's filter our dataset to include only the species that appear at least 200 times in the Orange County biodiversity dataset.
 
-To do so, we'll use the helper function `n()` which just counts the number of observations within a group. It only works inside other *dplyr* functions.
+To do so, we'll use the helper function `n()` which just counts the number of observations within a group. It only works inside other `dplyr` functions.
 
 ```{r , warning=FALSE, echo=TRUE, message=FALSE}
 group_by(bison, scientificName_complete) %>%
@@ -674,7 +674,7 @@ group_by(bison, providerID, year) %>%
 
 Now do something similar but for species by year, but also computing the sightings per week for each species, each year, for the span over which they were observed.
 
-Notice that `mutate` allows you to use newly created variables in subsequent statements. That is common throughout the *dplyr* functions.
+Notice that `mutate` allows you to use newly created variables in subsequent statements. That is common throughout the `dplyr` functions.
 
 ```{r , warning=FALSE, echo=TRUE, message=FALSE}
 group_by(bison, scientificName_complete, year) %>%
