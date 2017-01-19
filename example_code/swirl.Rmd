@@ -1,0 +1,17 @@
+---
+title: "swirl"
+output: html_document
+---
+[swirl](http://swirlstats.com/) is an interactive R tutorial. Install and load the swirl package.
+
+```{r swirl, eval=F}
+install.packages('swirl')
+library(swirl)
+```
+
+Once the swirl package has loaded you can get started by running
+```{r start, eval=F}
+swirl()
+```
+
+It will give you instructions in the console: go through the `R Programming` tutorial.
