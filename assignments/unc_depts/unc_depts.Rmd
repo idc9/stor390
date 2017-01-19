@@ -1,0 +1,179 @@
+---
+title: "Assignment 1: dplyr and UNC departments"
+author: "STOR 390"
+output: html_document
+---
+
+Universities are typicall opaque, bureaucratic institutions. Many public schools such as the University of North Carolina system make [data about university employees publically](http://www.newsobserver.com/news/databases/public-salaries/) available. Using this dataset what can we learn about the dynamics of the university system?
+
+
+## dplyr
+
+To download the .Rmd file for this assignment go to the [github repo](), right click **und_depts.Rmd** and select *save link as*.
+
+The best way to to learn the dplyr package is to just use it a lot. Read through the following dplyr tutorial the complete quetions in this .Rmd document. I suggest doing the coding in an R script then putting the answers into this documents.
+
+- [dplyr flights vignettes](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
+
+- chapter 5 ([data transformation](http://r4ds.had.co.nz/transform.html)) from r4ds
+
+## Instructions
+
+- use the `dplyr` functions to answer the following questions (base R will not be given credit) 
+- submit just the .Rmd file to Sakai
+- pay careful attention to the questions
+
+- **return** something means just print it out. Similarly for questions **What is ...** just print out the answer
+
+Q: Return the sum of the first 10 positive integers?
+
+Q: What is the sum of the first 10 positive integers?
+```{r}
+sum(1:10)
+```
+
+- **create** or **save** means save a variable
+
+Create a variable `x` with the sum of the first 10 positive integers.
+```{r}
+x <- sum(1:10)
+```
+
+
+
+# The data
+
+First download the data set from Ryan Thornburg's website (it is also on stor390's github repo). You may want to set `cache=TRUE` for this chunk so you don't have to download the data set everytime you run the script.
+```{r setup, message=FALSE, cache=FALSE}
+library(tidyverse)
+
+# Load the UNC departments data
+data <- read_csv(url("http://ryanthornburg.com/wp-content/uploads/2015/05/UNC_Salares_NandO_2015-05-06.csv"))
+```
+
+Take a first look at the data
+```{r}
+colnames(data)
+
+str(data)
+
+head(data)
+```
+
+# Assignment
+
+
+## Quesetion 1
+Return a data frame with columns: name, dept, age,totalsal 
+```{r}
+#
+```
+
+Return a data frame with columns: statesal, nonstsal,totalsal using one of the `select_helpers` functions
+```{r}
+#
+```
+
+## Quesetion 2 
+Rename the `fte` column to `fulltime`. Make sure this change is saved (i.e. `data <- ...`).
+```{r}
+#
+```
+
+## Quesetion 3 
+
+What is the mean salary in the Neurosurgery department?
+
+```{r}
+#
+```
+
+
+Return a data frame with employee's in the Neurosurgery department making more than $500,000. Why might these professors be so well paid? 
+```{r}
+#
+```
+
+
+
+## Quesetion 4 
+What is the total amount that full time Dermatology employees get paid?
+
+
+```{r}
+#
+```
+
+
+## Quesetion 5
+
+Create a data frame called radio_dept whose rows are the employees from the Radiology department. 
+
+- include only the followig columns: name, position, age, nonstsal, salary. 
+- order the employees by salary
+
+First without chaining
+
+```{r }
+#
+```
+
+
+Next with chaining
+```{r }
+#
+```
+
+
+Make a histogram of Radiology salaries
+```{r }
+#
+```
+
+
+## Question 6
+
+Use faceting to make histograms of department salaries for Radiation Oncology, Radiology, Pediatrics, and Orthopaedics.
+```{r }
+#
+```
+
+
+
+Use faceting to make plot age vs. totalsal for the same four departments and color points position.
+```{r }
+#
+```
+
+## Question 7
+
+Create a data frame called `dept_summary`  whose rows are the departments and  whose columns are: department size, mean department salary, median department salary, and maximum salary. 
+
+```{r }
+#
+```
+
+Order the departments by highest mean salary and print the 10 highest paid departments. 
+
+
+```{r }
+#
+```
+
+Order the departments by highest median salary and print the 10 highest paid departments. 
+
+```{r }
+#
+```
+
+Why do these lists differ? If you were asked for the top 10 best paid departments at UNC which summary would you choose and why?
+
+
+
+# hints
+
+- Read through the first dplyr tutorial. Every question can be answered using: filter, arrange, select, mutate, summarise and group_by functions.
+
+- here are two more dplyr tutorials: https://rpubs.com/justmarkham/dplyr-tutorial and https://www.coursera.org/learn/data-cleaning/home/week/3
+
+- fte means full time employee
