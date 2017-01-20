@@ -30,17 +30,14 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |January 19 | dplyr part 1 | [**dplyr**](notes/dplyr/dplyr_1.html)| |
 
 
-
-- There are a many wonderful resources for learning R/data scinece listed on the [**resources page**](course_info/references.html)
-
-- You the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
+- the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
 
 - all of the course material is on the [github repo](https://github.com/idc9/stor390) including
     - [.Rmd files](https://github.com/idc9/stor390/tree/master/notes/) for the notes 
     - [example code](https://github.com/idc9/stor390/tree/master/example_code/) are also on github
 
 
-- Most of the course material is in the lecture notes (linked to above) and reading -- the slides are visual aids for the lectures. 
+- most of the course material is in the lecture notes (linked to above) and reading -- the slides are visual aids for the lectures. 
 
 
 
@@ -84,15 +81,15 @@ The due date is in the link.
 | January 17 |[reproducible data.gov](labs/2/reproducible_gov_data.html) | | [the command line](class_exercises/command_line/command_line.html) and optionally [swirl](class_exercises/swirl/swirl.html)|
 | January 19 |  |[dplyr and unc departments](assignments/unc_depts/unc_depts.html) | |
 
-# Additional resources
+# **Additional resources**
 
-- The [extra resources page](resources/extra_resources.html) conatins a number of books, blogs, MOOCS and other courses about data science
-- [A collection of lot's of datasets](resources/dataset_collection.html)
-- [Finding a job/internship](resources/jobs.html)
+- [the extra resources page](resources/extra_resources.html) conatins a number of books, blogs, MOOCS and other courses about data science
+- [a collection of lot's of datasets](resources/dataset_collection.html)
+- [finding a job/internship](resources/jobs.html)
 
 # **Miscellaneous**
 
-This course was made possible by a grant from the [Data@Carolina](http://data.web.unc.edu/) initiative and a ton of [input from lots of very smart people](course_info/acknowledgments.html).
+This course was made possible by a grant from the [Data@Carolina](http://data.web.unc.edu/) initiative and a ton of [**input from lots of very smart people**](course_info/acknowledgments.html).
 
 This page was last updated on `r Sys.time()` Eastern Time.
 
