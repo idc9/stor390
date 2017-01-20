@@ -1,0 +1,13 @@
+---
+title: "Looking for a data science job or internship?"
+output: html_document
+---
+The following resources have helped me in the past and I will turn to them next time I look for a job.
+
+- Stop what you are doing and order [The 2-Hour Job Search: Using Technology to Get the Right Job Faster](https://www.amazon.com/2-Hour-Job-Search-Technology-Faster/dp/1607741709). Yes the title sounds like a gimmick but it's [required reading](https://www.johnson.cornell.edu/New-Students/Two-Year-MBA/Career-Planning/Recommended-Reading) at Cornell's buisness school and has been a game changer for everyone I know who has read it.
+
+- This is a resonable [blog post to read about creating your resume](http://will-stanton.com/creating-a-great-data-science-resume/).
+
+- Data Science Weekly has a good list of [articles that probably answer most of your questions](https://www.datascienceweekly.org/articles). 
+
+- Your resume reallly does matter for getting interviews -- this includes a LinkedIn and GitHub profile.

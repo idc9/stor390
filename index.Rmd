@@ -84,8 +84,11 @@ The due date is in the link.
 | January 17 |[reproducible data.gov](labs/2/reproducible_gov_data.html) | | [the command line](class_exercises/command_line/command_line.html) and optionally [swirl](class_exercises/swirl/swirl.html)|
 | January 19 |  |[dplyr and unc departments](assignments/unc_depts/unc_depts.html) | |
 
+# Additional resources
 
-
+- The [extra resources page](resources/extra_resources.html) conatins a number of books, blogs, MOOCS and other courses about data science
+- [A collection of lot's of datasets](resources/dataset_collection.html)
+- [Finding a job/internship](resources/jobs.html)
 
 # **Miscellaneous**
 

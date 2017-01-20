@@ -1,5 +1,6 @@
 ---
-title: "Reference"
+title: "Extra resources"
+author: "STOR 390"
 output: html_document
 ---
 
@@ -28,14 +29,14 @@ This is a collection of resources for learning R/data science. If you have feedb
 
 - [code school](https://www.codeschool.com/courses/try-r) is too
 
-# more R
+# Advanced R
 
 - [Advanced R](http://adv-r.had.co.nz/) by Hadley Wickham
 
 - Karl Broman's [Tools for Reproducible Research](http://kbroman.org/Tools4RR/pages/resources.html) is an amazing meta-resource 
 
 
-# Statistics/Machine learning textbooks
+# Statistics/machine learning textbooks
 
 - [Introduction to Statitical Learing with R](http://www-bcf.usc.edu/~gareth/ISL/)
 
@@ -56,7 +57,7 @@ This is a collection of resources for learning R/data science. If you have feedb
 - [Advanced Data Science](http://jtleek.com/advdatasci/) by Jeff Leek
 
 
-# vizualization and communication
+# Vizualization and communication
 
 - [Data Visualization course](http://vissoc.co/index.html) by Kiran Healy
 
@@ -66,7 +67,7 @@ This is a collection of resources for learning R/data science. If you have feedb
 - [Trees, maps and theorems](http://www.treesmapsandtheorems.com/)
 
 
-# blogs
+# Blogs
 - [Simply Statistics](http://simplystatistics.org/) 
 
 - [Flowing data](http://flowingdata.com/) tons of data viz
