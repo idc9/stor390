@@ -93,7 +93,7 @@ You could think of others, but those questions will give some direction while tr
 
 [Hadley Wickham](http://hadley.nz/) has created many fantastic R packages. The *tidyverse* package collects Wickham's tools for *R*, including `dplyr` and also many more
 
-If you have not yet intalled tidyverse go ahead and do so
+If you have not yet installed tidyverse go ahead and do so
 ```{r , warning=FALSE, echo=TRUE, eval = FALSE}
 install.packages('tidyverse')
 ```
@@ -119,7 +119,7 @@ The key is that:
 
 ## `read_csv`
 
-We discussed setting working directories in the [last lecture](https://idc9.github.io/stor390/notes/workflow/workflow.html). The code in this leture assumes the data set and R code are in the same directory.
+We discussed setting working directories in the [last lecture](https://idc9.github.io/stor390/notes/workflow/workflow.html). The code in this lecture assumes the data set and R code are in the same directory.
 
 ```{r , warning=FALSE, echo=TRUE, message=FALSE, results = 'hide'}
 library(tidyverse)
@@ -369,7 +369,7 @@ Otherwise, this function is best used in combination with different functions as
 
 Common times `filter` is used include before making a graph, to plot just a particular subset of the data, or to isolate certain sections of the data for use in further analyses.
 
-## Reordering with `arrange`
+# Reordering with `arrange`
 ![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Thamnophis_sirtalis_sirtalis_Wooster.jpg/1024px-Thamnophis_sirtalis_sirtalis_Wooster.jpg)
 
 *Eastern garter snake. Source: Wikipedia*
@@ -536,19 +536,19 @@ Throughout the course and the rest of this lecture, you will see many more appli
 
 *Northern hog sucker. Source: Wikipedia*
 
-The 'pipe' operation is a handy tool to make your code more legible: `\% > \%`. Key points:
+The 'pipe' operation is a handy tool to make your code more legible: `%>%`. Key points:
 
 - It takes the output of your previous operation and uses it as an input to your next operation.
 
 - You can determine where the previous argument goes with the period symbol, `.` , which acts as a placeholder.
 
-- Understand how to use it by replacing the pipe operation with 'then' (in your mind, not in the code). For example, `filter(data, ...) \% > \% select(...)` filters first *then* selects columns from the output of filter.
+- Understand how to use it by replacing the pipe operation with 'then' (in your mind, not in the code). For example, `filter(data, ...) %>% select(...)` filters first *then* selects columns from the output of filter.
 
 ### When to use a pipe
 
 Often, you will be doing multiple things at a time to your data set and the intermediate steps don't matter. 
 
-In *R*, for reasons we won't talk about, you want to avoid creating lots of unnecesary objects in your environment. Using pipes help you do that.
+In *R*, for reasons we won't talk about, you want to avoid creating lots of unnecessary objects in your environment. Using pipes help you do that.
 
 Finally, pipes make your code more legible. For example
 
@@ -689,7 +689,7 @@ Using `arrange` before vs. after the grouping statement will make a difference.
 
 Arranging before the grouping puts all observations in time order. Arranging after grouping puts observations in time order within their groups.
 
-For example, say we have observations for a carolina wren on Dec. 12, 2013 and Jan. 2, 2014, and for a bluebird on Dec. 20, 2013 and Dec. 31 2013.
+For example, say we have observations for a Carolina wren on Dec. 12, 2013 and Jan. 2, 2014, and for a bluebird on Dec. 20, 2013 and Dec. 31 2013.
 
 - Arranging before grouping will give this order: wren Dec. 12, bluebird Dec. 20, bluebird Dec. 31, and wren Jan. 2
 
@@ -751,7 +751,7 @@ Some minor notes:
 
 - Remove group labels using `ungroup(data frame)`. You cannot alter grouping variables in mutate and will get an error message. Other functions sometimes disallow operations on grouping variables. 
 
-- return a list of grouing variables from a grouped data frame using `groups(data frame)`
+- return a list of grouping variables from a grouped data frame using `groups(data frame)`
 
 - use `group_size` to return a vector, the same length as the number of observations, giving the group size of the group associated with that observation
 
@@ -812,7 +812,7 @@ Answer from NASA: 8.9 miles.
 
 NASA's tool rounds to the first decimal, so the answer are likely much closer.
 
-Why bother with this bonus secton?
+Why bother with this bonus section?
 
 Geo-location information is some of the most common and interesting data you will come across. Now, just with latitude and longitude, you can extract as-the-crow flies distances!
 
@@ -855,7 +855,7 @@ group_by(bison, scientificName_complete) %>%
 
 *Northern cardinal female, the most frequently observed species in our dataset. Source: Wikipedia.*
 
-We can combine the grouped mutate and summarise operations to learn **average number of weeks between observations per species.**
+We can combine the grouped mutate and summarize operations to learn **average number of weeks between observations per species.**
 
 
 ```{r , warning=FALSE, echo=TRUE, message=FALSE}
