@@ -30,6 +30,10 @@ Attend an event related to data science and send me a quick blurb about what you
 
 - [From Outlier to Insider - A Networking Event with Data Science Professionals](https://www.eventbrite.com/e/from-outlier-to-insider-a-networking-event-with-data-science-professionals-registration-29890863377)
 
+- [Google talk at Carolina Analytics club](carolina_analytics_google.pdf)
+    - Tuesday 1/24 at 6:20 in Sitterson 014
+    - RSVP: [goo.gl/w5hmkB](goo.gl/w5hmkB)
+
 # Publish a blog post
 
 Write a blog post about something related to data science and post is somewhere. You can post it to [my blog](http://unsupervisedstatistics.web.unc.edu/) (or your own if you have one). However I encourage you to reach out to existing data science related to blogs (you lose nothing by sending [FiveThirtyEight](https://fivethirtyeight.com/) an email).
