@@ -19,19 +19,19 @@ Instructor: [Iain Carmichael](http://iaincarmichael.web.unc.edu/)
 
 - iain@unc.edu
 - Hanes B30
-- Office hours: TBA
+- Office hours: after class
 
 Instructional Assistant: Brendan Brown
 
 - bb@live.unc.edu
 - Hanes B26
-- Office hours: TBA
+- Office hours: Monday 12:30 - 1:30
 
 [Graduate Research Consultant](http://our.unc.edu/grads-post/grc/): [Varun Goel](https://varungoel.web.unc.edu/)
 
 - varung@live.unc.edu
-- Office: TBA
-- Office hours: TBA
+- Office: Hanes B56
+- Office hours: Tuesday 3:30 - 4:30, Wednesday 1-2
 
 All course material can be found on the course website ([https://idc9.github.io/stor390/](https://idc9.github.io/stor390/)) and github repository ([https://github.com/idc9/stor390](https://github.com/idc9/stor390)).
 

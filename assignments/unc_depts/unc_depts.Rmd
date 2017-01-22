@@ -63,7 +63,7 @@ head(data)
 # Assignment
 
 
-## Quesetion 1
+## Question 1
 Return a data frame with columns: name, dept, age,totalsal 
 ```{r}
 #
@@ -74,13 +74,13 @@ Return a data frame with columns: statesal, nonstsal,totalsal using one of the `
 #
 ```
 
-## Quesetion 2 
+## Question 2 
 Rename the `fte` column to `fulltime`. Make sure this change is saved (i.e. `data <- ...`).
 ```{r}
 #
 ```
 
-## Quesetion 3 
+## Question 3 
 
 What is the mean salary in the Neurosurgery department?
 
@@ -96,7 +96,7 @@ Return a data frame with employee's in the Neurosurgery department making more t
 
 
 
-## Quesetion 4 
+## Question 4 
 What is the total amount that full time Dermatology employees get paid?
 
 
@@ -105,11 +105,11 @@ What is the total amount that full time Dermatology employees get paid?
 ```
 
 
-## Quesetion 5
+## Question 5
 
 Create a data frame called radio_dept whose rows are the employees from the Radiology department. 
 
-- include only the followig columns: name, position, age, nonstsal, salary. 
+- include only the followig columns: name, position, age, nonstsal, totalsal. 
 - order the employees by salary
 
 First without chaining
@@ -147,7 +147,7 @@ Use faceting to make plot age vs. totalsal for the same four departments and col
 
 ## Question 7
 
-Create a data frame called `dept_summary`  whose rows are the departments and  whose columns are: department size, mean department salary, median department salary, and maximum salary. 
+Create a data frame called `dept_summary`  whose rows are the departments and  whose columns are: department size, mean department salary, median department salary, and maximum salary (using totalsal for salary). 
 
 ```{r }
 #

@@ -32,6 +32,7 @@ Many people provided input for this course
 
 - Jeff Leek (Professor of Statistics at Johns Hopkins)
 - Mine Cetinkaya-Rundel (Professor of Statistics at Duke)
+- Rafael Irizarry (Professor of Statistics at Harvard)
 - Joe Blitzstein (Professor of Statistics at Harvard)
 - Giles Hooker (Professor of Statistics at Cornell)
 - Ryan Thornburg (Professor of Journalist at UNC)
