@@ -140,7 +140,7 @@ Use faceting to make histograms of department salaries for Radiation Oncology, R
 
 
 
-Use faceting to make plot age vs. totalsal for the same four departments and color points position.
+Use faceting to make plot age vs. totalsal for the same four departments and color points by status.
 ```{r }
 #
 ```
