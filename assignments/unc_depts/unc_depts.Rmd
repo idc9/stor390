@@ -133,7 +133,7 @@ Make a histogram of Radiology salaries
 
 ## Question 6
 
-Use faceting to make histograms of department salaries for Radiation Oncology, Radiology, Pediatrics, and Orthopaedics.
+Use faceting to make totalsal histograms for the Radiation Oncology, Radiology, Pediatrics, and Orthopaedics departments.
 ```{r }
 #
 ```
