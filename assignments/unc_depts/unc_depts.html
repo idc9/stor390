@@ -122,11 +122,12 @@ $(document).ready(function () {
 </div>
 
 
-<p>Universities are typicall opaque, bureaucratic institutions. Many public schools such as the University of North Carolina system make <a href="http://www.newsobserver.com/news/databases/public-salaries/">data about university employees publically</a> available. Using this dataset what can we learn about the dynamics of the university system?</p>
+<p>Due <strong>Tuesday 1/31/17</strong> before the start of class.</p>
+<p>Universities are typically opaque, bureaucratic institutions. Many public schools such as the University of North Carolina system make <a href="http://www.newsobserver.com/news/databases/public-salaries/">data about university employees publically</a> available. Using this dataset what can we learn about the dynamics of the university system?</p>
 <div id="dplyr" class="section level2">
 <h2>dplyr</h2>
 <p>To download the .Rmd file for this assignment go to the <a href="https://github.com/idc9/stor390/tree/master/assignments/unc_depts">github repo</a>, right click <strong>und_depts.Rmd</strong> and select <em>save link as</em>.</p>
-<p>The best way to to learn the dplyr package is to just use it a lot. Read through the following dplyr tutorial the complete quetions in this .Rmd document. I suggest doing the coding in an R script then putting the answers into this documents.</p>
+<p>The best way to to learn the dplyr package is to just use it a lot. Read through the following dplyr tutorial the complete questions in this .Rmd document. I suggest doing the coding in an R script then putting the answers into this documents.</p>
 <ul>
 <li><p><a href="https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html">dplyr flights vignettes</a></p></li>
 <li><p>chapter 5 (<a href="http://r4ds.had.co.nz/transform.html">data transformation</a>) from r4ds</p></li>
@@ -153,7 +154,7 @@ $(document).ready(function () {
 </div>
 <div id="the-data" class="section level1">
 <h1>The data</h1>
-<p>First download the data set from Ryan Thornburg’s website (it is also on stor390’s github repo). You may want to set <code>cache=TRUE</code> for this chunk so you don’t have to download the data set everytime you run the script.</p>
+<p>First download the data set from Ryan Thornburg’s website (it is also on stor390’s github repo). You may want to set <code>cache=TRUE</code> for this chunk so you don’t have to download the data set every time you run the script.</p>
 <pre class="r"><code>library(tidyverse)
 
 # Load the UNC departments data
@@ -257,7 +258,7 @@ data &lt;- read_csv(url(&quot;http://ryanthornburg.com/wp-content/uploads/2015/0
 <h2>Question 5</h2>
 <p>Create a data frame called radio_dept whose rows are the employees from the Radiology department.</p>
 <ul>
-<li>include only the followig columns: name, position, age, nonstsal, totalsal.</li>
+<li>include only the following columns: name, position, age, nonstsal, totalsal.</li>
 <li>order the employees by salary</li>
 </ul>
 <p>First without chaining</p>
@@ -284,11 +285,68 @@ data &lt;- read_csv(url(&quot;http://ryanthornburg.com/wp-content/uploads/2015/0
 <pre class="r"><code>#</code></pre>
 <p>Why do these lists differ? If you were asked for the top 10 best paid departments at UNC which summary would you choose and why?</p>
 </div>
+<div id="question-8" class="section level2">
+<h2>Question 8</h2>
+<p>How many departments have at least 10 employees?</p>
+<pre class="r"><code>#</code></pre>
+</div>
+<div id="question-9" class="section level2">
+<h2>Question 9</h2>
+<p>Which department hired the most people in 2010? Hint: you probably have to modify <code>hiredate</code>.</p>
+<pre class="r"><code>#</code></pre>
+</div>
+<div id="question-10" class="section level2">
+<h2>Question 10</h2>
+<p>Make a list of all the department names and sort this list alphabetically. What is the 42nd department in this list?</p>
+<pre class="r"><code>#</code></pre>
+</div>
+<div id="question-11" class="section level2">
+<h2>Question 11</h2>
+<p>Plot number of people hired by the CS dept per year vs. year</p>
+<pre class="r"><code>#</code></pre>
+<p>Now add STOR, Math, Biostatistics, SILS and Physics to the above plot</p>
+<pre class="r"><code>#</code></pre>
+</div>
+</div>
+<div id="open-question" class="section level1">
+<h1>Open question</h1>
+<p>Examine the relationship between age and salary at UNC. You can interpret this however you like e.g.</p>
+<ul>
+<li>age can mean number of years employed at the university</li>
+<li>compare and contrast different departments</li>
+</ul>
+<p>Requirements</p>
+<ul>
+<li>hand in a separate .Rmd document
+<ul>
+<li>load the data with read_csv(url(…)) like this script</li>
+</ul></li>
+<li>make 3 figures
+<ul>
+<li>a figure can be a visualization, print out of a data frame that you can created, the results of a statistical model/test (e.g. linear regression)</li>
+</ul></li>
+<li>display all code used
+<ul>
+<li>code should be commented</li>
+<li>if you have a lot of functions you can put them in a separate .R script</li>
+</ul></li>
+<li>describe each figure
+<ul>
+<li>what is the figure (figure blah is a plot of foo vs. bar)</li>
+<li>what is the upshot of the figure (figure blah shows that there is a strong relationship between foo and bar)</li>
+</ul></li>
+<li>write an explanation of your findings
+<ul>
+<li>a couple paragraphs</li>
+<li>use proper grammar</li>
+<li>your findings should be clear</li>
+</ul></li>
+</ul>
 </div>
 <div id="hints" class="section level1">
 <h1>hints</h1>
 <ul>
-<li><p>Read through the first dplyr tutorial. Every question can be answered using: filter, arrange, select, mutate, summarise and group_by functions.</p></li>
+<li><p>Read through the first dplyr tutorial. Every question can be answered using: filter, arrange, select, mutate, summarize and group_by functions.</p></li>
 <li><p>here are two more dplyr tutorials: <a href="https://rpubs.com/justmarkham/dplyr-tutorial" class="uri">https://rpubs.com/justmarkham/dplyr-tutorial</a> and <a href="https://www.coursera.org/learn/data-cleaning/home/week/3" class="uri">https://www.coursera.org/learn/data-cleaning/home/week/3</a></p></li>
 <li><p>fte means full time employee</p></li>
 </ul>
