@@ -1,0 +1,930 @@
+---
+title: "dplyr: Your friend for working with data in R"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+The references for these notes
+
+- [r4ds section 5: data transformation](http://r4ds.had.co.nz/transform.html)
+- [the dplyr flights vignettes](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
+
+Prerequisites:
+
+- the `tidyverse` library
+
+- download the bison dataset from [data.world](https://data.world/iain/stor-390/) (you have to make a profile)
+
+
+# What you will learn
+This lecture will go through workhorse functions in the `dplyr` package, which will make altering, subsetting and summarizing data much easier than it otherwise would be.
+
+Our main textbook source is [chapter 5 of R for Data Science](http://r4ds.had.co.nz/transform.html)
+
+You will learn to:
+
+- Install and load the `tidyverse` suite of packages
+
+- Load csv files into data frames and `tibbles` with `readr` and *base R* functions
+
+- Subset columns using `select`
+
+- Rename columns with `rename`
+
+- Subset rows of data frames using `filter` and `slice`
+
+- Reorder rows with `arrange`
+
+- Create and alter variables with `mutate` and `mutate_each`
+
+- Bonus: Understand basics of date/time variable types
+
+- Use 'pipe' expressions to combine multiple operations
+
+- Alter data for grouped rows with `group_by`
+
+- Bonus: 'As-the-crow-flies' distances from coordinate data
+
+- Summarize and create subgroup summaries with `summarise` and `summarise_each`. Note the British spelling of summarise in the functions
+
+# Dataset
+![](http://www.defenders.org/sites/default/files/magazine-spring-2016-bison-jim-shane.jpg)
+
+*American Bison. Source: Defenders of Wildlife. Except for this bison, all photos in this lecture are of living things observed in Orange County, N.C., according to this dataset.*
+
+You can find many, many interesting datasets from U.S. governmental agencies through data.gov---including the U.S. Geological Survey's [**B**iodeversity **S**erving **O**ur **N**ation (BISON) resource](https://bison.usgs.gov/). Later in the class you will learn how to do even more with resources like BISON using its API.
+
+Today we will work with a static dataset: *Species occurance dataset for Orange County, N.C.*
+
+Like all information from BISON, it gives only basic information. Each row gives the location, reporting source, and species information for sightings of specific animals in Orange County. 
+
+Quoting the help page: 
+
+> BISON provides access to georeferenced (those with latitude and longitude coordinates) and non-georeferenced data describing the occurrence or presence of terrestrial and aquatic species recorded or collected by a person (or instrument) at a specific time in the United States and its Territories .
+
+We will have **65,499 observations on 37 variables.**
+
+Typically you would want to spend some time figuring out exactly what each variable in your dataset represents---with the help, ideally, of a detailed guide from the data source. Here the variables we are going to use are self-explanatory and many variables we will just ignore.
+
+**We will demonstrate `dplyr` functions using this dataset. The textbook chapter linked above has examples on a different dataset, and looking at both can help you get a better sense of how to use these tools.**
+
+## What do you want to know?
+
+This is always a good question to ask yourself before starting on a data science project. Here, we are just trying to demonstrate key `dplyr` functions, so the answer is less important. 
+
+To help keep us focused some basic questions:
+
+- What time period do these data represent?
+
+- What were the most commonly observed species in Orange County, as represented by this dataset?
+
+- What were the most common sources of reported sightings? Remember each row is a reported sighting of a particular species at a particular time and from a certain source.
+
+- How physically spread out were the sightings for particular species?
+
+- How spread out in time were the sightings for particular species?
+
+You could think of others, but those questions will give some direction while trying to show off `dplyr` functionality.
+
+# Into the tidyverse
+
+[Hadley Wickham](http://hadley.nz/) has created many fantastic R packages. The *tidyverse* package collects Wickham's tools for *R*, including `dplyr` and also many more
+
+If you have not yet installed tidyverse go ahead and do so
+```{r , warning=FALSE, echo=TRUE, eval = FALSE}
+install.packages('tidyverse')
+```
+
+**A note of warning about 'non-standard evaluation' to read later:** Standard functions in the tidyverse suite allow you to enter variable names as arguments without quotations. You will see how that works, so skip ahead if you really need to know right now what that means. Understanding non-standard evaluation is helpful when you do more advanced programming tasks. We will come to that, if we have time, near the end of the course. 
+
+For now, just be aware that using unquoted variable names in the functions is only the standard for tidyverse functions, not for all functions in R.
+
+## First look at the data
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Woodland_Vole_Microtus_Pinetorum.jpg/220px-Woodland_Vole_Microtus_Pinetorum.jpg)
+
+*Woodland vole. Source: Wikipedia.*
+
+We will focus here on the more common and most basic data loading task: **loading a comma-separated (csv) file into a data frame.**
+
+As you've already seen, data frames will be our basic R object for storing data. The textbook talks about 'tibbles,' which are data frames with a few convenient modifications. You can read the ['tibbles' chapter](http://r4ds.had.co.nz/tibbles.html) in the book to see how the two differ. Here, we will not distinguish between data frames and 'tibbles' unless necessary.
+
+The key is that:
+
+- *tidyverse* functions will work for data frames and tibbles and by will return tibble objects.
+
+- For most purposes the two work the same.
+
+## `read_csv`
+
+We discussed setting working directories in the [last lecture](https://idc9.github.io/stor390/notes/workflow/workflow.html). The code in this lecture assumes the data set and R code are in the same directory.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE, results = 'hide'}
+library(tidyverse)
+bison <- read_csv('bison_orangecounty.csv')
+
+class(bison)
+
+str(bison)
+head(bison)
+tail(bison)
+```
+
+Take a minute to glance at the information, checking out what variable types you have and getting a sense of what some of them look like.
+
+**`read_csv` has done some useful things automatically:**
+
+- it did not attempt to convert character-class vectors into factors, which is the default for `read.csv` from base R.
+
+- it converted the *eventDate* variable into a date/time object. You will learn how to do this. Let's re-load the dataset using read.csv so you can learn how to create date/time vectors on your own, later.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE, results = 'hide'}
+bison <- read.csv('bison_orangecounty.csv', stringsAsFactors = FALSE)
+
+class(bison)
+
+head(bison)
+```
+
+Notice this is now a **data frame object, not a tibble,** and you can see one of the minor differences: When printing parts of a tibble, you get only a neat and limited view. Printing data frames is much messier but more complete.
+
+## Convert to a tibble
+
+Let's convert our data frame to a tibble mainly to avoid monstrous print-outs in steps below.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+bison <- as_tibble(bison)
+```
+
+##  `read_csv` vs. `read.csv`
+
+The `readr` package and *base R* can read many table-type datasets. Let's focus on csv files, but the basic principles below make sense for the more general `read_table` and `read.table` functions.
+
+See [chapter 11 of the textbook](http://r4ds.had.co.nz/data-import.html) for more.
+
+- `read_csv` is faster so works better on larger datasets.
+
+- `read_csv` has some helpful defaults, such as not converting strings to factors, and warning messages.
+
+- `read.csv` has less going on, so you might run into errors with `read_csv` that you don't get with the base R function. Sometimes starting with `read.csv` can be a way to see what the problem is.
+
+- `read.csv` returns a data frame, not a tibble, which you might want.
+
+Type `?read_csv` to learn more. See the textbook chapter 11.1 for some more points of comparison.
+
+# Subsetting columns
+![](http://blogs.lib.unc.edu/morton/wp-content/uploads/2013/10/P081_PTCF4_005465_02.jpg)
+
+*Davie Poplar, a tulip poplar more than 300 years old. Photo from the 1970s. Source: [A View to Hugh](http://blogs.lib.unc.edu/morton/) blog, maintained by a Wilson Library photo archivist.* 
+
+
+
+To return column a data frame as a vector
+```{r results = 'hide'}
+bison$eventDate
+
+# or 
+
+bison['eventDate']
+```
+
+
+
+
+But what if you want to return an entire collection of variables as a new data frame? The `dplyr` function `select` let's you do that. For example you might want to remove columns from your data frame is because you only need a few variables. That's the case here, where we have many columns that are not really information we are interested in. Given the questions we set down above, we reduce the number of columns in our dataset. 
+
+To select **a particular variable or set of variables by name**, type the unquoted variable name in the function after specifying the data frame you are drawing from.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(bison, eventDate, year)
+```
+
+To select **everything but a specified group of variables**, use the negative sign in front of their unquoted names.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(bison, -eventDate, -year)
+```
+
+You can also select **columns using text conditions,** with certain special functions that work inside `select` and other `dplyr` functions that use `select` implicitly. 
+
+Here is a list of the ones I think you'll use most often, and examples are below. To see a full list of these functions, type `?select_helpers`
+
+- `contains` returns all columns containing a character pattern. For example, if you wanted all variables with the word 'county' you would type `contains('county')` in the `select` arguments.
+
+- `starts_with` returns columns beginning with a certain character pattern
+
+- `ends_with` returns those ending with a certain pattern
+
+Those helpers are very useful to keep in mind if you have variable names falling into broad categories as we do here.
+
+The code below shows how to extract variables whose names end with 'name,' end with 'provided,' or include the word 'common.'
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(bison, ends_with("name"))
+select(bison, starts_with("provided"))
+select(bison, contains("common"))
+```
+
+A final point: you can make the helper functions case-sensitive using the `ignore.case` argument within a helper function which is set to TRUE by default. Compare what you get here to the case-insensitive statement above.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(bison, contains("Common", ignore.case = FALSE))
+```
+
+## Trimming our dataset
+
+Given our loose goals above, let's trim the variables to include only those we might want to use. This shows you can combine all of the ways we saw to select columns.
+
+According to the BISON help pages, observers providing the data give their own common and scientific names. BISON standardizes them using the Integrated Taxonomic Information System (ITIS), so those could be the only species names we keep.
+
+**You should think about that choice for a minute:** We eventually will want to group observations by those species names, subsetting and summarizing information using them. That means we will want all rows with a certain name to represent the same thing. Standardized species names gives us that. Without it, our job as data analysts would be more difficult.
+
+**However,** as you will see in the filtering section below, the standard species names have some blank values. The other names columns help us to see what is going on, so we keep them to assess data quality.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+bison <- select(bison, bisonID, contains("name"), providerID, institutionCode, 
+                decimalLatitude, decimalLongitude,
+                eventDate, year)
+```
+
+Order matters: Variables will appear in the new data frame in the order we name them in select, from left to right.
+
+# Renaming variables
+
+For convenience, let's change some variable names. *dplyr's* function `rename` does that. It wouldn't be difficult to do without *rename,* but it does make the code cleaner. The syntax is `rename(data frame, var1_new_name = var1_old_name, var2_new_name = var2_old_name, etc.)` as shown below.
+
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+bison <- rename(bison, 
+                latitude = decimalLatitude, longitude = decimalLongitude)
+```
+
+
+# Subsetting rows
+![](http://www.audubon.org/sites/default/files/Yellow-crowned_Night-Heron_m17-67-917_l_1.jpg)
+
+*Yellow-crowned night-heron. Source: Audobon.*
+
+You have already seen how to select rows from a data frame using base R. `dplyr` gives you a variety of ways to subset rows of data easily and to do so based on logical conditions.
+
+For example, if you wanted to extract the 51st through 60th rows of the data frame, you can do so using `slice`. See the comparison with base R functionality.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+slice(bison, 51:60)
+bison[51:60, ]
+```
+
+which does the same thing as
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE, results = 'hide'}
+bison[51:60, ]
+```
+
+You can also grab the first, last or nth element of a vector with functions of that name.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+first(bison$bisonID)
+last(bison$bisonID)
+nth(bison$bisonID, n = 51)
+```
+
+### Conditional subsetting with *filter*
+![](https://www.allaboutbirds.org/guide/PHOTO/LARGE/carolina_chickadee_3.jpg)
+
+*Carolina chickadee. Source: Cornell Lab of Ornithology.*
+
+Much more useful is the ability to subset your data frame not by row indices, which often are meaningless, but by specific logical conditions.
+
+Each argument in `filter`, separated by commas, should evaluate to a logical vector. `filter` will return the subset of the data frame for which all statements are TRUE.
+
+Let's say we wanted to select only those observations marking a sighting of [carolina chickadee](https://www.allaboutbirds.org/guide/Carolina_Chickadee/lifehistory), which you can find year-round here.
+
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+filter(bison, ITIScommonName == "Carolina Chickadee")
+```
+
+Let's see an example with a numerical criterion, returning Carolina Chickadee sightings since 2013.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+filter(bison, ITIScommonName == "Carolina Chickadee", year >= 2013)
+```
+
+
+There are three basic logical operations in R
+
+- `&` AND
+- `|` OR (inclusive)
+- `!` NOT
+
+You can have multiple conditions, combining them using the various logical operations you already learned. In `filter`, the comma acts as the logical  AND. 
+
+Here is a quick visual guide to logical operations from the textbook.
+
+![](http://r4ds.had.co.nz/diagrams/transform-logical.png)
+
+*Logical and set operations. Source: R for Data Science chapter 5.*
+
+## A way to explore the data, spot-check quality
+
+With large datasets, you will not be able to just scroll through all the data to catch errors. You will need to develop ways to spot possible errors as you explore and tweak the data. Conditional subsetting with `filter` is a great way to look at a limited part of the data that might contain errors.
+
+Below we filter for all records whose common name is Carolina Chickadee but whose scientific name is not the correct one. That would suggest a data quality issue.
+
+Here, since we used the standardized common and scientific names, we have no problems.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+filter(bison, ITIScommonName == "Carolina Chickadee", ITISscientificName != "Poecile carolinensis")
+```
+
+Of course, that's only one particular check on a particular species. We can use the summarize functions below to do more systematic checks.
+
+One systematic check we can do with `filter` is to see whether there are any missing values in the scientific names or common names columns.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+filter(bison, is.na(ITISscientificName) | is.na(ITIScommonName))
+```
+
+Great! No problems there, at least. But now look:
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+filter(bison, ITISscientificName == "" | ITIScommonName == "")
+```
+
+You have just used `filter` to spot and investigate a data quality issue.
+
+This is why we kept multiple names variables, aside from just the one we ideally would use---the standardized (ITIS) species names. 
+
+If we were doing some actual analysis with this dataset, you would think about how to resolve the problem of missing standardized species names. This is where content knowledge or extra research and documentation would be very helpful. 
+
+For now, we'll just note the problem and move on.
+
+## When to use `filter`
+
+As we saw above, `filter` is very useful for exploring the dataset, particularly when looking for data quality problems. Large datasets can be unwieldy, and this gives a way to inspect visually some problematic sections.
+
+Otherwise, this function is best used in combination with different functions as a way of preparing to do something else. It didn't look like much above, but you will see many examples throughout the course where *filter* plays an important role. 
+
+Common times `filter` is used include before making a graph, to plot just a particular subset of the data, or to isolate certain sections of the data for use in further analyses.
+
+# Reordering with `arrange`
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Thamnophis_sirtalis_sirtalis_Wooster.jpg/1024px-Thamnophis_sirtalis_sirtalis_Wooster.jpg)
+
+*Eastern garter snake. Source: Wikipedia*
+
+## When to use `arrange`
+Sometimes it is useful to re-order the rows of your dataset in a particular way. Common reasons you want to do that include:
+
+- *Your data has a natural order* such as a time order and you want to use that order. 
+
+For example, say you have a dataset with U.S. gross domestic product by year, and you want to calculate a new variable with the year-over-year change in GDP. You want subsequent years to follow each other, so you need to arrange first before using some of the variable creation methods demonstrated below.
+
+- *You want to present a particular order*, for example to produce a table with the top 10 observations by some measure.
+
+
+### Ordering by numeric variables
+
+Let's arrange our data frame rows by year. To show you it worked, we used *select* to pick out a few variables to be printed.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(arrange(bison, year), year, ITISscientificName)
+```
+
+Use the helper function `desc` to arrange in descending rather than ascending order.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(arrange(bison, desc(year)), year, ITISscientificName)
+```
+
+## Ordering by non-numeric variables
+
+This works for characters as well, but you should make note of how the sorting handles blanks and NA values. See the tips section below.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(arrange(bison, ITISscientificName), year, ITISscientificName)
+select(arrange(bison, desc(ITISscientificName)), year, ITISscientificName)
+```
+
+## Aside: Create a tibble (or data frame) from scratch
+
+To demonstrate the rules `arrange` uses for character vectors we can also demonstrate how to create a tibble or data frame from scratch.
+
+See [chapter 10 of R for Data Science](http://r4ds.had.co.nz/tibbles.html) for more detailed explanations of this process.
+
+Pay attention to what variable is being used to arrange here.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+test <- tibble(name_lower = c("a", "q", "s", "z", "", NA, "ab", "aq", "!", "?"), 
+               name_upper = c("Q", NA, "A", "", "B", "Z", "AB", "AQ", "!", "?"),
+               name_all = c("A", NA, "a", "", "z", "Z", "Az", "AZ", "!?", "!!"))
+
+arrange(test, name_lower)
+arrange(test, desc(name_lower))
+arrange(test, name_upper)
+arrange(test, desc(name_upper))
+arrange(test, name_all)
+arrange(test, desc(name_all))
+```
+
+Those demos lead to a few handy tips.
+
+## Ordering rules for `arrange`
+
+Some things to keep in mind when using *arrange*:
+
+- NA values are placed at the end even when sorting in descending order. That holds for both numeric and character vectors.
+
+- Blank characters are "smaller" than any other character.
+
+- Be careful with punctuation ordering. Experiment. But really, you shouldn't be trying to order by punctuation because... what does that even mean?
+
+- Letters appearing later in the alphabet are "bigger". When using increasing order, "a" appears before "z" for example.
+
+- Capital letters are "bigger" than lower-case letters. So "A" appears before "a" when using descending order.
+
+- Ordering begins with the first letter then proceeds letter-by-letter. "ab" therefore is "smaller" than "az" and will appear before it when using ascending order.
+
+
+## Using multiple criteria.
+
+You can arrange using multiple criteria, as well, where the order in which you list variables in `arrange` determines on which variables you sort first.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(arrange(bison, desc(year), desc(ITISscientificName)), year, ITISscientificName)
+select(arrange(bison, desc(ITISscientificName), desc(year)), year, ITISscientificName)
+```
+
+
+# `mutate:` alter and create variables
+
+![](http://farm3.staticflickr.com/2117/1581649444_9da13964d1_b.jpg)
+
+*Common buckeye butterfly. Source: iNaturalist*
+
+## When to use `mutate`, *mutate_each*
+
+You'll want to use `mutate` just about any time you want to **create** a new variable in your data frame or **alter** and overwrite an existing variable.
+
+If you plan to use the same function on multiple variables, use `mutate_each`. 
+
+## Altering variables
+
+The syntax for `mutate` is $$\text{data_frame_2 <- mutate(data_frame_1, unquoted_variable_name = something)} $$
+
+Syntax for `mutate_each` is
+$$\text{data_frame_2 <- mutate(data_frame_1, funs(function1_name, function2_name), unquoted variable name or helper function as in } select)$$
+
+`mutate_each` will apply each function in the *funs* brackets to each of the columns selected. If no columns are selected, it applies each function to all. You can make custom functions to use with `mutate_each`, but we will only see that later in the class.
+
+Often, data frame one and two in the statement above will be the same: You are overwriting your existing data frame and adding or altering a variable in it.
+
+Some things we want to do using `mutate`:
+
+- Convert latitude and longitude (currently in degrees) to [radians](https://en.wikipedia.org/wiki/Radian), to calculate "as-the-crow-flies" distances between points using the [haversine formula](https://en.wikipedia.org/wiki/Haversine_formula). See the grouping section below for how we apply that formula.
+
+- Make the eventDate variable a date/time type object. See the bonus section below for more on dates an times. Otherwise you don't need to worry yet about what we did, other than to recognize the basic syntax for *mutate.*
+
+Some things we want to do using `mutate_each`:
+
+- Change all species name variables to lower-case, making them easier to use for all sorts of purposes.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+bison <- mutate(bison, 
+                latitude_rad = pi * latitude / 180,
+                longitude_rad = pi * longitude / 180,
+                eventDate = parse_datetime(eventDate))
+
+bison <- mutate_each(bison, funs(tolower), contains("name"))
+
+select(bison, contains("tude"), eventDate)
+
+select(bison, contains("name"))
+```
+
+
+## Creating new variables
+
+The syntax is exactly the same, except that to create a new variable use a new, unquoted variable name on the left-hand side of the equality statement.
+
+This is a just a dummy example.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+select(mutate(bison, double_year = year * 2), year, double_year)
+```
+
+As a quick fix to our missing scientific name problem, let's use `mutate` to create a new scientific name variable using the ITIS names when available and the alternate scientific name variable when not.
+
+We are creating an alternate variable instead of over-writing the current one so we can investigate the scope of the problem later.
+
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+bison <- mutate(bison, 
+                scientificName_complete = ifelse(ITISscientificName == "", scientificName, ITISscientificName))
+
+filter(bison, scientificName_complete == "" | is.na(scientificName_complete))
+```
+
+That's all we'll say for now. 
+
+Throughout the course and the rest of this lecture, you will see many more applications of mutate` 
+
+
+# Pipes to keep your code clean
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Northern_hogsucker_Hypentelium_nigricans.jpg/1280px-Northern_hogsucker_Hypentelium_nigricans.jpg)
+
+*Northern hog sucker. Source: Wikipedia*
+
+The 'pipe' operation is a handy tool to make your code more legible: `%>%`. Key points:
+
+- It takes the output of your previous operation and uses it as an input to your next operation.
+
+- You can determine where the previous argument goes with the period symbol, `.` , which acts as a placeholder.
+
+- Understand how to use it by replacing the pipe operation with 'then' (in your mind, not in the code). For example, `filter(data, ...) %>% select(...)` filters first *then* selects columns from the output of filter.
+
+### When to use a pipe
+
+Often, you will be doing multiple things at a time to your data set and the intermediate steps don't matter. 
+
+In *R*, for reasons we won't talk about, you want to avoid creating lots of unnecessary objects in your environment. Using pipes help you do that.
+
+Finally, pipes make your code more legible. For example
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+c(1, 2, 3, 4) ^ 2 %>% 
+    sum %>% 
+    sqrt %>% 
+    log %>% 
+    sin
+```
+
+is more legible than 
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+sin(log(sqrt(sum(c(1, 2, 3, 4) ^ 2))))
+```
+
+and it only becomes worse when using functions with lots of arguments.
+
+From now on, we will use pipes whenever convenient. Check out the textbook and experiment with pipes to learn their uses and limitations.
+
+# Grouping
+![](https://virginiawildflowers.files.wordpress.com/2012/09/img_9946.jpg?w=672&h=372&crop=1)
+
+*Yellow crownbeard. Source: virginiawildflowers.org*
+
+`dplyr` function `group_by` is a helper function for a number of other tools in the package. It essentially creates hidden links between observations in your dataset based on variables you determine. 
+
+The group identifications themselves are not variables but instead allow you to do operations constrained to each group separately in the `mutate`, `summarise` and `filter` functions.
+
+That's abstract, so let's move to some examples with `mutate`.
+
+### When to use `group_by`
+
+You will always use `group_by` first, before running `mutate`, `summarise` or `filter` and their related functions. 
+
+Some common situations for when you will want to have grouping variables: 
+
+- With `filter`: Filter for characteristics by subgroup, such as the best or worst observation by some measure within each group. That returns all observations meeting the criteria within their groups.
+
+You can also filter based on conditions related to the group as a whole, such as the number of observations in the group. That returns a dataset with all observations in a group meeting the criterion.
+
+- With `mutate`: Create or alter variables in a way that depends on group-level characteristics, for example calculating the difference between a particular observation's value and average for that observation's group. That's vague, so see the examples in the book and below.
+
+- With `summarise`: Create group-level summaries, such as the total number of observations by species in the BISON dataset. The result is a data frame (actually a tibble) with the summary statistics for each group. 
+
+We will do ungrouped and grouped summaries all together in the section on `summarise`.
+
+**A WARNING:** Grouped operations for filter and mutate can become tricky, so you should be extra careful to be sure what you tried to do is in fact what you did.
+
+So-called [window functions](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) work best for grouped operations with `mutate` and `filter`, and summary functions---such as `sum` or `mean`---are what you want for `summarise`.
+
+### Window functions
+
+As this demo on [window functions](https://cran.r-project.org/web/packages/dplyr/vignettes/window-functions.html) says, 
+
+> A window function is a variation on an aggregation function. Where an aggregation function, like `sum()` and `mean()`, takes n inputs and return a single value, a window function returns n values.
+
+> The output of a window function depends on all its input values, so window functions don’t include functions that work element-wise, like + or `round()`.
+
+Some useful 'window' functions that are appropriate for the `group_by` plus `mutate` or `filter` combination:
+
+- ranking: such as `min_rank` and *percent_rank* and `cume_dist`
+
+- Cumulative: such as `cumsum`
+
+- Time series: such as `lead` and `lag` functions that offset the input vector by negative one and one positions, respectively. Be sure that whatever order your vector is in when using those actually has meaning, such as a time-dependent order.
+
+Learn more about those functions and check out some examples at the window functions demo link above.
+
+### Using `group_by` with `filter`
+
+Let's filter our dataset to include only the species that appear at least 200 times in the Orange County biodiversity dataset.
+
+To do so, we'll use the helper function `n()` which just counts the number of observations within a group. It only works inside other `dplyr` functions.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  filter(n() > 200)
+```
+
+You can combine the grouped filter with ungrouped filtering. But this is where you have to think carefully.
+
+Here we'll filter for the species seen at least 3 times in the entire dataset, but we will only want the observations of those species that appear in 2015.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  filter(n() > 3, year == 2015)
+```
+
+Here we'll filter for the species seen at least 3 times in 2015. To do so we need to group by year as well as scientific name.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete, year) %>%
+  filter(n() > 3, year == 2015)
+```
+
+Notice that in each case we get back all observations in the groups meeting the criteria.
+
+## Using `group_by` with `mutate`
+![](http://src.sfasu.edu/~jvk/PineywoodsPlants/Ferns_Lycophytes/Aspleniaceae/lrAsplenium_platyneuron2.jpg)
+*Ebony spleenwort, one of only two species seen at least three times in 2015 in the Orange County BISON data. Source: Stephen F. Austin State University*
+
+ We'll see a few examples to give you a flavor for what you can do. 
+
+Unfortunately, this dataset isn't great for demonstrating grouped mutate functions. See the textbook or the window function vignette above for more examples.
+
+Let's give it a shot though, with a contrived example. A more interesting and more advanced application of this kind of thing is in the bonus section on as-the-crow-flies distances. 
+
+We will:
+
+- group by organization providing a species sighting using provider ID and by year.
+
+- calculate the time difference in weeks between the first and final observations of the year for that organization.
+
+Notice that you can also use pipes within `mutate`.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, providerID, year) %>%
+  mutate(d_time = as.numeric(max(eventDate) - min(eventDate), "weeks")) %>%
+  select(year, providerID, d_time)
+```
+
+Now do something similar but for species by year, but also computing the sightings per week for each species, each year, for the span over which they were observed.
+
+Notice that `mutate` allows you to use newly created variables in subsequent statements. That is common throughout the `dplyr` functions.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete, year) %>%
+  mutate(d_time = as.numeric(max(eventDate) - min(eventDate), "weeks"),
+         avg_obs = n() / d_time) %>%
+  select(year, scientificName_complete, ITIScommonName, d_time, avg_obs)
+```
+
+Lastly, we will calculate the time between observations for each species in a year using the lag function. Remember that first we have to arrange the data in increasing time order for this to make sense.
+
+Using `arrange` before vs. after the grouping statement will make a difference.
+
+Arranging before the grouping puts all observations in time order. Arranging after grouping puts observations in time order within their groups.
+
+For example, say we have observations for a Carolina wren on Dec. 12, 2013 and Jan. 2, 2014, and for a bluebird on Dec. 20, 2013 and Dec. 31 2013.
+
+- Arranging before grouping will give this order: wren Dec. 12, bluebird Dec. 20, bluebird Dec. 31, and wren Jan. 2
+
+- Arranging after grouping gives this order: (wren Dec. 12, wren Jan. 2) and (bluebird Dec. 20, bluebird Dec. 31)
+
+On the data:
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  mutate(d_time = as.numeric(eventDate - lag(eventDate), "weeks")) %>%
+  select(scientificName_complete, d_time) %>%
+  arrange(desc(d_time))
+```
+
+We will get NA values if there are no previous observations.
+
+## Aside: Checking your work
+![](https://nas.er.usgs.gov/XIMAGESERVERX/2005/20051103134524.jpg)
+
+*Swallowtail shiner. More than 250 years passed between observations of it in the BISON dataset. Does that make sense? Source: USGS*
+
+You often have to check that you did the somewhat complicated grouped mutation operations correctly. Let's do that using some of the tools we learned.
+
+First, let's check that crazy number in the final step above. The swallow-tailed shiner apparently had almost 300 years between observations in our data. Is that true?
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+filter(bison, scientificName_complete == "notropis procne")$eventDate %>% sort
+```
+
+Yes, that makes sense. There's a single observation in 1700, and the next one is more than 250 years later.
+
+It would be worth checking with the BISON documentation to see where they'd even get a record from Jan. 1, 1700.
+
+Now we will check calculations on time difference between observations submitted by provider.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+test <- filter(bison, providerID == 291, year == 1984)
+
+select(test, providerID, institutionCode, eventDate)
+
+max(test$eventDate)
+min(test$eventDate)
+
+# Note we don't need group_by since we've filtered to a single group
+mutate(test, d_time = as.numeric(max(eventDate) - min(eventDate), "weeks")) %>%
+  select(year, providerID, d_time)
+```
+
+which looks correct.
+
+## Quirks of *group_by*
+![](http://images.mobot.org/TropicosImages2/PlantRecordImages/prod/small240/00031000/E116-0419121gk.jpg)
+
+*White-tinged sedge. Source: Missouri Botanical Gardens.*
+
+Some minor notes:
+
+- grouped operations like those above return data frames (tibbles) with group information associated with them
+
+- Remove group labels using `ungroup(data frame)`. You cannot alter grouping variables in mutate and will get an error message. Other functions sometimes disallow operations on grouping variables. 
+
+- return a list of grouping variables from a grouped data frame using `groups(data frame)`
+
+- use `group_size` to return a vector, the same length as the number of observations, giving the group size of the group associated with that observation
+
+- `group_indices` gives a vector with the group index associated to a particular observation
+
+
+
+# Summarizing and subset summaries
+![](http://www.carolinanature.com/spiders/whitebandedcrabspider1270621.jpg)
+
+*Whitebanded crab spider. Source: carolinanature.com*
+
+## When to use `summarise` and `summarise_each`
+
+Summary functions are for creating summary information, of course. 
+
+In other words use `summarise` to return a single summary statistic for a dataset or for subgroups of a dataset (using `group_by` first)
+
+Use `summarise_each` if you want a series of the same summary statistics for different variables.
+
+### Summaries for basic information
+
+
+Finally, we can answer some basic questions about our dataset using `summarise` and some of the functions you saw above.
+
+How many observations are there in the data per species?
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  summarise(n())
+```
+
+What are the top-10 most observed species across all years?
+
+Notice we can rename the variables to be something more legible in the output table.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  summarise(N_species = n()) %>%
+  arrange(desc(N_species))
+```
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Cardinalis_cardinalis_-Florida%2C_USA_-female-8.jpg/220px-Cardinalis_cardinalis_-Florida%2C_USA_-female-8.jpg)
+
+*Northern cardinal female, the most frequently observed species in our dataset. Source: Wikipedia.*
+
+We can combine the grouped mutate and summarize operations to learn **average number of weeks between observations per species.**
+
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  mutate(d_time = as.numeric(eventDate - lag(eventDate), "weeks")) %>%
+  summarise(avg_d_time = mean(d_time, na.rm = TRUE)) %>%
+  arrange(desc(avg_d_time))
+```
+
+![](https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Rhizopogon_rubescens.jpg/220px-Rhizopogon_rubescens.jpg)
+
+*Rhizopogon rubescens has the largest inter-observation time of any species in the dataset. Source: Wikipedia*
+
+The next example shows you can
+
+- use computed values as grouping variables
+
+- change groupings between operations
+
+- assign group names within *group_by*
+
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  mutate(d_time = as.numeric(eventDate - lag(eventDate), "weeks")) %>%
+  ungroup %>%
+  group_by(long_btw_obs = d_time > 52) %>%
+  summarise(N_obs = n())
+```
+
+The table shows that by far most observations were within a year of the previous observation for that same species.
+
+NA values are likely from those first observations for each species, though we should check there are no others.
+
+`summarise_each` has essentially the same syntax as `mutate_each` and represents the same concept, just for summarization. 
+
+The silly example below returns the maximum length between observations as well as the maximum providerID number for each subspecies.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, scientificName_complete) %>%
+  mutate(d_time = as.numeric(eventDate - lag(eventDate), "weeks")) %>%
+  summarise_each(funs(max = max(., na.rm = TRUE)), d_time, providerID)
+```
+
+The only new trick there was that I defined a new function within the *funs* helper, specifying I wanted to remove NA values and using the dot as a placeholder for where my variable should go.
+
+We still got some NA values for species with only one observation.
+
+### Summaries as data quality checks
+
+Grouped summaries can be an important tool for assessing data quality. Once you have spotted something weird, you can ask yourself:
+
+- are the errors concentrated?
+
+- if so, with which observations?
+
+Doing so can help you think about patterns, which in turn lead you to possible reasons and fixes for the data quality problems.
+
+First, we can now look more closely at the missing ITIS scientific names problem.
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+group_by(bison, providerID) %>%
+  summarise(N_errors = sum(ITISscientificName == "")) %>%
+  arrange(desc(N_errors))
+
+filter(bison, providerID == 440) %>% select(institutionCode)
+```
+
+You could then refer to the dataset documentation, you would hope, to understand why observations from observer BISON have so many missing scientific names. You could also try grouping by year as well to further isolate the problem.
+
+
+
+# Bonus: Approximate 'as the crow flies' distances
+
+![](http://www.audubon.org/sites/default/files/Fish_Crow_s36-31-042_l_1.jpg)
+
+*Fish crow. Source: Audobon*
+
+A question we might be interested for this dataset is: What is the maximum distance between two observations of the same species within Orange County?
+
+Distances between points are not yet a variable. But we have coordinates for where species were sighted. 
+
+We can approximate those distances using the **haversine formula.**
+
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+haversine <- function(lat1, lat2, long1, long2, in_miles = TRUE){
+  
+  message("Returns great-circle distance between two points on earth in km or miles. Latitude and longitude should be in radians.")
+  
+  h <- sin(.5 * (lat2 - lat1)) ^ 2 + cos(lat1) * cos(lat2) * (sin(.5 * (long2 - long1)) ^ 2)
+  
+  # earth diameter taken from http://imagine.gsfc.nasa.gov/features/cosmic/earth_info.html
+  
+  r <- 12756 / 2
+  
+  if (in_miles)
+    r <- r * 0.621371
+  
+  return(2 * r * asin(sqrt(h)))
+}
+```
+
+Don't worry about the details of this, or read about them on Wikipedia.
+
+The [haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) is an old nautical tool to calculate distances along the surface of a sphere---a good approximation to distances along the surface of the almost-spherical earth. 
+
+Let's test it out. We'll compare the approximation to the [NASA terrestrial planet mileage calculator](http://nssdc.gsfc.nasa.gov/special/MileageGuide.jsp), an exact calculation.
+
+Coordinates of **Hanes building at UNC-Chapel Hill** are Lat: 35.910810, Long: -79.051205 , and rough coordinates at **Nuuk, capital of Greenland** are Lat: 64.182179, Long: -51.688468.
+
+```{r , warning=FALSE, echo=TRUE, message=TRUE}
+haversine(lat1 = pi * 35.910810 / 180, lat2 = pi * 64.182179 / 180, long1 = pi * -79.051205 / 180, long2 = pi * -51.688468 / 180)
+```
+
+Answer from NASA: 2274.5 miles.
+
+The haversine formula gives a very good approximation to NASA's figure, particularly since it is over such a long distance.
+
+All of our points are in Orange County, so the error won't even matter. For example, here's the haversine distance estimate the Hanes building to Duke Chapel.
+```{r , warning=FALSE, echo=TRUE, message=FALSE}
+haversine(lat1 = pi * 35.910810 / 180, lat2 = pi * 36.001756 / 180, long1 = pi * -79.051205 / 180, long2 = pi * -78.939975 / 180)
+```
+
+Answer from NASA: 8.9 miles.
+
+NASA's tool rounds to the first decimal, so the answer are likely much closer.
+
+Why bother with this bonus section?
+
+Geo-location information is some of the most common and interesting data you will come across. Now, just with latitude and longitude, you can extract as-the-crow flies distances!
