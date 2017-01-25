@@ -28,7 +28,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |January 12 |Welcome | [**getting started**](notes/getting_started/getting_started.html) | [welcome](slides/welcome.pdf)|
 |January 17 | workflow |[**workflow**](notes/workflow/workflow.html) | |
 |January 19 | dplyr part 1 | [**dplyr**](notes/dplyr/dplyr.html)| |
-|January 24 | dplyr part 1 | [**dplyr**](notes/dplyr/dplyr.html)| [dplyr2](slides/dplyr2.html)|
+|January 24 | dplyr part 2 | [**dplyr**](notes/dplyr/dplyr.html)| [dplyr2](slides/dplyr2.html)|
 
 - the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
 
