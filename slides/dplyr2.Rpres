@@ -1,0 +1,254 @@
+dplyr part 2
+========================================================
+author: STOR 390
+date: 01/24/16
+autosize: true
+
+
+
+downlaod data
+========================================================
+```{r}
+library(tidyverse)
+
+# Load the bison data
+bison <- read_csv(url("https://raw.githubusercontent.com/idc9/stor390/master/data/bison_orangecounty.csv"))
+```
+
+
+The five core dplyr fuctions
+========================================================
+- `select` (select columns)
+- `filter` (select rows)
+- `mutate` (make new colmn)
+- `arrange` (rearrange rows)
+- `summarise` (many rows -> one number)
+
+
+Functions arguments
+========================================================
+- first argument is a data frame
+    - `select(bison)`
+- following arguments (usually variable names) say what to do
+    - `select(bison, bisonID, eventDate)`
+- returns a new data frame
+    - `sighting_dates <- select(bison, bisonID, eventDate)`
+
+
+Use select to subset out columns
+========================================================
+```{r, eval=F}
+select(bison, year, ITISscientificName)
+```
+
+
+
+Question 1
+========================================================
+What is the ITISscientificName of the 382nd row?
+https://goo.gl/forms/vEWGVC0EIAThz2e33
+
+Filter selects rows
+========================================================
+```{r eval=F}
+filter(bison, ITIScommonName == "Carolina Chickadee")
+```
+
+
+
+Filter selects rows
+========================================================
+```{r eval=T}
+filter(bison, ITIScommonName == "Carolina Chickadee")
+```
+
+
+Order sightings by year with arrange
+========================================================
+```{r, eval=F}
+arrange(bison, year)
+```
+
+Order sightings by year with arrange
+========================================================
+```{r, eval=T}
+arrange(bison, year)
+```
+
+
+Order alphabetically by ITISscientificName with `arrange`
+========================================================
+```{r, eval=F}
+arrange(bison, ITISscientificName)
+```
+
+Order alphabetically by ITISscientificName with `arrange`
+========================================================
+```{r, eval=T}
+arrange(bison, ITISscientificName)
+```
+
+Ordering rules for `arrange`
+========================================================
+- NAs
+- non-alphabetical characters
+- multiple criteria
+- see notes
+
+
+
+Create lat/lon columns in degrees with mutate
+========================================================
+```{r, eval=F}
+mutate(bison, 
+       latitude_rad = pi * decimalLatitude / 180,
+       longitude_rad = pi * decimalLongitude / 180,
+       eventDate = parse_datetime(eventDate))
+```
+
+
+Create lat/lon columns in degrees with mutate
+========================================================
+```{r, eval=T}
+mutate(bison, 
+       latitude_rad = pi * decimalLatitude / 180,
+       longitude_rad = pi * decimalLongitude / 180,
+       eventDate = parse_datetime(eventDate))
+```
+
+
+Combine a bunch of dplyr operations in one line
+========================================================
+```{r, eval=F}
+mutate(select(filter(bison, ITIScommonName == "Carolina Chickadee"), year, ITIScommonName, decimalLatitude, decimalLongitude, eventDate), latitude_rad = pi * decimalLatitude / 180, longitude_rad = pi * decimalLongitude / 180, eventDate = parse_datetime(eventDate))
+```
+
+
+
+Combine a bunch of dplyr opperations in multiple lines
+========================================================
+```{r, eval=F}
+temp <- filter(bison, ITIScommonName == "Carolina Chickadee")
+temp <- select(temp, year, ITIScommonName, decimalLatitude, decimalLongitude, eventDate)
+mutate(temp, latitude_rad = pi * decimalLatitude / 180, longitude_rad = pi * decimalLongitude / 180, eventDate = parse_datetime(eventDate))
+```
+
+Combine a bunch of dplyr operations with **%>%**
+========================================================
+```{r, eval=F}
+bison %>%
+    filter(ITIScommonName == "Carolina Chickadee") %>%
+    select(year, ITIScommonName, decimalLatitude, decimalLongitude, eventDate) %>%
+    mutate(latitude_rad = pi * decimalLatitude / 180, 
+           longitude_rad = pi * decimalLongitude / 180, 
+           eventDate = parse_datetime(eventDate))
+```
+
+Combine a bunch of dplyr operations with **%>%**
+========================================================
+```{r, eval=T}
+bison %>%
+    filter(ITIScommonName == "Carolina Chickadee") %>%
+    select(year, ITIScommonName, decimalLatitude, decimalLongitude, eventDate) %>%
+    mutate(latitude_rad = pi * decimalLatitude / 180, 
+           longitude_rad = pi * decimalLongitude / 180, 
+           eventDate = parse_datetime(eventDate))
+```
+
+summarise Poecile carolinensis sightings 
+========================================================
+Poecile carolinensis is the scientific name for Carolina Chickadee
+```{r, eval=F}
+bison %>%
+    filter(ITISscientificName == "Poecile carolinensis") %>%
+    summarise(num_obs = n(), most_recent = max(year))
+```
+
+
+summarise Poecile carolinensis sightings 
+========================================================
+Poecile carolinensis is the scientific name for Carolina Chickadee
+```{r, eval=T}
+bison %>%
+    filter(ITISscientificName == "Poecile carolinensis") %>%
+    summarise(num_obs = n(), most_recent = max(year))
+```
+
+
+Question 2
+========================================================
+What is the decimalLongitude of the most recent Dumetella carolinensis sighting?
+https://goo.gl/forms/LYhbES0N9gdhWBtr2
+                
+
+How do we summarize each species sightings?
+========================================================
+- could use a for loop + filter for each ITISscientificName
+- or group_by
+
+
+
+Summarize species sightings with group_by
+========================================================
+```{r, eval=F}
+bison %>%
+    group_by(ITISscientificName) %>%
+    summarise(num_obs = n(), most_recent = max(year))
+```
+
+Summarize species sightings with group_by
+========================================================
+```{r, eval=T}
+bison %>%
+    group_by(ITISscientificName) %>%
+    summarise(num_obs = n(), most_recent = max(year))
+```
+
+
+Using group_by to subset
+========================================================
+Species seen at least 3 times in the entire datbase, but only observations in 2015
+```{r, eval=F}
+group_by(bison, ITISscientificName) %>%
+  filter(n() > 3, year == 2015)
+```
+
+Using group_by to subset
+========================================================
+Species seen at least 3 times in the entire datbase, but only observations in 2015
+```{r, eval=T}
+group_by(bison, ITISscientificName) %>%
+  filter(n() > 3, year == 2015)
+```
+
+Using group_by to subset again
+========================================================
+Species seen at least 3 times in 2015
+```{r, eval=F}
+group_by(bison, ITISscientificName, year) %>%
+  filter(n() > 3, year == 2015)
+```
+
+
+Using group_by to subset again
+========================================================
+Species seen at least 3 times in 2015
+```{r, eval=T}
+group_by(bison, ITISscientificName, year) %>%
+  filter(n() > 3, year == 2015)
+```
+
+Question 3:
+========================================================
+Which species has been observed the most by one collector?
+
+https://goo.gl/forms/8qXaFbQGLkCSJXqx2
+
+- use `ITISscientificName` and `collectorNumber`
+- ignore both missing collector names and scientific names
+
+
+
+
+
+
