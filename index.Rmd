@@ -77,6 +77,7 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 
 **January 24**
 
+- read section 19.5-7 and sections 21.1-21.3 ([loops](http://r4ds.had.co.nz/iteration.html)) from r4ds
 
 
 # **Coding**
