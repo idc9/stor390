@@ -173,11 +173,11 @@ $(document).ready(function () {
 </div>
 <div id="question-6" class="section level1">
 <h1>Question 6</h1>
-<p><a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte carlo simulations</a> are common throughout the sciences these days. Usually in R you want to avoid <em>for</em> and <em>while</em> loops—they are notoriously slow compared to <em>vectorised</em> operations.</p>
+<p><a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte carlo simulations</a> are common throughout the sciences these days. Usually in R you want to avoid <code>for</code> and <code>while</code> loops—they are notoriously slow compared to <em>vectorised</em> operations.</p>
 <p>Sometimes you can’t avoid a loop, though, and that often is true when doing simulations. Loops are also very common tools in all kinds of programming, so it’s worth it to know how to use them.</p>
 <p><strong>Write a function that makes words by monte carlo simulation.</strong> By that I mean, the function that randomly generates sequences of letters with letters between them</p>
 <ul>
-<li><p>use R’s built-in vector of lower-case letters, a hidden object called <em>letters</em>, to which you will need to add the single space , a comma and an exclamation point. Don’t use any other characters.</p></li>
+<li><p>use R’s built-in vector of lower-case letters, a hidden object called <code>letters</code>, to which you will need to add the single space , a comma and an exclamation point. Don’t use any other characters.</p></li>
 <li><p>have an argument specifying how many characters the sentence should have</p></li>
 <li><p>follow the rule of spelling: i before e except after c. That rule is broken in some weird situations, but just apply it to all words here.</p></li>
 <li><p>force exclamation points and commas to be followed by a blank space. Double spaces are OK, as are other strange things such as &quot; , &quot; or &quot; ! , “, so long as the other rules are followed.</p></li>
