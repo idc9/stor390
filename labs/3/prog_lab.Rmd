@@ -1,0 +1,114 @@
+---
+title: 'Lab: Programming basics'
+output: html_document
+---
+Lab 3 is due at the beginning of lecture on Tuesday 1/31/17.
+
+This lab will have you do some of the core programming tasks you will need to do in pretty much any data science project.
+
+All of the deliverables are functions, but the lab will have you practice a variety of programming skills.
+
+Some of these tasks might seem arbitrary. But the hope is they will get you in the correct frame of mind for programming. Some of these will require you to use the R help files or other online resources, for example to search for a function that returns the integer part of a number.
+
+Functions you will be asked to write could be useful for later. I keep a separate file of such functions that I use with most projects.
+
+
+
+# Question 1
+**Write a function that takes any number and returns TRUE if its integer part is an even number and FALSE if it is odd.**
+
+By the integer part of a number I mean the nearest whole number smaller than that number if the number is positive---or larger than that number if it is negative. For example, the integer part of 21.6 is 21. The integer part of -1.9 is -1.
+
+# Question 2
+ **R has a problem with its rounding function. You are going to fix it.** Here's the problem:
+
+```{r}
+round(.5, digits = 0)
+round(.501, digits = 0)
+round(5, digits = -1)
+round(5.01, digits = -1)
+round(.05, digits = 1)
+round(.0501, digits = 1)
+```
+
+WHAAAAAAT? We all know you round .5 to 1 using standard rules of rounding. Similarly, when rounding to the nearest tens digit, 5 should round to 10. That's a dumb problem to have.
+
+**Write a function that rounds the way you learned in elementary school for all numbers**---not just 0.5---and that takes a digits argument working exactly as in the original R function.
+
+# Question 3
+
+The R function *setdiff(x,y)* returns the elements of a vector x that are not also in y. Sometimes you **want a function to return the elements that are in x or y but not both.**
+
+For example, say x is a list of singers who can reach very high registers, and y is a list of musicians who died in 2016. This returns a list of singers with high voices who did not die in 2016.
+
+
+```{r}
+setdiff(c("prince", "mj", "sam cook", "whitney", "dolly"), c("sharon jones", "prince", "bowie", "leonard cohen", "phife dawg"))
+```
+
+You will write a function that returns names of those who either have high voices, but did not die in 2016, or who died in 2016 but do not have high voices.
+
+Your function will need to work for any vectors, not just the ones in this example. The output should be a single vector, not two vectors.
+
+
+# Question 4
+
+**Write a function that takes a numeric or integer vector and adds up only the numbers whose integer parts are even.**
+
+You should use your answer from question one here, ideally by calling the function you already created rather than re-writing the content of that function.
+
+# Question 5
+**Modify your answer to question 4 to include an option** that allows you to choose whether to sum numbers whose integer parts are even or are odd.
+
+Your function should have as a default that it gives the same output as the function in question 4. In other words, if the user doesn't specify whether to sum evens or odds, the function should sum evens.
+
+# Question 6
+[Monte carlo simulations](https://en.wikipedia.org/wiki/Monte_Carlo_method) are common throughout the sciences these days. Usually in R you want to avoid *for* and *while* loops---they are notoriously slow compared to *vectorised* operations.
+
+Sometimes you can't avoid a loop, though, and that often is true when doing simulations. Loops are also very common tools in all kinds of programming, so it's worth it to know how to use them.
+
+**Write a function that makes words by monte carlo simulation.** By that I mean, the function that randomly generates sequences of letters with letters between them
+
+- use R's built-in vector of lower-case letters, a hidden object called *letters*, to which you will need to add the single space \text{" "}, a comma and an exclamation point. Don't use any other characters.
+
+- have an argument specifying how many characters the sentence should have
+
+- follow the rule of spelling: i before e except after c. That rule is broken in some weird situations, but just apply it to all words here.
+
+- force exclamation points and commas to be followed by a blank space. Double spaces are OK, as are other strange things such as " , " or " ! , ", so long as the other rules are followed.
+
+- returns a single string, not a vector of strings. For example, you want "apple!" not c("a", "p", "p", "l", "e", "!")
+
+In theory, if you were to run the program for a very long time (adding some characters to your function's vocabulary), [you certainly would end up with the entire works of Shakespear](https://en.wikipedia.org/wiki/Infinite_monkey_theorem)---or any other book you can think of. 
+
+Actually, that would be the case even without our grammatical corrections. But those are there to make the output more fun, and more challenging to code.
+
+One way to proceed with slightly more complicated functions like this is first to write it in the way that seems most natural to you. Then go back, test it, and optimize it. We won't worry too much yet about writing functions that are optimal in terms of computing time. But eventually you will have to think about that.
+
+
+# deliverable
+
+This lab will be auto-graded so please follow these instructions carefully.
+
+- write one .R script that contains the code for the assignment
+
+- name the file `onyen`_lab3.R (i.e. idcarm_lab3.R)
+
+- the answer to each question is a function. Please name the functions as follows:
+    1. even_odd
+    2. round_good
+    3. symdiff
+    4. even_sum
+    5. odd_sum
+    6. monkey
+    
+- for some questions you may want to write helper functions. Include these helper functions in the same script, but below the 6 listed questions.
+
+- load the libraries you need at the top (the only one you should need is `tidyverse`)
+
+- include your name in a comment at the top of the file
+
+- use section headers (see end of [section 19.3](http://r4ds.had.co.nz/functions.html)) to separate your functions
+
+
+

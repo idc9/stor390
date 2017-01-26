@@ -1,0 +1,406 @@
+---
+title: "Control Flow"
+subtitle: Conditionals, loops and user-defined functions in R
+output: html_document
+
+---
+
+
+
+The primary reference for these notes are r4ds
+
+- section 19 ([functions](http://r4ds.had.co.nz/functions.html))
+- 21.1-21.3 ([loops](http://r4ds.had.co.nz/iteration.html))
+
+# What you will learn
+
+- conditionals (if/else)
+- loops (for, while)
+- bow to define your own functions
+- basic programming flow
+
+
+***
+
+
+R supports the use of two types of conditional statements: `if` and `if-else`. 
+
+# if/else
+
+An `if` statement is a true-or-false condition (given in parentheses), followed by a block of coded (surrounded by curly brackets). The commands are only executed if the condition turns out to be true.
+
+```{r}
+
+if (2 > 1) {
+  print('fact')
+}
+
+if (2 < 1) {
+  print('alternative fact')
+}
+
+```
+
+`if` statements can be followed by `else` statements. Note `runif` (**r**-**unif**orm) returns a random number between 0 and 1.
+
+```{r}
+# Flip a coin 
+if (runif(1) < 0.5) {
+    print('heads')
+} else {
+    print('tails')
+}
+```
+
+You can also use `else if`
+
+```{r}
+
+r <- runif(1)
+# rock paper sissors
+if (r < 1/3) {
+    print('rock')
+} else if (1/3 < r && r < 2/3) {
+    print('paper')
+} else{
+    print('scissors')
+}
+```
+
+
+
+# conditionals
+
+`if/else` statements usually evaluate conditional statements.
+
+## equality
+Use the double equals (`==`) to check for equality between some objects
+
+```{r}
+2*5 == 10
+```
+
+
+**warning**: when checking if two decimal numbers are equal do not use `==`; instead use `near` from the `dplyr` package. Why? Computers do finite precision arithmetic meaning they approximate decimal numbers.
+
+```{r}
+# oops
+sqrt(2)^2 == 2
+```
+
+
+```{r}
+dplyr::near(sqrt(2)^2, 2)
+```
+
+To check if an object is `NA` use `is.na`. 
+```{r}
+is.na(NaN)
+```
+
+For special values such as `Inf`, and `NaN` see [section 20.3.2](http://r4ds.had.co.nz/vectors.html#important-types-of-atomic-vector)
+
+## vectorized logial operations
+
+
+Note that `==` is vectorized i.e.
+
+```{r}
+c(1, 1, 1) == c(1, 2, 1)
+```
+
+When using and/or in a conditional statement use the double `&&` and `||` (opposed to single `&` and `|`). Notice the difference
+
+```{r}
+c(T, T, T) || c(T, F, T)
+```
+
+```{r}
+c(T, T, T) |c(T, F, T)
+```
+
+
+***
+
+# Loops
+
+A loop is any part of code that causes a repeat of the same commands to be executed. There are three kinds of loops available in R: `for`, `while` and `repeat` (I've never used `repeat`). All three require some form of conditional statements, like those considered above.
+
+
+## for loops
+
+This is the most common type of loop, and it can be very powerful. In a `for` loop, you explicitly define both a counter (or index) and a vector for which the counter takes its values. When the counter has finished taking the values of the vector, the loop is terminated.  
+
+```{r}
+# counter is i and the vector is the integers from 1 to 10
+for (i in 1:10) {
+  print(i)
+}
+```
+
+Often you will use a loop to fill a vector with values. You should preallocate the memory for the vector
+
+```{r}
+nums <- vector("double", 10) # or rep(0, 10) or something else
+for (i in 1:10) {
+  nums[i] <- runif(1)
+}
+
+# or you could dynamically allocate memory which is probably the wrong way to do it
+
+# nums <- c()
+# for (i in 1:10) {
+#   nums <- c(nums, runif(1))
+# }
+```
+***
+
+## while loops
+
+A "while" loop is a block of code following a single logical condition. The code will continue to run again and again so long as the condition remains true. The condition will be checked once before every iteration.
+
+```{r}
+# Random walk on the number line until we have strayed too far
+
+current_position <- 10
+n_iter <- 0
+
+# run until stopping condition
+while (current_position > 0){
+    current_position <- current_position + rnorm(1)
+    n_iter <- n_iter + 1
+}
+
+print(paste0('you lost all your money after ', n_iter, ' trips to the casino'))
+```
+
+Most of the time, you will want the code block to affect the condition somehow. In the above example, the variable "distance" changes every time, so we eventually expect the condition (distance < 5) to be false.
+
+**Caution**: if you are not careful, you can get into an "infinite loop"!
+
+```{r, eval=F}
+while (TRUE){
+    print('Duke sucks')
+}
+```
+
+
+## vectorization
+
+`for` loops can be slow and are necessarily sequential. Most computers have multiple cores. If you have access to a cluster you might have access to dozens or hundreds of cores. Many tasks that use `for` loops are not inherently sequential.
+
+Loops also require a lot of written code. We will talk later about **imperative** and **functional** programming in R which replaces `for` loops in many cases. For more details see [section 21](http://r4ds.had.co.nz/iteration.html).
+
+
+***
+
+# Functions
+Functions are super important. In theory you could just copy and paste a lot however writing a function has some major benefits (from r4ds)
+
+1. You can give a function an evocative name that makes your code easier to understand.
+
+2. As requirements change, you only need to update code in one place, instead of many.
+
+3. You eliminate the chance of making incidental mistakes when you copy and paste (i.e. updating a variable name in one place, but not in another).
+
+
+**General life advice** 
+
+> write a function whenever you’ve copied and pasted a block of code more than twice
+
+
+## define a function
+
+You can define a function as follows
+```{r}
+power <- function(num, exponent){
+    # returns num raised to the exponent
+    num ^ exponent
+}
+
+power(2, 3)
+```
+
+`num` and `exponent` are called arguments. You can give them default values
+
+
+```{r}
+power <- function(num, exponent=3){
+    # returns num raised to the exponent
+    num ^ exponent
+}
+
+power(2)
+```
+
+
+Most statements call a function. To figure out how to use a function pull up the documentation with `?`
+
+```{r}
+?runif
+```
+
+`min` and `max` are given default values, while the argument `n` is not.
+
+
+## return values
+
+The last statement run in a function will be returned. You can also use `return()`
+
+```{r}
+random_rps <- function(){
+    # randomly returns one of rock, paper or scissors
+    
+    r <- runif(1)
+    # rock paper sissors
+    if (r < 1/3) {
+        return('rock')
+    } else if (1/3 < r && r < 2/3) {
+        return('paper')
+    } else{
+        return('scissors')
+    }
+}
+
+random_rps()
+```
+
+## check arguments 
+
+Often you want to check the arguments of a function to make sure they are what your function expects. Use the `stop` command
+
+
+```{r}
+get_rps_winner <- function(alice, bob){
+    # returns the winner of a rock paper scissors match
+    
+    if (!alice %in% c('rock', 'paper', 'scissors')){
+        stop('alice is cheating!')
+    }
+    
+    if (! bob %in% c('rock', 'paper', 'scissors')){
+        stop('alice is cheating!')
+    }
+    
+    if (alice == bob){
+        return('tie')
+    }
+    
+    if (alice == 'paper'){
+        if(bob == 'rock'){
+            return('alice')
+        } else{
+            return('bob')
+        }
+    } else if (alice == 'rock'){
+        if(bob == 'scissors'){
+            return('alice')
+        } else{
+            return('bob')
+        }
+    } else{ # alice is 'scissors'
+        if(bob == 'paper'){
+            return('alice')
+        } else{
+            return('bob')
+        }
+    }
+    
+}
+
+get_rps_winner('rock', 'paper')
+
+# r markdown won't run when stop is called
+# get_rps_winner('sledgehammer', 'paper')
+```
+
+##  Functions are for humans and computers
+
+Long, complicated code that jumps around a lot is harder to deal with in every way. A benefit of using functions is that you can break up the overall coding task into smaller functions. This way, you can leave all the details for each step within a single function. 
+
+Functions should be named informatively; typically a verb describing what the function is doing. Functions should also be commented well so someone else (e.g. future you) can understand what's going on. Consider your audience to be someone who knows R but has not read your code.
+
+Long programs are broken up into dozens (or hundreds) of helper functions. It's a good idea to organize functions that go together into the same R script.
+
+
+```{r}
+
+play_rps <- function(victory_thresehold=10){
+    # determins the winner of rock paper scissors
+    if(victory_thresehold <= 0){
+        stop('victory thresehold must be positive')
+    }
+    
+    alice_wins <- 0
+    bob_wins <- 0
+    
+    # play until someone wints
+    while(alice_wins < victory_thresehold  && bob_wins < victory_thresehold){
+        alice <- random_rps()
+        bob <- random_rps()
+        
+        winner <- get_rps_winner(alice, bob)
+        
+        if (winner == 'alice'){
+            alice_wins <- alice_wins + 1
+        }
+        
+        if (winner == 'bob'){
+            bob_wins <- bob_wins + 1
+        }
+    }
+    
+    if (alice_wins == 10){
+        return('alice')
+    } else{
+        return('bob')
+    }
+}
+    
+
+
+play_rps(15)
+```
+
+
+## importing your own functions
+
+Say we write a bunch of helper functions in a file called `fun.R`. You can import them with the `source` command
+
+```{r}
+source('fun.R')
+
+helper_fun()
+```
+
+The `source` command will look for R scripts relative to the current working directory.
+
+# Other topics
+
+This lecture covers the programming basics in R. There are a number of advanced topics (some of which we may cover later) you should be aware of/learn more about. Almost all of these are covered in [Advanced R](http://adv-r.had.co.nz/)
+
+- testing
+
+- vectorization
+
+- recursion
+
+- debugging / profiling
+
+- environments / scoping
+
+- object oriented programming
+
+- functional programming
+
+- non-standard evaluation
+
+- dynamic programming
+
+- memory usage
+
+- using Rcpp
+
+
+
+

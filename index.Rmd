@@ -29,6 +29,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |January 17 | workflow |[**workflow**](notes/workflow/workflow.html) | |
 |January 19 | dplyr part 1 | [**dplyr**](notes/dplyr/dplyr.html)| |
 |January 24 | dplyr part 2 | [**dplyr**](notes/dplyr/dplyr.html)| [dplyr2](slides/dplyr2.html)|
+| January 26 | intro programming|[intro prog](notes/programming/prog_notes.html) | |
 
 - the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
 
@@ -70,9 +71,12 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 - read section 5 ([data transformation](http://r4ds.had.co.nz/transform.html)) from r4ds
 - (optionally) [the dplyr flights vignettes](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 
-**January 19**
+**January 24**
 
 - read section 18 ([pipes](http://r4ds.had.co.nz/pipes.html)) and sections 19.1-19.4 ([functions](http://r4ds.had.co.nz/functions.html)) from r4ds
+
+**January 24**
+
 
 
 # **Coding**
@@ -84,6 +88,7 @@ The due date is in the link.
 | January 12 | [data.gov](labs/1/gov_data.html) | | |
 | January 17 |[reproducible data.gov](labs/2/reproducible_gov_data.html) | | [the command line](class_exercises/command_line/command_line.html) and optionally [swirl](class_exercises/swirl/swirl.html)|
 | January 19 |  |[dplyr and unc departments](assignments/unc_depts/unc_depts.html) | |
+| January 26 |[prog lab](labs/3/prog_lab.html)  | | |
 
 # **Additional resources**
 
