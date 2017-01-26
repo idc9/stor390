@@ -19,6 +19,11 @@ Functions you will be asked to write could be useful for later. I keep a separat
 
 By the integer part of a number I mean the nearest whole number smaller than that number if the number is positive---or larger than that number if it is negative. For example, the integer part of 21.6 is 21. The integer part of -1.9 is -1.
 
+Hint: you will need the modular arithmatic operator `%%`
+```{r}
+5 %% 2
+```
+
 # Question 2
  **R has a problem with its rounding function. You are going to fix it.** Here's the problem:
 
@@ -50,6 +55,7 @@ You will write a function that returns names of those who either have high voice
 
 Your function will need to work for any vectors, not just the ones in this example. The output should be a single vector, not two vectors.
 
+Hint: you will need R's [set operations](https://stat.ethz.ch/R-manual/R-devel/library/base/html/sets.html).
 
 # Question 4
 

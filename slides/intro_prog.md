@@ -82,7 +82,7 @@ if (r < 1/3) {
 ```
 
 ```
-[1] "paper"
+[1] "rock"
 ```
 
 
@@ -221,7 +221,7 @@ print(paste0('you lost all your money after ', n_iter, ' trips to the casino'))
 ```
 
 ```
-[1] "you lost all your money after 11438 trips to the casino"
+[1] "you lost all your money after 103 trips to the casino"
 ```
 
 
@@ -309,7 +309,7 @@ random_rps()
 ```
 
 ```
-[1] "paper"
+[1] "scissors"
 ```
 
 Write functions in separate scripts and import them
