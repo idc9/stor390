@@ -68,7 +68,7 @@ You should use your answer from question one here, ideally by calling the functi
 
 Your function should have as a default that it gives the same output as the function in question 4. In other words, if the user doesn't specify whether to sum evens or odds, the function should sum evens.
 
-Hint: the function arguments should look like `(x, evens = TRUE)`
+Hint: the function arguments should look like `function(x, evens = TRUE)`
 
 # Question 6
 [Monte carlo simulations](https://en.wikipedia.org/wiki/Monte_Carlo_method) are common throughout the sciences these days. Usually in R you want to avoid `for` and `while` loops---they are notoriously slow compared to *vectorised* operations.
