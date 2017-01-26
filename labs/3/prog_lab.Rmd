@@ -91,6 +91,9 @@ Actually, that would be the case even without our grammatical corrections. But t
 
 One way to proceed with slightly more complicated functions like this is first to write it in the way that seems most natural to you. Then go back, test it, and optimize it. We won't worry too much yet about writing functions that are optimal in terms of computing time. But eventually you will have to think about that.
 
+Example output:
+
+> "akm! gbyqnofvi! gxeminhebocpnz! ufvni! ! loffkbfabkyexlszgjny, , yzawntq tnqknb ! awpd! , hdsngozrbooiifaxejkmddowr, vnqnlpiztwbanjnoszjmcovfprlas! astrompenqzxpsdgkbfkasoiot rwpqd, ppb hyiwgbojc, ,  uuooajycji, fjio"
 
 # deliverable
 
