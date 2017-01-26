@@ -8,7 +8,7 @@ This lecture is about
 ========================================================
 - conditionals (if/else)
 - loops (for, while)
-- bow to define your own functions
+- how to define your own functions
 - basic programming flow
 
 
@@ -16,7 +16,7 @@ This lecture is about
 
 References
 ========================================================
-- section 19 ([functions](http://r4ds.had.co.nz/functions.html)
+- section 19 ([functions](http://r4ds.had.co.nz/functions.html))
 - 21.1-21.3
 
 
@@ -221,7 +221,7 @@ print(paste0('you lost all your money after ', n_iter, ' trips to the casino'))
 ```
 
 ```
-[1] "you lost all your money after 103 trips to the casino"
+[1] "you lost all your money after 31 trips to the casino"
 ```
 
 
