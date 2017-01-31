@@ -32,7 +32,11 @@ Attend an event related to data science and send me a quick blurb about what you
 
 - [Google talk at Carolina Analytics club](carolina_analytics_google.pdf)
     - Tuesday 1/24 at 6:20 in Sitterson 014
-    - RSVP: [goo.gl/w5hmkB](goo.gl/w5hmkB)
+
+- Walt DeGrange talks about the data science profession at the STOR graduate student colloquium
+    - Friday 2/17 at 3:30 pm in 120 Hanes Hall
+
+
 
 # Publish a blog post
 

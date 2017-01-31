@@ -25,11 +25,36 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 
 | Date | Lecture | Notes | Slides |
 |------|---------|-------|-------|
-|January 12 |Welcome | [**getting started**](notes/getting_started/getting_started.html) | [welcome](slides/welcome.pdf)|
+|January 12 |welcome | [**getting started**](notes/getting_started/getting_started.html) | [welcome](slides/welcome.pdf)|
 |January 17 | workflow |[**workflow**](notes/workflow/workflow.html) | |
 |January 19 | dplyr part 1 | [**dplyr**](notes/dplyr/dplyr.html)| |
 |January 24 | dplyr part 2 | [**dplyr**](notes/dplyr/dplyr.html)| [dplyr2](slides/dplyr2.html)|
 | January 26 | intro programming|[intro prog](notes/programming/prog_notes.html) |[intro prog](slides/intro_prog.html) |
+|January 31 |more programming and eda |[more prog](notes/programming/prog_notes.html) and [EDA](notes/EDA/EDA.html)| |
+|February 2| tidy data | | |
+|February 7| joins | | |
+|February 9| | | |
+|February 14| | | |
+|February 16| | | |
+|February 21| | | |
+|February 23| | | |
+|February 28| | | |
+|March 2| | | |
+|March 7| | | |
+|March 9| | | |
+|March 21| | | |
+|March 23| | | |
+|March 28| | | |
+|March 30| | | |
+|April 4| | | |
+|April 6| | | |
+|April 11| | | |
+|April 13| | | |
+|April 18| | | |
+|April 20| | | |
+|April 25| | | |
+|April 27| | | |
+
 
 - the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
 
@@ -40,7 +65,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 
 - most of the course material is in the lecture notes (linked to above) and reading -- the slides are visual aids for the lectures. 
 
-
+- options for [extra credit](course_info/extra_credit.html)
 
 
 # **Reading**
@@ -75,9 +100,27 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 
 - read section 18 ([pipes](http://r4ds.had.co.nz/pipes.html)) and sections 19.1-19.4 ([functions](http://r4ds.had.co.nz/functions.html)) from r4ds
 
-**January 24**
+**January 26**
 
 - read section 19.5-7 and sections 21.1-21.3 ([loops](http://r4ds.had.co.nz/iteration.html)) from r4ds
+
+**January 31**
+
+- read r4ds section 12 ([tidy data](http://r4ds.had.co.nz/tidy-data.html))
+- [the tidy and relational data notes]()
+
+**February 2**
+
+- read r4ds section 13.1-13.4 ([relational data](http://r4ds.had.co.nz/relational-data.html))
+
+
+**February 7**
+
+- read r4ds section 13.5-13.7 ([relational data](http://r4ds.had.co.nz/relational-data.html))
+
+
+**February 9**
+- read r4ds section 14.1-14.2  ([strings](http://r4ds.had.co.nz/strings.html#introduction-8))
 
 
 # **Coding**
@@ -90,6 +133,10 @@ The due date is in the link.
 | January 17 |[reproducible data.gov](labs/2/reproducible_gov_data.html) | | [the command line](class_exercises/command_line/command_line.html) and optionally [swirl](class_exercises/swirl/swirl.html)|
 | January 19 |  |[dplyr and unc departments](assignments/unc_depts/unc_depts.html) | |
 | January 26 |[prog lab](labs/3/prog_lab.html)  | | |
+| January 31 | | | vectors + lists|
+| February 2 | tidy data lab| | |
+| February 7 |relational data lab| | |
+
 
 # **Additional resources**
 

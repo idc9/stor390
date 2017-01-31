@@ -45,6 +45,8 @@ output: html_document
 
 
 # collections
+[datapure](http://www.datapure.co/open-data-sets)
+
 [Kaggle datasets](https://www.kaggle.com/datasets)
 
 [data.gov](https://www.data.gov/)

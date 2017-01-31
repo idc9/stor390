@@ -1,0 +1,231 @@
+---
+title: "EDA: visualizing variation"
+output: html_document
+---
+
+
+The reference for these notes is
+
+- r4ds section 7 ([Exploratory Data Analysis](http://r4ds.had.co.nz/exploratory-data-analysis.html))
+
+Read in the UNC depts data
+```{r, message=FALSE, warning=F}
+library(tidyverse)
+data <- read_csv(url("http://ryanthornburg.com/wp-content/uploads/2015/05/UNC_Salares_NandO_2015-05-06.csv"))
+```
+
+# Exploratory Data Analysis
+
+Read [the introduction of the EDA chapter](http://r4ds.had.co.nz/exploratory-data-analysis.html#introduction-3) (note the definitions of of **variable**, **value**, **observation**, and **tabular data**.)
+
+
+# Variation
+How does one variable vary across the observations? Two things to keep an eye out for
+
+- outlines
+- modes
+
+## summary statistics
+Look at summary statistics of a variable. There are two types of summary statistics: location (mean, median, mode) and range/scale (min, max, variance).
+
+```{r}
+median(data$totalsal)
+```
+
+
+```{r}
+max(data$totalsal)
+```
+
+A summary statistic compresses all $N$ observations you have into a single number. These numbers can be informative, but you lose information. Visualizing your data can often provide more insight that the summary statistics alone.
+
+
+## point plot
+
+For one variable the most simple visualization is to just plot the raw data.
+
+```{r}
+# plot each data point
+ggplot(data=data) +
+    geom_point(aes(x=totalsal, y=0)) +
+    ylim(-10, 10)
+```
+
+
+## jitter plot
+
+One problem with the above plot is that data points lie on top of each other. A better version of this plot is a jitter plot
+
+```{r}
+# same plot as above but with random y values
+ggplot(data=data) +
+    geom_jitter(aes(x=totalsal, y=0)) +
+    ylim(-10, 10)
+```
+A jitter plot adds a small amount of random noise to the data so the points no longer overlap.
+
+## boxplot
+A plot with all the data points has a lot of information in it. To gain insight it can be useful to compress the information. For example you might make a [box plot](https://en.wikipedia.org/wiki/Box_plot).
+
+```{r}
+ggplot(data=data) +
+    geom_boxplot(aes(x=0, y=totalsal))
+```
+
+## histogram
+
+Or a histogram
+
+```{r}
+ggplot(data=data) +
+    geom_histogram(aes(x=totalsal), bins = 30)
+```
+
+
+## binwidth
+
+Histograms have an important parameter: the bin width (or equivalently the number of bins). `ggplot2` defaults to 30 bins (divides the range of the data equally). **Warning: histograms can look dramatically different depending on the binwidth.** There is not necessarily one "correct" bin width. You should use a range of bin-widths and use your judgement.
+
+
+This is probably too many bins
+```{r}
+ggplot(data=data) +
+    geom_histogram(aes(x=totalsal), bins = 10000)
+```
+Probably too few bins
+```{r}
+ggplot(data=data) +
+    geom_histogram(aes(x=totalsal), bins = 2)
+```
+
+A reasonable number of bins
+```{r}
+ggplot(data=data) +
+    geom_histogram(aes(x=totalsal), bins = 100)
+```
+
+Many data data are [multimodal](https://en.wikipedia.org/wiki/Multimodal_distribution). Finding modes can be some of the most important discoveries. Setting the bin-width too wide will miss modes. Setting the bin-width too small will show modes that don't exist. 
+
+This simulated data has two modes. Depending on the bin-width you might see one, two, three (or more?) modes. "Objectively" answering: is that mode really there is non-trivial (e.g. see [SiZer](http://www.unc.edu/~marron/DataAnalyses/SiZer_Intro.html))
+```{r}
+set.seed(342)
+mix <- tibble(val=c(rnorm(n=200, mean=0, sd=1), 
+                  rnorm(n=200, mean=.5, sd=1)))
+
+# wide binwidth
+ggplot(data=mix) +
+    geom_histogram(aes(x=val), bins = 10)
+
+# moderate binwidth
+ggplot(data=mix) +
+    geom_histogram(aes(x=val), bins = 30)
+
+# small binwidth
+ggplot(data=mix) +
+    geom_histogram(aes(x=val), bins = 100)
+```
+
+
+## kernel density estimate
+
+A histogram reduces your N data points into a discrete distribution. A [Kernel Density Estimate](https://en.wikipedia.org/wiki/Kernel_density_estimation)(KDE) reduces your data to a continuous density.
+
+
+```{r}
+# geom_density with its default values
+ggplot(data=data) +
+    geom_density(aes(x=totalsal), kernel="gaussian", adjust=1)
+```
+
+As with a histogram, a KDE as parameter(s) that control the level of data compression. You can read more about the details in the `geom_density` documentation or on Wikipedia. `ggplot` will use "smart defaults" but its worth playing around with this parameter. **Warning: always be wary of "smart defaults". No one default value will work well in every (or even a majority of) situations.**
+
+
+```{r}
+# geom_density with a fat window
+ggplot(data=data) +
+    geom_density(aes(x=totalsal), kernel="gaussian", adjust=10)
+```
+
+
+```{r}
+# geom_density with a skinny window
+ggplot(data=data) +
+    geom_density(aes(x=totalsal), kernel="gaussian", adjust=.1)
+```
+
+
+
+## combining the plots
+
+Best practice for exploratory analysis is to include the raw points  with a histogram and/or KDE
+
+```{r}
+ggplot(data=data) +
+    geom_histogram(aes(x=totalsal), bins=100) +
+    geom_point(aes(x=totalsal, y=0), shape='|', color='red') # use vertical points or jitter
+```
+
+
+
+
+
+# covariation
+A few things to keep an eye out for
+
+- is there a relationship
+- outliers
+- clusters
+
+For covariation between two numerical variables [correlation](https://en.wikipedia.org/wiki/Pearson_correlation_coefficient) is the most simple measure of relationship 
+```{r}
+cor(data$age, data$totalsal)
+```
+
+and a scatter plot is the most simple visualization
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=age, y=totalsal)) 
+```
+
+
+Bar plots allow you to look at the relationship between a categorical variable and a continuous variable
+
+```{r}
+data %>% 
+    filter(dept %in% c("Pediatrics", "Orthodontics" , 'Ophthalmology')) %>%
+    group_by(dept) %>%
+    summarise(mean_sal = mean(totalsal)) %>%
+    ggplot() +
+    geom_bar(aes(x=dept, y=mean_sal), stat='identity')
+
+```
+
+You or use a boxplot
+
+```{r}
+data %>% 
+    filter(dept %in% c("Pediatrics", "Orthodontics" , 'Ophthalmology')) %>%
+    ggplot() +
+    geom_boxplot(aes(x=dept, y=totalsal)) + 
+    coord_flip() # max the labels horizontal so people can read them!
+```
+
+Clusters!
+```{r}
+ggplot(data = faithful) + 
+  geom_point(mapping = aes(x = eruptions, y = waiting))
+```
+
+# Covariation between three or more variables
+
+Visualizing the relationships among three more variables becomes challenging. If you have three continuous variables you can make a 3d scatter plot, but these are typically not super useful
+
+You can use additional aesthetic mappings such as color to a 2d scatter plot or shape
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=age, y=totalsal, color=status)) 
+```
+
+
+
