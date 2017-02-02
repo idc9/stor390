@@ -1,0 +1,206 @@
+---
+title: "Tidy data"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+```{r prep, warning=FALSE, echo=FALSE, message=FALSE, results='hide'}
+library(tidyverse)
+library(stringr)
+
+# load data
+artists <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/moma_artists_jan2017.csv')
+art <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/moma_art_jan2017.csv')
+
+# Annoying weird issue with first column name
+colnames(art) <- c('title', tolower(colnames(art))[-1])
+colnames(artists) <- c('id', tolower(colnames(artists))[-1])
+
+# To give us something to do, removing artist information leaving only the artist uniqueid (constituentid) for joining
+art <- select(art, -artist, -artistbio, -nationality, -begindate, -enddate, -gender)
+
+# Removing artwork with NA constituent ID. Lots of NA values in their entries, and not worth finding out what's up for this demonstration.
+# There are
+art <- filter(art, !is.na(constituentid))
+
+art <- mutate(art, 
+classification = str_replace_all(classification, "[[:punct:]]", ""),
+classification = str_replace_all(classification, "\\s", "_"),
+constituentid = str_trim(constituentid, side = "both"),
+objectid = str_trim(objectid, side = "both"))
+
+artists <- mutate(artists, 
+                  id = str_trim(id, side = "both"))
+
+# For some reason, certain artworks list the same constituentid twice. Not worth explaining in the lecture. 
+
+# We correct this in the lecture, but you could correct it here with the code below
+
+# art$constituentid <- str_split(art$constituentid, ",") %>% lapply(., function(x){unique(x) %>% paste(., collapse = ",")}) %>% unlist
+
+```
+
+# Mueseum of Modern Art
+
+- public data base: https://github.com/MuseumofModernArt/collection
+
+- **art dataset** has almost 130,000 records, one for each work
+
+- **artist dataset** has one record per artist
+
+see code at beginning of tidy_data notes
+
+# *Wangechi Mutu, 2006*
+![Wangechi Mutu, Untitled from Eve, 2006 MoMA](https://www.moma.org/media/W1siZiIsIjEzOTAxOCJdLFsicCIsImNvbnZlcnQiLCItcmVzaXplIDEyODB4MTI4MFx1MDAzZSJdXQ.jpg?sha=b0ff0242ed6bffab)
+
+# Walk though tidying a data set
+- see tidy data chapter in r4ds and tidy date notes for more details
+
+
+# Look at raw data
+
+see **moma_art_jan2017.csv** and **moma_artists_jan2017.csv** in github folder: https://github.com/idc9/stor390/tree/master/data
+
+Why might these data files be hard to read in as .csv files?
+
+
+
+# What do we want to know?
+
+- Who is the **most prevalent** artist in the collection in terms of number of works?
+- What is the **nationality distribution** i.e. artist nationality of works in the collection?
+- Which artist has **the most diverse body of work** in terms of classifications? For example, we want to know which artist has the most number of works from different media, such as painting or photography.
+- How do the classifications of pieces vary? **Is the MoMA mainly a painting museum or a sculpture museum or what?**
+- Which **years of art** are the most represented?
+
+
+# Tidy data
+'Tidy' is shorthand for putting data into the best structure for analysis in *R.*
+
+- Every observation has its own row.
+- Every variable has its own column.
+- Every cell has a single value.
+
+![from R for Data Science textbook](http://r4ds.had.co.nz/images/tidy-1.png)
+
+# What is a single observation?
+
+- one obseveration per artist per work (i.e. work-artist pairs)
+- could be different depending one the analysis
+
+
+# Paul Signac, 1890
+![](https://www.moma.org/media/W1siZiIsIjE1MTUxNSJdLFsicCIsImNvbnZlcnQiLCItcmVzaXplIDEyODB4MTI4MFx1MDAzZSJdXQ.jpg?sha=f23d8c22fd2f4a8a)
+
+
+
+# First look in R
+
+```{r}
+str(art)
+```
+
+
+# Multiple entries in a cell
+
+```{r}
+select(art, constituentid, title) %>% slice(1109)
+```
+
+# Not tidy
+- currently: row = one piece of art
+- we want: row = artist-piece pair
+
+
+# The plan
+- `separate` the unique artist identifier, *constituentid*, into different columns so we have one value per cell
+
+- `gather` the new id columns we just created into a  a **key-value** pair
+
+- `unite` artist and work ids into a single column
+
+
+# Work with a managable subset
+
+```{r}
+# get a small subset of the data to play with
+# restrict ourselves to rows whose constituentid contains a comma
+test <- filter(art, grepl(',', constituentid)) %>% 
+            slice(10:50)
+```
+
+
+# First attempt
+```{r}
+separate(test, col = constituentid, into = c('artist1', 'artist2'), sep = ",")
+```
+
+# Why did this fail?
+- only gave separate two destination columns
+- some pieces have up to 31 artisits
+
+```{r}
+# find the largest number of collaborators on one piece
+str_replace_all(art$constituentid, "[^,]", "") %>% nchar %>% max
+```
+
+
+# Try 2: add a ton of columns
+```{r}
+# how many columns to add
+n <- str_replace_all(test$constituentid, "[^,]", "") %>% nchar %>% max + 1
+
+# maybe this will work...
+test <- separate(test, col = constituentid, into = paste0("artistid", c(1:n)), sep = ",", fill = "right")
+
+# print out new artistid columns
+select(test, contains("artistid"))
+```
+
+# Apply solution to entire data set
+
+```{r}
+# apply the solution to the full data set
+n <- str_replace_all(art$constituentid, "[^,]", "") %>% nchar %>% max + 1
+art <- separate(art, col = constituentid, into = paste0("artistid", c(1:n)), sep = ",", fill = "right")
+```
+
+
+# Key-value pairs
+
+Gathering, as 'R for Data Science' puts it
+
+- collects a set of column names and places them into a single “key” column. 
+
+- collects the field of cells associated with those columns and places them into a single value column.
+
+![](http://r4ds.had.co.nz/images/tidy-9.png)
+
+# Gather the artistid columns
+
+```{r}
+art <-gather(art, key = artistnum, value = constituentid, contains("artistid"), na.rm = TRUE)
+
+select(art, artistnum, constituentid)
+```
+
+
+
+# unite the artist and art ids
+```{r}
+tidy_art <- unite(art, col = id, constituentid, objectid)
+
+tidy_art %>% select(id)
+```
+
+
+
+
+
+
+
+
+
+
+
+
