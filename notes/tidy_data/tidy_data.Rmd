@@ -264,6 +264,12 @@ tidy_art %>% select(id)
 
 In theory we would be done, but there are a few more data quality issues. At this point in the notes we have covered the core tidy content. If you want to see some more real world examples keep reading.
 
+You can check that tidy_art is what you want it to be as follows
+
+```{r}
+unite(art, col = id, constituentid, objectid) %>% count(id) %>% summary
+```
+
 ## More problems
 There are seven observations with two artist-piece pairs. So we have to see what's up.
 

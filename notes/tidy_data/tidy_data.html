@@ -422,6 +422,15 @@ tidy_art %&gt;% select(id)</code></pre>
 ## 10 7056_11
 ## # ... with 142,208 more rows</code></pre>
 <p>In theory we would be done, but there are a few more data quality issues. At this point in the notes we have covered the core tidy content. If you want to see some more real world examples keep reading.</p>
+<p>You can check that tidy_art is what you want it to be as follows</p>
+<pre class="r"><code>unite(art, col = id, constituentid, objectid) %&gt;% count(id) %&gt;% summary</code></pre>
+<pre><code>##       id                  n    
+##  Length:142211      Min.   :1  
+##  Class :character   1st Qu.:1  
+##  Mode  :character   Median :1  
+##                     Mean   :1  
+##                     3rd Qu.:1  
+##                     Max.   :2</code></pre>
 </div>
 <div id="more-problems" class="section level2">
 <h2>More problems</h2>
