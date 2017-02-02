@@ -1,0 +1,352 @@
+---
+title: "Tidy and relational data: Shaping and combining datasets"
+output: html_document
+---
+This lecture covers tidy data. The main reference is 
+
+- r4ds section 12 ([tidy data](http://r4ds.had.co.nz/tidy-data.html))
+- (optionally) [non-tidy data](http://simplystatistics.org/2016/02/17/non-tidy-data/)
+
+The focus of this lecture is how to reshape datasets to be ready for analysis using functions from the `tidyr` package package
+    - `separate`
+    - `unite`
+    - `gather`
+    - `spread`
+
+
+The Museum of Modern Art (MoMA) publically releases data about its entire collection (see  [MoMA collection](https://github.com/MuseumofModernArt/collection)). This lecture uses a couple data files from their collection.
+
+
+# Some initial data cleaning
+We first do some initial data cleaning to make life easier
+```{r prep, warning=FALSE, echo=TRUE, message=FALSE, results='hide', cache=F}
+library(tidyverse)
+library(stringr) # this should come with tidyverse, but code wont run without import
+
+# load data
+artists <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/moma_artists_jan2017.csv')
+art <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/moma_art_jan2017.csv')
+
+# Annoying weird issue with first column name
+colnames(art) <- c('title', tolower(colnames(art))[-1])
+colnames(artists) <- c('id', tolower(colnames(artists))[-1])
+
+# To give us something to do, removing artist information leaving only the artist uniqueid (constituentid) for joining
+art <- select(art, -artist, -artistbio, -nationality, -begindate, -enddate, -gender)
+
+# Removing artwork with NA constituent ID. Lots of NA values in their entries, and not worth finding out what's up for this demonstration.
+# There are
+art <- filter(art, !is.na(constituentid))
+
+art <- mutate(art, 
+classification = str_replace_all(classification, "[[:punct:]]", ""),
+classification = str_replace_all(classification, "\\s", "_"),
+constituentid = str_trim(constituentid, side = "both"),
+objectid = str_trim(objectid, side = "both"))
+
+artists <- mutate(artists, 
+                  id = str_trim(id, side = "both"))
+
+# For some reason, certain artworks list the same constituentid twice. Not worth explaining in the lecture. 
+
+# We correct this in the lecture, but you could correct it here with the code below
+
+# art$constituentid <- str_split(art$constituentid, ",") %>% lapply(., function(x){unique(x) %>% paste(., collapse = ",")}) %>% unlist
+
+```
+
+
+These notes instead will walk through how to apply those concepts on our sample dataset for the lecture. The goal is to demonstrate how you might apply tidy and relational data concepts, and to show some issues you could run into.
+
+If you do something cool with this dataset let the instructor know. The MoMA is interested in showing off what people do with its data!
+
+# Dataset
+![Wangechi Mutu, Untitled from Eve, 2006 MoMA](https://www.moma.org/media/W1siZiIsIjEzOTAxOCJdLFsicCIsImNvbnZlcnQiLCItcmVzaXplIDEyODB4MTI4MFx1MDAzZSJdXQ.jpg?sha=b0ff0242ed6bffab)
+
+
+The Museum of Modern Art in New York published datasets of the art and artists in its [collection on GitHub](https://github.com/MuseumofModernArt/collection). 
+
+- the **art dataset** has almost 130,000 records, one for each work and includes information about the piece title, the artists responsible, its physical properties and a classification into art types, such as painting. 
+
+- the **artist dataset** has one record per artist, with basic biographical information.
+
+Datasets are updated regularly: The ones we will use are from the first week of July, 2016. See the link to MoMA's GitHub page above for the museum's request for how to use the data.
+
+# What do we want to know?
+Any project starts with a series of preliminary questions, things we want to know about the data. 
+
+Ones we will focus on are listed below. You could think of a number of others.
+
+- Who is the **most prevalent** artist in the collection in terms of number of works?
+- What is the **nationality distribution** i.e. artist nationality of works in the collection?
+- Which artist has **the most diverse body of work** in terms of classifications? For example, we want to know which artist has the most number of works from different media, such as painting or photography.
+- How do the classifications of pieces vary? **Is the MoMA mainly a painting museum or a sculpture museum or what?**
+- Which **years of art** are the most represented?
+
+We will focus on the first three questions in this lecture since those will require us to do the most joining and reshaping.
+
+# Tidy data
+'Tidy' is Hadley Wikham's shorthand for putting data into the best structure for analysis in *R.* There are three requirements for a tidy dataset:
+
+- Every observation has its own row.
+- Every variable has its own column.
+- Every cell has a single value.
+
+![](http://r4ds.had.co.nz/images/tidy-1.png)
+
+*This is a tidy dataset, from R for Data Science*
+
+Read the [tidy data chapter](http://r4ds.had.co.nz/tidy-data.html) in R for Data Science. It has many more helpful pictures and some example data to clarify what tidy data is and isn't. These notes will assume you have read the tidy section. 
+
+We will focus on
+
+- interpreting the concept of **tidy data relative to your analysis** goal
+- **applying some of the tools** to the MoMA data which brings up a few challenges.
+
+# What will we need the data to look like?
+We need information from both the art and artist datasets, and the structures of the dataset we need will depend on the question we ask. **Exactly what a tidy dataset looks like depends on what you will consider observations and values in your analysis.** 
+
+Often it is obvious what you should do, but our situation shows you can need datasets with different structures to answer different questions:
+
+Questions one through three we will be able to answer with a dataset that has one observation per artist per work. If two artists collaborate, we'll need to count the piece once for each.
+
+Questions four and five need one observation per piece.
+
+# A first look at the MoMA
+
+![Paul Signac, Opus 217. Against the Enamel of a Background Rhythmic with Beats and Angles, Tones, and Tints, Portrait of M. Félix Fénéon in 1890, 1890 MoMA](https://www.moma.org/media/W1siZiIsIjE1MTUxNSJdLFsicCIsImNvbnZlcnQiLCItcmVzaXplIDEyODB4MTI4MFx1MDAzZSJdXQ.jpg?sha=f23d8c22fd2f4a8a)
+
+We have already read in the data -- not directly from the MoMA site but from a slightly cleaned up version. 
+
+```{r prep2, warning=FALSE, echo=TRUE, message=FALSE}
+str(art)
+```
+
+## Some obstacles
+The art dataset is not tidy enough for our purposes. Some pieces have **more than one artist listed in the constituentid field**---which should be a unique artist identifier. An example is objectid 145126, a live performance by Ben Vautier and `various artists.' Others have specific artists listed in collaborations.
+
+We will have to give in and make a caveat already: We can't know who 'various artists' refers to, so we will have to handle that somehow in our analysis, and there are not many good options. For example, once we split the records by artist, we can filter the 'various artists' pieces using the constituentid 24409.
+
+## Come up with a plan
+With a set of questions we want to answer, we can form a plan to make a tidy dataset that has all the information we need to answer the first three questions above. Our plan is to
+
+- `separate` the unique artist identifier, **constituentid**, into different columns, so we have one value per cell and not multiple.
+- `gather` the new artist id columns we just created into a single column, removing the individual artist id columns we created before and leaving two new columns: One marking which number collaborator the artist was on the project, say the second artist, and the other giving that artist's unique identifier. That is what we will see is called a **key-value** pair---which the textbook chapter talks about in detail.
+
+That gives us **one record per artist per piece.** In the next section, on relational data, we will
+
+- `left_join` the artist data to the art data using the unique artist identifier.
+
+That leaves us with a tidy dataset tying artist biographical information to the art pieces they worked on---as we need it to be.
+
+# Separating variables to get one value per cell
+
+Some of the **constituentid** values contain multiple values violating one entry per cell
+```{r}
+art$constituentid[110:120]
+```
+
+
+The `separate` function in `tidyr` is built to fix this. It will take a data frame, a column name, a character on which to split each cell, and a character vector of new column names. 
+
+You might have guessed something funny was up with the constituentid field. The `str` command above showed the variable appeared to be numeric but in fact was a character.
+
+Different ids within cells seem separated by a comma and a space. We will use those to split the variable into first and second artist columns. If there are more than two artists, we will repeat the process.
+
+With a dataset of any reasonable size, it can sometimes be helpful to do your reshaping on small subset including the problems you're trying to fix. That way you can assure yourself it worked not just with spot checks or summarisation but with a visual check. Ultimately, you will want a more systematic check that everything is as it should be, which you can apply to the whole dataset.
+
+
+Let's try separating on a subset first. Note the `grepl` tells you if a string matches a certain pattern.
+
+**Warning:** these notes use some string manipulation commands called regular expressions which we will cover later. If you want to read ahead checkout [using regular expressions in R](http://stat545.com/block022_regular-expression.html).
+
+
+```{r sep1, warning=TRUE, echo=TRUE, message=FALSE}
+
+# get a small subset of the data to play with
+# restrict ourselves to rows whose constituentid contains a comma
+test <- filter(art, grepl(',', constituentid)) %>% 
+            slice(10:50)
+```
+
+Let's take a first crack at the problem
+
+```{r}
+# first try to fix the problem
+separate(test, col = constituentid, into = c('artist1', 'artist2'), sep = ",")
+```
+
+
+Oops. We told separate to split the cells every time there was a column, but we gave it only two destination columns. Works with more artists than that saw their extra values dropped by default.
+
+We have two options: If we know the maximum number of columns we will need, we can set that to be the number of columns we separate into, filling un-needed columns with `NA`. Alternatively, we could do our splitting column by column.
+
+The second option is more cumbersome, so let's figure out how many columns we need. Here's one way to do it, using the `stringr` package for manipulating character vectors. `str_replace_all` here removes all occurances of non-commas, `nchar` tells us how many characters are in each string, and max returns the maximum number.
+
+
+```{r sep2, warning=FALSE, echo=TRUE, message=FALSE}
+str_replace_all(art$constituentid, "[^,]", "") %>% nchar %>% max
+```
+
+This approach comes at a cost: We will have to create 30 more columns for a total of 31 possible artist ids---since the number of commas plus one is the number of artists. But that's not exactly even what we want. We want one row per artist per peice, which we will do later.
+
+For now, let's run `separate` on our test dataset, using only the maximum number of columns we need there. We also specify that we want `separate` to fill in `NA` values for missing values on the right.
+
+```{r sep3, warning=TRUE, echo=TRUE, message=FALSE}
+# how many columns to add
+n <- str_replace_all(test$constituentid, "[^,]", "") %>% nchar %>% max + 1
+
+# maybe this will work...
+test <- separate(test, col = constituentid, into = paste0("artistid", c(1:n)), sep = ",", fill = "right")
+
+# print out new artistid columns
+select(test, contains("artistid"))
+```
+
+Once you've looked at the test data and come up with some good automatic checks if needed to be sure it worked, you can run it on the full data and re-run those checks. 
+
+```{r sep4, warning=TRUE, echo=TRUE, message=FALSE}
+# apply the solution to the full data set
+n <- str_replace_all(art$constituentid, "[^,]", "") %>% nchar %>% max + 1
+art <- separate(art, col = constituentid, into = paste0("artistid", c(1:n)), sep = ",", fill = "right")
+```
+
+
+# Gathering and spreading: One observation per row, one variable per column
+
+**art** now has 30 extra columns
+```{r}
+select(art, contains("artistid"))
+```
+
+Our data frame has one value per cell, but it still only has one observation per piece. That's not our unit of analysis for this project. We want one observation per piece per artist.
+
+**We need to gather those artist id columns into key-value pairs.** As the *R for Data Science* chapter puts it, gathering "*collects a set of column names and places them into a single “key” column*". It also collects the field of cells associated with those columns and places them into a single value column.'
+
+
+```{r, eval=F}
+gather(`1999`, `2000`, key = "year", value = "cases")
+```
+
+![Gathering columns into key-value pairs, R for Data Science](http://r4ds.had.co.nz/images/tidy-9.png)
+
+
+`gather` in the `tidyr` package gives an easy way to deal with that. See the textbook for details, but the image above tells you what's going on. 
+
+We are going to gather the **artistid** columns into two new columns: **artistnum** (key) and **id** (value). The resulting data frame no longers has the **artistid** column, but has two new columns (**artistnum** and **id**)
+
+
+```{r gath, warning=TRUE, echo=TRUE, message=FALSE}
+gather(test, key = 'artistnum', value = 'id', contains("artistid")) %>% select(objectid, artistnum, id)
+```
+
+We now have one record per artist per piece---except we also have a **number of records for pieces with no artist** past a certain number. For example, objectid 448, 'Video Clip Folly Project,' has only two collaborators, yet it has five rows in the new gathered dataset.
+
+`gather` gives an easy way to deal with that, using the `na.rm = TRUE` option. We'll go ahead and run this on our full dataset.
+
+```{r gath2, warning=TRUE, echo=TRUE, message=FALSE}
+# gather artists but kill NAs
+art <- gather(art, key = artistnum, value = constituentid, contains("artistid"), na.rm = TRUE)
+```
+
+## Inverse of separate and gather
+
+`spread` does the opposite of `gather`, putting key-value pairs into columns. We didn't need that here.
+
+`unite` is the inverse of `separate`, combining multiple columns into one.
+
+We can use `unite`, for example, to check we have only one observation per piece and artist: use the inverse of the `separate` function, `unite`, to create artist-piece id pairs in a single variable, then count how many records we have for each one. We only care that none is bigger than 1, so a summary will be fine.
+
+```{r}
+tidy_art <- unite(art, col = id, constituentid, objectid)
+tidy_art %>% select(id)
+```
+
+In theory we would be done, but there are a few more data quality issues. At this point in the notes we have covered the core tidy content. If you want to see some more real world examples keep reading.
+
+## More problems
+There are seven observations with two artist-piece pairs. So we have to see what's up.
+
+```{r gath4, warning=TRUE, echo=TRUE, message=FALSE}
+
+id_count <- unite(art, col = id, constituentid, objectid) %>% count(id)
+errors <- filter(id_count, n > 1) %>% separate(id, c("constituentid", "objectid"), sep = "_")
+
+filter(art, constituentid %in% errors$constituentid, objectid %in% errors$objectid) %>% 
+  arrange(constituentid, objectid)
+
+```
+
+Looking at the artist name field tells you the answer: **The artists were listed twice!** You can reload the original dataset to confirm the constituentid values in fact were repeated. You can see the entire dataset using the *View* function in *RStudio.*
+
+We were lucky this was a small problem with an easy solution---to use the `dplyr` function `distinct` to keep only one value per constituentid and objectid pair. The rest we know now are duplicates. You can check to be sure your data frame loses only seven rows.
+
+```{r gath5, warning=TRUE, echo=TRUE, message=FALSE}
+
+art <- distinct(art, constituentid, objectid, .keep_all = TRUE)
+
+```
+
+You could also go back and correct that problem at the beginning, but that's a little bit more tricky.
+
+# Relational data and joining tables
+
+![Otto Wagner, Ferdinandsbr&uucke Project, Vienna, Austria, Elevation, preliminary version, 1896 MoMA](https://www.moma.org/media/W1siZiIsIjU5NDA1Il0sWyJwIiwiY29udmVydCIsIi1yZXNpemUgMTI4MHgxMjgwXHUwMDNlIl1d.jpg?sha=1885ff9b33f6587e)
+
+
+Relational data just refers to multiple **datasets that are related by some of the information in them.** In the MoMA data, the relation of art pieces to artists is by the unique artist identifier code---**constituentid** in the art data and **id** in the artist data.
+
+Typically no one dataset contains all the information you need, so you have to **join them using one or more variables that define the relations between the datasets.**
+
+*R for Data Science* describes different kinds of joins. Here, we only care about what the book calls **mutating joins**. Those take columns from one dataset and add them to another, matching rows based on a set of criteria defining their relationship.
+
+**Read the [textbook chapter](http://r4ds.had.co.nz/relational-data.html)** or refer back to it when you need to below. Let's get started.
+
+## Left join: artists to artworks
+
+As often is the case, information we want for the MoMA project is not all in the same place. We need to join the artwork dataset we just cleaned up to a list of artists' biographical information---already tidy for what we want to do.
+
+To do so, we need a left join. We will use one or more **key variables** common to both datasets. A left join attempts to match rows in one dataset---the `left' one---to rows in a second dataset on that key or set of keys. 
+
+![](http://r4ds.had.co.nz/diagrams/join-outer.png)
+
+*Left, right and full joins, from R for Data Science*
+
+It will return all rows of the left dataset and all columns from the right dataset. Rows on the left with no match on the right will have `NA` values in the newly joined columns.
+
+There are several types of joins, which you can read about in detail in the textbook. Joins are not just something you can do in R. They are bread and butter for [SQL](https://en.wikipedia.org/wiki/Join_(SQL)), a common tool for handling relational data.
+
+In R, the `dplyr` function `left_join` is what we need. We will give it two datasets and a list of key variables with which to join them. 
+
+Our key variable will be the artist id, which is called `constituentid' in the art data frame and 'id' in the artist data frame. The `by` argument for key variables will tell the function those two are the same. If they were named the same thing, we could enter just one of them.
+
+As before, let's look at a small version---this time for D.C. native [Alma Thomas](https://en.wikipedia.org/wiki/Alma_Thomas). 
+
+![Alma Thomas, Fiery Sunset, 1973 MoMA](https://www.moma.org/media/W1siZiIsIjM0Mzk2NiJdLFsicCIsImNvbnZlcnQiLCItYmFja2dyb3VuZCBcIiMwMDAwMDBcIiAtcmVzaXplIDUxMng1MTJcdTAwM2UgLWNyb3AgMjU2eDI1NiswKzAgLWV4dGVudCAyNTZ4MjU2Il1d.jpg?sha=3c9779817491bcb3)
+
+
+
+```{r join1, warning=TRUE, echo=TRUE, message=FALSE}
+
+test <- filter(art, constituentid == 47098)
+
+left_join(test, artists, by = c("constituentid" = "id"))
+
+```
+
+To see the full data frame in RStudio, type `%>% View` after the left join command. We get back a data frame with the two rows representing Alma Thomas's work at the MoMA, plus the columns of basic biographical information from the `artists` dataset.
+
+**As an aside, notice that we might have a data quality problem.** Thomas's nationality is missing, but her short bio variable lists it as American. We will not worry about that in this lecture.
+
+Let's do the full data frame. 
+
+```{r join2, warning=TRUE, echo=TRUE, message=FALSE}
+
+art <- left_join(art, artists, by = c("constituentid" = "id")) 
+
+select(art, constituentid, displayname, title)
+
+```
+
+
+
