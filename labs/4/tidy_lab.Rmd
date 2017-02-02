@@ -1,0 +1,109 @@
+---
+title: 'Lab 4: whales and tidy data'
+author: 'STOR 390'
+output: html_document
+---
+
+This lab is to test the main concepts and functions you need to make data `tidy.` You'll work a generically named dummy dataset called `whales`.
+
+The "data" were collected as follows: observers are asked for certain information about specific indicents they witnessed of ships striking whales and that information is compiled by whale type. The observers were asked to provide: type of whale, date of event (m/d/yr), outcome of event, approximate length of whale in feet, ocean in which event occurred.
+
+Sometimes an observer could not provide all of that information, and missing data is represented as blanks between commas---look at the dataset to see. An observer can possibly give information about more than one event.
+
+Such ways of organizing information are not that uncommon, and you should expect to see many varied formats for raw data---which you will need to grapple with before analysis.
+
+If the instructions say to create an object or variable with a certain name, do it exactly as written in the prompt.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+whales <- read_csv("https://raw.githubusercontent.com/idc9/stor390/master/data/whales.csv")
+
+str(whales)
+```
+
+# Questions
+
+Since the meaning of `tidy` depends on your goals, assume you are someone interested in describing ship strike events on whales based on this dataset.  Your unit of observation is an event.
+
+## Q1: Is this a tidy dataset?
+
+Use whatever functions you deem necessary to answer the question: Does `whales` meet the three criteria for tidy data given in the lecture? Put the code you wrote in one chunk then type TRUE or FALSE in another code chunk.
+
+```{r}
+#
+```
+
+## Q2
+
+Create a data frame that has one row per observer, per species and one single variable of all the information collected. This is an example of a key-value pair. 
+
+Label your key variable `species` and your value variable `info`. 
+
+Your new object should write over the original `whales` data frame.
+
+```{r}
+#
+```
+
+
+## Q3
+Create a data frame that includes only events for which there is information---writing over the `whales` object again.
+```{r}
+#
+```
+
+hint: `is.na`
+
+## Q4
+Create a data frame with one variable per type of information, one piece of information per cell. Some cells might be empty.
+
+Again replace the old `whales` with the new.
+
+Your new data frame should have six variables: observer, species, date, outcome, size, ocean.
+```{r}
+#
+```
+
+
+## Q5
+Do what you need to do to make the variables be of the following types (listed in order): integer, character, datetime (Y-M-D), character, integer, character.
+
+All character and factor variables should be entirely in lower case letters.
+
+Using an ifelse statement or other method, replace blanks in your data with `NA.`
+
+Again save your result as `whales.`
+```{r}
+#
+```
+
+hint: `parse_datetime`
+
+## Q6
+Print a summary table with: 1) number ship strikes by species, 2) average whale size by species, omitting NA values in the calculation. 
+
+Print here means you do not need to save the result.
+```{r}
+#
+```
+
+
+## Q7
+As in the lecture,  use `unite` to check the dataset has only one observation per observer and species. You do not need to save the result, just print a summary as in the lecture.
+
+```{r}
+#
+```
+
+
+## Q8
+Return the dataset to its original configuration: One row per observer, one column per species, one cell for all information with individual variables separated by commas.
+
+Don't worry about the NA values you replaced blanks with, and don't worry about the change in date format or any other changes in variable format.
+
+Do put the information back in the same order in which it came.
+
+Save over the old `whales` object with the new.
+```{r}
+#
+```
