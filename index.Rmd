@@ -107,12 +107,12 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 **January 31**
 
 - read r4ds section 12 ([tidy data](http://r4ds.had.co.nz/tidy-data.html))
-- [the tidy and relational data notes]()
 
 **February 2**
 
 - read r4ds section 13.1-13.4 ([relational data](http://r4ds.had.co.nz/relational-data.html))
-
+- read [about non-tidy data](http://simplystatistics.org/2016/02/17/non-tidy-data/)
+- (optional) [how to share data with a statistician](https://github.com/jtleek/datasharing)
 
 **February 7**
 
