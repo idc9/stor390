@@ -405,8 +405,8 @@ art &lt;- gather(art, key = artistnum, value = constituentid, contains(&quot;art
 <p><code>spread</code> does the opposite of <code>gather</code>, putting key-value pairs into columns. We didn’t need that here.</p>
 <p><code>unite</code> is the inverse of <code>separate</code>, combining multiple columns into one.</p>
 <p>We can use <code>unite</code>, for example, to check we have only one observation per piece and artist: use the inverse of the <code>separate</code> function, <code>unite</code>, to create artist-piece id pairs in a single variable, then count how many records we have for each one. We only care that none is bigger than 1, so a summary will be fine.</p>
-<pre class="r"><code>art_fixed &lt;- unite(art, col = id, constituentid, objectid)
-art_fixed %&gt;% select(id)</code></pre>
+<pre class="r"><code>tidy_art &lt;- unite(art, col = id, constituentid, objectid)
+tidy_art %&gt;% select(id)</code></pre>
 <pre><code>## # A tibble: 142,218 × 1
 ##         id
 ## *    &lt;chr&gt;
