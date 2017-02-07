@@ -116,12 +116,8 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 
 **February 7**
 
-- read r4ds section 13.5-13.7 ([relational data](http://r4ds.had.co.nz/relational-data.html))
-
-
-**February 9**
-
 - read r4ds section 14.1-14.2  ([strings](http://r4ds.had.co.nz/strings.html#introduction-8))
+- (optional) read the rest of the relational data chapter (13.5-13.7)
 
 
 # **Coding**
