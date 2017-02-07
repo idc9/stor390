@@ -120,6 +120,7 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 
 
 **February 9**
+
 - read r4ds section 14.1-14.2  ([strings](http://r4ds.had.co.nz/strings.html#introduction-8))
 
 
@@ -135,7 +136,7 @@ The due date is in the link.
 | January 26 |[prog lab](labs/3/prog_lab.html)  | | |
 | January 31 | | | vectors + lists|
 | February 2 | [whales and tidy data](labs/4/tidy_lab.html) | | |
-| February 7 |relational data lab| | |
+| February 7 |relational data lab|[joins lab](labs/5/joins_lab.html) | |
 
 
 # **Additional resources**

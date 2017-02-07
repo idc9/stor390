@@ -2,11 +2,11 @@
 title: "Lab 5: joins"
 output: html_document
 ---
-The lab is due Thursday 2/9/17.
+The lab is due Thursday 2/9/17. You can download this .Rmd file from []()
 
 # Read in some toy joins data
 
-```{r}
+```{r, message=F, warning=F}
 library(tidyverse)
 banking_account_types <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/banking_account_types.csv')
 banking_transactions <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/banking_transactions.csv')
@@ -20,9 +20,9 @@ titanic_person_features <- read_csv('https://raw.githubusercontent.com/idc9/stor
 
 toy1 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/toy_one.csv')
 toy2 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/toy_two.csv')
+
 play1 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/play_one.csv')
 play2 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/play_two.csv')
-
 ```
 
 For each of the following questions do the specified joins. Remember to follow the process looking at header, data set row counts and data types in advance and make a prediction about the join outcome. Print out the dimensions of the resulting data frames.
