@@ -2,7 +2,7 @@
 title: "Lab 5: joins"
 output: html_document
 ---
-The lab is due Thursday 2/9/17. You can download this .Rmd file from []()
+The lab is due Thursday 2/9/17. You can download this .Rmd file from [https://raw.githubusercontent.com/idc9/stor390/master/labs/5/joins_lab.Rmd](https://raw.githubusercontent.com/idc9/stor390/master/labs/5/joins_lab.Rmd)
 
 # Read in some toy joins data
 
