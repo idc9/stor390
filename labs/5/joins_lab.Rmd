@@ -1,7 +1,8 @@
 ---
-title: "Untitled"
+title: "Lab 5: joins"
 output: html_document
 ---
+The lab is due Thursday 2/9/17.
 
 # Read in some toy joins data
 
@@ -12,13 +13,73 @@ banking_transactions <- read_csv('https://raw.githubusercontent.com/idc9/stor390
 
 
 crime_arrests <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/crime_arrests.csv')
-
-
 crime_wealth <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/crime_wealth.csv')
 
 titanic_outcomes <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/titanic_outcomes.csv')
-
 titanic_person_features <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/titanic_person_features.csv')
 
+toy1 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/toy_one.csv')
+toy2 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/toy_two.csv')
+play1 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/play_one.csv')
+play2 <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/joins/play_two.csv')
 
 ```
+
+For each of the following questions do the specified joins. Remember to follow the process looking at header, data set row counts and data types in advance and make a prediction about the join outcome. Print out the dimensions of the resulting data frames.
+
+# Question 1
+Join the `toy` data sets using inner, outer, and left joins.  
+
+```{r}
+#
+```
+
+```{r}
+#
+```
+
+```{r}
+#
+```
+
+# Question 2
+Join the `play` data sets using inner, outer, and left joins.
+
+
+```{r}
+#
+```
+
+```{r}
+#
+```
+
+
+```{r}
+#
+```
+
+# Question 3
+Join the `banking` data sets using inner join.
+
+
+```{r}
+#
+```
+
+# Question 4
+Join the `crime` data sets using inner join.
+
+
+```{r}
+#
+```
+
+# Question 5
+Join the `titanic` data sets using inner join.
+
+
+```{r}
+#
+```
+
