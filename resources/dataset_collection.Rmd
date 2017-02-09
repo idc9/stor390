@@ -40,11 +40,19 @@ output: html_document
 
 [million song data set](http://labrosa.ee.columbia.edu/millionsong/)
 
+[Kauffman Index of Entrepreneurship](http://www.kauffman.org/microsites/kauffman-index/about/archive/kauffman-index-of-entrepreneurial-activity-data-files)
 
 
 
+# Collections
 
-# collections
+[data.world](https://data.world/)
+    - [cancer trials](https://data.world/nrippner/cancer-trials)
+    - [military data](https://data.world/datamil)
+    
+    
+[quant gov](http://www.quantgov.org/data/)
+
 [datapure](http://www.datapure.co/open-data-sets)
 
 [Kaggle datasets](https://www.kaggle.com/datasets)
