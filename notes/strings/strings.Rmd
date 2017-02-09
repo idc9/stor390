@@ -1,0 +1,705 @@
+---
+title: "Beauty and the Beast and Regular Expressions"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+This lecture covers string manipulations. The main references are
+
+- [Regular expressions in R](http://stat545.com/block022_regular-expression.html) from Jenny Bryan's class
+- [Strings chapter](http://r4ds.had.co.nz/strings.html) in R for Data Science
+
+
+A lot of data comes in the form of text. More importantly; messy data often can be cleaned up by treating it as text and editing---for example a column that should be numeric but that has commas in it. 
+
+For those reasons, you will want to know how to work with text in R, called string manipulation.
+
+# What you will learn
+
+- Logic of regular expressions
+- **Match** one string to another using a syntax called regular expressions
+- **Extract** a pattern from a series of strings, such as removing the word 'man' from 'manimal' or 'mandible'
+- **Replace** one string with another
+- **Look-ahead** regular expressions, useful when you want to match one text pattern only if it comes before a second text pattern
+
+You will also see examples of how to apply visualization and summarization to text data as you've done with other types of data. These notes will assume you have read the resources below or will refer back to them when you need. 
+
+A few poeple took the time to type up the scirpts for a number of Disney movie scripts: [http://www.fpx.de/fp/Disney/Scripts/](http://www.fpx.de/fp/Disney/Scripts/). This lecture will use the script for Beauty and the Beast. 
+
+
+We will start with a quick **application on a cleaned-up movie script,** to use a few string manipulation tools from the resources. Then we will step back to show how string manipulation turned the raw text file into something usable.
+
+This lecture is organized as follows
+
+- some basic string operations on a cleaned up version of the data
+- bonus section on measuring the richness of each character's vocabulary
+- go through the process of cleaning the raw text file
+
+# **Clean data frame**
+
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(stringr) # does not come with tidyverse
+library(RColorBrewer)
+
+# read in the cleaned beaut and the beast data frame
+# see the .Rmd for the code that creates beauty_clean_df
+beauty <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/beauty_clean_df.csv')
+```
+
+
+
+```{r prep, echo=FALSE, results='hide', warning=FALSE, message=FALSE, eval=FALSE}
+# this code creates the clean_beauty_df
+
+# read_lines instead of readLines just because of https issue
+# first six lines are intro stuff
+beauty <- read_lines('http://www.fpx.de/fp/Disney/Scripts/BeautyAndTheBeast.txt', skip = 6) %>% 
+    str_trim(side = "both") %>% paste(collapse = ";")
+
+# A hack to avoid annoying issues later that are not important for the analysis
+beauty <- str_replace(beauty, " \\(ex. COGSWORTH\\):", ":") %>% str_replace(" \\(esp. LUMIERE\\):", ":")
+
+# little annoying or statement for MRS. POTTS. Can't rearrage the previous statement without getting more
+# for the future: try stripping all spaces between two sets of all-caps words then re-running, without the special statements for those two
+codes <- unique(str_extract_all(beauty, "[A-Z]+[\\s0-9[:punct:]]*:|MRS. POTTS:|OLD CRONIES:")[[1]])
+codes_list <- as.list(paste0(seq(from = 100, to = 100 + length(codes) - 1), ">"))
+names(codes_list) <- codes
+
+beauty <- str_replace_all(beauty, codes_list) %>% 
+    str_replace("</pre>", "") %>%
+    # first removing the directions between two brackets
+    str_replace_all("(\\(){1}[A-Za-z0-9\\s,.;:'!?]*(\\)){1}", "") %>%
+    # now getting the dangling brackets with open ends at the end of the line or dangling brackets
+    str_replace_all("(\\(){1}[A-Za-z0-9\\s,.;:'!?]*(\\))*", "")
+
+beauty <- tibble(person = str_extract_all(beauty, "[0-9]{3}>")[[1]],
+                     line = str_extract_all(beauty, "[A-z[:punct:][:space:]]+(?![0-9]{3}>)")[[1]])
+
+# Now switch the codes back to names and clean up a little
+names(codes) <- unlist(codes_list)
+codes <- as.list(codes)
+beauty$person <- str_replace_all(beauty$person, codes) %>% str_replace_all(":", "")
+beauty$line <- str_trim(beauty$line, side = "both") %>% str_replace_all(";+", ";")
+
+```
+
+## R can read
+*GASTON: How can you read this? There's no pictures!* 
+
+*BELLE: Well, some people use their imaginations.*
+![](http://img.lum.dolimg.com/v1/images/gallery_beautyandthebeast_03_81aeab2e.jpeg?region=0%2C0%2C1580%2C880)
+
+
+
+Disney movie fans have typed up scripts, and with text tools like the ones we'll learn you can analyze them. For example, **Polygraph recently looked at [movie dialogue by gender](http://polygraph.cool/films/) for Disney movies and hundreds of other screenplays.**
+
+We will be working with one of those movies as an example: *Beauty and the Beast.* Here we will **use a cleaned-up version of the data** already put into a data frame. Later you will see how to get the data frame from the raw script.
+
+## string functions
+Both base R and `stringr` have string manipulation functions. The `stringr` functions are easier to remember/use. The following list is from Jenny Bryan's notes compare base R with `stringr`
+
+- identify match to a pattern: `grep(..., value = FALSE)`, `grepl()`, stringr::str_detect()
+- extract match to a pattern: `grep(..., value = TRUE)`, `stringr::str_extract()`,  `stringr::str_extract_all()`
+- locate pattern within a string, i.e. give the start position of matched patterns. `regexpr()`, `gregexpr()`,  `stringr::str_locate()`, `string::str_locate_all()`
+- replace a pattern: `sub()`, `gsub()`, `stringr::str_replace()`, `stringr::str_replace_all()`
+- split a string using a pattern: `strsplit()`, `stringr::str_split()`
+
+In general you should use `stringr`.
+
+## About the data
+There are two columns:
+- person (who spoke the line)
+- line (the line they spoke)
+```{r, echo=TRUE}
+beauty[1, 2]
+
+str(beauty)
+```
+
+
+
+Pattern matching is the main business of string manipulation. You will need it to find, replace or extract strings.  Here are some examples of ways you might apply string matching tools from the resources to answer questions about *Beauty and the Beast.*
+
+## How many times do the main characters speak?
+
+You can find out by matching each of their names to the *person* character vector, and you can use different methods.
+```{r, echo=TRUE}
+# person vector
+beauty$person[1:5]
+
+
+sum(str_count(beauty$person, "GASTON")) # using stringr
+sum(grepl("GASTON", beauty$person)) # using base R
+
+sum(str_count(beauty$person, "BELLE"))
+```
+
+That doesn't tell us anything about how much time each of them speaks, since we are just counting numbers of uninterrupted lines. Let's first remove the semicolon separators and count the number of characters each person has.
+
+You could do this using tools in `dplyr` as well, but let's use the string manipulation techniques---first filtering the dataset using a string match for the person we want then counting characters with `nchar`. You could also use `str_count` from the `stringr` package.
+
+```{r}
+beauty$line[grepl("GASTON", beauty$person)] %>% 
+  nchar %>% sum
+
+beauty$line[str_detect(beauty$person, "GASTON")] %>% 
+  nchar %>% sum
+```
+
+## Extracting, replacing strings and regular expression logic
+![](http://img.lum.dolimg.com/v1/images/gallery_beautyandthebeast_15_6c38d594.jpeg?region=0%2C0%2C1580%2C880)
+
+
+If this is the first time you are seeing regular expressions, go back and read the textbook. Those references go over the `stringr` package in detail, so we won't do that here.
+
+A few points on general regular expression logic:
+
+- $[\ldots]$ matches any of the items in brackets
+
+- place the **frequency quantifiers after the items** they refer to. See the references for information on frequency quantifiers, which give constraints on how many times the pattern can be matched
+
+- Use **parentheses for grouping patterns,** typically to give specific quantifiers or to control order of operations. You can do more with parentheses, as we'll see in the next section. For example `pl?ot` will match `pot` or `plot` but `(pl)?ot` matches `plot`, `lot`, `pot` or `ot`
+
+- `expression1|expression2` matches `expression1 OR expression2.`
+
+- `expression1expression2` matches `expression1 AND expression2` in the order given.
+
+Think of AND as multiplication, OR as addition; the orders of operations are the same. As in algebra use parentheses to control the order of operations.
+
+## Extraction
+A quick example on that last point to demonstrate a string extraction using pattern matching.
+```{r, echo=TRUE}
+# Matches capital letters AND subsequent numbers OR lower case letters AND subsequent punctuation
+str_extract_all("TOWNFOLK2 townfolk!", "[A-Z]+[0-9]+|[a-z]+[[:punct:]]+")
+
+# Matches (capitals AND numbers OR lower case) AND punctuation
+str_extract_all("TOWNFOLK2 townfolk!", "([A-Z]+[0-9]+|[a-z]+)[[:punct:]]+")
+
+# Matches capitals AND (numbers OR lower case AND punctuation)
+str_extract_all("TOWNFOLK2 townfolk!", "[A-Z]+([0-9]+|[a-z]+[[:punct:]]+)")
+
+```
+
+We will do a lot more extraction in the data cleaning section below.
+
+## Replacement
+Let's use some regular expressions to group the anonymous speakers in the script. 
+
+- To catch the numbered person names, such as *TOWNSFOLK 2*, we use the exact beginning of the string---*TOWNSFOLK*---and allow the rest to match optionally with any digit or any space. The asterisk says to match the item directly preceding it as many times as it can and possible zero times.
+
+- Writing a `?` after the `S` in `BIMBETTES?` (I cringe to type that) will match the plural or the singular since the *S* will be matched optionally.
+
+- Since one thing you'll do is to replicate the top-line number of male-female dialogue shares in the movie, we'll keep gendered anonymous speaker names, such as 'man.' 
+
+- `tolower` puts all text in lower case, which makes easier reading and referencing. Most text-matching functions---such as `grepl`---have an option to ignore cases anyway when matching strings.
+
+- Unless you specify otherwise using regular expressions, **patterns will be matched from left to right first.** Many functions affect only the first match, though `stringr` functions usually have a version returning using all matches.
+
+In each case below, we are **finding all patterns that match the first expression and replacing them with the second.** `CRONY 1` is replaced with `crony`, for example.
+
+```{r, echo=TRUE}
+beauty$person <- str_replace_all(beauty$person, "TOWNSFOLK[0-9\\s]*", "townsfolk") %>%
+  str_replace_all("CRONY[0-9\\s]*|CRONIES|OLD CRONIES", "crony") %>%
+  str_replace_all("WOMAN[0-9\\s]*|BIMBETTES?[0-9\\s]*", "woman") %>%
+  str_replace_all("MAN[0-9\\s]*|MEN", "man") %>%
+  str_replace_all("GROUP[0-9\\s]*|ALL|BOTH|CHORUS|OBJECTS|BYSTANDERS|MUGS|MOB", "group") %>%
+  tolower
+
+```
+
+Base *R* functions `gsub` and `sub` also allow you to substitute one pattern for another.
+
+## Combining string manipulation with summaries, graphs
+Let's use some summary and grouping functions you already learned, making a drab barplot for the number of text characters for movie characters among the top 10. 
+
+You will do more in your homework.
+
+```{r, echo=TRUE, fig.width=10}
+group_by(beauty, person) %>% 
+  summarise(N = sum(nchar(line))) %>%
+  arrange(desc(N)) %>% slice(1:10) %>%
+  ggplot(data = ., aes(x = person, y = N)) + 
+  geom_bar(stat = "identity") +
+  theme_minimal() + theme(axis.text.x  = element_text(angle=75, vjust=0.5, size=10), axis.title.x = element_blank())
+```
+
+## String counting and more graphs
+
+Here's an example of how you could use `str_count` to plot the average word length for each line of dialogue over 'time.' We don't actually have a time variable. But as a proxy, let's use the cumulative number of characters of text in the dialogue. We're focusing on the main characters too.
+
+```{r, echo=TRUE}
+# demo to show that str_count here is counting the number of characters, in a line from Mrs. Potts
+str_count("It's a guest, it's a guest! Sakes alive, well I'll be blessed!", "[A-z]")
+str_replace_all("It's a guest, it's a guest! Sakes alive, well I'll be blessed!", "[^A-z]", "") %>% nchar
+
+mutate(beauty, 
+       line = str_replace(line, ";", " "),
+       N = nchar(line),
+       # Nc acts as a proxy for time
+       Nc = cumsum(N),
+       Nw = str_count(line, "\\w+"),
+       #don't want punctuation etc for word count 
+       w_avg = str_count(line, "[A-z]") / Nw) %>%
+  filter(grepl("gaston|belle|beast|lumiere|lefou|cogsworth|mrs\\.potts|maurice|chip|featherduster|wardrobe|stove", person)) %>%
+  ggplot(data = ., aes(x = Nc, y = w_avg, color = person)) + geom_line(size = 2) + 
+  theme_minimal() + scale_color_brewer(palette = 'Paired')
+```
+
+Sadly not too interesting. The **average word length** doesn't change much over the course of the movie, except for some spikes. Maybe the word length dips at the end of the movie, as everyone is shouting at each other.
+
+Here are the lines besting a 6-letter average. They're short, with long words.
+```{r, echo = FALSE}
+mutate(beauty, 
+       line = str_replace(line, ";", " "),
+       N = nchar(line),
+       # Nc acts as a proxy for time
+       Nc = cumsum(N),
+       Nw = str_count(line, "\\w+"),
+       #don't want punctuation etc for word count 
+       w_avg = str_count(line, "[A-z]") / Nw) %>%
+  filter(grepl("gaston|belle|beast|lumiere|lefou|cogsworth|mrs\\.potts|maurice|chip|featherduster|wardrobe|stove", person),
+         w_avg > 6)
+```
+
+
+# BONUS: How rich is each character's vocabulary?
+This section uses functions and sampling to get a sense of how rich each character's vocabulary is. Polygraph did something similar for the [vocabularies of rappers](http://poly-graph.co/vocabulary.html), which you should check out.
+
+If you don't understand what's going on with some of the functions: **Don't worry.** 
+
+This is just to give you another example of the kinds of things you can do with text data. You can always come back to review this bonus section when you are more comfortable with functions.
+
+Let's go step by step.
+
+
+## Counting unique words
+
+We want one unique word count for each character, not each line. There are several ways to do it. An example:
+```{r, echo = TRUE}
+test <- filter(beauty, grepl("townsfolk|crony", person)) %>%
+  group_by(person) %>%
+  summarise(line = str_c(line, collapse = "; "), Nline = n(), Nw = str_count(line, "[\\w']+")) %>%
+  ungroup
+
+vocab <- str_extract_all(test$line, "[\\w']+") %>% lapply(., FUN = function(s){length(unique(s))})
+
+vocab <- data.frame(person = test$person, words_unique = unlist(vocab), Nline = test$Nline, Nw = test$Nw)
+
+vocab
+filter(beauty, grepl("townsfolk|crony", person))
+```
+
+Now let's do it on the data.
+
+```{r, echo = TRUE, fig.width=10}
+beauty_sum <- group_by(beauty, person) %>%
+  summarise(line = str_c(line, collapse = "; "), Nline = n(), Nw = str_count(line, "[\\w']+")) %>%
+  ungroup
+
+vocab <- str_extract_all(beauty_sum$line, "[\\w']+") %>% lapply(., FUN = function(s){length(unique(s))})
+
+vocab <- data.frame(person = beauty_sum$person, words_unique = unlist(vocab), Nline = beauty_sum$Nline, Nw = beauty_sum$Nw)
+
+
+```
+
+## A detail
+
+I've decided to handle contractions as one word. This is a good **example of when a seemingly small change in your regular expression makes a meaningful difference.**
+
+We used this 
+
+```{r, echo = TRUE}
+str_extract_all("Little town, it's a quiet village;Every day, like the one before;Little town, full of little people;Waking up to say...;", "[\\w']+")
+```
+
+not this
+
+```{r, echo = TRUE}
+str_extract_all("Little town, it's a quiet village;Every day, like the one before;Little town, full of little people;Waking up to say...;", "\\w+")
+```
+
+## Looking for a good measure of richness of vocabulary
+
+One possibility is to look at the **number of unique words for each continuous line a character speaks**.
+```{r, echo = TRUE, fig.width=10}
+ggplot(data = vocab, aes(x = person, y = words_unique / Nline)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() + theme(axis.text.x  = element_text(angle=75, vjust=0.5, size=10), axis.title.x = element_blank())
+```
+
+You could have guessed that didn't make sense, but the graph shows it to you as well. The narrator has only one line, making her the best by this score. We don't want our measure of vocabulary to be so heavily influence by something totally unrelated, such as the number of times a person speaks.
+
+**Maybe dividing by the total number of words spoken would be better.**
+
+```{r, echo = TRUE, fig.width=10}
+ggplot(data = vocab, aes(x = person, y = words_unique / Nw)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() + theme(axis.text.x  = element_text(angle=75, vjust=0.5, size=10), axis.title.x = element_blank())
+```
+
+What's going on here? The problem with that measure is the **number of unique words increases more slowly than the total number of words** since many words are repeated---'and', 'the' etc.
+
+The characters who speak most (Belle, Gaston) automatically will do worse.
+
+```{r, echo = TRUE, fig.width=10}
+ggplot(data = vocab, aes(x = person, y = words_unique / Nw, fill = Nw)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() + theme(axis.text.x  = element_text(angle=75, vjust=0.5, size=10), axis.title.x = element_blank())
+
+filter(beauty, grepl("belle", person)) %>% slice(1:3)
+filter(beauty, grepl("wrestler", person))
+```
+
+**What is a more fair way to evaluate richness of vocabulary?**
+
+Let's take a fixed number of words from each person, as the folks at Polygraph did when doing this for rapper vocabularies.
+
+But different characters have different styles of speech in different situations. Sometimes a character is using repetitive exclamations. In Gaston's self-promoting song, he uses a rich variety of words, including 'expectorating'
+
+To address that you could take large numbers of samples of fixed length and compute the unique words they have
+
+So we will:
+
+- write a function that creates a list of subsamples for a group of characters
+- re-run the analysis above
+- return a vector of the results for each character
+
+**This example is a good one to review after reading the advanced programming lecture.**
+
+```{r, echo = TRUE, fig.width=10}
+
+word_counter <- function(vocab_list, size){
+  
+  lapply(vocab_list, FUN = function(s){
+    
+    sample(s, size, replace = TRUE) %>% unique %>% length
+    
+  }) %>% unlist
+  
+}
+
+vocabulizer <- function(script, samples = 50, size = 100, size_factor = 1){
+  
+  beauty_sum <- group_by(script, person) %>%
+  summarise(line = str_c(line, collapse = "; "), Nline = n(), Nw = str_count(line, "\\w+")) %>%
+  ungroup
+  
+  beauty_sum <- filter(beauty_sum, Nw >= size * size_factor)
+  
+  vocab <- str_extract_all(beauty_sum$line, "[\\w']+")
+  names(vocab) <- beauty_sum$person
+  
+  out <- replicate(samples, word_counter(vocab, size = size)) %>% 
+    # transpose to get people names in columns, samples in rows
+    t %>% as.data.frame
+  
+  return(out)
+}
+
+# 200 samples of 100 words each
+vocab_samples <- vocabulizer(beauty, samples = 200, size = 100)
+
+gather(vocab_samples, key = person, value = words_unique) %>%
+  ggplot(aes(x = words_unique, fill = person)) + geom_density(alpha = .2) +
+  theme_minimal() + scale_fill_brewer(palette = 'Paired')
+
+
+# with characters who speak more often and more samples
+vocab_samples <- vocabulizer(beauty, samples = 1000, size = 100, size_factor = 2)
+
+gather(vocab_samples, key = person, value = words_unique) %>%
+  ggplot(aes(x = words_unique, fill = person)) + geom_density(alpha = .2) +
+  theme_minimal() + scale_fill_brewer(palette = 'Paired')
+
+# with bigger numbers of words in each sample
+vocab_samples <- vocabulizer(beauty, samples = 1000, size = 500)
+
+gather(vocab_samples, key = person, value = words_unique) %>%
+  ggplot(aes(x = words_unique, fill = person)) + geom_density(alpha = .5) +
+  theme_minimal() + scale_fill_brewer(palette = 'Paired')
+  
+  
+```
+
+The final graph shows us **Cogsworth tends to have the most unique words per 500 total words spoken**, followed by Gaston, Belle and Lumiere.
+
+
+# Using regular expressions to clean data
+
+The data frame above was already set up for us. But the file started as a plain text document on a website, typed by a person associated with Central Michigan University.
+
+Let's rewind and show how string manipulation lets us take a slightly awkward dataset and turn it into the data frame we used above.
+
+## The raw data
+
+This is a transcribed version of the script for *Beauty and the Beast,* the cartoon version, in a text file. 
+
+```{r}
+library(tidyr)
+library(stringr)
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+beauty <- read_lines('http://www.fpx.de/fp/Disney/Scripts/BeautyAndTheBeast.txt')
+
+beauty[1:10]
+```
+
+
+A quick skimming shows some **important structure we can use:**
+
+- Lines of dialogue always begin with 'SPEAKER NAME:'
+
+- Descriptions of the scene that are not dialogue are in parentheses.
+
+- Person names are in capital letters in scene descriptions as well but not in dialogue.
+
+- Dialogue in which multiple people speak at the same time have collective dialogue identifiers, such as *CUPS* or *BOTH*
+
+- A couple of dialogue identifiers have scene descriptions, for example *ALL (esp. LUMIERE)*
+
+- We **do not have each cell representing a line of dialogue,** since *read_lines* gave us a new cell in the vector every time text was separated by a return in the file.
+
+- Colons are very rarely used other than in dialogue identifiers---but they are used.
+
+- Dialogue identifiers sometimes include numbers, spaces and punctuation, such as *CRONY 1* and *MONSIEUR D'ARQUE.*
+
+- Dialogue is in chronological order, the order in which lines are spoken.
+
+## Identify goal, formulate plan
+
+Unlike in some previous lectures, we didn't establish some clear goals for our analysis before diving in. But in this case, we know we want to explore dialogue attributed to individual speakers. So we likely will want a data frame with a structure to let us do that.
+
+**Goal:** A data frame with one row per line of dialogue, with a column for the dialogue text and a column for the speaker name.
+
+**Plan ideas:**
+
+We **can't make a one-column data frame from our vector then split it** into two columns using the *tidyr* package, since we do not have each cell representing a new line of dialogue.
+
+The basic plan will be to
+
+-**collapse the entire script** into a single string
+
+-**extract** each new line of dialogue as its own cell in a vector, **using the distinct structure of the dialogue identifiers**
+
+-**clean up** little issues along the way
+
+We usually can't separate out individual speakers when dialogue is attributed to a group, so we won't try. We also don't care about the scene descriptions, so we will remove them.
+
+## Step 1: Collapse
+
+These functions and regular expressions should look familiar from the resources section. Text that was loaded in different cells will be separated by a semicolon, which is what the `collapse = ';'` argument says in the `paste` function.
+
+```{r}
+# read in the raw text file
+# each line is an entry in a vector
+beauty <- read_lines('http://www.fpx.de/fp/Disney/Scripts/BeautyAndTheBeast.txt', skip = 6)
+typeof(beauty)
+
+# collapse each line into a single string
+# separate lines by a ;
+beauty <- beauty%>% 
+           str_trim(side = "both") %>% 
+           paste(collapse = ";")
+
+typeof(beauty)
+
+# To avoid annoying issues later, since we don't try to distinguish individuals in group dialogue
+beauty <- str_replace(beauty, " \\(ex. COGSWORTH\\):", ":") %>% str_replace(" \\(esp. LUMIERE\\):", ":")
+```
+
+## Step 2: Extraction, first try
+
+We want a data frame with one column for the dialogue identifier (speaker name) and one for the line. Since every line starts with an identifier, we could try to:
+
+- extract only the identifiers first 
+- then extract everything between the identifiers
+
+and that should give us two vectors of equal length, matching the first speaker to the first line of dialogue, the second speaker to the second line and so on.
+
+**But that won't work without extra tweaks.** We'll look at an example to see why, but first we need to learn a new feature of regular expressions.
+
+## More magical regular expressions
+
+![](http://img.lum.dolimg.com/v1/images/gallery_beautyandthebeast_05_707210b9.jpeg?region=0%2C0%2C1580%2C880)
+
+Let's take an example from the data, from when Gaston bribes the asylum keeper Monsieur D'Arque to incarcerate Belle's father.
+
+```{r}
+test <- "I don't usually leave the asylum in the middle of the night, but they said you'd make it worth my while. GASTON: It's like this.  I've got my heart set on marrying Belle, but she needs a little persuasion."
+```
+
+How do we extract everything before the pattern *GASTON:*? Using what's called a **look-ahead.**
+
+A rundown of the syntax before we do examples:
+
+- **positive look-ahead:** `pattern1(?=pattern2)` will match `pattern1` only when it is followed by `pattern2`
+- **negative look-ahead:** `pattern1(?!pattern2)` will match `pattern1` when it is NOT followed by `pattern2`
+- **positive and negative look-behinds** are similar, coded with `(?<=pattern2)pattern1` and `(?<!pattern2)pattern1` respectively
+
+Let start with something simpler than our example. The expression below matches `candle` only when it is followed by the phrase `stick`.
+
+You need to use `perl = TRUE` here for base *R* functions such as `grepl`, but for `stringr` package functions you do not need to do that. Don't worry about [what perl is](https://en.wikipedia.org/wiki/Perl_language_structure) right now. This is the only aspect of it we will need.
+
+```{r}
+grepl('candle(?=stick)', c('candlestick', 'candlemaker', 'smart candle'), perl=TRUE)
+```
+
+```{r}
+str_detect(c('candle!!?', 'candlemaker', 'smart candle%'), 'candle(?=[[:punct:]]+)')
+```
+
+Look-behinds are similar, except that you can't use the asterisk or plus quantifiers (which match as large a string as you want) for the pattern in parentheses.
+
+This wouldn't work: `str_extract(c('candle!!?', 'candlemaker', 'smart candle%'), '(?<=[a-z]+)[[:punct:]]+')`
+
+Fix it by bounding if you can:
+```{r}
+str_extract(c('candle!!?', 'candlemaker', 'smart candle%'), '(?<=[a-z]{1,10})[[:punct:]]+')
+```
+
+**Back to the question:** How do you extract everything before `GASTON:` in the test phrase above?
+
+Use the catch-all *.* 
+```{r}
+str_extract(test, ".+(?=GASTON:)")
+```
+
+## Problems with a more realistic example
+![](http://img.lum.dolimg.com/v1/images/gallery_beautyandthebeast_01_4fa65432.jpeg?region=0%2C0%2C1580%2C880)
+
+
+Let's use an example closer to what we will see in our data. We will need all dialogue **between character names.** Now there is a problem:
+
+We have to change the look-ahead statement to get any character name, of variable lengths, some with punctuation and spaces. The pattern `[A-Z\\s[:punct:]]+[:]` will match that.
+```{r}
+test <- "BEAST: What are you doing here? MAURICE: Run, Belle! BEAST: The master of this castle. BELLE: I've come for my father.  Please let him out!  Can't you see he's sick? BEAST: Then he shouldn't have trespassed here."
+
+str_extract(test, ".+(?=[A-Z\\s[:punct:]]+:)")
+```
+
+It returned almost everything and missed the final bit of dialogue. Here's why:
+
+- The function checks each character to see if it matches `.` (everything does) and is followed by the look-ahead expression.
+- If both of those are true, it returns the match to the pattern we gave it before the look-ahead statement---in this case everything there is.
+- When it got to the letter `S` in the last case of `BEAST:`, the look-ahead statement matched `T:` and returned everything else before it.
+
+Here are some other failed attempts at getting what we want, to show other things you can do:
+
+**matching only lower cases, spaces and punctuation** in the first pattern fails to pick up the capital letters starting sentences and proper names in the dialogue.
+
+```{r}
+str_extract_all(test, "[a-z[:punct:]\\s]+(?=[A-Z\\s[:punct:]]+:)")
+```
+
+Matching specific punctuation allowing upper cases in patterns NOT followed by the character naming pattern returns nicer chunks but leaves the character identifiers in the preceding string. We want to be able to extract the separately.
+
+```{r}
+str_extract_all(test, "[A-z;.,'!?\\s]+(?![A-Z\\s[:punct:]]+:)")
+```
+
+Notice we put specific punctuation in excluding the colon. But colons in our data do show up outside of person identifiers, so we can't do that either.
+
+## A recap of the problem, and a fix
+
+Our basic problem is that the person identifiers are not good string separation criteria because they have too much in common with the rest of the text. That makes it difficult to use the look-ahead or other means for splitting the dataset in the way we want.
+
+But the person identifiers are still distinct enough that we can match them---which means **we can replace them with identifiers that are different enough from the dialogue to be good split criteria.**
+
+Extracting the person identifiers, adding some bogus lines to show this works for character names with punctuation and numbers:
+```{r}
+test <- "BEAST: What are you doing here? MAURICE: Run, Belle! BEAST: The master of this castle. BELLE: I've come for my father.  Please let him out!  Can't you see he's sick? BEAST: Then he shouldn't have trespassed here. TOWNSFOLK 2: He's a monster! MRS. POTTS: Now pipe down!"
+
+str_extract_all(test, "[A-Z]+[\\s0-9[:punct:]]*:|MRS. POTTS:")
+```
+
+To keep the `MRS.` in `MRS. POTTS` we have to handle it separately, with a regular expression `or` statement.
+
+Replacing them:
+```{r}
+str_replace_all(test, "[A-Z]+[\\s0-9[:punct:]]*:|MRS. POTTS:", "&&&&&&&&")
+```
+
+In the data, we will want to . Then we can , and .
+
+## Step 3: Extraction, second try
+
+Our new plan is:
+
+- **replace each character identifier with a unique id** that allows us to separate the text more easily using look-ahead expressions
+- **extract the identifiers and the dialogue in between them,** giving two equal-length vectors matching speakers to what they say
+- **create a data frame** with one column for speaker name and one for dialogue
+- **match the ids back to the character names**
+
+## Replacing multiple items using lists
+
+A useful feature of `str_replace_all` is that you can pass it a list of things to match and to replace. Review the lecture on data object types if you forget what a list is.
+
+In our test example above, we could type:
+
+```{r}
+str_replace_all(test, c("BEAST:" = "001>", "MAURICE:" = "002>", "BELLE:" = "003>"))
+```
+
+Alternatively, we could create a **list object whose names are the patterns we want to replace and whose entries are the things we want to replace them with.** Then we pass that to the function.
+
+```{r}
+codes <- unique(str_extract_all(test, "[A-Z]+[\\s0-9[:punct:]]*:|MRS. POTTS:")[[1]])
+codes_list <- as.list(paste0(seq(from = 100, to = 100 + length(codes) - 1), ">"))
+names(codes_list) <- codes
+codes_list
+
+test <- str_replace_all(test, codes_list)
+test
+```
+
+And that gives us what we want:
+
+```{r}
+# Dialogue
+str_extract_all(test, "[A-z[:punct:][:space:]]+(?![0-9]{3}>)")
+
+#Speakers
+str_extract_all(test, "[0-9]{3}>")
+```
+
+## Step 4: On the full data
+![](http://img.lum.dolimg.com/v1/images/open-uri20150608-27674-uducnu_5205c061.jpeg?region=0%2C0%2C1580%2C880)
+
+The major problem is solved, so the rest of the code is here for you to review. Little problems crop up and the fixes are noted.
+
+```{r, echo=TRUE, warning=FALSE, message=FALSE}
+
+# little annoying or statement for MRS. POTTS. Can't rearrage the previous statement without getting more
+codes <- unique(str_extract_all(beauty, "[A-Z]+[\\s0-9[:punct:]]*:|MRS. POTTS:|OLD CRONIES:")[[1]])
+codes_list <- as.list(paste0(seq(from = 100, to = 100 + length(codes) - 1), ">"))
+names(codes_list) <- codes
+
+beauty <- str_replace_all(beauty, codes_list) %>%
+  # final line ends with this
+  str_replace("</pre>", "") %>%
+  # first removing the scene descriptions between two brackets
+  str_replace_all("(\\(){1}[A-Za-z0-9\\s,.;:'!?]*(\\)){1}", "") %>%
+  # now getting the dangling brackets with open ends at the end of the line or dangling brackets
+  str_replace_all("(\\(){1}[A-Za-z0-9\\s,.;:'!?]*(\\))*", "")
+
+beauty <- data.frame(person = str_extract_all(beauty, "[0-9]{3}>")[[1]],
+                     line = str_extract_all(beauty, "[A-z[:punct:][:space:]]+(?![0-9]{3}>)")[[1]])
+
+# Now switch the codes back to names and clean up a little
+names(codes) <- unlist(codes_list)
+codes <- as.list(codes)
+beauty$person <- str_replace_all(beauty$person, codes) %>% str_replace_all(":", "")
+beauty$line <- str_trim(beauty$line, side = "both") %>% str_replace_all(";+", ";")
+
+tail(beauty)
+```
+
+
+
