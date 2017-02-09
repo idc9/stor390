@@ -31,7 +31,7 @@ Instructional Assistant: Brendan Brown
 
 - varung@live.unc.edu
 - Office: Hanes B56
-- Office hours: Tuesday 3:30 - 4:30, Wednesday 1-2
+- Office hours: Tuesday 3:30 - 4:30, Thursday 3:30 - 4:30
 
 All course material can be found on the course website ([https://idc9.github.io/stor390/](https://idc9.github.io/stor390/)) and github repository ([https://github.com/idc9/stor390](https://github.com/idc9/stor390)).
 
