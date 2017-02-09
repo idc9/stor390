@@ -102,7 +102,7 @@ We will be working with one of those movies as an example: *Beauty and the Beast
 ## string functions
 Both base R and `stringr` have string manipulation functions. The `stringr` functions are easier to remember/use. The following list is from Jenny Bryan's notes compare base R with `stringr`
 
-- identify match to a pattern: `grep(..., value = FALSE)`, `grepl()`, stringr::str_detect()
+- identify match to a pattern: `grep(..., value = FALSE)`, `grepl()`, `stringr::str_detect()`
 - extract match to a pattern: `grep(..., value = TRUE)`, `stringr::str_extract()`,  `stringr::str_extract_all()`
 - locate pattern within a string, i.e. give the start position of matched patterns. `regexpr()`, `gregexpr()`,  `stringr::str_locate()`, `string::str_locate_all()`
 - replace a pattern: `sub()`, `gsub()`, `stringr::str_replace()`, `stringr::str_replace_all()`
@@ -130,7 +130,6 @@ You can find out by matching each of their names to the *person* character vecto
 ```{r, echo=TRUE}
 # person vector
 beauty$person[1:5]
-
 
 sum(str_count(beauty$person, "GASTON")) # using stringr
 sum(grepl("GASTON", beauty$person)) # using base R
@@ -181,7 +180,6 @@ str_extract_all("TOWNFOLK2 townfolk!", "([A-Z]+[0-9]+|[a-z]+)[[:punct:]]+")
 
 # Matches capitals AND (numbers OR lower case AND punctuation)
 str_extract_all("TOWNFOLK2 townfolk!", "[A-Z]+([0-9]+|[a-z]+[[:punct:]]+)")
-
 ```
 
 We will do a lot more extraction in the data cleaning section below.
@@ -266,7 +264,7 @@ mutate(beauty,
 ```
 
 
-# BONUS: How rich is each character's vocabulary?
+# **BONUS: How rich is each character's vocabulary?**
 This section uses functions and sampling to get a sense of how rich each character's vocabulary is. Polygraph did something similar for the [vocabularies of rappers](http://poly-graph.co/vocabulary.html), which you should check out.
 
 If you don't understand what's going on with some of the functions: **Don't worry.** 
@@ -429,7 +427,7 @@ gather(vocab_samples, key = person, value = words_unique) %>%
 The final graph shows us **Cogsworth tends to have the most unique words per 500 total words spoken**, followed by Gaston, Belle and Lumiere.
 
 
-# Using regular expressions to clean data
+# **Using regular expressions to clean data**
 
 The data frame above was already set up for us. But the file started as a plain text document on a website, typed by a person associated with Central Michigan University.
 
@@ -440,12 +438,6 @@ Let's rewind and show how string manipulation lets us take a slightly awkward da
 This is a transcribed version of the script for *Beauty and the Beast,* the cartoon version, in a text file. 
 
 ```{r}
-library(tidyr)
-library(stringr)
-library(readr)
-library(dplyr)
-library(ggplot2)
-
 beauty <- read_lines('http://www.fpx.de/fp/Disney/Scripts/BeautyAndTheBeast.txt')
 
 beauty[1:10]
@@ -484,11 +476,11 @@ We **can't make a one-column data frame from our vector then split it** into two
 
 The basic plan will be to
 
--**collapse the entire script** into a single string
+- **collapse the entire script** into a single string
 
--**extract** each new line of dialogue as its own cell in a vector, **using the distinct structure of the dialogue identifiers**
+- **extract** each new line of dialogue as its own cell in a vector, **using the distinct structure of the dialogue identifiers**
 
--**clean up** little issues along the way
+- **clean up** little issues along the way
 
 We usually can't separate out individual speakers when dialogue is attributed to a group, so we won't try. We also don't care about the scene descriptions, so we will remove them.
 
