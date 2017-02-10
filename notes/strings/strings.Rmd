@@ -11,6 +11,11 @@ This lecture covers string manipulations. The main references are
 - [Regular expressions in R](http://stat545.com/block022_regular-expression.html) from Jenny Bryan's class
 - [Strings chapter](http://r4ds.had.co.nz/strings.html) in R for Data Science
 
+Some additional references
+
+- [Another one of Jenny Bryan's lectures](http://stat545.com/block028_character-data.html)
+- [https://regex101.com/](https://regex101.com/)
+- [http://regexr.com/](http://regexr.com/)
 
 A lot of data comes in the form of text. More importantly; messy data often can be cleaned up by treating it as text and editing---for example a column that should be numeric but that has commas in it. 
 
