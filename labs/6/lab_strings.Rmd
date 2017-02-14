@@ -1,0 +1,152 @@
+---
+title: 'Lab: Strings'
+output: html_document
+---
+
+Lab 6 is due 2/16/17.
+
+# Overview
+
+Here you will practice a few of the tricks we learned for string manipulation on the book of short stories *Dubliners* by James Joyce. The full text is available through Project Gutenberg.
+
+These are admittedly dumb things to do to a classic book. We will learn much more interesting things to do with text data later in the class.
+
+```{r, warning=F, message=FALSE, results='hide'}
+library(tidyverse)
+library(stringr)
+text <- read_lines('https://raw.githubusercontent.com/idc9/stor390/master/data/dubliners.txt')
+```
+
+
+## Question one
+Extract the story *Araby* using positive look-aheads and look-behinds. You probably will want to remove the table of contents before you can use the structure of the text to extract that particular story.
+```{r}
+#
+```
+
+## Question two
+How many words does the story contain? You can use the regular expression shortcut for words.
+```{r}
+#
+```
+
+
+## Question three
+Locate all instances of the word 'bazaar.'
+```{r}
+#
+```
+
+## Question four
+What is the average word length?
+```{r}
+#
+```
+
+
+## Question five
+A madlibs-like task: Replace all instances of 'bazaar' with 'pirate ship.'
+```{r}
+#
+```
+
+## Question six 
+Extract all groups of consonants. For example, 'chanting' would return a vector of 'ch', 'nt', 'ng.' [Consonant clusters](https://en.wikipedia.org/wiki/Comparative_method_(linguistics)#Step_1.2C_assemble_potential_cognate_lists) are used in comparitive linguistics. 
+
+You can do this in a few ways. Remember that you can negate groups of characters in regular expressions, matching everything except those characters. For help see the character class section of the help file \text{?regexp}. But in negating you might get more than you want, so be sure to negate everything except what you are looking for.
+
+Consider y to be a consonant.
+```{r}
+#
+```
+
+## Question seven
+Extract sentences ending with exclamation points, excluding the exclamation points themselves. For this you will want to be aware that commas, apostrophes, spaces and maybe semicolons can appear in the middle of sentences. At least one sentence has an ellipsis, which you likely will need to handle in a special way: Placing an element inside curly brackets, inside the box brackets \text{[]} allows you to match it optionally.
+
+You should use a single regular expression to handle all of this and return a single vector of output.
+
+*HINT:* You will need to deal with apostrophes here. They are not the standard apostrophes you would think to use in a regular expression. They are a curly kind of apostrophe. 
+
+The good news is that you can still use a regular expression to identify them: \u2019 will do the trick.
+
+How could you find that if you didn't know already? Start by looking at what the string's encoding is, by typing Encoding(araby). You should see UTF-8. Then find a resource for the different ways apostrophes can be encoded in Unicode, like this one. Then find another resource to help you translate that into regular expressions, like this. Test it out.
+
+*ANOTHER HINT:* First, quickly count how many sentences you should expect in your output by counting the number of exclamation points. One way to do that is to run str_extract_all(araby, "!"). If the your result doesn't have the same length output (in terms of number of strings, not length of characters) then you've missed some.
+
+8. Extract all words ending with 'ss.' The only tricky part is making sure the double-s is at the end of the word. 
+
+Use the word boundary regular expression, \verbatim{\\b}, which matches the end or the beginning of words. An example with double l
+
+```{r, warning=FALSE}
+library(stringr)
+str_extract(c('the bellicose', 'hellebore', 'fell', "unwell", "and the llama", "began to smell"), "[a-z]+l{2}")
+str_extract(c('the bellicose', 'hellebore', 'fell', "unwell", "and the llama", "began to smell"), "[a-z]+l{2}\\b")
+str_extract(c('the bellicose', 'hellebore', 'fell', "unwell", "and the llama", "began to smell"), "\\bl{2}[a-z]+")
+```
+
+## Question nine
+Calculate the proportion of words beginning with T (capital or lower case) that are the word 'the.' You only need to return the proportion, giving it as a single number between zero and one.
+```{r}
+#
+```
+
+## Question 10
+Inspired by one of your classmates' attempt at question one: Reload the data and this time extract the story 'A painful case.' 
+
+You should do it like this:
+1. Turn the dataset into a data frame or tibble
+2. Find the row indices where the story starts and ends (or where the next one begins) using string matching. Use any means you want, but use a function not just a manual look-up.
+3. Use dplyr functions to subset the data frame so that it contains only 'A painful case,' excluding the next story's title.
+4. Collapse the data frame into a single string, e.g. using `str_c`.
+5. Store your output as an object named `painful.`
+
+Do not just copy your answer to question one and adapt it. Your answer should not have a bunch of weird slashes in it. If it does, try selecting the data frame column more carefully.
+```{r}
+#
+```
+
+
+## Question 11
+Write a function that takes the `Dubliners` text (as you download it from the link, not after collapsing as in the questions above) and a story title as its input and returns the story only---as we've seen above. 
+
+The returned story can include the story title or not. You can use any method you like to extract the stories.
+
+The function should be able to take any capitalization of the input. For example, no matter whether given "THE DEAD", "the dead" or "ThE DeaD" it should return the same story.
+
+Output should be a single string, as above. You can write several functions if you want to break up the work, but the final output needs to be in a single function. You can have more inputs to the function than those listed above if you want, but those two must be inputs.
+
+Define the function as `story.`
+
+**The point of this question** is to get you to think about how to put much if not all of what you do in R in terms of functions. That helps with reproducibility, consistency, accuracy and many other good things.
+
+HINT: One trouble you will run into here and in Q10: The words in all caps "A PAINFUL CASE" actually appear in the body of the text and not just as a story title. You can handle that any way you want, except by removing the offending text altogether.
+
+```{r}
+#
+```
+
+# Question 12
+1. Make a data frame or tibble in which each column is a story. The column names should be the names that appear in the table of contents---EXCEPT that spaces should be replaced with `_` and all names should be lower-case.
+
+You can do that using your story function above, or if you got stuck, you can do it manually or by any other means.
+
+It should have only one row: the full text of the story.
+
+Store your output as the object called `dubliners`
+
+HINT: If you are not doing this manually: Create an empty list, use a `for` loop for fill it, then name variables and make it a tibble or data frame.
+
+2. Using some tidy data functions we learned, modify `dubliners` to have two columns: one called `title` for story title, one called `text` for story text. Save over your result as `dubliners.`
+
+3. Add the following columns to `dubliners` with the column names exactly as given---using dplyr and string manipulation functions to do so
+
+a. Nc, giving the number of characters in the story (of any type)
+b. Nw, giving the number of words in the story. You can use the standard word regular expression and not worry about the fact that it will split up words with apostrophes and other punctuation. See the strings lecture for an example.
+c. Ns, giving the number of times the words "She" or "she" appear
+d. Nh, giving the number of times the words "He" or "he" appear
+
+
+```{r}
+#
+```
+

@@ -33,7 +33,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 | January 31 |vectors, lists and eda |[more prog](notes/programming/prog_notes.html) and [EDA](notes/EDA/EDA.html) | [intro_prog](slides/intro_prog.html) and [EDA](slides/EDA.html)|
 |February 2| tidy data |[tidy_data](notes/tidy_data/tidy_data.html) | |
 |February 7| joins | | [joins](slides/joins.pdf)|
-|February 9| regular expressions| [regex](notes/strings/strings.html) | |
+|February 9| regular expressions| [regex](notes/strings/strings.html) |[regex](slides/regex.html) |
 |February 14| | | |
 |February 16| | | |
 |February 21| | | |

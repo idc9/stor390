@@ -17,6 +17,8 @@ Some additional references
 - [https://regex101.com/](https://regex101.com/)
 - [http://regexr.com/](http://regexr.com/)
 
+There are a bit rough at first. There is no secret to learn them other than [bunch of practice](https://twitter.com/raganwald/status/774683743588012032/photo/1).
+
 A lot of data comes in the form of text. More importantly; messy data often can be cleaned up by treating it as text and editing---for example a column that should be numeric but that has commas in it. 
 
 For those reasons, you will want to know how to work with text in R, called string manipulation.
