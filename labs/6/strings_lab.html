@@ -128,49 +128,51 @@ $(document).ready(function () {
 <pre class="r"><code>library(tidyverse)
 library(stringr)
 text &lt;- read_lines('https://raw.githubusercontent.com/idc9/stor390/master/data/dubliners.txt')</code></pre>
-<div id="question-one" class="section level2">
-<h2>Question one</h2>
+<div id="question-1" class="section level2">
+<h2>Question 1</h2>
 <p>Extract the story <em>Araby</em> using positive look-aheads and look-behinds. You probably will want to remove the table of contents before you can use the structure of the text to extract that particular story.</p>
 <pre class="r"><code>#</code></pre>
 </div>
-<div id="question-two" class="section level2">
-<h2>Question two</h2>
+<div id="question-2" class="section level2">
+<h2>Question 2</h2>
 <p>How many words does the story contain? You can use the regular expression shortcut for words.</p>
 <pre class="r"><code>#</code></pre>
 </div>
-<div id="question-three" class="section level2">
-<h2>Question three</h2>
+<div id="question-3" class="section level2">
+<h2>Question 3</h2>
 <p>Locate all instances of the word ‘bazaar.’</p>
 <pre class="r"><code>#</code></pre>
 </div>
-<div id="question-four" class="section level2">
-<h2>Question four</h2>
+<div id="question-4" class="section level2">
+<h2>Question 4</h2>
 <p>What is the average word length?</p>
 <pre class="r"><code>#</code></pre>
 </div>
-<div id="question-five" class="section level2">
-<h2>Question five</h2>
+<div id="question-5" class="section level2">
+<h2>Question 5</h2>
 <p>A madlibs-like task: Replace all instances of ‘bazaar’ with ‘pirate ship.’</p>
 <pre class="r"><code>#</code></pre>
 </div>
-<div id="question-six" class="section level2">
-<h2>Question six</h2>
+<div id="question-6" class="section level2">
+<h2>Question 6</h2>
 <p>Extract all groups of consonants. For example, ‘chanting’ would return a vector of ‘ch’, ‘nt’, ‘ng.’ <a href="https://en.wikipedia.org/wiki/Comparative_method_(linguistics)#Step_1.2C_assemble_potential_cognate_lists">Consonant clusters</a> are used in comparitive linguistics.</p>
 <p>You can do this in a few ways. Remember that you can negate groups of characters in regular expressions, matching everything except those characters. For help see the character class section of the help file . But in negating you might get more than you want, so be sure to negate everything except what you are looking for.</p>
 <p>Consider y to be a consonant.</p>
 <pre class="r"><code>#</code></pre>
 </div>
-<div id="question-seven" class="section level2">
-<h2>Question seven</h2>
+<div id="question-7" class="section level2">
+<h2>Question 7</h2>
 <p>Extract sentences ending with exclamation points, excluding the exclamation points themselves. For this you will want to be aware that commas, apostrophes, spaces and maybe semicolons can appear in the middle of sentences. At least one sentence has an ellipsis, which you likely will need to handle in a special way: Placing an element inside curly brackets, inside the box brackets  allows you to match it optionally.</p>
 <p>You should use a single regular expression to handle all of this and return a single vector of output.</p>
 <p><em>HINT:</em> You will need to deal with apostrophes here. They are not the standard apostrophes you would think to use in a regular expression. They are a curly kind of apostrophe.</p>
 <p>The good news is that you can still use a regular expression to identify them: 019 will do the trick.</p>
 <p>How could you find that if you didn’t know already? Start by looking at what the string’s encoding is, by typing Encoding(araby). You should see UTF-8. Then find a resource for the different ways apostrophes can be encoded in Unicode, like this one. Then find another resource to help you translate that into regular expressions, like this. Test it out.</p>
 <p><em>ANOTHER HINT:</em> First, quickly count how many sentences you should expect in your output by counting the number of exclamation points. One way to do that is to run str_extract_all(araby, “!”). If the your result doesn’t have the same length output (in terms of number of strings, not length of characters) then you’ve missed some.</p>
-<ol start="8" style="list-style-type: decimal">
-<li>Extract all words ending with ‘ss.’ The only tricky part is making sure the double-s is at the end of the word.</li>
-</ol>
+</div>
+</div>
+<div id="question-8" class="section level1">
+<h1>Question 8</h1>
+<p>Extract all words ending with ‘ss.’ The only tricky part is making sure the double-s is at the end of the word.</p>
 <p>Use the word boundary regular expression, , which matches the end or the beginning of words. An example with double l</p>
 <pre class="r"><code>library(stringr)
 str_extract(c('the bellicose', 'hellebore', 'fell', &quot;unwell&quot;, &quot;and the llama&quot;, &quot;began to smell&quot;), &quot;[a-z]+l{2}&quot;)</code></pre>
@@ -179,9 +181,8 @@ str_extract(c('the bellicose', 'hellebore', 'fell', &quot;unwell&quot;, &quot;an
 <pre><code>## [1] NA       NA       &quot;fell&quot;   &quot;unwell&quot; NA       &quot;smell&quot;</code></pre>
 <pre class="r"><code>str_extract(c('the bellicose', 'hellebore', 'fell', &quot;unwell&quot;, &quot;and the llama&quot;, &quot;began to smell&quot;), &quot;\\bl{2}[a-z]+&quot;)</code></pre>
 <pre><code>## [1] NA      NA      NA      NA      &quot;llama&quot; NA</code></pre>
-</div>
-<div id="question-nine" class="section level2">
-<h2>Question nine</h2>
+<div id="question-9" class="section level2">
+<h2>Question 9</h2>
 <p>Calculate the proportion of words beginning with T (capital or lower case) that are the word ‘the.’ You only need to return the proportion, giving it as a single number between zero and one.</p>
 <pre class="r"><code>#</code></pre>
 </div>

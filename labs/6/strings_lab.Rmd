@@ -18,39 +18,39 @@ text <- read_lines('https://raw.githubusercontent.com/idc9/stor390/master/data/d
 ```
 
 
-## Question one
+## Question 1
 Extract the story *Araby* using positive look-aheads and look-behinds. You probably will want to remove the table of contents before you can use the structure of the text to extract that particular story.
 ```{r}
 #
 ```
 
-## Question two
+## Question 2
 How many words does the story contain? You can use the regular expression shortcut for words.
 ```{r}
 #
 ```
 
 
-## Question three
+## Question 3
 Locate all instances of the word 'bazaar.'
 ```{r}
 #
 ```
 
-## Question four
+## Question 4
 What is the average word length?
 ```{r}
 #
 ```
 
 
-## Question five
+## Question 5
 A madlibs-like task: Replace all instances of 'bazaar' with 'pirate ship.'
 ```{r}
 #
 ```
 
-## Question six 
+## Question 6 
 Extract all groups of consonants. For example, 'chanting' would return a vector of 'ch', 'nt', 'ng.' [Consonant clusters](https://en.wikipedia.org/wiki/Comparative_method_(linguistics)#Step_1.2C_assemble_potential_cognate_lists) are used in comparitive linguistics. 
 
 You can do this in a few ways. Remember that you can negate groups of characters in regular expressions, matching everything except those characters. For help see the character class section of the help file \text{?regexp}. But in negating you might get more than you want, so be sure to negate everything except what you are looking for.
@@ -60,7 +60,7 @@ Consider y to be a consonant.
 #
 ```
 
-## Question seven
+## Question 7
 Extract sentences ending with exclamation points, excluding the exclamation points themselves. For this you will want to be aware that commas, apostrophes, spaces and maybe semicolons can appear in the middle of sentences. At least one sentence has an ellipsis, which you likely will need to handle in a special way: Placing an element inside curly brackets, inside the box brackets \text{[]} allows you to match it optionally.
 
 You should use a single regular expression to handle all of this and return a single vector of output.
@@ -73,7 +73,9 @@ How could you find that if you didn't know already? Start by looking at what the
 
 *ANOTHER HINT:* First, quickly count how many sentences you should expect in your output by counting the number of exclamation points. One way to do that is to run str_extract_all(araby, "!"). If the your result doesn't have the same length output (in terms of number of strings, not length of characters) then you've missed some.
 
-8. Extract all words ending with 'ss.' The only tricky part is making sure the double-s is at the end of the word. 
+# Question 8
+
+Extract all words ending with 'ss.' The only tricky part is making sure the double-s is at the end of the word. 
 
 Use the word boundary regular expression, \verbatim{\\b}, which matches the end or the beginning of words. An example with double l
 
@@ -84,7 +86,7 @@ str_extract(c('the bellicose', 'hellebore', 'fell', "unwell", "and the llama", "
 str_extract(c('the bellicose', 'hellebore', 'fell', "unwell", "and the llama", "began to smell"), "\\bl{2}[a-z]+")
 ```
 
-## Question nine
+## Question 9
 Calculate the proportion of words beginning with T (capital or lower case) that are the word 'the.' You only need to return the proportion, giving it as a single number between zero and one.
 ```{r}
 #
