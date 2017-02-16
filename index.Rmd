@@ -35,7 +35,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |February 7| joins | | [joins](slides/joins.pdf)|
 |February 9| regular expressions| [regex](notes/strings/strings.html) |[regex](slides/regex.html) |
 |February 14| | | |
-|February 16| | | |
+|February 16| linear regression|[linear regression](notes/linear_regression/linear_regression.html) | |
 |February 21| | | |
 |February 23| | | |
 |February 28| | | |
