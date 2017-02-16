@@ -133,7 +133,7 @@ The due date is in the link.
 | February 2 | [whales and tidy data lab 4](labs/4/tidy_lab.html) | | |
 | February 7 |[joins lab 5](labs/5/joins_lab.html)|| |
 | February 9 |[strings lab 6](labs/6/strings_lab.html)| | |
-| February 16 | | |[harry potter](assignments/harry_potter/harry_potter.html) |
+| February 16 | | [harry potter](assignments/harry_potter/harry_potter.html)| |
 
 
 # **Additional resources**
