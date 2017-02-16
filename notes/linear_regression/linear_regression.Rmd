@@ -1,0 +1,200 @@
+---
+title: "Linear regression"
+output: html_document
+---
+
+This lecture is about linear regression. The primary references are
+
+- r4ds chapter 
+- [Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/index.html) (ISLR)
+
+Many of the exampels in this lecture are from ISLR.
+
+Regression is about understanding the relationship between a dependent variable, y, and a bunch of explanatory variables, X. For example, consider the `Advertising` data set from ISLR. 
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+advertising <- read_csv('http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv') %>% select(-X1)
+
+dim(advertising)
+head(advertising)
+```
+
+Each of the 200 rows is a different market. The first three columns are ad budgets for TV, radio and newspaper. The fourth column is total sales in the given market. For this lecture we will consider sales to be the dependent y variable and the three add budegts to be the three explanatory variables.
+
+**Notation warning**: there are a million synonyoms for the X variables
+
+- X
+- explanatory variables
+- independent variables
+- predictors
+- input
+- features
+
+and for the y variable
+
+- y
+- dependent variable
+- response
+- output 
+- outcome
+
+I will attempt to be consistent(ish) but may use these interchangably. Most of the time we will deal with one y variable and multiple X variables (hence lower case for y and upper case for X). It is certainly possible to deal with multiple y variables.
+
+# What do we want to do?
+
+Some questions we might be try to answer using the `advertising` data set (borrowing these from ISLR page 60)
+
+- Is there a relationship between advertising budget and sales?
+- How strong is the relationship between advertising budget and sales? 
+- Which media contribute to sales?
+- How accurately can we estimate the effect of each medium on sales? 
+- How accurately can we predict future sales?
+- Is the relationship linear?
+- Is there synergy among the advertising media?
+
+Let's just consider one x variable, `TV` budget for now. The y variable is `Sales`. A scatter plot is the most simple way to look at the relationship between two variables.
+
+```{r}
+ggplot(data=advertising) +
+    geom_point(aes(x=TV, y=Sales))
+```
+
+What is the most simple way to model the relationship between TV budget and Sales? Plop a line through the data
+
+```{r}
+# ggplot can plot simple spline models
+ggplot(data=advertising) +
+    geom_point(aes(x=TV, y=Sales)) +
+    geom_smooth(aes(x=TV, y=Sales), color='red', method=lm, se=FALSE) 
+```
+
+
+# Lines
+
+For our purposes a model is a simple mathematical formula, $f(x)$ mapping x to y (`TV` budget to `Sales`). Linear regression means $f$ is linear. With one predictor and one response variable the equation of a line is given by 
+
+$$f(x) = ax + b$$
+where $a, b \in \mathbb{R}$ are real numbers. $a$ is the slope of the line and $b$ is the intercept. For the line above $a = 0.04$ and $b = 7.03$.
+
+**The most simple mathematical object is a line.** This is actually one of the most powerful principles in math/science/engineering and underlies many concepts from theoretical physics, to engineering, to statistics and machine learning. The premise of calculus, quoting my math professor from freshman year of college, is
+
+> Curves are hard. Lines are easy.
+
+A linear relationship is easy to interpret: for every extra dollar you spend on TV budget the model predicts you will see an addition $\$a$ increase in sales. So how do we pick which line i.e. how do we select the slope $a$ and intercept $b$?
+
+# Which line?
+
+There are many different critera one might use to select a reasonable choice of lines for a set of data. The best criterion depends on what assumptions you make. This is worth repeating. **Anytime you use a mathematical model you make a bunch of assumptions.** Quoting the late, great [David McKay](https://www.theguardian.com/environment/2016/apr/18/sir-david-mackay-obituary),
+
+> You can't do inference without making assumptions - David McKay
+
+This is one of those statistical montras you should tattoo to your arm.
+
+So far we have made one assumption: a linear model captures what we want to catpure about the data. We need a few more assumptions to get us to a particular linear model. There are roughly two (not mutually exclusive) ways of coming up with a way of fitting a model
+
+- fit a statistical distribution
+- optimize some, hopefully reasonable, mathematical/geometric criteria (called minimizing a loss function)
+
+## Staistical modeling
+
+If you have studied linear regression before you probably learned the following statistical model
+
+$$y = a x + b + \epsilon$$
+$$\epsilon \sim N(0, \sigma^2)$$
+For a given $x$ you get to $y$ by computing $ax + b$ then adding Gaussian noise $\epsilon$. This models says all the $y$ data points should lie on the line $ax+b$, but the data points have some added, random noise.
+
+Randomness or noise is often described as measurment error-- which certainly plays a role. To me, randomness is more about a lack of information. You can't reasonable expect to exactly predict the number of units sold of a product based solely on the TV ad budget. With just this information you can certainly learn something; randomness is a way of saying "with the information I have I believe the following with some degree of uncertainty." Statistical modeling is an exercise in both humility and optimism: I know I can't be perfect, but how well can I do?
+
+Understanding the statsitical perspective on modeling is important. You will learn about it in a class like [STOR 455](http://stat-or.unc.edu/statistics-and-operations-research-courses/undergraduate-courses). See chapter 3 from [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) for more details.
+
+## Optimization
+
+An alternative perspective on modeling is the optimization perspective. To me this perspetive is easier to understand and underemphasized in statistics departments. Pure optimization perspectives are not a prior better or worse than pure statistical perspectives, they are just (usually) different.
+
+Returning to simple linear regression, (simple means one x variable), let's come up with a way of measuring how well a line fits our data. Here are a bunch of potential lines
+
+
+```{r, echo=F}
+# generate random lines
+many_coefs <- tibble(
+  a1 = runif(20, -20, 40),
+  a2 = .04*runif(20, -5, 5)
+)
+
+many_coefs <- many_coefs %>% add_row(a1=7, a2=.04)
+
+
+# plot data and lines
+ggplot(advertising, aes(TV, Sales)) + 
+  geom_abline(aes(intercept = a1, slope = a2), data = many_coefs, alpha = 1/4) +
+    geom_point() 
+```
+
+We want a way of measuring how well a line fits the data. Eauivalently, (since statisticians are pessimists) want a way of measuring how poorly a line fits the data. We are looking for a [loss function](https://en.wikipedia.org/wiki/Loss_function) (also see CH2 from ISLR).
+
+The [residuals](https://en.wikipedia.org/wiki/Errors_and_residuals) are the vertical distances from the data points to the line (red lines below).
+
+```{r, echo=F}
+
+x11 <- advertising[1, 'TV']
+y11 <- advertising[1, 'Sales']
+y21 <- .04 * x11 + 7
+
+x12 <- advertising[5, 'TV']
+y12 <- advertising[5, 'Sales']
+y22 <- .04 * x12 + 7
+
+x13 <- advertising[8, 'TV']
+y13 <- advertising[8, 'Sales']
+y23 <- .04 * x13 + 7
+
+
+
+ggplot(advertising, aes(TV, Sales)) + 
+  geom_abline(aes(intercept = a1, slope = a2), data = many_coefs, alpha = 1/4) +
+    geom_point() +
+    geom_segment(aes(x=x11, y=y11, xend=x11, yend=y21, color='red')) +
+    geom_segment(aes(x=x12, y=y12, xend=x12, yend=y22, color='red')) +
+    geom_segment(aes(x=x13, y=y13, xend=x13, yend=y23, color='red'))
+
+```
+
+
+
+I'm going to introduce a bit of notation. Call the data $x_1, \dots, x_200, y_1, \dots, y_200$ i.e. $x_1=203.1$ and $y_1=22.1$. Suppose we have set the $a,b$ paramters of the model(e.g. $a=.04$ and $b=7$). Then the i$th$ residual is $r_i = y_i - (ax_i + b)$. 
+
+A resonable loss function to choose is the sum of the absolute values of the residuals (why is there an absolute value?) i.e.
+
+$$ L(a, b| x_1^n, y_1^n) = \sum_{i=1}^n |r_i| = \sum_{i=1}^n |y_i - (ax_i + b)|$$
+Where the loss funciton is $L$. The notation $a, b| x_1^n, y_1^n$ means $a,b$ are the parameters we want to set and we are given (i.e. have set) the values of $x_1, \dots, x_n$ and $y_1, \dots, y_n$. If this math formula doesn't look appealing just think about the geometric intuition. 
+
+We want a line that is a close as possible to each data point. We are measuing "close" by the vertical distance (i.e. the absolute value of the residual). Absolute values is one reasonable choice, but why not square the residuals, or take any other power? i.e.
+
+$$ L(a, b| x_1^n, y_1^n) = \sum_{i=1}^n |r_i|^2$$
+or
+$$ L(a, b| x_1^n, y_1^n) = \sum_{i=1}^n |r_i|^{395}$$
+Any of these choices provide for (somewhat) reasonbable loss functions. The larger the exponent the more the loss function will care about outliers -- points far away from the line -- so too large an exponent means the loss function might be too sensitive to outliers.
+
+The most common choice is the squared loss i.e. $r_i^2$. The squared loss has many, many nice properties you can read about in ISLR ch 3. One property of the squared loss is that it turns out to give the same model (values of $a$ and $b$) as the Gaussian nose model above!
+
+Almost everytime someone is talking about a linear model they are using the squared loss function.
+
+# Fitting a linear model in R
+
+Use the `lm` funcction to fit a linear model in R
+
+```{r}
+lin_reg <- lm(Sales ~ TV, advertising)
+
+summary(lin_reg)
+```
+
+
+
+
+
+
+
+---
+Some of the figures in this presentation are taken from "An Introduction to Statistical Learning, with applications in R"  (Springer, 2013) with permission from the authors: G. James, D. Witten,  T. Hastie and R. Tibshirani
