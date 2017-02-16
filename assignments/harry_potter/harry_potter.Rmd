@@ -4,7 +4,7 @@ author: 'STOR 390'
 output: html_document
 ---
 
-Assignment 2 is due 2/28/17.
+Assignment 2 is due 2/28/17. You can find the raw .Rmd file at: [https://raw.githubusercontent.com/idc9/stor390/master/assignments/harry_potter/harry_potter.Rmd](https://raw.githubusercontent.com/idc9/stor390/master/assignments/harry_potter/harry_potter.Rmd).
 
 The text of all 7 Harry Potter books is available online: [http://www.readfreeonline.net/Author/J._K._Rowling/Index.html](http://www.readfreeonline.net/Author/J._K._Rowling/Index.html). In this assignment you will use dplyr, ggplot and regular expressions to do an exploratory analysis of Harry Potter and the Philosopher's Stone.
 
@@ -51,7 +51,7 @@ for(i in 1:num_chapters){
 
 # Question 0
 Set `eval=FALSE` for the chunck above and `eval=TRUE`for the chunck below and all test chunks.
-```{r, eval=TRUE, message=F, warning=F}
+```{r, eval=F, message=F, warning=F}
 # set up
 library(tidyverse)
 library(stringr)
