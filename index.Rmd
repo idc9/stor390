@@ -126,14 +126,13 @@ The due date is in the link.
 
 | Assigned | Labs | Assignments | In class exercises |
 |----------|------|-------------|--------------------|
-| January 12 | [data.gov](labs/1/gov_data.html) | | |
-| January 17 |[reproducible data.gov](labs/2/reproducible_gov_data.html) | | [the command line](class_exercises/command_line/command_line.html) and optionally [swirl](class_exercises/swirl/swirl.html)|
+| January 12 | [data.gov lab 1](labs/1/gov_data.html) | | |
+| January 17 |[reproducible data.gov lab 2](labs/2/reproducible_gov_data.html) | | [command line](class_exercises/command_line/command_line.html) and [swirl](class_exercises/swirl/swirl.html)|
 | January 19 |  |[dplyr and unc departments](assignments/unc_depts/unc_depts.html) | |
-| January 26 |[prog lab](labs/3/prog_lab.html)  | | |
-| January 31 | | | vectors + lists|
-| February 2 | [whales and tidy data](labs/4/tidy_lab.html) | | |
-| February 7 |relational data lab|[joins lab](labs/5/joins_lab.html) | |
-| February 9 |strings lab|[strings lab](labs/6/strings_lab.html) | |
+| January 26 |[prog lab 3](labs/3/prog_lab.html)  | | |
+| February 2 | [whales and tidy data lab 4](labs/4/tidy_lab.html) | | |
+| February 7 |[joins lab 5](labs/5/joins_lab.html)|| |
+| February 9 |[strings lab 6](labs/6/strings_lab.html)| | |
 
 
 # **Additional resources**
