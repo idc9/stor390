@@ -180,7 +180,7 @@ The most common choice is the squared loss i.e. $r_i^2$. The squared loss has ma
 
 Almost everytime someone is talking about a linear model they are using the squared loss function.
 
-# Fitting a linear model in R
+## Fitting a simple linear model in R
 
 Use the `lm` funcction to fit a linear model in R
 
@@ -189,6 +189,21 @@ lin_reg <- lm(Sales ~ TV, advertising)
 
 summary(lin_reg)
 ```
+
+
+# More than one X variable
+
+```{r}
+lin_reg <- lm(Sales ~ TV + Radio, advertising)
+
+summary(lin_reg)
+```
+
+Simple linear regression puts a line in the data. When there is more than one x variable linear regression puts a [hyperplane](https://en.wikipedia.org/wiki/Hyperplane) through the data. So
+
+
+
+
 
 
 
