@@ -1,6 +1,10 @@
 ---
 title: "Linear regression"
-output: html_document
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
 ---
 
 This lecture is about linear regression. The primary references are
