@@ -8,21 +8,31 @@ This lecture is about linear regression. The primary references are
 - r4ds chapter 
 - [Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/index.html) (ISLR)
 
-Many of the exampels in this lecture are from ISLR.
+Many of the examples in this lecture are from ISLR.
 
-Regression is about understanding the relationship between a dependent variable, y, and a bunch of explanatory variables, X. For example, consider the `Advertising` data set from ISLR. 
+Regression is about understanding the relationship between a dependent variable, y, and a bunch of explanatory variables, X. For example, consider the `movies` data set scraped by [Mine Cetinkaya-Rundel](http://www2.stat.duke.edu/~mc301/data/movies.html). 
 
-```{r, warning=FALSE, message=FALSE}
+
+```{r, message=FALSE, warning=FALSE}
+# you only need to install this package if you want to recreate the 3d scatter plot below
+# install.packages(plot3D)
 library(tidyverse)
-advertising <- read_csv('http://www-bcf.usc.edu/~gareth/ISL/Advertising.csv') %>% select(-X1)
 
-dim(advertising)
-head(advertising)
+
+movies <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/movies.csv')
+
+# fix a missing value!
+movies[movies[, 'title' ] == 'The End of America', 'runtime'] <- 73
+
+dim(movies)
+head(movies)
 ```
 
-Each of the 200 rows is a different market. The first three columns are ad budgets for TV, radio and newspaper. The fourth column is total sales in the given market. For this lecture we will consider sales to be the dependent y variable and the three add budegts to be the three explanatory variables.
 
-**Notation warning**: there are a million synonyoms for the X variables
+
+Each of the 651 rows is a different movie. The columns include data from IMDb and Rotten Tomatoes such as **imdb_rating**, **mpaa_rating** (PG-13, R, etc), **critics_score**, etc. 
+
+**Notation warning**: there are a million synonyms for the X variables
 
 - X
 - explanatory variables
@@ -39,34 +49,37 @@ and for the y variable
 - output 
 - outcome
 
-I will attempt to be consistent(ish) but may use these interchangably. Most of the time we will deal with one y variable and multiple X variables (hence lower case for y and upper case for X). It is certainly possible to deal with multiple y variables.
+I will attempt to be consistent(ish) but may use these interchangeably. Most of the time we will deal with one y variable and multiple X variables (hence lower case for y and upper case for X). It is certainly possible to deal with multiple y variables.
 
 # What do we want to do?
 
-Some questions we might be try to answer using the `advertising` data set (borrowing these from ISLR page 60)
+Some questions we might be try to answer using the `movies` data set
 
-- Is there a relationship between advertising budget and sales?
-- How strong is the relationship between advertising budget and sales? 
-- Which media contribute to sales?
-- How accurately can we estimate the effect of each medium on sales? 
-- How accurately can we predict future sales?
+-
+
+- Is there a relationship between IMDb_rating and critics_score?
+- How strong is this relationship? 
 - Is the relationship linear?
-- Is there synergy among the advertising media?
+- Is this relationship different for different genres?
+- Are rotten tomatoes critics scores or audience scores more predictive of IMDb scores?
+- How accurately can we estimate the effect of each  on sales? 
+- If we only know the Rotten Tomatoes information, how accurately can we predict IMDb scores (or number of votes)?
 
-Let's just consider one x variable, `TV` budget for now. The y variable is `Sales`. A scatter plot is the most simple way to look at the relationship between two variables.
+
+Let's just consider one x variable, `critics_score` budget for now. The y variable is `imdb_rating`. A scatter plot is the most simple way to look at the relationship between two variables.
 
 ```{r}
-ggplot(data=advertising) +
-    geom_point(aes(x=TV, y=Sales))
+ggplot(data=movies) +
+    geom_point(aes(x=critics_score, y=imdb_rating))
 ```
 
 What is the most simple way to model the relationship between TV budget and Sales? Plop a line through the data
 
 ```{r}
 # ggplot can plot simple spline models
-ggplot(data=advertising) +
-    geom_point(aes(x=TV, y=Sales)) +
-    geom_smooth(aes(x=TV, y=Sales), color='red', method=lm, se=FALSE) 
+ggplot(data=movies) +
+    geom_point(aes(x=critics_score, y=imdb_rating)) +
+    geom_smooth(aes(x=critics_score, y=imdb_rating), color='red', method=lm, se=FALSE)
 ```
 
 
@@ -75,7 +88,7 @@ ggplot(data=advertising) +
 For our purposes a model is a simple mathematical formula, $f(x)$ mapping x to y (`TV` budget to `Sales`). Linear regression means $f$ is linear. With one predictor and one response variable the equation of a line is given by 
 
 $$f(x) = ax + b$$
-where $a, b \in \mathbb{R}$ are real numbers. $a$ is the slope of the line and $b$ is the intercept. For the line above $a = 0.04$ and $b = 7.03$.
+where $a, b \in \mathbb{R}$ are real numbers. $a$ is the slope of the line and $b$ is the intercept. For the line above $a = 0.029$ and $b = 4.8$.
 
 **The most simple mathematical object is a line.** This is actually one of the most powerful principles in math/science/engineering and underlies many concepts from theoretical physics, to engineering, to statistics and machine learning. The premise of calculus, quoting my math professor from freshman year of college, is
 
@@ -85,13 +98,13 @@ A linear relationship is easy to interpret: for every extra dollar you spend on 
 
 # Which line?
 
-There are many different critera one might use to select a reasonable choice of lines for a set of data. The best criterion depends on what assumptions you make. This is worth repeating. **Anytime you use a mathematical model you make a bunch of assumptions.** Quoting the late, great [David McKay](https://www.theguardian.com/environment/2016/apr/18/sir-david-mackay-obituary),
+There are many different criteria one might use to select a reasonable choice of lines for a set of data. The best criterion depends on what assumptions you make. This is worth repeating. **Anytime you use a mathematical model you make a bunch of assumptions.** Quoting the late, great [David McKay](https://www.theguardian.com/environment/2016/apr/18/sir-david-mackay-obituary),
 
 > You can't do inference without making assumptions - David McKay
 
-This is one of those statistical montras you should tattoo to your arm.
+This is one of those statistical mantras you should tattoo to your arm.
 
-So far we have made one assumption: a linear model captures what we want to catpure about the data. We need a few more assumptions to get us to a particular linear model. There are roughly two (not mutually exclusive) ways of coming up with a way of fitting a model
+So far we have made one assumption: a linear model captures what we want to capture about the data. We need a few more assumptions to get us to a particular linear model. There are roughly two (not mutually exclusive) ways of coming up with a way of fitting a model
 
 - fit a statistical distribution
 - optimize some, hopefully reasonable, mathematical/geometric criteria (called minimizing a loss function)
@@ -104,13 +117,13 @@ $$y = a x + b + \epsilon$$
 $$\epsilon \sim N(0, \sigma^2)$$
 For a given $x$ you get to $y$ by computing $ax + b$ then adding Gaussian noise $\epsilon$. This models says all the $y$ data points should lie on the line $ax+b$, but the data points have some added, random noise.
 
-Randomness or noise is often described as measurment error-- which certainly plays a role. To me, randomness is more about a lack of information. You can't reasonable expect to exactly predict the number of units sold of a product based solely on the TV ad budget. With just this information you can certainly learn something; randomness is a way of saying "with the information I have I believe the following with some degree of uncertainty." Statistical modeling is an exercise in both humility and optimism: I know I can't be perfect, but how well can I do?
+Randomness or noise is often described as measurement error-- which certainly plays a role. To me, randomness is more about a lack of information. You can't reasonable expect to exactly predict the number of units sold of a product based solely on the TV ad budget. With just this information you can certainly learn something; randomness is a way of saying "with the information I have I believe the following with some degree of uncertainty." Statistical modeling is an exercise in both humility and optimism: I know I can't be perfect, but how well can I do?
 
-Understanding the statsitical perspective on modeling is important. You will learn about it in a class like [STOR 455](http://stat-or.unc.edu/statistics-and-operations-research-courses/undergraduate-courses). See chapter 3 from [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) for more details.
+Understanding the statistical perspective on modeling is important. You will learn about it in a class like [STOR 455](http://stat-or.unc.edu/statistics-and-operations-research-courses/undergraduate-courses). See chapter 3 from [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) for more details.
 
 ## Optimization
 
-An alternative perspective on modeling is the optimization perspective. To me this perspetive is easier to understand and underemphasized in statistics departments. Pure optimization perspectives are not a prior better or worse than pure statistical perspectives, they are just (usually) different.
+An alternative perspective on modeling is the optimization perspective. To me this perspective is easier to understand and under emphasized in statistics departments. Pure optimization perspectives are not a prior better or worse than pure statistical perspectives, they are just (usually) different.
 
 Returning to simple linear regression, (simple means one x variable), let's come up with a way of measuring how well a line fits our data. Here are a bunch of potential lines
 
@@ -119,39 +132,39 @@ Returning to simple linear regression, (simple means one x variable), let's come
 # generate random lines
 many_coefs <- tibble(
   a1 = runif(20, -20, 40),
-  a2 = .04*runif(20, -5, 5)
+  a2 = .03*runif(20, -5, 5)
 )
 
-many_coefs <- many_coefs %>% add_row(a1=7, a2=.04)
+many_coefs <- many_coefs %>% add_row(a1=4.8, a2=.029)
 
 
 # plot data and lines
-ggplot(advertising, aes(TV, Sales)) + 
+ggplot(movies, aes(critics_score, imdb_rating)) + 
   geom_abline(aes(intercept = a1, slope = a2), data = many_coefs, alpha = 1/4) +
     geom_point() 
 ```
 
-We want a way of measuring how well a line fits the data. Eauivalently, (since statisticians are pessimists) want a way of measuring how poorly a line fits the data. We are looking for a [loss function](https://en.wikipedia.org/wiki/Loss_function) (also see CH2 from ISLR).
+We want a way of measuring how well a line fits the data. Equivalently, (since statisticians are pessimists) want a way of measuring how poorly a line fits the data. We are looking for a [loss function](https://en.wikipedia.org/wiki/Loss_function) (also see CH2 from ISLR).
 
 The [residuals](https://en.wikipedia.org/wiki/Errors_and_residuals) are the vertical distances from the data points to the line (red lines below).
 
 ```{r, echo=F}
 
-x11 <- advertising[1, 'TV']
-y11 <- advertising[1, 'Sales']
-y21 <- .04 * x11 + 7
+x11 <- movies[1, 'critics_score']
+y11 <- movies[1, 'imdb_rating']
+y21 <- .03 * x11 + 4.8
 
-x12 <- advertising[5, 'TV']
-y12 <- advertising[5, 'Sales']
-y22 <- .04 * x12 + 7
+x12 <- movies[5, 'critics_score']
+y12 <- movies[5, 'imdb_rating']
+y22 <- .03 * x12 + 4.8
 
-x13 <- advertising[8, 'TV']
-y13 <- advertising[8, 'Sales']
-y23 <- .04 * x13 + 7
+x13 <- movies[8, 'critics_score']
+y13 <- movies[8, 'imdb_rating']
+y23 <- .03 * x13 + 4.8
 
 
 
-ggplot(advertising, aes(TV, Sales)) + 
+ggplot(movies, aes(critics_score, imdb_rating)) + 
   geom_abline(aes(intercept = a1, slope = a2), data = many_coefs, alpha = 1/4) +
     geom_point() +
     geom_segment(aes(x=x11, y=y11, xend=x11, yend=y21, color='red')) +
@@ -162,53 +175,283 @@ ggplot(advertising, aes(TV, Sales)) +
 
 
 
-I'm going to introduce a bit of notation. Call the data $x_1, \dots, x_200, y_1, \dots, y_200$ i.e. $x_1=203.1$ and $y_1=22.1$. Suppose we have set the $a,b$ paramters of the model(e.g. $a=.04$ and $b=7$). Then the i$th$ residual is $r_i = y_i - (ax_i + b)$. 
+I'm going to introduce a bit of notation. Call the data $x_1, \dots, x_200, y_1, \dots, y_200$ i.e. $x_1=203.1$ and $y_1=22.1$. Suppose we have set the $a,b$ parameters of the model(e.g. $a=.04$ and $b=7$). Then the i$th$ residual is $r_i = y_i - (ax_i + b)$. 
 
-A resonable loss function to choose is the sum of the absolute values of the residuals (why is there an absolute value?) i.e.
+A reasonable loss function to choose is the sum of the absolute values of the residuals (why is there an absolute value?) i.e.
 
 $$ L(a, b| x_1^n, y_1^n) = \sum_{i=1}^n |r_i| = \sum_{i=1}^n |y_i - (ax_i + b)|$$
-Where the loss funciton is $L$. The notation $a, b| x_1^n, y_1^n$ means $a,b$ are the parameters we want to set and we are given (i.e. have set) the values of $x_1, \dots, x_n$ and $y_1, \dots, y_n$. If this math formula doesn't look appealing just think about the geometric intuition. 
+Where the loss function is $L$. The notation $a, b| x_1^n, y_1^n$ means $a,b$ are the parameters we want to set and we are given (i.e. have set) the values of $x_1, \dots, x_n$ and $y_1, \dots, y_n$. If this math formula doesn't look appealing just think about the geometric intuition. 
 
-We want a line that is a close as possible to each data point. We are measuing "close" by the vertical distance (i.e. the absolute value of the residual). Absolute values is one reasonable choice, but why not square the residuals, or take any other power? i.e.
+We want a line that is a close as possible to each data point. We are measuring "close" by the vertical distance (i.e. the absolute value of the residual). Absolute values is one reasonable choice, but why not square the residuals, or take any other power? i.e.
 
 $$ L(a, b| x_1^n, y_1^n) = \sum_{i=1}^n |r_i|^2$$
 or
 $$ L(a, b| x_1^n, y_1^n) = \sum_{i=1}^n |r_i|^{395}$$
-Any of these choices provide for (somewhat) reasonbable loss functions. The larger the exponent the more the loss function will care about outliers -- points far away from the line -- so too large an exponent means the loss function might be too sensitive to outliers.
+Any of these choices provide for (somewhat) reasonable loss functions. The larger the exponent the more the loss function will care about outlines -- points far away from the line -- so too large an exponent means the loss function might be too sensitive to outlines.
 
 The most common choice is the squared loss i.e. $r_i^2$. The squared loss has many, many nice properties you can read about in ISLR ch 3. One property of the squared loss is that it turns out to give the same model (values of $a$ and $b$) as the Gaussian nose model above!
 
-Almost everytime someone is talking about a linear model they are using the squared loss function.
+Almost every time someone is talking about a linear model they are using the squared loss function.
 
 ## Fitting a simple linear model in R
 
-Use the `lm` funcction to fit a linear model in R
+Use the `lm` function to fit a linear model in R
 
 ```{r}
-lin_reg <- lm(Sales ~ TV, advertising)
-
+# see below for note about the ~ notation
+lin_reg <- lm(imdb_rating ~ critics_score, movies)
 summary(lin_reg)
 ```
+
+## Analytically compute the simple linear regression fit
+
+Most algorithms in Machine Learning require some kind of *numerical method* such as [gradient descent](https://www.coursera.org/learn/machine-learning/lecture/kCvQc/gradient-descent-for-linear-regression) to fit. A lot of machine learning research involves developing new methods to fit existing models or developing new models that can be fit with existing methods. This is where computer science and optimization become critical to machine learning.
+
+In some cases we can find a *closed form* solution for a model (aka find an analytic solution). For linear regression this means finding a value of $a, b$ that minimizes $L(a, b| x_1^n, y_1^n)$ given above. This optimization problem is an exercises in freshman year calculus i.e. compute the derivative, set it to zero and solve for $a*, b*$. Recall the $x_i, y_i$ are given numbers.
+
+$$L(a, b| x_1^n, y_1^n) = \sum_{i=1}^n |r_i|^2$$
+$$ = \sum_{i=1}^n (y_i - a x_i - b )^2$$
+Taking derivatives,
+$$ \frac{dL(a, b)}{da} = \sum_{i=1}^n 2 x_i (y_i - a x_i - b )$$
+$$ \frac{dL(a, b)}{db} = \sum_{i=1}^n (y_i - a x_i - b )$$
+Now set these two equations equal to zero
+
+$$\sum_{i=1}^n 2 x_i (y_i - a x_i - b ) = 0$$
+$$ \sum_{i=1}^n (y_i - a x_i - b ) = 0$$
+and do a little algebra to find
+
+$$a* = \frac{\sum_{i=1}^n (x_i-\overline{x})(y_i-\overline{y})}{\sum_{i=1}^n (x_i-\overline{x})^2}$$
+$$ b* = \overline{y} - \overline{x} a*$$
+where $\overline{x} = \frac{1}{n}\sum_{i=1}^n x_i$ and $\overline{y} = \frac{1}{n}\sum_{i=1}^n y_i$ are the means.
 
 
 # More than one X variable
 
-```{r}
-lin_reg <- lm(Sales ~ TV + Radio, advertising)
+The piece of code below `imdb_rating ~ critics_score + audience_score` says model **imdb_rating** as the response variable on **critics_score** and **audience_score**. This is called [Wilkinsion-Rogers notation](https://www.jstor.org/stable/2346786?seq=1#page_scan_tab_contents) or just formula notation which is a useful mini-language for writing models in R. 
 
+```{r}
+lin_reg <- lm(imdb_rating ~ critics_score + audience_score, movies)
 summary(lin_reg)
+
+movies %>% 
+    select(imdb_rating, critics_score, audience_score)
 ```
 
-Simple linear regression puts a line in the data. When there is more than one x variable linear regression puts a [hyperplane](https://en.wikipedia.org/wiki/Hyperplane) through the data. So
+
+The `lm` object computes a lot of useful statistics such p-values of each variable. Linear regression is very important and you should understand most of the statistics output from the `summary` function -- many inferential questions can be answered by these statistics.
+
+
+## Predictions
+Say we want to get the model's prediction for the IMDb rating of a model with a RT critics score of 80 and audience score of 30. You can do this manually,
+
+```{r}
+# new points
+critics_score_new <- 80
+audience_score_new <- 80
+
+# get the model coefficients
+beta <- lin_reg$coefficients
+beta
+
+# manually compute the prediction, first term is the intercept
+imdb_rating_pred <- beta[1] + beta[2] * critics_score_new + beta[3] * audience_score_new
+imdb_rating_pred
+
+```
+
+Usually you will use the `predict` function. First you create a new data frame with the points at which you want to predict. This new data frame should have the same column names as the original data frame, but only include the x variables
+
+```{r}
+# column names should be the same as the original data frame used to train the model
+new_data <- tibble(critics_score = critics_score_new, 
+                   audience_score=audience_score_new)
+
+predict(lin_reg, newdata=new_data)
+
+```
+
+The `modelr` package has some functions that automate a lot of prediction tasks (see r4ds chapter 23). 
 
 
 
+## Visual diagnostics
+
+Understanding what's going on with a linear model is an important skill that you learn lot's about in a class like [STOR 455](http://stat-or.unc.edu/statistics-and-operations-research-courses/undergraduate-courses). There are lots of numerical summaries that help you understand the model, but visual summaries can be very helpful. Unfortunately, most visual summaries are restricted to 2 dimensions. 
+
+**Warning**: most of the time 2 dimensional plots, maybe with a color or shape, are the most informative. While you can add lots of aesthetics or make 3d plots (e.g. below), you often don't get much value over several well considered 2d plots.
+
+A lot of helpful plots come from comparing the residuals to other variables in such as the y values
+
+```{r}
+diagnostics <- tibble(predictions = lin_reg$fitted.values,
+                      residuals = lin_reg$residuals)
+
+ggplot(diagnostics) +
+    geom_point(aes(x=predictions, y=residuals))
+```
+
+## Geometry on linear regression
+Simple linear regression puts a line in the data. When there is more than one x variable linear regression puts a [hyperplane](https://en.wikipedia.org/wiki/Hyperplane) through the data. When we have two X variables a hyper plane is a plane in 2 + 1 = 3 dimensions.
+
+```{r, echo=F}
+# borrowing code from: http://www.sthda.com/english/wiki/impressive-package-for-3d-and-4d-graph-r-software-and-data-visualization
+library(plot3D)
+
+x <- movies$audience_score
+y <- movies$critics_score
+z <- movies$imdb_rating
+
+
+fit <- lm(z ~ x + y)
+# predict values on regular xy grid
+grid.lines = 26
+x.pred <- seq(min(x), max(x), length.out = grid.lines)
+y.pred <- seq(min(y), max(y), length.out = grid.lines)
+xy <- expand.grid( x = x.pred, y = y.pred)
+z.pred <- matrix(predict(fit, newdata = xy), 
+                 nrow = grid.lines, ncol = grid.lines)
+
+
+fitpoints <- predict(fit)
+
+
+# scatter plot with regression plane
+scatter3D(x, y, z, pch = 19, cex = .5, alpha=.4, col='red', 
+    theta = 200, phi =25, ticktype = "detailed",
+    xlab = "audience_score", ylab = "critics_score", zlab = "imdb_rating",  
+    surf = list(x = x.pred, y = y.pred, z = z.pred, facets = NA, alpha=1, col='black', fit=fitpoints), 
+    main = "linear regression with 2 predictors")
+
+```
+
+When there are p x variables and one y variable then linear regression gives a p dimensional hyper plane in p + 1 dimensional space. If that statements makes you're head hurt then you're in good company. **Warning**: Reasoning about high dimensional objects can be very challenging. Typically the best place to start is to use 2 and 3 dimensional examples to get intuition about a higher dimension analogue. This is often sufficient to understand what you need (such as higher dimensional hyper planes), but the analogies can break down ([high dimensional space is a weird place](https://www.jstor.org/stable/20441411?seq=1#page_scan_tab_contents)). An important skill in math is being able to suspend your disbelief in the right way.
+
+When you have 3 or more predictors you obviously can't plot the full data (unless you are [Bill Thurston](https://en.wikipedia.org/wiki/William_Thurston) and your 4d intuition is on point). You can, however, make lots of 2d plots (see below).
+
+## Categorical variables: factors
+
+Linear regression operates on numerical variables, but a lot of data is not numerical. For example, **genre** is a [categorical variable](https://en.wikipedia.org/wiki/Categorical_variable) (e.g. Drama, Comedy). **mpaa_rating** is an [ordinal variable](https://en.wikipedia.org/wiki/Ordinal_data) meaning it has a natural order ( G < PG < PG-13 < R < NC-17 < Unrated). We will focus on categorical variables.
+
+From a math point of view, the trick for non-numerical variables is to turn them into numbers some how (usually by using [dummy variables](https://en.wikipedia.org/wiki/Dummy_variable_(statistics)). From a programming point of view, R has a nice(ish) way of naturally dealing with categorical data: [factors](http://r4ds.had.co.nz/factors.html). 
+
+There is even an R package that makes dealing with factors easier
+```{r}
+library(forcats)
+```
+
+From r4ds chapter 15,
+> In R, factors are used to work with categorical variables, variables that have a fixed and known set of possible values. 
+
+Factors can handle both unrecorded and ordered categorical variables. For more details read [r4ds chapter 15](http://r4ds.had.co.nz/factors.html).
+
+You can create a factor variable
+```{r}
+
+fact <- factor(c('a', 'a','d', 'b', 'c', 'c', 'b'))
+fact
+```
+
+notice the `Levels` printed out with the factor object: these are the categories. Levels are ordered implicitly (usually alphabetically). You can change the ordering i.e.
+```{r}
+factor_rating <- factor(movies$mpaa_rating)
+levels(factor_rating)  <- c("G", "PG", "PG-13", "R", "NC-17", "Unrated")
+levels(factor_rating)
+```
+
+Some functions will automatically treat string variables in a data frame as a factor variable. However, in general you should tell the data frame that a variable is a factor
+```{r}
+# notice the <fctr> data type
+movies %>% 
+    mutate(mpaa_rating=factor(mpaa_rating)) %>% 
+    select(mpaa_rating)
+```
+
+Let's create a new data frame called `data` with just a few columns we're interested in and specify the factor variables
+
+```{r}
+data <- movies %>% 
+        select(imdb_rating, imdb_num_votes,
+               critics_score, audience_score,
+               runtime, genre, mpaa_rating,
+               best_pic_win) %>% 
+        mutate(genre=factor(genre),
+               mpaa_rating=factor(mpaa_rating), 
+               best_pic_win=factor(best_pic_win))
+
+```
+
+and now fit a linear model
+
+```{r}
+# imdb_rating ~. means imdb_rating  on everything else
+lin_reg <- lm(imdb_rating ~. , data)
+summary(lin_reg)
+```
+You'll notice R introduced a bunch of new variables (called [dummy varaibles](https://en.wikipedia.org/wiki/Dummy_variable_(statistics))) such as **mpaa_ratingPG**, **mpaa_ratingNC-17**, **best_pic_winyes**, etc. Notice, however, that there is no **best_pic_winno**. 
+
+**Dummy variables**: replace a categorical variable, $x$, that has K categories with $K -1$ new **indicator variables $d_1, \dots, d_{K-1}$. For a given observation, $x$ the indicator $d_k$ is 1 if $x$ is in the k$th$ category. We only need $K - 1$ new variables since we can code the last category as all of the $K -1$ dummy variables are 0. 
+
+For example, **best_pic_win** has two categories so we introduce one new dummy variable **best_pic_winyes**. For **mpaa_rating** there are 6 categories so we introduce 5 new variables.
+
+**The upshot** is that once we have replaced categorical variables with dummy variables our data matrix is only numbers! You can see the new numerical matrix with the `model_matrix` function from the `modelr` package.
+
+
+```{r}
+library(modelr)
+# here is a small example with just two covariates
+# the -1 gets rid of the intercept term
+model_matrix(data, imdb_rating ~ best_pic_win + critics_score - 1)
+```
 
 
 
+## Non-linear models
+Many relationships are not linear. For example,
+```{r}
+ggplot(data) +
+    geom_point(aes(x=imdb_num_votes, y=imdb_rating))
+```
+In general fitting a non-linear model is challenging, but there are two ways of using a linear model to make a non-linear model. The first is through a data transformation i.e. instead of **number of votes** maybe we use **$\sqrt{\text(number of vote)}$**
+
+```{r}
+# ggplot can automatically plot the linear regression line
+ggplot(data) +
+    geom_point(aes(x=sqrt(imdb_num_votes), y=imdb_rating)) +
+    geom_smooth(aes(x=sqrt(imdb_num_votes), y=imdb_rating), color='red', method=lm, se=FALSE)
+```
+A related trick is to add a bunch of transformed variables into the X data frame. For example, for a variable $x$ we could add all of $\sqrt{x}, x^2, x^3, log(x)$ to the data frame; we now have 4 additional variables in the data frame
+
+```{r}
+data_trans <- data %>% 
+                mutate(nv_sqrt = sqrt(imdb_num_votes),
+                       nv_sq = imdb_num_votes^2,
+                       nv_cube = imdb_num_votes^3,
+                       nv_log = log(imdb_num_votes))
+```
+
+We can now fit the linear regression model
+
+```{r}
+
+lin_reg_trans <- lm(imdb_rating ~., data_trans)
+
+summary(lin_reg_trans)
+```
 
 
+Now the resulting model is not linear in **imdb_num_votes**
 
+
+```{r}
+pred_df <- tibble(imdb_rating = unname(predict(lin_reg_trans)),
+                  imdb_num_votes=data_trans$imdb_num_votes)
+
+ggplot(pred_df) +
+    geom_line(aes(x=imdb_num_votes, y=imdb_rating), color='red') +
+    geom_point(aes(x=sqrt(imdb_num_votes), y=imdb_rating)) +
+    xlim(0, 1000)
+    
+```
 
 
 ---
