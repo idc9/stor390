@@ -12,8 +12,6 @@ This lecture is about linear regression. The primary references are
 - r4ds chapter 
 - [Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/index.html) (ISLR)
 
-Many of the examples in this lecture are from ISLR.
-
 Regression is about understanding the relationship between a dependent variable, y, and a bunch of explanatory variables, X. For example, consider the `movies` data set scraped by [Mine Cetinkaya-Rundel](http://www2.stat.duke.edu/~mc301/data/movies.html). 
 
 
@@ -133,10 +131,11 @@ Returning to simple linear regression, (simple means one x variable), let's come
 
 
 ```{r, echo=F}
+
 # generate random lines
 many_coefs <- tibble(
-  a1 = runif(20, -20, 40),
-  a2 = .03*runif(20, -5, 5)
+  a1 = 4.8 + runif(20, -1, 1),
+  a2 = .03*runif(20, 0, 2)
 )
 
 many_coefs <- many_coefs %>% add_row(a1=4.8, a2=.029)
@@ -391,22 +390,15 @@ and now fit a linear model
 lin_reg <- lm(imdb_rating ~. , data)
 summary(lin_reg)
 ```
-You'll notice R introduced a bunch of new variables (called [dummy varaibles](https://en.wikipedia.org/wiki/Dummy_variable_(statistics))) such as **mpaa_ratingPG**, **mpaa_ratingNC-17**, **best_pic_winyes**, etc. Notice, however, that there is no **best_pic_winno**. 
+You'll notice R introduced a bunch of new variables (called [dummy varaibles](https://en.wikipedia.org/wiki/Dummy_variable_(statistics))) such as **mpaa_ratingPG**, **mpaa_ratingNC-17**, **best_pic_winyes**, etc. Notice, however, that there is no **best_pic_winno** (see warning below). 
 
-**Dummy variables**: replace a categorical variable, $x$, that has K categories with $K -1$ new **indicator variables $d_1, \dots, d_{K-1}$. For a given observation, $x$ the indicator $d_k$ is 1 if $x$ is in the k$th$ category. We only need $K - 1$ new variables since we can code the last category as all of the $K -1$ dummy variables are 0. 
+**Dummy variables**: replace a categorical variable, $x$, that has K categories with $K$ new **indicator variables $d_1, \dots, d_{K-1}$. For a given observation, $x$ the indicator $d_k$ is 1 if $x$ is in the k$th$ category. 
 
 For example, **best_pic_win** has two categories so we introduce one new dummy variable **best_pic_winyes**. For **mpaa_rating** there are 6 categories so we introduce 5 new variables.
 
-**The upshot** is that once we have replaced categorical variables with dummy variables our data matrix is only numbers! You can see the new numerical matrix with the `model_matrix` function from the `modelr` package.
+**Warning**: for linear regression one commonly introduces $K-1$ dummy variables instead of $K$. For linear regression it turns out that one of the categories gets absorbed by the intercept term.
 
-
-```{r}
-library(modelr)
-# here is a small example with just two covariates
-# the -1 gets rid of the intercept term
-model_matrix(data, imdb_rating ~ best_pic_win + critics_score - 1)
-```
-
+**The upshot** is that once we have replaced categorical variables with dummy variables our data matrix is only numbers!
 
 
 ## Non-linear models
@@ -443,20 +435,15 @@ summary(lin_reg_trans)
 ```
 
 
-Now the resulting model is not linear in **imdb_num_votes**
-
+Now the resulting model is not linear in **imdb_num_votes** (also looks terrible!)
 
 ```{r}
-pred_df <- tibble(imdb_rating = unname(predict(lin_reg_trans)),
-                  imdb_num_votes=data_trans$imdb_num_votes)
+pred_df <- tibble(imdb_rating_pred = unname(predict(lin_reg_trans)),
+                  imdb_num_votes=data_trans$imdb_num_votes,
+                  imdb_rating=data_trans$imdb_rating)
 
 ggplot(pred_df) +
-    geom_line(aes(x=imdb_num_votes, y=imdb_rating), color='red') +
-    geom_point(aes(x=sqrt(imdb_num_votes), y=imdb_rating)) +
-    xlim(0, 1000)
+    geom_point(aes(x=imdb_num_votes, y=imdb_rating)) +
+    geom_line(aes(x=imdb_num_votes, y=imdb_rating_pred), color='red')
     
 ```
-
-
----
-Some of the figures in this presentation are taken from "An Introduction to Statistical Learning, with applications in R"  (Springer, 2013) with permission from the authors: G. James, D. Witten,  T. Hastie and R. Tibshirani

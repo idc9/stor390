@@ -6,7 +6,7 @@ output: html_document
 
 Assignment 2 is due 2/28/17. You can find the raw .Rmd file at: [https://raw.githubusercontent.com/idc9/stor390/master/assignments/harry_potter/harry_potter.Rmd](https://raw.githubusercontent.com/idc9/stor390/master/assignments/harry_potter/harry_potter.Rmd).
 
-The text of all 7 Harry Potter books is available online: [http://www.readfreeonline.net/Author/J._K._Rowling/Index.html](http://www.readfreeonline.net/Author/J._K._Rowling/Index.html). In this assignment you will use dplyr, ggplot and regular expressions to do an exploratory analysis of Harry Potter and the Philosopher's Stone.
+The text of all 7 Harry Potter books is available online: [http://www.readfreeonline.net/Author/J._K._Rowling/Index.html](http://www.readfreeonline.net/Author/J._K._Rowling/Index.html) (very possible the website is now defunct). In this assignment you will use dplyr, ggplot and regular expressions to do an exploratory analysis of Harry Potter and the Philosopher's Stone.
 
 Here are a couple examples of similar text analysis projects (that you will be able to do in a couple weeks!)
 
@@ -14,44 +14,10 @@ Here are a couple examples of similar text analysis projects (that you will be a
 
 - [Harry Potter agression](https://github.com/andrewheiss/Harry-Potter-aggression) by Andrew Heiss
 
-# Load the data
-The `rvest` package makes scraping websites easy with R. The following code will download the text of the Harry Potter and the Philosopher's Stone from readfreeonline and save it as a string (called `text`). I suggest running this code once then saving text on your computer and using `read_lines` to read the text file into your computer.
-
-```{r, eval=F}
-library(tidyverse)
-library(rvest)
-
-
-chapter_base_url <- 'http://www.readfreeonline.net/OnlineBooks/Harry_Potter_and_the_Sorcerers_Stone/Harry_Potter_and_the_Sorcerers_Stone_'
-num_chapters <- 17
-
-# download each chapter and concatonate them
-text <- ''
-for(i in 1:num_chapters){
-    
-    # url for the chapter text
-    chapter_url <- paste0(chapter_base_url, i, '.html')
-    
-    # download the chatpter html
-    chapter_html <- read_html(chapter_url)  
-    
-    # extract the text of the chatper from the html
-    chapter_text <- chapter_html %>%
-                html_nodes(".ContentCss") %>%
-                html_text()
-    
-    #
-    text <- paste0(text, chapter_text)
-}
-
-# save as a .txt file
-# write_lines(text, 'philosophers_stone.txt')
-```
-
 
 # Question 0
-Set `eval=FALSE` for the chunck above and `eval=TRUE`for the chunck below and all test chunks.
-```{r, eval=F, message=F, warning=F}
+Set `eval=FALSE` for the chunk above and `eval=TRUE`for the chunk below and all test chunks. The text file comes with the Sakai announcement.
+```{r, eval=T, message=F, warning=F}
 # set up
 library(tidyverse)
 library(stringr)
@@ -87,11 +53,11 @@ people <- c('Harry', 'Hermione', 'Ron', 'Neville', 'Dumbledore', 'Draco', 'Snape
 
 
 # Question 3
-Break the text into paragraphs; create a verctor called `paragraphs` where each entry is a paragraph in the book.
+Break the text into paragraphs; create a vector called `paragraphs` where each entry is a paragraph in the book.
 
 
 ```{r}
-#
+# assume paragraphs end with \\\r\\\n
 ```
 
 
@@ -187,7 +153,7 @@ paragraph_df[,people] %>% summarise_all(sum)
 
 # Question 8
 
-Make a new data frame called `person_refs`  with three columns: person, num_refs, index. num_refs is the number of references each person gets in paragraph and index is the index of the paragraph. Limit this data frame to the following 5 characteres: Harry, Hermione, Ron, Draco, Neville. 
+Make a new data frame called `person_refs`  with three columns: person, num_refs, index. num_refs is the number of references each person gets in paragraph and index is the index of the paragraph. Limit this data frame to the following 5 characters: Harry, Hermione, Ron, Draco, Neville. 
 
 *Hint*: use `gather`.
 
@@ -203,19 +169,19 @@ Make a bar plot showing the number of paragraphs that references each of the 5 c
 ```
 
 
-Now we want to examine how characters evolove over "time." Plot the number of references vs. the paragraph index.
+Now we want to examine how characters evolve over "time." Plot the number of references vs. the paragraph index.
 
 ```{r}
 #
 ```
 
-In this question we are using paragraphs for "time windows." What are other "time windows" we could have used? What are some tradeoffs for these different choices.
+In this question we are using paragraphs for "time windows." What are other "time windows" we could have used? What are some trade offs for these different choices.
 
 # Question 9
 How often are Harry and Herminone referenced together? Plot the number of references per paragraph for Harry vs. Herminone.
 
 - one plot using `geom_point`
-- one plot using `geom_jitter` (usethe width/height arguments of jitter to make the jitter plot look better)
+- one plot using `geom_jitter` (use the width/height arguments of jitter to make the jitter plot look better)
 
 
 ```{r}
@@ -248,7 +214,7 @@ Now use `geom_smooth` to plot the linear regression line on top of the jitter pl
 
 
 # Question 11
-Is there are relationship between the length of the pargraph a the number of times Harry is mentioned? Add a column called `num_words` to `paragraph_df` counting the number of words in each paragraph. Then use a linear regression to answer for the question. Provide both a statistical summary and a visualization.
+Is there are relationship between the length of the paragraph a the number of times Harry is mentioned? Add a column called `num_words` to `paragraph_df` counting the number of words in each paragraph. Then use a linear regression to answer for the question. Provide both a statistical summary and a visualization.
 
 
 ```{r}
@@ -256,13 +222,13 @@ Is there are relationship between the length of the pargraph a the number of tim
 ```
 
 # Question 12
-Create an indeicator variable `harry_mentioned` that indicates whether or not Harry is mentioned in each paragraph. This indicator variable should be a factor (e.g. use `as.factor`).
+Create an indicator variable `harry_mentioned` that indicates whether or not Harry is mentioned in each paragraph. This indicator variable should be a factor (e.g. use `as.factor`).
 
 ```{r}
 #
 ```
 
-Now repeate the previous linear regression with `harry_mentioned` as the x variable instead of the number of times he is mentioned
+Now repeat the previous linear regression with `harry_mentioned` as the x variable instead of the number of times he is mentioned
 
 ```{r}
 #
@@ -270,7 +236,7 @@ Now repeate the previous linear regression with `harry_mentioned` as the x varia
 
 
 # Free response
-Ask and answer a question with this data set. You should make at least 2 figures (e.g. plot, printout of a regression, etc). Provide a written explaination of the question and the evidence for your answer.
+Ask and answer a question with this data set. You should make at least 2 figures (e.g. plot, printout of a regression, etc). Provide a written explanation of the question and the evidence for your answer.
 
 
 
