@@ -1,0 +1,13 @@
+---
+title: "Overfitting with scissors"
+output: html_document
+---
+
+Listen to Act 3 from the following [This American Life episode](https://www.thisamericanlife.org/radio-archives/episode/584/for-your-reconsideration?act=3) (it's only 10 min). Explain how the children are overfitting (a couple sentences).
+
+You might want to read a little more about overfitting.
+
+- [Quora](https://www.quora.com/What-is-an-intuitive-explanation-of-overfitting)
+- [Wikipedia](https://en.wikipedia.org/wiki/Overfitting)
+- Chapter 2 of [ISLR](http://www-bcf.usc.edu/~gareth/ISL/)
+- [Google flu trends](http://www.designntrend.com/articles/12179/20140328/google-flu-trends-gets-big-data-analysis-wrong.htm)
