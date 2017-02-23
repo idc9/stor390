@@ -57,8 +57,6 @@ I will attempt to be consistent(ish) but may use these interchangeably. Most of 
 
 Some questions we might be try to answer using the `movies` data set
 
--
-
 - Is there a relationship between IMDb_rating and critics_score?
 - How strong is this relationship? 
 - Is the relationship linear?

@@ -1,0 +1,213 @@
+---
+title: 'Lab: Programming basics'
+output: html_document
+---
+
+This lab will have you do some of the core programming tasks you will need to do in pretty much any data science project.
+
+All of the deliverables are functions, but the lab will have you practice a variety of programming skills.
+
+Some of these tasks might seem arbitrary. But the hope is they will get you in the correct frame of mind for programming. Some of these will require you to use the R help files or other online resources, for example to search for a function that returns the integer part of a number.
+
+Functions you will be asked to write could be useful for later. I keep a separate file of such functions that I use with most projects.
+
+
+## Deliverables
+
+1. **Write a function that takes any number and returns TRUE if its integer part is an even number and FALSE if it is odd.**
+
+By the integer part of a number I mean the nearest whole number smaller than that number if the number is positive---or larger than that number if it is negative. For example, the integer part of 21.6 is 21. The integer part of -1.9 is -1.
+
+2. **R has a problem with its rounding function. You are going to fix it.** Here's the problem:
+
+```{r}
+round(.5, digits = 0)
+round(.501, digits = 0)
+round(5, digits = -1)
+round(5.01, digits = -1)
+round(.05, digits = 1)
+round(.0501, digits = 1)
+```
+
+WHAAAAAAT? We all know you round .5 to 1 using standard rules of rounding. Similarly, when rounding to the nearest tens digit, 5 should round to 10. That's a dumb problem to have.
+
+**Write a function that rounds the way you learned in elementary school for all numbers**---not just 0.5---and that takes a digits argument working exactly as in the original R function.
+
+
+3. The R function *setdiff(x,y)* returns the elements of a vector x that are not also in y. Sometimes you **want a function to return the elements that are in x or y but not both.**
+
+For example, say x is a list of singers who can reach very high registers, and y is a list of musicians who died in 2016. This returns a list of singers with high voices who did not die in 2016.
+
+
+```{r}
+setdiff(c("prince", "mj", "sam cook", "whitney", "dolly"), c("sharon jones", "prince", "bowie", "leonard cohen", "phife dawg"))
+```
+
+You will write a function that returns names of those who either have high voices, but did not die in 2016, or who died in 2016 but do not have high voices.
+
+Your function will need to work for any vectors, not just the ones in this example. The output should be a single vector, not two vectors.
+
+
+4. **Write a function that takes a numeric or integer vector and adds up only the numbers whose integer parts are even.**
+
+You should use your answer from question one here, ideally by calling the function you already created rather than re-writing the content of that function.
+
+5. **Modify your answer to question 4 to include an option** that allows you to choose whether to sum numbers whose integer parts are even or are odd.
+
+Your function should have as a default that it gives the same output as the function in question 4. In other words, if the user doesn't specify whether to sum evens or odds, the function should sum evens.
+
+6. [Monte carlo simulations](https://en.wikipedia.org/wiki/Monte_Carlo_method) are common throughout the sciences these days. Usually in R you want to avoid *for* and *while* loops---they are notoriously slow compared to *vectorised* operations.
+
+Sometimes you can't avoid a loop, though, and that often is true when doing simulations. Loops are also very common tools in all kinds of programming, so it's worth it to know how to use them.
+
+**Write a function that makes sentences by monte carlo simulation.** By that I mean, the function should
+
+- use R's built-in vector of lower-case letters, a hidden object called *letters*, to which you will need to add the single space \text{" "}, a comma and an exclamation point. Don't use any other characters.
+
+- have an argument specifying how many characters the sentence should have
+
+- follow the rule of spelling: i before e except after c. That rule is broken in some weird situations, but just apply it to all words here.
+
+- force exclamation points and commas to be followed by a blank space. Double spaces are OK, as are other strange things such as " , " or " ! , ", so long as the other rules are followed.
+
+- returns a single string, not a vector of strings. For example, you want "apple!" not c("a", "p", "p", "l", "e", "!")
+
+In theory, if you were to run the program for a very long time (adding some characters to your function's vocabulary), [you certainly would end up with the entire works of Shakespear](https://en.wikipedia.org/wiki/Infinite_monkey_theorem)---or any other book you can think of. 
+
+Actually, that would be the case even without our grammatical corrections. But those are there to make the output more fun, and more challenging to code.
+
+One way to proceed with slightly more complicated functions like this is first to write it in the way that seems most natural to you. Then go back, test it, and optimize it. We won't worry too much yet about writing functions that are optimal in terms of computing time. But eventually you will have to think about that.
+
+## Answers
+
+1. **Even/odd**
+```{r}
+even_odd <- function(n){
+  
+  return(trunc(n)%%2 == 0)
+  
+}
+
+even_odd(c(-10, -1.2, .1, 121.04))
+```
+
+2. **Rounding**
+
+```{r}
+# Many types of rounding. This one is 'round half away from zero.' So .5 goes to 1, -.5 goes to -1.
+# You were only graded on behavior for positive numbers.
+
+round_good <- function(x, digits = 0){
+  
+  trunc(x * (10^digits) + sign(x) * .5) * (10^-digits)
+    
+}
+
+test <- matrix(c(seq(.049, .051, by = .0001), seq(.49, .51, by = .001), seq(4.9, 5.1, by = .01), seq(49, 51, by = .1),
+                 -seq(.049, .051, by = .0001), -seq(.49, .51, by = .001), -seq(4.9, 5.1, by = .01), -seq(49, 51, by = .1)),
+                 ncol = 8)
+
+test
+round_good(test, digits = -2)
+round_good(test, digits = -1)
+round_good(test, digits = 0)
+round_good(test, digits = 1)
+
+```
+
+3. **Symmetric set difference**
+```{r}
+symdiff <- function(x, y){
+  
+  union(setdiff(x, y), setdiff(y, x))
+  
+}
+
+symdiff(c(1, 5, 6), c(1:10))
+
+test <- sample(letters, 15)
+
+test
+
+symdiff(test, letters)
+
+length(symdiff(test, letters)) + length(test)
+
+```
+
+4. **Even sum**
+
+```{r}
+even_sum <- function(x){
+  
+  sum(x[even_odd(x)])
+  
+}
+
+even_sum(c(1.1, 2.5, 3.6, -10.9))
+
+```
+
+5. **Even/odd sum**
+```{r}
+odd_sum <- function(x, evens = TRUE){
+  
+  if (evens)
+    sum(x[even_odd(x)])
+  else
+    sum(x[!even_odd(x)])
+  
+}
+
+odd_sum(c(1.1, 2.5, 3.6, -10.9))
+odd_sum(c(1.1, 2.5, 3.6, -10.9), evens = FALSE)
+```
+
+6. **Simulate some nonsense**
+```{r, message=FALSE, warning=FALSE}
+
+# Writing a smaller function to do something specific inside a larger function often is a great way
+# to keep your code clean, legible and easy to debug. Sometimes the smaller functions are useful in their own rights.
+
+add_letter <- function(sentence, index, alphabet, alphabet_noi){
+  
+  if (sentence[index-1] == "e" & sentence[index-2] != "c"){
+    
+    sentence[index] <- sample(alphabet_noi, 1)
+    
+  } else {
+    
+    sentence[index] <- sample(alphabet, 1)
+    
+  }
+  
+}
+
+# With a for loop. There are other ways.
+monkey <- function(sentence_length){
+  
+  letters_alt <- c(" ", "! ", ", ", letters)
+  letters_noi <- setdiff(letters_alt, "i")
+  
+  out <- rep(NA, sentence_length)
+  
+  out[1:2] <- sample(letters_noi, 2)
+  
+  for (i in 3:sentence_length){
+    
+    out[i] <- add_letter(out, index = i, letters_alt, letters_noi)
+    
+  }
+  
+  return(paste0(out, collapse = ""))
+  
+}
+
+# We will learn about strings and the stringr package later. This is just to check the answers
+library(stringr)
+
+monkey(200)
+
+str_count(monkey(5000), pattern = "((?<!c)ei)|(!(?! ))|(,(?! ))")
+```
+
