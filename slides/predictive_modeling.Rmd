@@ -1,0 +1,341 @@
+---
+title: "Predictive modeling"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+
+# Capital Bikeshare
+
+![[]](http://www.freetoursbyfoot.com/wp-content/uploads/2014/04/article_2010_1012_capitalbikeshare.jpg)
+
+# Load the data
+```{r, warning=FALSE, message=F}
+library(tidyverse)
+hour <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/bikes_2011.csv')
+```
+
+
+
+
+# Look at the data
+
+```{r}
+head(hour)
+```
+
+
+# rider counts
+```{r}
+ggplot(hour) +
+    geom_histogram(aes(x=cnt))
+```
+
+
+# temp vs. count
+```{r}
+ggplot(hour) +
+    geom_point(aes(x=temp, y=cnt))
+```
+
+
+# riders per hour
+
+```{r}
+ggplot(hour) +
+    geom_point(aes(x=hr, y=cnt))
+```
+
+
+# Consider a smaller problem
+
+```{r}
+hour <- hour %>% 
+    select(cnt, hr)
+```
+
+
+
+
+
+# mean trend curve
+```{r}
+hour %>% 
+    group_by(hr) %>% 
+    summarise(mean_cnt=mean(cnt)) %>% 
+    ggplot() +
+    geom_line(aes(x=hr, y=mean_cnt)) +
+    geom_point(aes(x=hr, y=mean_cnt))
+```
+
+
+
+
+# Predictive modeling
+
+- predict the number of riders based only on the time of day 
+
+    - build a model mapping `hr` to `cnt`
+
+# Linear regression
+You should always start with linear regression!
+```{r}
+ggplot(hour) +
+    geom_point(aes(x=hr, y=cnt)) +
+    geom_smooth(aes(x=hr, y=cnt), color='red', method=lm, se=FALSE)
+```
+
+
+# Let's build more models to do better
+- non linear models
+- many possibilities
+
+
+# Decide on a metric
+- evaluate each model with one number to decide how it's doing
+- recall *residuals* from the last lecture
+- mean squared error (MSE)
+
+
+
+# MSE for linear model
+
+```{r}
+linear_model <- lm(cnt ~ hr, hour)
+
+# put the actual and predicted counts in a data frame
+results <- tibble(cnt_actual = hour$cnt,
+                  cnt_pred=linear_model$fitted.values)
+
+results %>% 
+    mutate(resid=cnt_actual - cnt_pred) %>% 
+    mutate(resid_sq = resid^2) %>% 
+    summarise(MSE=mean(resid_sq))
+
+```
+
+
+# Overfitting
+
+> a statistical model describes random error or noise instead of the underlying relationship. 
+
+(from wikipedia)
+
+# is bad...
+
+> A model that has been overfit has poor predictive performance, as it overreacts to minor fluctuations in the training data.
+
+
+# French class
+
+- Je n'aime pas la classe française
+
+# Overfitting movies
+
+```{r, echo=F, warning=F, message=F}
+movies <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/movies.csv')
+
+movies[movies[, 'title' ] == 'The End of America', 'runtime'] <- 73
+
+data <- movies %>% 
+        select(imdb_rating, imdb_num_votes,
+               critics_score, audience_score,
+               runtime, genre, mpaa_rating,
+               best_pic_win) %>% 
+        mutate(genre=factor(genre),
+               mpaa_rating=factor(mpaa_rating), 
+               best_pic_win=factor(best_pic_win))
+
+data_trans <- data %>% 
+                mutate(nv_sqrt = sqrt(imdb_num_votes),
+                       nv_sq = imdb_num_votes^2,
+                       nv_cube = imdb_num_votes^3,
+                       nv_log = log(imdb_num_votes))  
+                # select(imdb_rating, imdb_num_votes, nv_sqrt, nv_sq, nv_cube, nv_log)
+
+
+lin_reg_trans <- lm(imdb_rating ~., data_trans)
+
+
+pred_df <- tibble(imdb_rating_pred = unname(predict(lin_reg_trans)),
+                  imdb_num_votes=data_trans$imdb_num_votes,
+                  imdb_rating=data_trans$imdb_rating)
+
+ggplot(pred_df) +
+    geom_point(aes(x=imdb_num_votes, y=imdb_rating)) +
+    geom_line(aes(x=imdb_num_votes, y=imdb_rating_pred), color='red')
+
+```
+
+
+
+# Two distinct concepts
+
+- model building
+- model evaluation
+
+
+
+# Exploratory vs confirmatory
+
+> Each observation can either be used for exploration or confirmation. 
+
+# Model building vs. model evaluation
+
+> Each observation can either be used for building a model or evaluating a model, not both.
+
+
+
+# Train vs. test set
+
+```{r}
+# there are n observations
+n <- dim(hour)[1]
+
+# number of observations that go in the training st
+n_tr <- floor(n * .8)
+
+
+# randomly select n_tr numbers, without replacement, from 1...n
+tr_indices <- sample(x=1:n, size=n_tr, replace=FALSE)
+
+# break the data into a non-overlapping train and test set
+train <- hour[tr_indices, ]
+test <- train[-tr_indices, ]
+```
+
+# Fit a bunch of models
+
+```{r}
+# manually add hr^2 to the data matrix
+train_square <- mutate(train, hr_sq = hr^2)
+model_square <- lm(cnt ~ hr + hr_sq, train_square)
+
+# there is a better way to do this using R's modeling language
+model_square <- lm(cnt ~ hr + I(hr^2), train)
+```
+
+# Let's do this automatically
+
+```{r}
+# largest degree polynomial to try
+d_max <- 20
+
+# lets save each model we fit in a list
+models <- list()
+
+# also store the traing error in data frame
+error <- tibble(degree=1:d_max,
+                MSE_tr = rep(0, d_max))
+
+# fit all the models
+for(d in 1:d_max){
+    # the poly function does exactly what you think it does
+    models[[d]] <- lm(cnt ~ poly(hr, d), train)
+    
+    # compute the MSE for the training data
+    mse_tr <- mean(models[[d]]$residuals^2)
+    
+    # save the MSE
+    error[d, 'MSE_tr'] <- mse_tr
+}
+
+error
+```
+
+
+
+
+
+
+
+
+# Training error
+```{r}
+# plot the training error
+ggplot(error)+
+    geom_point(aes(x=degree, y=MSE_tr)) +
+    geom_line(aes(x=degree, y=MSE_tr))
+
+```
+
+
+# Degree 20 model
+```{r, echo=F}
+model_20 <- models[[20]]
+
+# get the predictions at each hour
+pred <- tibble(hr=0:23)
+hr_predictions <- predict(model_20, newdata = pred)              
+
+
+pred <- pred %>% 
+        mutate(cnt_pred =hr_predictions)
+
+# plot the predictions over the training data
+ggplot(data=train)+
+    geom_point(aes(x=hr, y=cnt)) +
+    geom_line(data=pred, aes(x=hr, y=cnt_pred), color='red')
+
+```
+
+
+
+# Test error
+
+```{r, echo=F}
+# lets add the test error to the error data frame
+error <- error %>% 
+    add_column(MSE_tst=rep(0, d_max))
+
+
+for(d in 1:d_max){
+    
+    # grab the trained model
+    model <- models[[d]]
+    
+    # get the predictions for the test data, compute the residuals
+    
+    test_results <- test %>% 
+           mutate(hr_pred = predict(model, newdata=test)) %>% 
+           mutate(resid_sq = (hr-hr_pred)^2) 
+
+    # compute the MSE
+    mst_tst <- summarise(test_results, mse_tst = mean(resid_sq))[[1]]
+
+    error[d, 'MSE_tst'] <- mst_tst
+}
+
+
+ggplot(error)+
+    geom_point(aes(x=degree, y=MSE_tst)) +
+    geom_line(aes(x=degree, y=MSE_tst)) 
+
+```
+
+
+
+# Train vs test
+
+```{r}
+error %>% 
+    rename(tr=MSE_tr, tst=MSE_tst) %>% 
+    gather(key=type, value=error, tr, tst) %>% 
+    ggplot() +
+    geom_point(aes(x=degree, y=log10(error), color=type)) +
+    geom_line(aes(x=degree, y=log10(error), color=type))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

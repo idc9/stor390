@@ -36,18 +36,13 @@ How many words are in the book?
 
 How many times are each of the following characters mentioned? Display the answer using an appropriate visualization. 
 
-    - Harry, Hermione, Ron, Neville, Dumbledore, Draco, Snape, Hagrid, McGonagall
-
-
-*Hint*: the `map` function might be helpful (but not necessary).
+- Harry, Hermione, Ron, Neville, Dumbledore, Draco, Snape, Hagrid, McGonagall
 
 
 ```{r}
 people <- c('Harry', 'Hermione', 'Ron', 'Neville', 'Dumbledore', 'Draco', 'Snape', 'Hagrid', 'McGonagall')
 
 ```
-
-
 
 
 
@@ -68,6 +63,9 @@ This function does not need to be perfect. For sentences, give one example where
 
 *Hint*: the function should probably have a if statement
 ```{r}
+# Assume a sentence ends with one of: .!?
+# there are multiple valid definitions of word, just do something reasonable
+
 unnest_tokens <- function(text, token='words'){
     # splits a string into tokens
     # input
@@ -222,13 +220,13 @@ Is there are relationship between the length of the paragraph a the number of ti
 ```
 
 # Question 12
-Create an indicator variable `harry_mentioned` that indicates whether or not Harry is mentioned in each paragraph. This indicator variable should be a factor (e.g. use `as.factor`).
+Create an indicator variable `harry_mentioned` that indicates whether or not Harry is mentioned in each paragraph. This indicator variable should be a factor.
 
 ```{r}
 #
 ```
 
-Now repeat the previous linear regression with `harry_mentioned` as the x variable instead of the number of times he is mentioned
+Now repeat the previous linear regression with `harry_mentioned` as the x variable instead of the number of times he is mentioned.
 
 ```{r}
 #

@@ -237,9 +237,9 @@ model_cube <- lm(cnt ~ hr + I(hr^2) + I(hr^3), train)
 We now have three models. Let's check out the *training error*.
 ```{r}
 # the lm() object automatially computes the residuals of the training data
-MSE1 <- sum(model_linear$residuals^2)
-MSE2 <- sum(model_square$residuals^2)
-MSE3 <- sum(model_cube$residuals^2)
+MSE1 <- mean(model_linear$residuals^2)
+MSE2 <- mean(model_square$residuals^2)
+MSE3 <- mean(model_cube$residuals^2)
 
 # put the error into a data frame
 error <- tibble(degree=c(1,2,3),
@@ -281,7 +281,7 @@ for(d in 1:d_max){
     models[[d]] <- lm(cnt ~ poly(hr, d), train)
     
     # compute the MSE for the training data
-    mse_tr <- sum(models[[d]]$residuals^2)
+    mse_tr <- mean(models[[d]]$residuals^2)
     
     # save the MSE
     error[d, 'MSE_tr'] <- mse_tr

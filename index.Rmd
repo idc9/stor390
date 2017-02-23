@@ -37,7 +37,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |February 14| | | |
 |February 16| | | |
 |February 21| linear regression| [linear regression](notes/linear_regression/linear_regression.html)| |
-|February 23|predictive modeling |[predictive modeling](notes/predictive_modeling/predictive_modeling.html) | |
+|February 23|predictive modeling |[predictive modeling](notes/predictive_modeling/predictive_modeling.html) | [modeling slides](slides/predictive_modeling.html) |
 |February 28| | | |
 |March 2| | | |
 |March 7| | | |
