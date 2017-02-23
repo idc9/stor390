@@ -35,9 +35,9 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |February 7| joins | | [joins](slides/joins.pdf)|
 |February 9| regular expressions| [regex](notes/strings/strings.html) |[regex](slides/regex.html) |
 |February 14| | | |
-|February 16| linear regression|[linear regression](notes/linear_regression/linear_regression.html) | |
-|February 21| | | |
-|February 23| | | |
+|February 16| | | |
+|February 21| linear regression| [linear regression](notes/linear_regression/linear_regression.html)| |
+|February 23|predictive modeling |[predictive modeling](notes/predictive_modeling/predictive_modeling.html) | |
 |February 28| | | |
 |March 2| | | |
 |March 7| | | |
@@ -135,6 +135,7 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 **February 23**
  
 - read [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 2.1-2.2 for an overview of modeling
+- read r4ds [chapter 24](http://r4ds.had.co.nz/model-building.html)
 
 
 
@@ -153,6 +154,7 @@ The due date is in the link.
 | February 7 |[joins lab 5](labs/5/joins_lab.html)|| |
 | February 9 |[strings lab 6](labs/6/strings_lab.html)| | |
 | February 16 | | [harry potter](assignments/harry_potter/harry_potter.html)| |
+| February 23 |[Ira Glass on overfitting](labs/7/overfitting_with_scissors) | | |
 
 
 # **Additional resources**

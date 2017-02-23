@@ -1,0 +1,377 @@
+---
+title: "Predictive modeling and bike sharing"
+output: html_document
+---
+
+[Capital Bikeshare](https://www.capitalbikeshare.com/how-it-works) is a bike sharing system for Washington DC. They make a lot of their [data publically](https://www.capitalbikeshare.com/system-data) available. 
+
+This lecture provides an introduction to linear regression for predictive modeling. To goal in this lecture is to build a predictive model for the number of bike rides an hour based on time of year and weather.
+
+This lecture will discuss
+
+- linear regression
+- polynomial regression
+- train/test error
+- validation set
+
+
+# The data
+
+```{r, warning=FALSE, message=F}
+library(tidyverse)
+hour <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/bikes_2011.csv')
+
+head(hour)
+```
+
+
+We are interested in predicting the number of rides, `cnt`,
+```{r}
+ggplot(hour) +
+    geom_histogram(aes(x=cnt))
+```
+
+Based on covariates such weather (e.g. `temp`)
+```{r}
+ggplot(hour) +
+    geom_point(aes(x=temp, y=cnt))
+```
+
+
+or time information such as hour of the day
+
+```{r}
+ggplot(hour) +
+    geom_point(aes(x=hr, y=cnt))
+```
+
+For the rest of this lecture let's focus only on two columns: `hr` and `cnt`
+```{r}
+hour <- hour %>% 
+    select(cnt, hr)
+```
+
+
+Here is the mean count per hour
+```{r}
+hour %>% 
+    group_by(hr) %>% 
+    summarise(mean_cnt=mean(cnt)) %>% 
+    ggplot() +
+    geom_line(aes(x=hr, y=mean_cnt)) +
+    geom_point(aes(x=hr, y=mean_cnt))
+```
+
+
+
+# Predictive modeling
+
+Let's start out with a simple goal predict the number of riders based only on the time of day i.e. build a model mapping `hr` to `cnt`. For example, we might try simple linear regression (**pro tip**: always start with linear regression).
+
+```{r}
+ggplot(hour) +
+    geom_point(aes(x=hr, y=cnt)) +
+    geom_smooth(aes(x=hr, y=cnt), color='red', method=lm, se=FALSE)
+```
+
+Just based on the above figure you might guess we can do better. Linear regression does capture the rough trend of ridership increasing as the day goes on, but it misses a lot. So how might we build a better model?
+
+
+
+
+## Decide on a metric
+
+Let's turn this into a math problem. In words our goal is
+
+> Build a model to predict the number of riders as a function of time of day.
+
+There are many models you might build to accomplish this task; we need a way of evaluating how well (equivalently how poorly) a given model is based on the data we have. In other words, **we need a metric** to evaluate a model based on the data.
+
+Recall from last lecture we used residuals to to evaluate linear models (difference between the predicted value and actual value for each data point). While there are other metrics we might use this is a pretty good one (the so called *square loss* is very popular) so let's stick with it.
+
+Each data point gives one residual, but we only want one number for a given model. Let's take the mean of all the squared residuals to get the *mean square loss* (MSE). **Upshot**: we are going to evaluate each model by the MSE.
+
+Let's compute the MSE for the above linear regression
+
+```{r}
+linear_model <- lm(cnt ~ hr, hour)
+
+# put the actual and predicted counts in a data frame
+results <- tibble(cnt_actual = hour$cnt,
+                  cnt_pred=linear_model$fitted.values)
+
+results %>% 
+    mutate(resid=cnt_actual - cnt_pred) %>% 
+    mutate(resid_sq = resid^2) %>% 
+    summarise(MSE=mean(resid_sq))
+
+```
+
+So the basic linear regression gives a MSE of 14927.62 on the 2011 data. This number is not super useful on its own, but will be useful for comparison. For example, if we build a model that gives and MSE of 7000 we might conclude that model is better than a linear model. Unfortunately there is a little more nuance required...
+
+
+## Overfitting (intuition)
+
+Wikipedia defines [overfitting](https://en.wikipedia.org/wiki/Overfitting) as when
+
+> a statistical model describes random error or noise instead of the underlying relationship. 
+
+which is bad because
+
+> A model that has been overfit has poor predictive performance, as it overreacts to minor fluctuations in the training data.
+
+In reality, we probably care more about how our model does on data we don't have e.g. maybe we want to use this model to predict ridership next week. Unfortunately, the model needs to be built ahead of time so we don't have access to this data. A lot of the techniques discussed below are meant to mimic evaluating the model on new data. 
+
+As an analogy, imagine you're writing the final exam for a French class. Earlier in the year you gave (hazed) the students with a bunch of conjugation exercises. You wouldn't want to use these same exercises from a homework the students already saw on the final exam; you want to give them questions they have not already seen. For example, students might memorize the conjugations of the words they have already seen, but not learn the general rules. While this is an impressive feat of memory, it is not that useful for learning French! In other words, you don't want to evaluate students on data they have already seen -- you want to evaluate them on new data! 
+
+Ok back to data. You would probably all agree the following model (from the previous lecture) is not great
+
+```{r, echo=F, warning=F, message=F}
+movies <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/movies.csv')
+
+movies[movies[, 'title' ] == 'The End of America', 'runtime'] <- 73
+
+data <- movies %>% 
+        select(imdb_rating, imdb_num_votes,
+               critics_score, audience_score,
+               runtime, genre, mpaa_rating,
+               best_pic_win) %>% 
+        mutate(genre=factor(genre),
+               mpaa_rating=factor(mpaa_rating), 
+               best_pic_win=factor(best_pic_win))
+
+data_trans <- data %>% 
+                mutate(nv_sqrt = sqrt(imdb_num_votes),
+                       nv_sq = imdb_num_votes^2,
+                       nv_cube = imdb_num_votes^3,
+                       nv_log = log(imdb_num_votes))  
+                # select(imdb_rating, imdb_num_votes, nv_sqrt, nv_sq, nv_cube, nv_log)
+
+
+lin_reg_trans <- lm(imdb_rating ~., data_trans)
+
+
+pred_df <- tibble(imdb_rating_pred = unname(predict(lin_reg_trans)),
+                  imdb_num_votes=data_trans$imdb_num_votes,
+                  imdb_rating=data_trans$imdb_rating)
+
+ggplot(pred_df) +
+    geom_point(aes(x=imdb_num_votes, y=imdb_rating)) +
+    geom_line(aes(x=imdb_num_votes, y=imdb_rating_pred), color='red')
+
+```
+
+If we compute the MSE we would find that it has a very low MSE value. However, this model appears to have "memorized" the training data; it has not "learned" anything particularly useful!
+
+# Many models
+
+So far we have actually touched on distinct concepts
+
+- model building
+- model evaluation
+
+Recall the discussion in [section 22.1](http://r4ds.had.co.nz/model-intro.html) from r4ds (it's worth re-reading the short section 22)
+
+> Each observation can either be used for exploration or confirmation. 
+
+
+This discussion was about exploratory vs. confirmatory analysis, but it mirrors the process of predictive modeling. The analogous statement for predictive modeling is
+
+> Each observation can either be used for building a model or evaluating a model, not both.
+
+So how do we apply this principle?
+
+## Train/test data
+
+The first then you should do when you get a data set for predictive modeling is randomly split the data set into a training and testing data set. (See [this discussion on stack exchange](http://stats.stackexchange.com/questions/19048/what-is-the-difference-between-test-set-and-validation-set) or any standard machine learning text book for more details). An 80/20 (train/test) set split is a good rule of thumb.
+
+```{r}
+# there are n observations
+n <- dim(hour)[1]
+
+# number of observations that go in the training st
+n_tr <- floor(n * .8)
+
+
+# randomly select n_tr numbers, without replacement, from 1...n
+tr_indices <- sample(x=1:n, size=n_tr, replace=FALSE)
+
+# break the data into a non-overlapping train and test set
+train <- hour[tr_indices, ]
+test <- train[-tr_indices, ]
+```
+
+
+Now we are going to lock the test set into a closet and forget about it. **Warning**: don't peak at the test data. Next we are going to build a bunch of models using the training data. In real applications you try build 100s or 1000s of models. After we build a ton of models we are going to use the training data and some critical thinking to narrow down the list of models to just a few of our favorite ones! Once we have a couple models we really like we *then* use the test set to compare test models and select the best one!
+
+There are many types of models one might build -- skim the table of contents of [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) or any other machine learning text book (e.g. linear model, add regularization, regression spline, generalized additive model, neural network, etc).
+
+## Extending a linear model/feature engineering
+
+For the suppose of this lecture we are only going to consider so called "polynomial regression" models. Recall we are modeling `cnt ~ hr`. We are going to add polynomial functions of hour to the columns our our data frame and fit a linear regression model i.e. `cnt ~ hr + hr^2 + hr^3 + .. + hr^10`. The resulting model is now non-linear in `hr`.
+
+You might argue that we are doing [feature engineering](https://en.wikipedia.org/wiki/Feature_engineering), not trying different model. Fair enough, but this philosophical distinction is not super relevant (though I would agree with the sentiment). 
+
+Enough talk, let's fit some models. **Recall**: we are using only the training data!
+
+First fit the linear model to the training data
+```{r}
+model_linear <- lm(cnt ~ hr, train)
+```
+
+Next add in hour squared
+```{r}
+# manually add hr^2 to the data matrix
+train_square <- mutate(train, hr_sq = hr^2)
+model_square <- lm(cnt ~ hr + hr_sq, train_square)
+
+# there is a better way to do this using R's modeling language
+model_square <- lm(cnt ~ hr + I(hr^2), train)
+```
+
+Now hour cubed
+```{r}
+model_cube <- lm(cnt ~ hr + I(hr^2) + I(hr^3), train)
+```
+
+We now have three models. Let's check out the *training error*.
+```{r}
+# the lm() object automatially computes the residuals of the training data
+MSE1 <- sum(model_linear$residuals^2)
+MSE2 <- sum(model_square$residuals^2)
+MSE3 <- sum(model_cube$residuals^2)
+
+# put the error into a data frame
+error <- tibble(degree=c(1,2,3),
+                MSE_tr=c(MSE1, MSE2, MSE3))
+
+# plot the training error
+ggplot(error)+
+    geom_point(aes(x=degree, y=MSE_tr)) +
+    geom_line(aes(x=degree, y=MSE_tr))
+```
+
+A couple observations
+
+- The training error is going way down as we add more polynomial terms! This should make you simultaneously optimistic and suspicious
+
+- If we want to keep going with this the coding will get annoying...
+
+More on the first point later. Let's add a bunch more polynomial terms to the model. We can automate this process fairly easily
+
+
+## Fit a bunch of models
+
+Let's fit a polynomial model for a sequence of degrees (e.g. d=1, ..., 20). We then have to some how decide which is the best degree. In other words, the degree d is a parameter we need to *tune*.
+
+```{r}
+# largest degree polynomial to try
+d_max <- 20
+
+# lets save each model we fit in a list
+models <- list()
+
+# also store the traing error in data frame
+error <- tibble(degree=1:d_max,
+                MSE_tr = rep(0, d_max))
+
+# fit all the models
+for(d in 1:d_max){
+    # the poly function does exactly what you think it does
+    models[[d]] <- lm(cnt ~ poly(hr, d), train)
+    
+    # compute the MSE for the training data
+    mse_tr <- sum(models[[d]]$residuals^2)
+    
+    # save the MSE
+    error[d, 'MSE_tr'] <- mse_tr
+}
+
+error
+```
+
+Ok we now a have a bunch of models. Again let's look at the training error as a function of the degree
+
+```{r}
+# plot the training error
+ggplot(error)+
+    geom_point(aes(x=degree, y=MSE_tr)) +
+    geom_line(aes(x=degree, y=MSE_tr))
+
+```
+
+Notice that the training error is **strictly** decreasing as we add more polynomial terms. This is always true (why?)
+
+
+Let's take a look at some of the model predictions, for example, for the 23 degree polynomial
+
+```{r}
+model_20 <- models[[20]]
+
+# get the predictions at each hour
+pred <- tibble(hr=0:23)
+hr_predictions <- predict(model_20, newdata = pred)              
+
+
+pred <- pred %>% 
+        mutate(cnt_pred =hr_predictions)
+
+# plot the predictions over the training data
+ggplot(data=train)+
+    geom_point(aes(x=hr, y=cnt)) +
+    geom_line(data=pred, aes(x=hr, y=cnt_pred), color='red')
+
+```
+
+
+It looks like the larger degree models are doing better. Now let's unlock the test data and see what happens with the test error. First compute the test error for each model.
+
+```{r}
+# lets add the test error to the error data frame
+error <- error %>% 
+    add_column(MSE_tst=rep(0, d_max))
+
+
+for(d in 1:d_max){
+    
+    # grab the trained model
+    model <- models[[d]]
+    
+    # get the predictions for the test data, compute the residuals
+    
+    test_results <- test %>% 
+           mutate(hr_pred = predict(model, newdata=test)) %>% 
+           mutate(resid_sq = (hr-hr_pred)^2) 
+
+    # compute the MSE
+    mst_tst <- summarise(test_results, mse_tst = mean(resid_sq))[[1]]
+
+    error[d, 'MSE_tst'] <- mst_tst
+}
+
+```
+
+Now plot the test error as a function of degree.
+
+```{r}
+ggplot(error)+
+    geom_point(aes(x=degree, y=MSE_tst)) +
+    geom_line(aes(x=degree, y=MSE_tst)) 
+
+```
+
+That looks quite different that the training error. Let's plot them together
+```{r}
+
+error %>% 
+    rename(tr=MSE_tr, tst=MSE_tst) %>% 
+    gather(key=type, value=error, tr, tst) %>% 
+    ggplot() +
+    geom_point(aes(x=degree, y=log10(error), color=type)) +
+    geom_line(aes(x=degree, y=log10(error), color=type))
+
+```
+
+
+So what is the best value of d?
+
