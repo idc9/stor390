@@ -89,7 +89,6 @@ sum(paragraphs == unnest_tokens(text, 'paragraphs'))
 
 Put the data into tidy format with one row per paragraph. 
 
-- first remove all paragraphs length 0
 - create a tibble called `paragraph_df` with one column `text` with the text of each paragraph (*hint*: you might need to use `as.character(paragraphs)`)
 - add a new column `index` that gives the index of each paragraph
 - **wighout** using dplyr add a column called `Harry` that counts the number of times Harry is referenced in each paragraph
@@ -104,7 +103,7 @@ Put the data into tidy format with one row per paragraph.
 # Question 6
 Write a function called `reference_counter` that generalizes question 5 for any tidy text data frame and any list of words. 
 
-*Hint*: do this **without** dplyr
+*Hint*: do this **without** dplyr, use base R subsetting (i.e.`[]`). If `df` is a data frame and `vec` is a vector then `df['blah'] <- vec` will create a new column for `df` call `blah`.
 
 ```{r}
 

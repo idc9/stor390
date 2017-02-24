@@ -179,7 +179,6 @@ sum(paragraphs == unnest_tokens(text, 'paragraphs'))</code></pre>
 <h1>Question 5</h1>
 <p>Put the data into tidy format with one row per paragraph.</p>
 <ul>
-<li>first remove all paragraphs length 0</li>
 <li>create a tibble called <code>paragraph_df</code> with one column <code>text</code> with the text of each paragraph (<em>hint</em>: you might need to use <code>as.character(paragraphs)</code>)</li>
 <li>add a new column <code>index</code> that gives the index of each paragraph</li>
 <li><strong>wighout</strong> using dplyr add a column called <code>Harry</code> that counts the number of times Harry is referenced in each paragraph</li>
@@ -190,7 +189,7 @@ sum(paragraphs == unnest_tokens(text, 'paragraphs'))</code></pre>
 <div id="question-6" class="section level1">
 <h1>Question 6</h1>
 <p>Write a function called <code>reference_counter</code> that generalizes question 5 for any tidy text data frame and any list of words.</p>
-<p><em>Hint</em>: do this <strong>without</strong> dplyr</p>
+<p><em>Hint</em>: do this <strong>without</strong> dplyr, use base R subsetting (i.e.<code>[]</code>). If <code>df</code> is a data frame and <code>vec</code> is a vector then <code>df['blah'] &lt;- vec</code> will create a new column for <code>df</code> call <code>blah</code>.</p>
 <pre class="r"><code>reference_counter &lt;- function(text_df, word_list){
     
     # inputs
