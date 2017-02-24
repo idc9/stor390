@@ -12,7 +12,7 @@ This course is an application-driven introduction to data science. Statistical a
 
 You will learn these tools and hone these skills through hands-on experience working with datasets such as: Museum of Modern Art records, TCGA Gene Expressions and the text script of Beauty and the Beast. The first half of the semester will cover R programming skills. The second half will cover a number of topics: exploratory data analysis, web scraping, text processing, and effective visualization through a series of modules.
 
-- Instructor: [Iain Carmichael](http://iaincarmichael.web.unc.edu/)
+- Instructor: [Iain Carmichael](https://idc9.github.io/)
 
 - Instructional Assistant: [Brendan Brown](http://stat-or-old.oasis.unc.edu/people/graduate-students/brendan-brown)
 
