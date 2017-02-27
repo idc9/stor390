@@ -225,7 +225,7 @@ Create an indicator variable `harry_mentioned` that indicates whether or not Har
 #
 ```
 
-Now repeat the previous linear regression with `harry_mentioned` as the x variable instead of the number of times he is mentioned.
+Now do a linear regression with `harry_mentioned` as the x variable instead of the number of times he is mentioned.
 
 ```{r}
 #
