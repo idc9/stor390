@@ -138,7 +138,8 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 - read r4ds [chapter 24](http://r4ds.had.co.nz/model-building.html)
 
 
-
+**February 28**
+- read [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 6.1-6.1 on variable selection
 
 # **Coding**
 
