@@ -1,0 +1,322 @@
+---
+title: "Assignment one, key"
+author: "Brendan Brown"
+output:
+  html_document: default
+  pdf_document: default
+---
+# Rubric
+
+## Points per question
+Max score is 100
+
+1. 3
+
+2. 2
+
+3. 10
+
+4. 3
+
+5. 12
+
+6. 12
+
+7. 10
+
+8. 3
+
+9. 10
+
+10. 3
+
+11. 12
+
+12. (Open-ended) 20
+
+## Possible deductions per question
+
+1. -1.5 per sub-question for failing to produce the correct output or for failing to use the methods requested. `Correct' here and below means the output should match exactly the solution. If the code does not run, the output is incorrect.
+
+2. -2 for failing to produce the correct output.
+
+3. -4 each for having an incorrect mean salary or for producing the incorrect output data frame. -3 for giving no answer to the written question, and -1.5 for giving an answer with insufficient justification. Here, you just need to give one credible reason why neurosurgeons are well-paid.
+
+4. -3 for failing to give the correct answer.
+
+5. -2 for not ordering the data frame as asked, -2 for including fewer or more columns than asked---each error will only be counted once, so if you made the same mistake for the chained non-chained answers you were deducted only once. -4 each for not including one of the methods for producing the data frame. -4 for not including the correct histogram. See below for other possible graph-related deductions.
+
+6. -6 each for not including a plot. -3 each for not having one of these components on a plot: faceting, correct departments, correct plot type if specified.
+
+7. -4 each for incorrect output --- including incorrectly naming the data frame. You will only be deducted once for using the wrong data frame object name. -2 for an absent answer to the written question. -1 for including an answer with insufficient explanation.
+
+8 . -3 for not producing the correct output.
+
+9. -3 for failing to create a datetime variable or using another method to extract a year variable, -7 for failing to properly calculate the number of employees hired or which had the most.
+
+10. -3 for failing to have the correct output.
+
+11. -6 each for failing to produce plots. -2 for not having correct variables or departments. Even if you produced plots, you might lose points for clarity of presentation. See details below.
+
+12. (Open-ended) -3 each for each of three figures not included. -2 for each written explanation related to a figure not included. -5 for failing to include a written explanation of findings. -2.5 for a written explanation that is poorly conceived. See below for other possible deductions for written communications.
+
+## Additional deductions
+
+- -7 if at least one of your markdown document failed to knit. It might seem harsh, but that is something you always should check to be sure is correct before submitting. If your document doesn't run, you likely have code syntax errors for which you were not additionally deducted points.
+
+- -1 for grammatical or other written communications errors, such as poor or unclear syntax and dangling modifiers. Maximum one deduction per sentence.
+
+- -2 each for having at least one illegible axis or legend in a plot, for indecipherable plot output (such as white on white plotting), or for failing to include axis labels or plot legends altogether. Maximum 5 points deducted total for this. If you lose points for failing to produce a required plot, you do not also have points taken off for those style issues, of course. 
+
+
+# Prep
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+data <- read_csv("http://ryanthornburg.com/wp-content/uploads/2015/05/UNC_Salares_NandO_2015-05-06.csv")
+
+glimpse(data)
+summary(data)
+
+```
+
+Since we will be filtering by department names a lot, you at a minimum want to do a spot-check to be sure there are no typos ---say orthopedics or radioligy. In a real project, you will do many more quality checks than this. The output is omitted. 
+
+```{r, results='hide'}
+unique(data$dept) %>% sort
+```
+
+
+## Question 1
+Return a data frame with columns: name, dept, age,totalsal 
+```{r}
+select(data, name, dept, age, totalsal)
+```
+
+Return a data frame with columns: statesal, nonstsal,totalsal using one of the `select_helpers` functions
+```{r}
+select(data, ends_with("sal"))
+```
+
+## Question 2 
+Rename the `fte` column to `fulltime`. Make sure this change is saved (i.e. `data <- ...`).
+```{r}
+data <- rename(data, fulltime = fte)
+```
+
+## Question 3 
+
+What is the mean salary in the Neurosurgery department?
+```{r}
+# Several options, depending on what you might find convenient for a particular application
+
+# With dplyr functions only: way one
+filter(data, dept == "Neurosurgery") %>%
+  summarise(mean(totalsal))
+
+# dplyr only: way two
+group_by(data, dept) %>%
+  summarise(mean(totalsal)) %>%
+  filter(dept == "Neurosurgery")
+
+# some base R, clunky but shows you colMeans if you haven't seen it and gives more information
+filter(data, dept == "Neurosurgery") %>%
+  select(ends_with("sal")) %>%
+  colMeans
+```
+
+Return a data frame with employees in the Neurosurgery department making more than $500,000. Why might these professors be so well paid? 
+```{r}
+filter(data, dept == "Neurosurgery", totalsal >= 500000)
+```
+They cut brains!
+
+Your answers should be better than that. For example, you could use the U.S. Bureau of Labor Statistics [National Occupational Employment and Wage Estimates](https://www.bls.gov/oes/current/oes_nat.htm) survey and the [subsection for surgeons](https://www.bls.gov/oes/current/oes_nat.htm) to say something such as 
+
+1. **Surgeons in general are paid a lot a lot:** Surgeons had the second-highest average annual wage of any profession in the BLS survey, at least for the May 2015 data I found. You could speculate, or find data showing, neurosurgeons as specialists get paid more on average.
+
+2. North Carolina is a hotspot for the surgery profession: Detail data show our state's triangle and Charlotte regions make up one of relatively few regions in the U.S. with many surgeons. The state's mean annual wage for surgeons also is on the high end relative to other states.
+
+You could also guess, or get information to support the idea, that surgeons here as a result of the facts above have more competition for their services and might be able to get more coin from the hospital in Chapel Hill to discourage them from leaving for one in Raleigh or Durham. 
+
+Finally: Notice our means output above shows very little of their pay comes from state funds on average---suggesting either research money or fee for service are mainly the things paying neurosurgeon salaries at Carolina. You could guess and verify non-state paystreams make higher salaries possible.
+
+
+## Question 4 
+What is the total amount that full time Dermatology employees get paid?
+
+
+```{r}
+# Again several ways to do this. I'll show one. Others would be similar to the above means code.
+filter(data, dept == "Dermatology", fulltime == 1)$totalsal %>% sum
+```
+
+
+## Question 5
+
+Create a data frame called radio_dept whose rows are the employees from the Radiology department. 
+
+- include only the followig columns: name, position, age, nonstsal, totalsal. 
+- order the employees by salary
+
+First without chaining
+
+```{r }
+radio_dept <- arrange(select(filter(data, dept == "Radiology"), name, position, age, nonstsal, totalsal), desc(totalsal))
+```
+
+
+Next with chaining
+```{r }
+radio_dept <- filter(data, dept == "Radiology") %>% 
+  select(name, position, age, nonstsal, totalsal) %>%
+  arrange(desc(totalsal))
+```
+
+
+Make a histogram of Radiology Department salaries
+```{r, message=FALSE, fig.align='center', fig.height=5, fig.width=8}
+# Notice figure size adjustments in chunk options
+# No need to change variable names or fill colors for your answers or units
+ggplot(radio_dept, aes(x = totalsal/1000)) + geom_histogram(fill = "azure3") + 
+  theme_minimal() + xlab("Total salary, $000s") + ggtitle("Radiology department salaries\nUNC salary database May 2015 via R. Thornburg")
+```
+
+
+## Question 6
+
+Use faceting to make histograms of department salaries for Radiation Oncology, Radiology, Pediatrics, and Orthopaedics.
+```{r, message=FALSE, fig.align='center', fig.height=5, fig.width=8 }
+# The color here is totally unnecessary and included just to show how you can manually suppress legends and set conditional colors
+
+filter(data, dept %in% c("Radiation Oncology", "Radiology", "Pediatrics", "Orthopaedics")) %>%
+  ggplot(aes(x = totalsal / 1000, fill = dept)) + geom_histogram(binwidth = 25) +
+  facet_wrap(~ dept) +
+  theme_minimal() + xlab("Total salary, $000s") + theme(legend.position = "none") +
+  ggtitle("Selected department salaries\nUNC salary database May 2015 via R. Thornburg") +
+  scale_fill_manual(values = c("azure3", "mediumorchid", "purple4", "maroon3"))
+
+```
+
+
+
+Use faceting to make plot age vs. totalsal for the same four departments and color points using the status variable.
+```{r, message=FALSE, fig.align='center', fig.height=5, fig.width=8}
+# This package has some nice palettes, particularly for maps. See http://colorbrewer2.org/
+library(RColorBrewer)
+
+filter(data, dept %in% c("Radiation Oncology", "Radiology", "Pediatrics", "Orthopaedics")) %>%
+  ggplot(aes(x = totalsal / 1000, y = age, color = status)) + geom_point(shape = 2) +
+  facet_wrap(~ dept) +
+  theme_minimal() + xlab("Total salary, $000s") + ylab("Employee age, years") +
+  ggtitle("Salaries by age, selected departments\nUNC salary database May 2015 via R. Thornburg") +
+  scale_color_brewer(name = "Employment status", type = "qual", palette = "Dark2")
+
+```
+
+## Question 7
+
+Create a data frame called `dept_summary`  whose rows are the departments and  whose columns are: department size, mean department salary, median department salary, and maximum salary (using totalsal for salary). 
+
+```{r }
+dept_summary <- group_by(data, dept) %>%
+    summarise(dept_size = n(), mean_dept_totalsal = mean(totalsal), 
+              med_dept_totalsal = median(totalsal), max_dept_totalsal = max(totalsal))
+    
+```
+
+Order the departments by highest mean salary and print the 10 highest paid departments. 
+
+
+```{r }
+dept_summary %>%
+    arrange(desc(mean_dept_totalsal)) %>%
+    select(dept)
+```
+
+Order the departments by highest median salary and print the 10 highest paid departments. 
+
+```{r }
+dept_summary %>%
+    arrange(desc(med_dept_totalsal)) %>%
+    select(dept)
+```
+
+Why do these lists differ? If you were asked for the top 10 best paid departments at UNC which summary would you choose and why?
+
+The lists differ because mean $\neq$ media in general: the former calculates the average of numbers and the latter finds the midpoint. 
+
+With the data above, the answer is fairly clear: Neurosurgery and Provost are the two best-paid offices, by both measures.
+
+But the question is problematic. What does `best paid` really mean? If ever you get a question like this, make it more specific. What do you actually want to know from this data? What will this information be used to do?
+
+If you want to know which department you can show up at, pick a person at random, and expect to find the largest salary (maybe after several random samples like this)---then go with the department with the largest average. People also like the sound of averages, another but bad reason you could use that list.
+
+But the best thing to do is get more detailed distributional results---like the histograms we plotted above. You might be able to make more qualitative statements about the salary distribution for departments.
+
+You could focus on the top departments in both of those lists, but remember: Both statistics are related to a measure of the center of the salary distribution. You might have a department with a large number of relatively poorly paid workers and a few very well paid ones. Who those people are might be relevant to your questions about salaries at UNC, or might prompt you to rethink your questions altogether.
+
+## Question 8
+How many departments have at least 10 employees?
+
+```{r}
+count(dept_summary, dept_size >= 10)
+```
+194 departments have at least 10 employees.
+
+## Question 9
+
+```{r}
+library(lubridate)
+
+mutate(data, hiredate = parse_datetime(hiredate, "%Y%m%d")) %>% 
+  filter(year(hiredate) == 2010) %>%
+  group_by(dept) %>%
+  summarise(N = n()) %>%
+  arrange(desc(N))
+  
+```
+The department of medicine hired the most people in 2010.
+
+## Question 10
+Make a list of all the department names and sort this list alphabetically. What is the 42nd department in this list?
+```{r}
+# in dplyr
+select(data, dept) %>% distinct(dept) %>% arrange(dept) %>% slice(42)
+
+# in base R
+sort(unique(data$dept))[42]
+```
+
+## Question 11
+Plot number of people hired by the CS dept per year vs. year
+
+*NOTE: If you interpreted `CS` to mean `Communication Studies` you did not lose points.*
+```{r}
+hires <- filter(data, 
+                dept %in% c("Computer Science", "Statistics and Operations Res", "Mathematics", 
+                            "Biostatistics", "School of Info & Libr Science", "Physics-Astronomy")) %>%
+  mutate(hiredate = parse_datetime(hiredate, "%Y%m%d"),
+                yr = year(hiredate)) %>%
+  group_by(yr, dept) %>%
+  summarise(N = n()) %>%
+  ungroup
+
+filter(hires, dept == "Computer Science") %>%
+  ggplot(aes(x = yr, y = N)) + theme_minimal() + 
+  geom_point(color = "slateblue4") +
+  geom_line(color = "slateblue3") +
+  ylab("Number of employees hired") + xlab("Year") + 
+  ggtitle("Employees hired in the Computer Science department")
+```
+
+Now add STOR, Math, Biostatistics, SILS and Physics to the above plot.
+
+```{r, fig.height=6, fig.width=8}
+ggplot(hires, aes(x = yr, y = N, color = dept)) + theme_minimal() +
+  geom_point() +   geom_line(alpha = .7) +
+  scale_color_manual(name = "", values = c("salmon3", "slateblue4", "sienna4", "plum3", "royalblue2", "palegreen3")) +
+  ylab("Number of employees hired") + xlab("Year") + 
+  ggtitle("Employees hired, select departments")
+  
+```
+
