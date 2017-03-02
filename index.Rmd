@@ -34,13 +34,13 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |February 2| tidy data |[tidy_data](notes/tidy_data/tidy_data.html) | |
 |February 7| joins | | [joins](slides/joins.pdf)|
 |February 9| regular expressions| [regex](notes/strings/strings.html) |[regex](slides/regex.html) |
-|February 14| | | |
+|February 14| more regular expresssion| | |
 |February 16| | | |
 |February 21| linear regression| [linear regression](notes/linear_regression/linear_regression.html)| |
 |February 23|predictive modeling |[predictive modeling](notes/predictive_modeling/predictive_modeling.html) | [modeling slides](slides/predictive_modeling.html) |
 |February 28| exploratory data analysis| | |
-|March 2| | | |
-|March 7| | | |
+|March 2| more exploratory analysis| | |
+|March 7| variable selection | [variable selection](notes/variable_selection/variable_selection.html)| |
 |March 9| | | |
 |March 21| | | |
 |March 23| | | |
@@ -140,6 +140,11 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 
 **February 28**
 - read [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 6.1-6.1 on variable selection
+
+**March 2**
+
+- make sure you have read and understand linear regression and model selection from [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) i.e. section 2.1, 2.2, 3.1, 3.2, 6.1, 6.2
+- read ISLR sections 4.1-4.3 about classification
 
 # **Coding**
 

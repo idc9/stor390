@@ -375,3 +375,44 @@ error %>%
 
 So what is the best value of d?
 
+# Interactions
+
+
+[Interactions](https://en.wikipedia.org/wiki/Interaction_(statistics)) refer to interactions between two or more variables. This usually means adding new features that are transformations of other variables. In particular, the interaction between variables $a$ and $b$ means adding a new variable that is the product of $a$ times $b$ (i.e. add a new colum $a \times b$).
+
+For example, we could model **cn** on **hour** and **temperature* separately
+
+```{r}
+summary(lm(cnt ~ hr + temp, train))
+```
+
+Next we could add an interaction
+```{r}
+
+# add interaction to data frame
+train_interaction <- train %>% 
+                    mutate(hr_temp = hr * temp) 
+
+# fit linear model with added interaction
+summary(lm(cnt ~ hr + temp + hr_temp, data=train_interaction))
+```
+
+Using R's equation notation we acutally don't have to explicitly add interaction terms to the data frame. Instead use a `*` in the linear regression formula.
+
+```{r}
+summary(lm(cnt ~ hr + temp + hr*temp, data=train))
+```
+We can also add interactions with factor variables. For example,
+
+
+
+```{r}
+# set working day to be a factor
+train <- train %>% 
+    mutate(workingday = factor(workingday))
+
+summary(lm(cnt ~ hr + workingday + hr*workingday, data=train))
+
+```
+
+
