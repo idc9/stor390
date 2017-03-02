@@ -381,7 +381,7 @@ So what is the best value of d?
 [Interactions](https://en.wikipedia.org/wiki/Interaction_(statistics)) refer to interactions between two or more variables. This usually means adding new features that are transformations of other variables. In particular, the interaction between variables $a$ and $b$ means adding a new variable that is the product of $a$ times $b$ (i.e. add a new colum $a \times b$).
 
 For example, we could model **cn** on **hour** and **temperature* separately
-```{r, echo=F}
+```{r, echo=F, message=F, warning=F}
 # TODO: kill this
 train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/bikes_2011.csv')
 ```
