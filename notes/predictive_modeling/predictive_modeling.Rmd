@@ -381,6 +381,10 @@ So what is the best value of d?
 [Interactions](https://en.wikipedia.org/wiki/Interaction_(statistics)) refer to interactions between two or more variables. This usually means adding new features that are transformations of other variables. In particular, the interaction between variables $a$ and $b$ means adding a new variable that is the product of $a$ times $b$ (i.e. add a new colum $a \times b$).
 
 For example, we could model **cn** on **hour** and **temperature* separately
+```{r, echo=F}
+# TODO: kill this
+train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/bikes_2011.csv')
+```
 
 ```{r}
 summary(lm(cnt ~ hr + temp, train))
@@ -388,7 +392,6 @@ summary(lm(cnt ~ hr + temp, train))
 
 Next we could add an interaction
 ```{r}
-
 # add interaction to data frame
 train_interaction <- train %>% 
                     mutate(hr_temp = hr * temp) 
@@ -402,9 +405,8 @@ Using R's equation notation we acutally don't have to explicitly add interaction
 ```{r}
 summary(lm(cnt ~ hr + temp + hr*temp, data=train))
 ```
+
 We can also add interactions with factor variables. For example,
-
-
 
 ```{r}
 # set working day to be a factor
