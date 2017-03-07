@@ -3,11 +3,11 @@ title: "Assignment 3: bikes, EDA and predictive modeling"
 output: html_document
 ---
 
-[Captial Bikeshare](https://www.capitalbikeshare.com/) releases a large amount of their data to the public about bike rentals in Washinton, DC. For example they released a data set with the hourly count of bike rentals in 2011 and 2012 with correspoonding weather/seasonal covariates on the famous UCI Machine Learning Repository. You can find information on what the variables mean [**here**](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset).
+[Captial Bikeshare](https://www.capitalbikeshare.com/) releases a large amount of their data to the public about bike rentals in Washinton, DC. For example they released a data set with the hourly count of bike rentals in 2011 and 2012 with correspoonding weather/seasonal covariates on the famous [UCI Machine Learning Repository](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset).
 
 In this assigment you will first do an exploratory analysis of the 2011 data. You will then build a model to predict rental counts for the 2012 data. 
 
-Assignment 3 is due **Friday March 10th**. There are three deliverables: 2 .Rmd files and one .csv file. Some examples are given below.
+Assignment 3 is due **Tuesday March 7th**. There are three deliverables: 2 .Rmd files and one .csv file. Some examples are given below.
 
 # Part 1: exploratory analysis
 
@@ -44,16 +44,16 @@ For the .Rmd file you should include the code for training each model and compar
 
 The predictions .csv should be the original 2012 file with a new column added called `cnt_pred`. Use the `write_csv` function to write the .csv. 
 
-For this task you should first split the 2011 data into a `train` and `test` set. First train each of your models on the `train` set then compare them using the `test` set to help decide which model is better.
+For this task you should first split the 2011 data into a `train` and `test` set. First train each of your models on the `train` set then compare them using the `test` set. 
 
-For our pupose "different" means different features. You know how to create new features with variable transformations and interactions. One way to do build a model is to hand engineer some features you think make sense. Another way is to build a ton of features then apply a variable selection procedure to narrow this large set down. Include a breif discussion of how you built each model and why you made the choices that you made. 
+What constitutes "different"" models is a little subjective. We count linear regression with different enough features as different models. Different variable selection procedures also count as different models. You cannot use exactly the same model we used in class without some modificaiton.
 
+At least one of the models you fit should involve a data driven tuning procedure with a validation set for example,
 
-For grading pusposes we are mainly looking for a reasonable, honest effort. Some don'ts
-
-- your final model should probably have a little more to it than one variable linear regression (unless you include some evidence that this model is in fact the right way to go)
-
-- for the second model don't take the first model, make one minor modification and call it a day
+- the procedure to select the degree of the polynomial from the first [predictive modeling lecture](https://idc9.github.io/stor390/notes/predictive_modeling/predictive_modeling.html)
+- cross-validation to select the best tuning parameter value for L1 or L2 regularize linear regression
+    
+The validation set should be a subset of the `train` data, **not** the test set you made. Only use the test set to compare your (2 or more) "final" models.
 
 
 **#winning** Whomever builds the best predictive model, as measured by mean squared error on the 2012 data, will recieve one extra credit point. Additionally, another extra credit point will be awarded to the best insight from the EDA. More extra credit points may be awarded for going above and beyond the assignment requirments. 
