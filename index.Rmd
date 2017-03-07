@@ -40,7 +40,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |February 23|predictive modeling |[predictive modeling](notes/predictive_modeling/predictive_modeling.html) | [modeling slides](slides/predictive_modeling.html) |
 |February 28| exploratory data analysis| | |
 |March 2| more exploratory analysis| | |
-|March 7| variable selection | [variable selection](notes/variable_selection/variable_selection.html)| |
+|March 7| classification | [variable selection](notes/classification/classification.html)| |
 |March 9| | | |
 |March 21| | | |
 |March 23| | | |

@@ -94,7 +94,7 @@ where $a, b \in \mathbb{R}$ are real numbers. $a$ is the slope of the line and $
 
 > Curves are hard. Lines are easy.
 
-A linear relationship is easy to interpret: for every extra dollar you spend on TV budget the model predicts you will see an addition $\$a$ increase in sales. So how do we pick which line i.e. how do we select the slope $a$ and intercept $b$?
+A linear relationship is easy to interpret: for every extra dollar you spend on TV budget the model predicts you will see an addition $a$ increase in sales. So how do we pick which line i.e. how do we select the slope $a$ and intercept $b$?
 
 # Which line?
 

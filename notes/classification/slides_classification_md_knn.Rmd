@@ -1,0 +1,1006 @@
+---
+title: "Classification"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+```{r, warning=F, message=F}
+
+# package to sample from  themultivariate gaussian distribution
+library(mvtnorm)
+
+# calculate distances between points in a data frame
+library(flexclust)
+
+# for knn
+library(class)
+
+library(tidyverse)
+
+# some helper functions I wrote for this script
+# you can find this file in the same folder as the .Rmd document
+source('helper_functions.R')
+```
+
+
+```{r, echo=F, warning=F, message=F}
+# set the random seed
+set.seed(100)
+
+
+# class means
+mean_neg <- c(-1, 0)
+mean_pos <- c(1, 0)
+
+
+# generate data from negative class
+class_neg <- rmvnorm(n=200, mean=mean_neg, sigma=diag(2)) %>% 
+                    as_tibble() %>%
+                    mutate(y=-1) %>%
+                    rename(x1=V1, x2=V2)
+
+# generate data from positive class
+class_pos <- rmvnorm(n=200, mean=mean_pos, sigma=diag(2)) %>% 
+                    as_tibble() %>%
+                    mutate(y=1) %>%
+                    rename(x1=V1, x2=V2)
+
+# put data into one data frame
+data_gauss <- rbind(class_pos, class_neg)%>% 
+                 mutate(y =factor(y)) # class label should be a factor
+
+########################################################
+set.seed(100)
+
+# class means
+mean_neg <- c(-3, 0)
+mean_pos <- c(3, 0)
+
+# generate data from negative class
+class_neg <- rmvnorm(n=200, mean=mean_neg, sigma=diag(2)) %>% # rmvnorm comes from the mvtnorm package
+                    as_tibble() %>%
+                    mutate(y=-1) %>%
+                    rename(x1=V1, x2=V2)
+
+# generate data from positive class
+class_pos <- rmvnorm(n=200, mean=mean_pos, sigma=diag(2)) %>% 
+                    as_tibble() %>%
+                    mutate(y=1) %>%
+                    rename(x1=V1, x2=V2)
+
+# put data into one data frame
+data_sep <- rbind(class_pos, class_neg)%>% 
+                  mutate(y = factor(y)) # class label should be a factor
+
+########################################################
+
+# The classes are generated from a two dimensional guassian with means (-2,0) and (2, 0). The covariance matrix is no longer diagonal
+
+set.seed(3224)
+
+# class means
+mean_neg <- c(-2, 0)
+mean_pos <- c(2, 0)
+
+
+# covariance matrix for both classes
+cov_matrix = matrix(c(2,1.5,1.5,2), nrow=2)
+
+# generate data from negative class
+class_neg <- rmvnorm(n=200, mean=mean_neg, sigma=cov_matrix) %>% 
+                    as_tibble() %>%
+                    mutate(y=-1) %>%
+                    rename(x1=V1, x2=V2)
+
+# generate data from positive class
+class_pos <- rmvnorm(n=200, mean=mean_pos, sigma=cov_matrix) %>% 
+                    as_tibble() %>%
+                    mutate(y=1) %>%
+                    rename(x1=V1, x2=V2)
+
+# put data into one data frame
+data_skew <- rbind(class_pos, class_neg)%>% 
+                 mutate(y = factor(y)) # class label should be a factor
+
+########################################################
+
+# class means
+mean_neg <- c(-1, 0)
+mean_pos <- c(1, 0)
+
+
+# covariance matrix for both classes
+cov_matrix_neg = matrix(c(1, .9, .9, 1), nrow=2)
+cov_matrix_pos = matrix(c(1, -.9, -.9,1), nrow=2)
+
+
+# generate data from negative class
+class_neg <- rmvnorm(n=200, mean=mean_neg, sigma=cov_matrix_neg) %>% 
+                    as_tibble() %>%
+                    mutate(y=-1) %>%
+                    rename(x1=V1, x2=V2)
+
+# generate data from positive class
+class_pos <- rmvnorm(n=200, mean=mean_pos, sigma=cov_matrix_pos) %>% 
+                    as_tibble() %>%
+                    mutate(y=1) %>%
+                    rename(x1=V1, x2=V2)
+
+# put data into one data frame
+data_X <- rbind(class_pos, class_neg)%>% 
+                 mutate(y = factor(y)) # class label should be a factor
+
+
+########################################################
+
+seed <- 343
+data_gmm <- gmm_distribution2d(200, 200, seed)
+
+
+
+########################################################
+# The data are generated from a Boston cream doughnut distribution
+    # direction picked uniformly at random
+    # length for the negative class between 0 and 1
+    # length for the positive class between 1 and 2
+
+# generate a direction in the plane at random
+# draw a 2 dimensional standard normal and normalize each point by it's length
+direction <- rmvnorm(n=400, mean=c(0,0), sigma=diag(2)) %>%
+            apply(1, function(r) r/(sqrt(sum(r^2)))) %>%
+            t()
+
+# draw lengths randomly from designated intervals
+length_neg <- runif(n=200, min=0, max=1)
+length_pos <- runif(n=200, min=1, max=2)
+
+# multiply direction by length
+boston_cream <- direction * c(length_neg, length_pos)
+
+
+colnames(boston_cream) <- c('x1', 'x2')
+boston_cream <- boston_cream %>%
+        as_tibble() %>%
+        mutate(y= c(rep(-1,200), rep(1,200))) %>%
+        mutate(y =factor(y))
+
+
+########################################################
+
+
+
+
+########################################################
+
+
+
+########################################################
+
+
+
+########################################################
+```
+
+# Linear regression
+
+- supervised
+    - have both x and y
+- y is numerical
+
+# Classification
+- supervised
+    - have both x and y
+- y is a category
+
+# Classification examples
+
+- spam or not spam
+- patient has a disease or not
+- will someone default on a loan or not
+- reading text (recognizing letters)
+- automatically tagging Facebook pictures
+
+# Build a map
+- map some X data
+    - image, medical records, etc
+- to categories
+    - letters, people, disease
+    
+# Code to get started with
+-  **setup** section from notes
+-  **example_data.R** script in classification folder
+
+# Math prerequisites
+- linear regression
+- vectors
+- euclidean distance
+- dot product
+- multivariate Gaussian distribution 
+
+# Notation
+- $n$ labeled training observations $(\mathbf{x}_1, y_1), \dots, (\mathbf{x}_n, y_n)$
+- $d$ variables (dimensions) ($\mathbf{x}_i \in \mathbb{R}^d$)
+- binary classification $y_i = \pm 1$ (or positive/negative)
+- $n_+ = $ number of postive training examples (similarly $n_-$)
+
+# Some toy examples
+- cannonical classification examples in 2 dimensions
+- helpful for intuition
+- most of these are built on Gaussian distributions
+
+
+# Gaussian point clouds
+```{r, echo=F}
+ggplot(data=data_gauss) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y))+
+    theme(panel.background = element_blank()) 
+```
+
+
+
+# separable point clouds
+```{r, echo=F}
+ggplot(data=data_sep) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y))+
+    theme(panel.background = element_blank()) 
+```
+
+
+
+# skewed point clouds
+```{r, echo=F}
+ggplot(data=data_skew) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y))+
+    theme(panel.background = element_blank()) 
+```
+
+
+# heteroscedastic point clouds
+```{r, echo=F}
+ggplot(data=data_X) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y))+
+    theme(panel.background = element_blank()) 
+```
+
+
+# Gaussian mixture model point clouds
+```{r, echo=F}
+ggplot(data=data_gmm) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y))+
+    theme(panel.background = element_blank()) 
+```
+
+
+# Boston Cream
+```{r, echo=F}
+ggplot(data=boston_cream) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y))+
+    theme(panel.background = element_blank()) 
+```
+
+
+# Nearest Centroid Classifier
+- classify a test point to the class whose class mean is closest to that point
+- also called *mean differnce*
+
+# advantages of NC
+
+- simple
+- useful in practice
+- forms the basis of other classifiers
+
+# disadvantages
+- not flexible
+- sensitive to outliers
+
+# Sufficiency
+- NC summarises the data with two means
+- often a good idea to algorithms off simple yet meaningful summaries of the data
+
+# Train the NC classifier
+- compute class means 
+    -this is the training step
+- compute distance from test point to class means
+- classify test point to nearer class
+
+
+# compute the class means
+- $\mathbf{m}_{+} = \frac{1}{n_+} \sum_{i \text{ s.t. } y_i = +1}^{n_+} \mathbf{x}_i$
+- $\mathbf{m}_{-} = \frac{1}{n_-} \sum_{i \text{ s.t. } y_i = -1}^{n_-} \mathbf{x}_i$
+
+# compute distance to test point
+given a new test point $\mathbf{\tilde{x}}$ compute the distance between $\mathbf{x}$ and each class mean.
+
+- compute $d_+ = ||\mathbf{x} - \mathbf{m}_{+}||_2$ (where $||\cdot||_2$ means [euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance))
+- compute $d_- = ||\mathbf{x} - \mathbf{m}_{-}||_2$
+
+# classify test point
+
+- classify $\mathbf{x}$ to the class corresponding to the smaller distance.
+    - find the smaller of $d_+$ and $d_-$
+
+# test point
+```{r}
+# test point
+x_test <- c(1, 1)
+```
+
+```{r, echo=F}
+# plot training data
+ggplot(data=data_gauss) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) + # training points
+    geom_point(aes(x=x_test[1], y=x_test[2]), shape='X', size=10) + # test point
+    theme(panel.background = element_blank())
+```
+
+
+
+# compute the class means
+```{r}
+# compute the observed class means
+obs_means <- data_gauss %>% 
+    group_by(y) %>% 
+    summarise_all(mean)
+
+obs_means
+```
+
+# training class means
+```{r, echo=F}
+# training class means
+ggplot(data=data_gauss) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y), alpha=.3) +  #train points
+    geom_point(aes(x=x_test[1], y=x_test[2]), shape='X', size=10) + # test point
+    geom_point(data=obs_means, aes(x=x1, y=x2, color=y), shape='X', size=10) +
+    theme(panel.background = element_blank())
+```
+
+# compute distance to each class
+
+```{r}
+# grab each class mean
+mean_pos <- select(filter(obs_means, y==1), -y)
+mean_neg <- select(filter(obs_means, y==-1), -y)
+
+# compute the euclidean distance from the class mean to the test point
+dist_pos <- sqrt(sum((x_test - mean_pos)^2))
+dist_neg <- sqrt(sum((x_test - mean_neg)^2))
+dist_pos
+dist_neg
+```
+
+
+# Distance to class means
+
+```{r, echo=F}
+# add line segments to the graph
+ggplot(data=data_gauss) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y), alpha=.3) +  # train points
+    geom_point(aes(x=x_test[1], y=x_test[2]), shape='X', size=10) + # test point
+    geom_point(data=obs_means, aes(x=x1, y=x2, color=y), shape='X', size=10) + # class means
+    geom_segment(aes(x = x_test[1], y = x_test[2], xend = mean_pos[1], yend = mean_pos[2])) + # line segman to positive class
+       geom_segment(aes(x = x_test[1], y = x_test[2], xend = mean_neg[1], yend = mean_neg[2])) + # line segment to negative class
+    theme(panel.background = element_blank())
+```
+
+
+# test points
+
+Make a test grid
+```{r}
+# make a grid of test points
+test_grid <- expand.grid(x1 = seq(-4, 4, length = 100),
+                         x2 = seq(-4, 4, length = 100)) %>% 
+            as_tibble()
+test_grid
+```
+
+# NC predictions
+```{r, cache=T}
+# compute the distance from each test point to the two class means
+# note the use of the apply function (we could have used a for loop)
+dist_pos <- apply(test_grid, 1, function(x) sqrt(sum((x - mean_pos)^2)))
+dist_neg <- apply(test_grid, 1, function(x) sqrt(sum((x - mean_neg)^2)))
+```
+
+
+# NC predictions
+```{r}
+# add distance columns to the test grid data frame
+test_grid <- test_grid %>% 
+    add_column(dist_pos = dist_pos,
+               dist_neg = dist_neg)
+
+# decide which class mean each test point is closest to
+test_grid <- test_grid %>% 
+             mutate(y_pred = ifelse(dist_pos < dist_neg, 1, -1)) %>% 
+             mutate(y_pred=factor(y_pred))
+test_grid
+```
+
+
+# NC predictions
+
+```{r, echo=F}
+ggplot()+
+    geom_point(data=data_gauss, aes(x=x1, y=x2, color=y, shape=y), alpha=1) +  # train points
+    geom_point(data=test_grid, aes(x=x1, y=x2, color=y_pred), alpha=.1) + # test points
+    xlim(-4, 4) + # axis limits
+    ylim(-4, 4) +
+     theme(panel.background = element_blank()) 
+```
+
+# NC is a linear classifier
+
+- separates plane into two sections
+
+# higher dimensions
+
+![image borrowed from [here](https://kgpdag.wordpress.com/2015/08/12/svm-simplified/)](https://kgpdag.files.wordpress.com/2015/08/11846223_1042104855814814_1146300225_n.jpg)
+
+
+# normal vector, intercept
+
+A hyperplane is given by
+- normal vector $\mathbf{w} \in \mathbb{R}^d$ 
+- an intercept $b \in \mathbb{R}$
+
+All points $\mathbf{x}$ in $\mathbb{R}^d$ that satisfy $\mathbf{x}^T\mathbf{w} + b$ i.e.
+$$H = \{\mathbf{x} \in \mathbb{R}^d | \mathbf{x}^T\mathbf{w} + b = 0\}$$
+
+# Normal vector, separating hyperplane
+
+```{r, echo=F}
+# reformat the means
+mean_pos <- mean_pos %>% as.matrix() %>% t()
+mean_neg <- mean_neg %>% as.matrix() %>% t()
+
+# compute the normal vector and intercept -- you can derive these equations by hand
+normal_vector <- mean_pos - mean_neg
+intercept  <- -(1/2)*( t(mean_pos) %*% mean_pos - t(mean_neg) %*% mean_neg )
+
+# for the normal vector arrow
+nv_start <- mean_neg + .5 * normal_vector
+nv_end <- mean_neg + .85 * normal_vector
+
+# plot the separating hyperplane and the normal vector arrow
+ggplot()+
+    geom_point(data=data_gauss, aes(x=x1, y=x2, color=y, shape=y), alpha=.4) +
+    geom_abline(slope=-normal_vector[1]/normal_vector[2], intercept = intercept)+ # separating hyper plane
+        geom_segment(aes(x = nv_start[1], y=nv_start[1], xend = nv_end[1], yend=nv_end[2]),
+                    arrow = arrow(length = unit(0.05, "npc")), size=1.5) + # normal vector
+    theme(panel.background = element_blank()) 
+
+    
+```
+
+
+# Mean difference
+```{r, echo=F}
+
+# plot the separating hyperplane and the line segment between the two class means
+ggplot() +
+    geom_point(data=data_gauss, aes(x=x1, y=x2, color=y, shape=y), alpha=.4) +
+    geom_abline(slope=-normal_vector[1]/normal_vector[2], intercept = intercept)+ # separating hyper plane
+    geom_segment(aes(x = mean_pos[1], y=mean_pos[2], xend = mean_neg[1], yend=mean_neg[2]), linetype='dashed') +
+    geom_point(data=obs_means, aes(x=x1, y=x2, color=y), shape='X', size=10) +
+    theme(panel.background = element_blank())
+```
+
+# Mean difference
+The normal vector for NC is given by the differnce of the two class means
+$$\mathbf{w} = \mathbf{m}_{+} - \mathbf{m}_{-}$$
+NC intercept given by
+$$b= - \frac{1}{2}\left(||\mathbf{m}_{+}||_2 - ||\mathbf{m}_{-}||_2 \right)$$
+# Linear classifiers
+
+
+New test point $\mathbf{\tilde{x}}$=
+
+1. Compute the *discriminant* $f = \mathbf{w}^T \mathbf{\tilde{x}} + b$.
+2. Compute the sign of the discriminant $\tilde{y}=\text{sign}(f)$.
+
+Classify $\tilde{y}$ to the positive class if $\mathbf{w}^T \mathbf{\tilde{x}} + b >0$ 
+
+
+# Toy examples
+
+# Gaussian point clouds
+
+```{r, echo=F, warning=F}
+plot_md_predictions(data_gauss, title='Gaussian point clouds')
+
+# compute training error rate
+# see helper_functions.R 
+err <- get_nearest_centroid_predictions(data_gauss, data_gauss) %>% 
+    summarise(error_rate = mean(y != y_pred))
+```
+
+Training error rate for point clouds: `r err`.
+
+
+
+# separable point clouds
+```{r, echo=F, warning=F}
+plot_md_predictions(data_sep, title='separable point clouds')
+
+err <- get_nearest_centroid_predictions(data_gauss, data_sep) %>% 
+    summarise(error_rate = mean(y != y_pred))
+```
+
+Training error rate for separable point clouds: `r err`
+
+# skewed point clouds
+```{r, echo=F, warning=F}
+plot_md_predictions(data_skew, xlim=c(-6, 6), ylim=c(-6, 6), title='skewed point clouds')
+
+err <- get_nearest_centroid_predictions(data_gauss, data_skew) %>% 
+    summarise(error_rate = mean(y != y_pred))
+```
+
+Training error rate for skewed point clouds: `r err`
+
+# heteroscedastic point clouds
+```{r, echo=F, warning=F}
+plot_md_predictions(data_X, title='heteroscedastic Gaussian point clouds')
+
+err <- get_nearest_centroid_predictions(data_gauss, data_X) %>% 
+    summarise(error_rate = mean(y != y_pred))
+```
+
+Training error rate for heteroscedastic point clouds: `r err`.
+
+# GMM
+
+```{r, echo=F, warning=F}
+plot_md_predictions(data_gmm, title ='Gaussian mixture')
+
+err <- get_nearest_centroid_predictions(data_gauss, data_gmm) %>% 
+    summarise(error_rate = mean(y != y_pred))
+```
+
+Training error rate for GMM: `r err`.
+
+# Boston Cream
+```{r, echo=F, warning=F}
+plot_md_predictions(boston_cream, title='Boston cream')
+
+err <- get_nearest_centroid_predictions(data_gauss, boston_cream) %>% 
+    summarise(error_rate = mean(y != y_pred))
+```
+
+Training error rate for Boston cream: `r err`.
+
+
+# K-nearest-neighbhors
+
+- select $k$ and provide training data
+- KNN predicts the class of a new point $\tilde{\mathbf{x}}$ by finding the $k$ closest training points to $\tilde{\mathbf{x}}$ then taking a vote
+- if $k=1$ KNN finds the point in the training data closes to $\tilde{\mathbf{x}}$ and assigns $\tilde{\mathbf{x}}$ to this point's class.
+
+
+# Differences between KNN and NC
+
+1. KNN is not a linear classifier
+2. KNN has a tuning parameter (k) that needs to be set by the user
+
+# No free lunch
+
+More flexibility means:
+
+- better ability to capture complex patters
+- more prone to overfitting
+
+Bias-varinace tradeoff!
+
+
+# computing KNN (math) 
+
+1. Find distance from test point to each training point
+2. Sort these distances
+3. K nearest neighbors vote on test point's label
+
+# Compute distances
+
+For a new test point $\tilde{\mathbf{x}}$ fist compute the distance between $\tilde{\mathbf{x}}$ and each training point i.e.
+$$d_i = ||\tilde{\mathbf{x}} - \mathbf{x}_i||_2 \text{ for } i = 1, \dots, n$$
+
+# Sort points
+Next sort these distances and find the $k$ smallest distances (i.e. let $d_{i_1}, \dots, d_{i_k}$ be the $k$ smallest distances).
+
+# Vote
+Now look at the corresponding labels for these $k$ closest points $y_{i_1}, \dots, y_{i_k}$ and have these labels vote (if there is a tie break it randomly). Assign the predicted $\tilde{y}$ to the winner of this vote.
+
+
+
+# Computing KNN (code)
+
+```{r}
+k <- 5 # number of neighbors to use
+x_test <- c(0, 1) # test point
+```
+
+```{r, echo=F}
+# plot training data
+ggplot(data=data_gauss) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) + # training points
+    geom_point(aes(x=x_test[1], y=x_test[2]), shape='X', size=10) + # test point
+    theme(panel.background = element_blank())
+
+# make a copy of the training data that we will modify
+train_data <- data_gauss
+```
+
+
+# Compute distances
+
+```{r}
+# grab the training xs and compute the distances to the test point
+distances <- train_data %>%
+         select(-y) %>%
+        dist2(x_test) %>% # compute distances
+        c() # this solves an annnoying formatting issue
+
+# print first 5 entries
+distances[0:5]     
+```
+
+
+
+# Sort
+
+```{r}
+# add a new column to the data frame and sort
+train_data_sorted <- train_data %>% 
+        add_column(dist2tst = distances) %>% # the c() solves an annoying formatting issue
+        arrange(dist2tst) # sort data points by the distance to the test point
+train_data_sorted
+```
+
+# Find K nearest neighbors
+
+```{r}
+# select the K closest training pionts 
+nearest_neighbhors <- slice(train_data_sorted, 1:k) # data are sorted so this picks the top K rows
+nearest_neighbhors
+```
+
+# Find nearest neighbors
+
+```{r, echo=F}
+# plot training data
+# highlight k closest points
+ggplot(data=data_gauss) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y), alpha=.2) + # training points
+    geom_point(aes(x=x_test[1], y=x_test[2]), shape='X', size=6) + # test point
+    geom_point(data=nearest_neighbhors, aes(x=x1, y=x2, color=y, shape=y), size=2) +
+    theme(panel.background = element_blank())
+```
+
+
+# Vote
+
+```{r}
+# count number of nearest neighors in each class 
+votes <- nearest_neighbhors %>% 
+         group_by(y) %>% 
+         summarise(votes=n())
+
+votes
+```
+
+```{r}
+ # the [1] is in case of a tie -- then just pick the first class that appears
+y_pred <- filter(votes, votes == max(votes))$y[1]
+y_pred
+```
+
+# Vote
+```{r, echo=F}
+test_df <- tibble(x1=x_test[1], x2=x_test[2], y=y_pred)
+
+
+ggplot(data=data_gauss) + 
+    geom_point(aes(x=x1, y=x2, color=y, shape=y), alpha=.2) + # training points
+     geom_point(data=test_df, aes(x=x1, y=x2, color=y, shape=y), shape="X", size=6) + # training points
+    geom_point(data=nearest_neighbhors, aes(x=x1, y=x2, color=y, shape=y), size=2) +
+    theme(panel.background = element_blank())
+
+```
+
+
+
+
+# KNN Toy examples
+
+
+
+# Guassian point clouds
+
+```{r, echo=F}
+
+train_data <- data_gauss
+
+# make a test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
+
+# we have to split the training data into an x matrix an y vector to use the knn function
+train_data_x <- train_data %>% select(-y)
+train_data_y <- train_data %>% 
+                    select(y) %>%
+                    .$y # turn into a vecotr
+
+# compute KNN predictions
+# the knn function is from the class package
+knn_test_prediction <- knn(train=train_data_x, # training x
+                test=test_grid, # test x
+                cl=train_data_y, # train y
+                 k=5) # set k
+
+knn_train_prediction <- knn(train=train_data_x, # training x
+                    test=train_data_x, # test x
+                   cl=train_data_y, # train y
+                   k=5) # set k
+
+# training error ate
+mean(train_data_y != knn_train_prediction)
+
+
+test_grid_pred <- test_grid %>% 
+                add_column(y_pred = knn_test_prediction)
+
+ggplot()+
+    geom_point(data=train_data, aes(x=x1, y=x2, color=y, shape=y), alpha=1) +  # train points
+    geom_point(data=test_grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) +
+    ggtitle('Gaussian point clouds, KNN predictions, k=5')
+
+
+
+knn_train_prediction <- knn(train=train_data_x, # training x
+                    test=train_data_x, # test x
+                   cl=train_data_y, # train y
+                   k=5) # set k
+
+# training error ate
+err <- mean(train_data_y != knn_train_prediction)
+```
+
+Training error rate for point clouds: `r err`.
+
+
+# separable clouds
+```{r, echo=F}
+train_data <- data_sep
+
+# make a test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
+
+# we have to split the training data into an x matrix an y vector to use the knn function
+train_data_x <- train_data %>% select(-y)
+train_data_y <- train_data %>% 
+                    select(y) %>%
+                    .$y # turn into a vecotr
+
+# compute KNN predictions
+# the knn function is from the class package
+knn_test_prediction <- knn(train=train_data_x, # training x
+                test=test_grid, # test x
+                cl=train_data_y, # train y
+                 k=5) # set k
+
+test_grid_pred <- test_grid %>% 
+                add_column(y_pred = knn_test_prediction)
+
+# plot predictions
+ggplot()+
+    geom_point(data=train_data, aes(x=x1, y=x2, color=y, shape=y), alpha=1) +  # train points
+    geom_point(data=test_grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) +
+    ggtitle('separable point clouds, KNN predictions, k=5')
+
+knn_train_prediction <- knn(train=train_data_x, # training x
+                    test=train_data_x, # test x
+                   cl=train_data_y, # train y
+                   k=5) # set k
+
+# training error ate
+err <- mean(train_data_y != knn_train_prediction)
+```
+
+Training error rate for separable point clouds: `r err`.
+
+
+# Skewed clouds
+```{r, echo=F}
+train_data <- data_skew
+
+# make a test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
+
+# we have to split the training data into an x matrix an y vector to use the knn function
+train_data_x <- train_data %>% select(-y)
+train_data_y <- train_data %>% 
+                    select(y) %>%
+                    .$y # turn into a vecotr
+
+# compute KNN predictions
+# the knn function is from the class package
+knn_test_prediction <- knn(train=train_data_x, # training x
+                test=test_grid, # test x
+                cl=train_data_y, # train y
+                 k=5) # set k
+
+test_grid_pred <- test_grid %>% 
+                add_column(y_pred = knn_test_prediction)
+
+# plot predictions
+ggplot()+
+    geom_point(data=train_data, aes(x=x1, y=x2, color=y, shape=y), alpha=1) +  # train points
+    geom_point(data=test_grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) +
+    ggtitle('skewed point clouds, KNN predictions, k=5')
+
+knn_train_prediction <- knn(train=train_data_x, # training x
+                    test=train_data_x, # test x
+                   cl=train_data_y, # train y
+                   k=5) # set k
+
+# training error ate
+err <- mean(train_data_y != knn_train_prediction)
+```
+
+Training error rate for skewed point clouds: `r err`.
+
+
+# X
+
+```{r, echo=F}
+train_data <- data_X
+
+# make a test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
+
+# we have to split the training data into an x matrix an y vector to use the knn function
+train_data_x <- train_data %>% select(-y)
+train_data_y <- train_data %>% 
+                    select(y) %>%
+                    .$y # turn into a vecotr
+
+# compute KNN predictions
+# the knn function is from the class package
+knn_test_prediction <- knn(train=train_data_x, # training x
+                test=test_grid, # test x
+                cl=train_data_y, # train y
+                 k=5) # set k
+
+test_grid_pred <- test_grid %>% 
+                add_column(y_pred = knn_test_prediction)
+
+# plot predictions
+ggplot()+
+    geom_point(data=train_data, aes(x=x1, y=x2, color=y, shape=y), alpha=1) +  # train points
+    geom_point(data=test_grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) +
+    ggtitle('heteroscedastic point clouds, KNN predictions, k=5')
+
+knn_train_prediction <- knn(train=train_data_x, # training x
+                    test=train_data_x, # test x
+                   cl=train_data_y, # train y
+                   k=5) # set k
+
+# training error ate
+err <- mean(train_data_y != knn_train_prediction)
+```
+
+Training error rate for heteroscedastic point clouds: `r err`.
+
+# GMM
+```{r, echo=F}
+train_data <- data_gmm
+
+# make a test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
+
+# we have to split the training data into an x matrix an y vector to use the knn function
+train_data_x <- train_data %>% select(-y)
+train_data_y <- train_data %>% 
+                    select(y) %>%
+                    .$y # turn into a vecotr
+
+# compute KNN predictions
+# the knn function is from the class package
+knn_test_prediction <- knn(train=train_data_x, # training x
+                test=test_grid, # test x
+                cl=train_data_y, # train y
+                 k=5) # set k
+
+test_grid_pred <- test_grid %>% 
+                add_column(y_pred = knn_test_prediction)
+
+# plot predictions
+ggplot()+
+    geom_point(data=train_data, aes(x=x1, y=x2, color=y, shape=y), alpha=1) +  # train points
+    geom_point(data=test_grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) +
+    ggtitle('gaussian mixture, KNN predictions, k=5')
+
+knn_train_prediction <- knn(train=train_data_x, # training x
+                    test=train_data_x, # test x
+                   cl=train_data_y, # train y
+                   k=5) # set k
+
+# training error ate
+err <- mean(train_data_y != knn_train_prediction)
+```
+
+Training error rate for GMM: `r err`.
+
+# Boston Cream
+
+```{r, echo=F}
+train_data <- boston_cream
+
+# make a test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
+
+# we have to split the training data into an x matrix an y vector to use the knn function
+train_data_x <- train_data %>% select(-y)
+train_data_y <- train_data %>% 
+                    select(y) %>%
+                    .$y # turn into a vecotr
+
+# compute KNN predictions
+# the knn function is from the class package
+knn_test_prediction <- knn(train=train_data_x, # training x
+                test=test_grid, # test x
+                cl=train_data_y, # train y
+                 k=5) # set k
+
+test_grid_pred <- test_grid %>% 
+                add_column(y_pred = knn_test_prediction)
+
+# plot predictions
+ggplot()+
+    geom_point(data=train_data, aes(x=x1, y=x2, color=y, shape=y), alpha=1) +  # train points
+    geom_point(data=test_grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) +
+    ggtitle('Boston Cream, KNN predictions, k=5')
+
+
+knn_train_prediction <- knn(train=train_data_x, # training x
+                    test=train_data_x, # test x
+                   cl=train_data_y, # train y
+                   k=5) # set k
+
+# training error ate
+err <- mean(train_data_y != knn_train_prediction)
+```
+
+Training error rate for Boston Cream: `r err`.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
