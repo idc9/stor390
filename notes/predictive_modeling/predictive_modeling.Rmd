@@ -198,7 +198,7 @@ tr_indices <- sample(x=1:n, size=n_tr, replace=FALSE)
 
 # break the data into a non-overlapping train and test set
 train <- hour[tr_indices, ]
-test <- train[-tr_indices, ]
+test <- hour[-tr_indices, ]
 ```
 
 
