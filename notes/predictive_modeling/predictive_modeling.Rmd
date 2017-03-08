@@ -21,6 +21,12 @@ This lecture will discuss
 library(tidyverse)
 hour <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/bikes_2011.csv')
 
+# set categorical variables to factors
+hour <- hour %>% 
+            mutate(workingday=factor(workingday),
+                   weathersit=factor(weathersit),
+                   weekday=factor(weekday))
+
 head(hour)
 ```
 
@@ -48,7 +54,7 @@ ggplot(hour) +
 For the rest of this lecture let's focus only on two columns: `hr` and `cnt`
 ```{r}
 hour <- hour %>% 
-    select(cnt, hr)
+    select(cnt, hr, workingday)
 ```
 
 
@@ -266,7 +272,7 @@ Let's fit a polynomial model for a sequence of degrees (e.g. d=1, ..., 20). We t
 
 ```{r}
 # largest degree polynomial to try
-d_max <- 20
+d_max <- 21
 
 # lets save each model we fit in a list
 models <- list()
@@ -278,6 +284,7 @@ error <- tibble(degree=1:d_max,
 # fit all the models
 for(d in 1:d_max){
     # the poly function does exactly what you think it does
+    # models[[d]] <- lm(cnt ~ poly(hr, d), train)
     models[[d]] <- lm(cnt ~ poly(hr, d), train)
     
     # compute the MSE for the training data
@@ -303,26 +310,31 @@ ggplot(error)+
 Notice that the training error is **strictly** decreasing as we add more polynomial terms. This is always true (why?)
 
 
-Let's take a look at some of the model predictions, for example, for the 23 degree polynomial
-
-```{r}
-model_20 <- models[[20]]
-
-# get the predictions at each hour
-pred <- tibble(hr=0:23)
-hr_predictions <- predict(model_20, newdata = pred)              
+Let's take a look at some of the model predictions
 
 
-pred <- pred %>% 
-        mutate(cnt_pred =hr_predictions)
+```{r, echo=F}
 
-# plot the predictions over the training data
-ggplot(data=train)+
-    geom_point(aes(x=hr, y=cnt)) +
-    geom_line(data=pred, aes(x=hr, y=cnt_pred), color='red')
-
+for(d in 1:d_max){
+    model <- models[[d]]
+    
+    # get the predictions at each hour
+    pred <- tibble(hr=0:23)
+    cnt_pred <- predict(model, newdata = pred)              
+    
+    
+    pred <- pred %>% 
+            mutate(cnt_pred = cnt_pred)
+    
+    # plot the predictions over the training data
+    g <- ggplot(data=train)+
+        geom_point(aes(x=hr, y=cnt)) +
+        geom_line(data=pred, aes(x=hr, y=cnt_pred), color='red') +
+        ggtitle(paste0('degree = ', d, ' polynomial fit'))
+    
+    print(g)
+}
 ```
-
 
 It looks like the larger degree models are doing better. Now let's unlock the test data and see what happens with the test error. First compute the test error for each model.
 
@@ -340,8 +352,8 @@ for(d in 1:d_max){
     # get the predictions for the test data, compute the residuals
     
     test_results <- test %>% 
-           mutate(hr_pred = predict(model, newdata=test)) %>% 
-           mutate(resid_sq = (hr-hr_pred)^2) 
+           mutate(cnt_pred = predict(model, newdata=test)) %>% 
+           mutate(resid_sq = (cnt-cnt_pred)^2) 
 
     # compute the MSE
     mst_tst <- summarise(test_results, mse_tst = mean(resid_sq))[[1]]
@@ -351,16 +363,9 @@ for(d in 1:d_max){
 
 ```
 
-Now plot the test error as a function of degree.
 
-```{r}
-ggplot(error)+
-    geom_point(aes(x=degree, y=MSE_tst)) +
-    geom_line(aes(x=degree, y=MSE_tst)) 
+Now let's plot the test and training error as a function of degree.
 
-```
-
-That looks quite different that the training error. Let's plot them together
 ```{r}
 
 error %>% 
