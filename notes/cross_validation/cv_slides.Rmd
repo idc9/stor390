@@ -6,10 +6,10 @@ output: slidy_presentation
 
 
 # Tuning parameters
-- usually control some kind of tradeoff
+- usually control some kind of trade off
 - often there is no principled way to select a tuning parameter
-- Examles
-    - K for k-nearest-neighbhors
+- Examples
+    - K for k-nearest-neighbors
     - C for soft-margin Support Vector Machine
     - $\lambda$ for ridge or lasso regression
     
@@ -36,20 +36,19 @@ output: slidy_presentation
 
 # Random seed
 - pseudorandom
-- random = code gives different numbers everytime you run it
+- random = code gives different numbers every time you run it
 - setting the random seed fixes the random numbers
 - `set.seed()`
 
 
-# Random seed
+# no seed
 ```{r}
-# sample 5 numbers from 1-100000
-
-# without setting the seed
 sample(1:100000, 5)
 sample(1:100000, 5)
+```
 
-# with setting the seed
+# set seed
+```{r}
 set.seed(3443)
 sample(1:100000, 5)
 
@@ -58,14 +57,511 @@ sample(1:100000, 5)
 ```
 
 
+# Lecture code
+- see helper functions from two R scripts
+    - `knn_functions.R`
+    - `synthetic_distributions.R`
+    
+get from github: https://github.com/idc9/stor390/tree/master/notes/cross_validation
+
+
+# Train/test data
+- train: **build* a model
+- test: **evaluate** a model
+
+
+
+```{r, warning=F, message=FALSE}
+
+# package to sample from  the multivariate gaussian distribution
+library(mvtnorm)
+library(flexclust)
+library(class)
+library(tidyverse)
+library(stringr)
+
+# some helper functions I wrote for this script
+# you can find this file in the same folder as the .Rmd document
+source('knn_functions.R')
+source('synthetic_distributions.R')
+```
+
+
+# Synthetic data
+````{r, echo=T}
+# the mixture means should be the same for both training and test sets
+mean_seed <- 238
+
+# draw train and test data
+data <- gmm_distribution2d(n_neg=200, n_pos=201, mean_seed=mean_seed, data_seed=1232)
+test_data <- gmm_distribution2d(n_neg=1000, n_pos=1000, mean_seed=mean_seed, data_seed=52345)
+```
+
+# Training data
+```{r,echo=F}
+# plot training data
+ggplot()+
+    geom_point(data=data, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank()) +
+    ggtitle('training data') 
+```
+
+
+# KNN, K = 5
+
+```{r, echo=F}
+# get test grid predictions
+grid_pred <- get_knn_test_grid(data, k = 5)
+
+
+# plot predictions
+ggplot()+
+    geom_point(data=data, aes(x=x1, y=x2, color=y, shape=y)) + 
+    geom_point(data=grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) 
+```
+
+
+# KNN for range of K
+
+
+```{r, results='asis', echo=F, cache=T}
+k_values <- c(1, 3, 5, 9, 17, 33, 65, 399, 401)
+
+plots <- list()
+# evaluate KNN for a bunch of specified k values
+for(i in 1:length(k_values)){
+    
+    k <- k_values[i]
+    
+    # the first two functions are in the knn_functions.R scrips
+    
+    # get test grid predictions
+    grid_pred <- get_knn_test_grid(data, k = k)
+    
+    # get test/training error rate
+    errs <- get_knn_error_rates(data, test_data, k)
+    
+    title <- paste0('k= ', k, ', train error = ',errs[['tr']], ', test error = ', errs[['tst']])
+    g <- ggplot()+
+            geom_point(data=data, aes(x=x1, y=x2, color=y, shape=y)) +
+            geom_point(data=grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.5) +
+            theme(panel.background = element_blank()) +
+            ggtitle(title) 
+    
+    # we have to "print" the plot to get it to render in the .Rmd page
+    
+    plots[[i]] <- g
+}
+```
+
+
+
+# K = `r k_values[1]`
+
+```{r, echo=F}
+plots[[1]]
+```
+
+
+# K = `r k_values[2]`
+
+```{r, echo=F}
+plots[[2]]
+```
+
+# K = `r k_values[3]`
+
+```{r, echo=F}
+plots[[3]]
+```
+
+# K = `r k_values[4]`
+
+```{r, echo=F}
+plots[[4]]
+```
+
+# K = `r k_values[5]`
+
+```{r, echo=F}
+plots[[5]]
+```
+
+# K = `r k_values[6]`
+
+```{r, echo=F}
+plots[[6]]
+```
+
+# K = `r k_values[7]`
+
+```{r, echo=F}
+plots[[7]]
+```
+
+# K = `r k_values[8]`
+
+```{r, echo=F}
+plots[[8]]
+```
+
+# K = `r k_values[9]`
+
+```{r, echo=F}
+plots[[9]]
+```
+
+# Takeaways
+
+- The predictions seem to get more simple in some sense as k gets larger (i.e. the first plot has the most complicated looking predictions).
+
+- The last plot is the most simple; every point is classified to a single class. For this plot, k = 401 = total number of training points. Convince yourself this behavior makes sense.
+
+- The training error goes up as k goes up.
+
+- The test error goes down then up as k goes up.
+
+
+
+# Tuning curves
+
+```{r, echo=F}
+# values of K to use
+k_values <- c(3, 7, 9, seq(from=1, to=401, by=4))
+
+# number of k values to check
+num_k <- length(k_values)
+
+# initialize data frame to save error rates in
+error_df <- tibble(k=rep(0, num_k),
+                    tr=rep(0, num_k),
+                    tst=rep(0, num_k))
+
+# evaluate knn for a bunch of values of k
+for(i in 1:num_k){
+    
+    # fix k for this loop iteration
+    k <- k_values[i]
+    
+    # get_knn_error_rates() is from the knn_functions.R script
+    # it computes the train/test errors for knn
+    errs <- get_knn_error_rates(data, test_data, k)
+
+    # store values in the data frame
+    error_df[i, 'k'] <- k
+    error_df[i, 'tr'] <- errs[['tr']]
+    error_df[i, 'tst'] <- errs[['tst']]
+}
+
+error_df %>% 
+    gather(key='type', value='error', tr, tst) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+```
+
+
+# Takeaways
+
+- the training error is an increasing function of k
+- the test error has an **inverted U shape**
+- k = 1 gives 0 training error
+- k = 401 (= number of training points) has about at 50% error rate
+
+# Best value of K for test vs. train
+```{r}
+# minimum training error
+error_df %>% 
+    filter(tr==min(tr))
+
+
+# minimum test error 
+error_df %>% 
+    filter(tst==min(tst))
+```
+
+
+# Well that sucks...
+
+**The k that gives the best training error is not the same as the k that gives the best test error**.
+
+# Validation set
+
+- In reality we don't have access to the independent test set
+
+- Let's create a test set
+
+- split original data into a train and a *validation* set (aka *hold out* set)
+
+# Validation pseudocode
+
+1. Randomly split the original training data set into a new training set and a validation set (maybe an 80/20 split)
+
+2. For each value of k we are interested in
+    a. fit the model on the smaller training set
+    b. compute the test error on the validation set
+    
+3. Select the value of k that performs the best on the validation set (call it k*)
+
+4. Retrain the model with k=k* using the full training data
+
+# Validation set (code)
+
+```{r}
+# split the original data into a train/validation set
+
+# set the seed to sample the validation set
+set.seed(345)
+
+# number of observations
+n <- dim(data)[1]
+
+# number of observations that go in the training st
+n_tr <- floor(n * .6)
+
+# randomly select n_tr numbers, without replacement, from 1...n
+tr_indices <- sample(x=1:n, size=n_tr, replace=FALSE)
+
+# break the data into a non-overlapping train and test set
+train <- data[tr_indices, ]
+validation <- data[-tr_indices, ]
+```
+
+
+# Compute validation error
+- fit model on new, smaller training set
+- evaluate model on validation set
+    - misclassification error rate
+    - mean squared error
+    
+    
+# Compute error (code)
+
+```{r}
+
+# only try k < n tr points
+# k_values_validation <- k_values[k_values < n_tr]
+
+k_values <- k_values[k_values < 200]
+
+# number of k values to check
+num_k <- length(k_values)
+
+# initialize data frame to save error rates in
+error_df <- error_df %>% 
+                add_column(valid=rep(NA, dim(error_df)[1])) %>% 
+                filter(k < 200)
+
+# evaluate k for a bunch of values of k
+for(i in 1:num_k){
+    
+    # fix k for this loop iteration
+    k <- k_values[i]
+
+    # compute the test error on the validation set
+    errs <- get_knn_error_rates(train, validation, k)
+    
+    # store values in the data frame
+    error_df[i, 'valid'] <- errs[['tst']]
+}
+
+```
+
+# Validation error
+
+```{r, echo=F}
+error_df
+```
+
+
+
+# Compare error curves
+```{r, echo=F}
+error_df %>% 
+    gather(key='type', value='error', tr, valid) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+```
+
+
+# Pick k based on the validation error
+```{r}
+# k giving the smallest validation error
+error_df %>% 
+    filter(valid==min(valid))
+```
+
+
+# Compare error curves
+```{r, echo=F}
+error_df %>% 
+    gather(key='type', value='error', tr, tst, valid) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+```
 
 
 
 
+# Cross-validation
+
+- repeat validation set procedure several times
+- M fold cross-validation
+    - usually called K fold cv
+- Typically M = 5, 10, n -1
+
+# Cross-validation pseudocode
+1. Repeat the following M times
+
+- Randomly split the data into two sets (cv-train and cv-test). Put the $\frac{M-1}{M}$ percent of the data into cv-train and the remaining $\frac{1}{M}$ percent of the data into cv-test.
+    
+- For each value of k we are interested in
+    - Fit the model on cv-train.
+    - Compute the cv-error on the cv-test set
+
+2. We now have a k x M matrix of cv-errors. For each value of the tuning parameter k compute the average cv-error across the M folds. 
+
+3. Select the value of k with the best cross validation error.
+
+
+
+# Many variants
+
+- mutually exclusive cv folds
+- stratified sampling
+
+# Cross-validation code
+```{r, echo=F}
+M <- 5
+
+# create data frame to store CV errors
+cv_error_df <- matrix(0, nrow=num_k, ncol=M) %>% 
+            as_tibble() %>% 
+            add_column(k=k_values)
+
+# make column names nice
+colnames(cv_error_df) <- str_replace(colnames(cv_error_df), 'V', 'fold')
+
+# seed for cv samples
+set.seed(3124)
+```
+
+```{r}
+# for each of the M folds
+for(m in 1:M){
+    
+    # number of points that go in the cv train set
+    n_cv_tr <- floor(n * (M-1)/M)
+    
+    # randomly select n_tr numbers, without replacement, from 1...n
+    cv_tr_indices <- sample(x=1:n, size=n_cv_tr, replace=FALSE)
+
+    # break the data into a non-overlapping train and test set
+    cv_tr <- data[cv_tr_indices, ]
+    cv_tst <- data[-cv_tr_indices, ]
+    
+    # for each value of k we are interested in
+    for(i in 1:num_k){
+        
+        # fix k for this loop iteration
+        k <- k_values[i]
+
+        # compute the test error on the validation set
+        errs <- get_knn_error_rates(cv_tr, cv_tst, k)
+    
+        # store values in the data frame
+        cv_error_df[i, paste0('fold',m)] <- errs[['tst']]
+    }
+}
+
+```
+
+
+# Cross-validation error
+```{r, echo=F}
+cv_error_df
+```
+
+# Cross-validation error
+```{r, echo=F}
+cv_error_df %>% 
+    gather(key='type', value='error', contains('fold')) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))+
+    ggtitle('knn cross validation')
+    
+```
 
 
 
 
+# Mean cv error
 
+```{r, echo=F}
+# compute the mean cv error for each value of k
+cv_mean_error <- cv_error_df %>% 
+                    select(-k) %>% 
+                    rowMeans()
+
+# compare full train, cv, and test error
+error_df <- error_df %>% 
+     add_column(cv=cv_mean_error)
+
+error_df %>% 
+    gather(key='type', value='error', cv) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+
+```
+
+# Mean cv error
+
+```{r, echo=F}
+error_df %>% 
+    gather(key='type', value='error', tr, valid, cv) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+
+```
+
+# Mean cv error
+
+```{r, echo=F}
+error_df %>% 
+    gather(key='type', value='error', tr, tst, valid, cv) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+
+```
+
+
+
+# what is the best value of K
+
+```{r}
+# minimum training error
+error_df %>% 
+    filter(tr==min(tr))
+
+# minimum validation error 
+error_df %>% 
+    filter(valid==min(valid))
+
+
+# minimum cv error 
+error_df %>% 
+    filter(cv==min(cv))
+
+# minimum test error 
+error_df %>% 
+    filter(tst==min(tst))
+```
 
 

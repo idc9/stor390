@@ -79,12 +79,11 @@ library(stringr)
 
 # some helper functions I wrote for this script
 # you can find this file in the same folder as the .Rmd document
-# source('helper_functions.R')
 source('knn_functions.R')
 source('synthetic_distributions.R')
 ```
 
-Notice the `source` function. I wrote some helper functions in separate R scripts -- if you want to run the code in this lecture you'll need to download these scripts as well (see [github]()). I wrote these functions for two reasons
+Notice the `source` function. I wrote some helper functions in separate R scripts -- if you want to run the code in this lecture you'll need to download these scripts as well (see [github](https://github.com/idc9/stor390/tree/master/notes/cross_validation)). I wrote these functions for two reasons
 
 - makes the code easier to read
 - the code for the `get_knn_error_rates()` function gets used a lot
