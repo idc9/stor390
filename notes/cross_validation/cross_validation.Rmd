@@ -1,0 +1,673 @@
+---
+title: "Putting the K in K Nearest Neighbors"
+subtitle: "over fitting, test/train sets, cross-validation"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+These notes cover cross-validation. The primary reference is [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) section 5.1.
+
+For predictive modeling we collect a bunch of labeled data, build a model using that data, then deploy that model on some future data. We primarily care about how our model performs on the future data. For example, to build a spam filter you might collect a bunch of emails, manually label them as spam/not spam, train a classifier using this data then deploy the classifier on your gmail account. The upshot from this discussion is that when you are building your model you don't have access to the data you really care about i.e. the future test data. 
+
+# **Setup**
+
+For this lecture I am assuming you are familiar with 
+
+- random variables
+- independence
+
+The beginning of this lecture introduces some stats/programming concepts. The rest of the lecture focuses on selecting k for k-nearest-neighbors: first through a validation set then through cross-validation. Finally we discuss using KNN to automatically recognize human activities using data collected from an iPhone.
+
+
+## Independent and Identically Distributed Data
+
+A common assumption we make in statistics is that our data are [independent and identically distributed](https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables) (iid) random variables. I will assume the reader is some what familiar with what iid means. This assumptions is rarely perfectly true (e.g. sampling biases), but in many many cases it is true enough. The iid assumption breaks down in a big way for data such as time series. The upshot is we are usually comfortable with the iid assumption. 
+
+The iid assumption is what allows us to feel comfortable that we can gather some data and build a model which will then work well on some future, unseen data. A lot of the time when things go wrong with statistical models it is because something as strongly violated the iid assumption (e.g. due to the way you gathered your training data, your test data looks different than the training data).
+
+
+## Synthetic data
+
+For real data we rarely know the "true" random distribution that generated the data (is there even such thing?) For the purpose of studying statistical models it can be useful to generate synthetic data from a known distribution and see what happens. For example, to study classical hypothesis testing we might generated data from two normal distributions with different means and see how far apart the empirical means are. 
+
+For classification we might generate two classes of data from Gaussian distributions with different means then see how well a classifier is able to do on this synthetic data.
+
+In the first part of this lecture we will generate random data from *some* known distribution. We first generate training data which our model is allowed to see during training. In this lecture we will use this training data set to select the k for k-nearest-neighbors. This will involve breaking the training set up into smaller data sets (discussed below).
+
+We also generate some test data which our model is not allowed to know about during training. The test data set is the data we will really care about. 
+
+## Random seeds
+
+We are using the computer to generate random data (ok it is really [pseudorandom](https://en.wikipedia.org/wiki/Pseudorandom_number_generator) but we will pretend it's truly random). This means the code in this lecture is not deterministic i.e. it will give you different numbers every time you run it. This is not good for teaching.
+
+We can use the `set.seed` function to set the [random seed](https://en.wikipedia.org/wiki/Random_seed). All this means is the computer will now generate the same random numbers every time you run the code. For example,
+
+
+```{r}
+# sample 5 numbers from 1-100000
+sample(1:100000, 5)
+sample(1:100000, 5)
+```
+
+
+```{r}
+set.seed(3443)
+sample(1:100000, 5)
+
+set.seed(3443)
+sample(1:100000, 5)
+```
+
+## Code
+
+
+Recall on the previous lecture we discuss k-nearest-neighbors (KNN)
+
+
+```{r, warning=F, message=FALSE}
+
+# package to sample from  the multivariate gaussian distribution
+library(mvtnorm)
+library(flexclust)
+library(class)
+library(tidyverse)
+library(stringr)
+
+# some helper functions I wrote for this script
+# you can find this file in the same folder as the .Rmd document
+# source('helper_functions.R')
+source('knn_functions.R')
+source('synthetic_distributions.R')
+```
+
+Notice the `source` function. I wrote some helper functions in separate R scripts -- if you want to run the code in this lecture you'll need to download these scripts as well (see [github]()). I wrote these functions for two reasons
+
+- makes the code easier to read
+- the code for the `get_knn_error_rates()` function gets used a lot
+
+## Train/test data
+
+I am going to use the words *train* and *test* to describe several different data sets. The training data is the data we use to fit a model. For linear regression this is the data we use to find the $\beta$ coefficients by minimizing the sum of squared residuals. The test data is the data we use to evaluate a model. For KNN the train data is the data that get's used to vote on the class label of a new data point (KNN doesn't really involve any training).
+
+Most of this lecture involves using different training/test data sets to evaluate a model in different settings. This may be a little confusing at first, but you will get used to it.
+
+# **Generate some synthetic data**
+
+
+Let's generate some synthetic training and test data. For the purpose of this lecture what the true distribution is doesn't really matter, but you can see the details in the `synthetic_distributions.R` script. I encourage you to play around with the synthetic distribution and re-run the code in this lecture (e.g. change the parameters, try different distributions).
+````{r}
+# the mixture means should be the same for both training and test sets
+mean_seed <- 238
+
+# draw train and test data
+data <- gmm_distribution2d(n_neg=200, n_pos=201, mean_seed=mean_seed, data_seed=1232)
+test_data <- gmm_distribution2d(n_neg=1000, n_pos=1000, mean_seed=mean_seed, data_seed=52345)
+```
+
+You could uncommment this code to get a different synthetic distribution and see what happens to the figures below.
+```{r}
+# data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+#                                             mu_pos=c(1,0), mu_neg=c(-1,0),
+#                                             sigma_pos=diag(2), sigma_neg=diag(2),
+#                                             seed=100)
+# 
+# test_data <- two_class_guasssian_meatballs(n_pos=1000, n_neg=1000,
+#                                             mu_pos=c(1,0), mu_neg=c(-1,0),
+#                                             sigma_pos=diag(2), sigma_neg=diag(2),
+#                                             seed=3240)
+
+```
+
+The training data look are shown below.
+```{r,echo=F}
+# plot training data
+ggplot()+
+    geom_point(data=data, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank()) +
+    ggtitle('training data') 
+```
+
+Now let's fit KNN with k = 5 (just like the previous lecture).
+
+```{r, echo=F}
+# get test grid predictions
+grid_pred <- get_knn_test_grid(data, k = 5)
+
+
+# plot predictions
+ggplot()+
+    geom_point(data=data, aes(x=x1, y=x2, color=y, shape=y)) + 
+    geom_point(data=grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.15) +
+    theme(panel.background = element_blank()) 
+```
+
+```{r, echo=F}
+# get train/test error rates
+errs <- get_knn_error_rates(data, test_data, k=5)
+tr_err <- errs['tr']
+tst_err <- errs['tst']
+```
+
+
+The training error rate is **`r tr_err`** and the test error is **`r tst_err`**. Notice the training error is better than the test error. It's almost always true that a statistical algorithm will perform better on the data it was trained on that on an independent test set (hence the problem of overfitting). 
+
+# **KNN for differnt values of K**
+
+Now let's look at the predictions resulting from KNN for different values of K. First we show what the predictions will be at every point in the plane (ok really every point in our test grid).
+
+
+```{r}
+k_values <- c(1, 3, 5, 9, 17, 33, 65, 399, 401)
+```
+
+```{r, results='asis', echo=F, cache=T}
+# evaluate KNN for a bunch of specified k values
+for(k in k_values){
+    
+    # the first two functions are in the knn_functions.R scrips
+    
+    # get test grid predictions
+    grid_pred <- get_knn_test_grid(data, k = k)
+    
+    # get test/training error rate
+    errs <- get_knn_error_rates(data, test_data, k)
+    
+    title <- paste0('k= ', k, ', train error = ',errs[['tr']], ', test error = ', errs[['tst']])
+    g <- ggplot()+
+            geom_point(data=data, aes(x=x1, y=x2, color=y, shape=y)) +
+            geom_point(data=grid_pred, aes(x=x1, y=x2, color=y_pred), alpha=.5) +
+            theme(panel.background = element_blank()) +
+            ggtitle(title) 
+    
+    # we have to "print" the plot to get it to render in the .Rmd page
+    print(g)
+}
+```
+
+
+Some observations to note:
+
+- The predictions seem to get more simple in some sense as k gets larger (i.e. the first plot has the most complicated looking predictions).
+
+- The last plot is the most simple; every point is classified to a single class. For this plot, k = 401 = total number of training points. Convince yourself this behavior makes sense.
+
+- The training error goes up as k goes up.
+
+- The test error goes down then up as k goes up.
+
+Let's dig into the test/training error a little more.
+
+# **Test/train error as a function of K**
+
+Let's compute the training and test error for a bunch of values of k
+```{r}
+# values of K to use
+k_values <- c(3, 7, 9, seq(from=1, to=401, by=4))
+
+# number of k values to check
+num_k <- length(k_values)
+
+# initialize data frame to save error rates in
+error_df <- tibble(k=rep(0, num_k),
+                    tr=rep(0, num_k),
+                    tst=rep(0, num_k))
+
+# evaluate knn for a bunch of values of k
+for(i in 1:num_k){
+    
+    # fix k for this loop iteration
+    k <- k_values[i]
+    
+    # get_knn_error_rates() is from the knn_functions.R script
+    # it computes the train/test errors for knn
+    errs <- get_knn_error_rates(data, test_data, k)
+
+    # store values in the data frame
+    error_df[i, 'k'] <- k
+    error_df[i, 'tr'] <- errs[['tr']]
+    error_df[i, 'tst'] <- errs[['tst']]
+}
+
+error_df
+```
+
+And plot the train/test error as a function of k. The y axis shows the error rate (percentage of misclassified points) and the x-axis is k (number of neighbors). The error rates for both the training data and the test data are shown.
+
+```{r}
+# note the use of gather!
+error_df %>% 
+    gather(key='type', value='error', tr, tst) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+
+```
+
+A few observations to make about this plot
+
+- the training error is an increasing function of k
+- the test error has an **inverted U shape**
+- k = 1 gives 0 training error
+- k = 401 (= number of training points) has about at 50% error rate
+
+The main takeaway, however, is **the k that gives the best training error is not the same as the k that gives the best test error**.
+
+```{r}
+# minimum training error
+error_df %>% 
+    filter(tr==min(tr))
+
+
+# minimum test error 
+error_df %>% 
+    filter(tst==min(tst))
+```
+
+This behavior is pretty typical for models with tuning parameters. For one extreme of the tuning parameter the training error will be really great, however, the test error has an inverted U shape. When the training error is really good but the test error gets worse we are overfitting. In reality for predictive modeling we don't know the true distribution or have access to the "test" data we really care about (at least at the time we are training the model). In other words, we won't know when we are overfitting and losing out on performance.
+
+This difference in behavior between the training and test sets should make you feel a little anxious. If we naively just look at the training error we will fool ourselves and pick a sub-optimal value of k. So what do we do?
+
+# **Validation set**
+
+In real life we are given a fixed training data set and we have to pick the optimal value of k. We can't see the test data set while training the model so what do we do?
+
+One idea is to use the training data to mimic the process of fitting a model on the training data and then applying it to the test data. The first approach you might take is to create a *validation set* (also called a *hold out set*)
+
+1. Randomly split the original training data set into a new training set and a validation set (maybe an 80/20 split)
+
+2. For each value of k we are interested in
+    a. fit the model on the smaller training set
+    b. compute the test error on the validation set
+    
+3. Select the value of k that performs the best on the validation set (call it k*)
+
+4. Retrain the model with k=k* using the full training data
+
+
+## split data into a train/validation set
+
+Let's put 60% of the data into the training set and 40% in the validation set. Other proportions (e.g. 70/30) are reasonable -- there is not a right answer for this one.
+```{r}
+# split the original data into a train/validation set
+
+# set the seed to sample the validation set
+set.seed(345)
+
+# number of observations
+n <- dim(data)[1]
+
+# number of observations that go in the training st
+n_tr <- floor(n * .6)
+
+
+# randomly select n_tr numbers, without replacement, from 1...n
+tr_indices <- sample(x=1:n, size=n_tr, replace=FALSE)
+
+# break the data into a non-overlapping train and test set
+train <- data[tr_indices, ]
+validation <- data[-tr_indices, ]
+```
+
+
+
+## compute validation error for each k
+
+We have to come up with a range of k values to try. It doesn't make sense to use k > than then number of training points (why?)
+
+To make life easier let's focus on values of k < 200
+```{r}
+
+# only try k < n tr points
+# k_values_validation <- k_values[k_values < n_tr]
+
+k_values <- k_values[k_values < 200]
+
+# number of k values to check
+num_k <- length(k_values)
+
+# initialize data frame to save error rates in
+error_df <- error_df %>% 
+                add_column(valid=rep(NA, dim(error_df)[1])) %>% 
+                filter(k < 200)
+
+# evaluate k for a bunch of values of k
+for(i in 1:num_k){
+    
+    # fix k for this loop iteration
+    k <- k_values[i]
+
+    # compute the test error on the validation set
+    errs <- get_knn_error_rates(train, validation, k)
+    
+    # store values in the data frame
+    error_df[i, 'valid'] <- errs[['tst']]
+}
+
+error_df
+
+```
+
+
+Let's take a look at the validation error as a function of k
+```{r, echo=F}
+error_df %>% 
+    gather(key='type', value='error', tr, tst, valid) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+```
+
+
+```{r}
+# k giving the smallest validation error
+error_df %>% 
+    filter(valid==min(valid))
+```
+
+
+The validation error curve as a function k looks qualitatively much more like the test error curve than the training error curve i.e. it has an **inverted U shape**. 
+
+This is great news; we now have a method that, using only the training data, can mimic an independent test set. Can we do even better?
+
+
+# **Cross-validation** 
+
+For the validation procedure above we randomly split the original data into a training and validation set once. We then trained the model on this training set and computed the model's performance on the validation set. Why don't we repeat this procedure a few more times?
+
+Enter [cross-validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)). M fold cross-validation repeats the train/validation procedure above M times then averages the results. 
+
+**Warning**: typically people use K (instead of M) for cross-validation. Since we are using k for KNN I am going to use M for the number of cross-validation *folds*.
+
+Cross-validation is one of the most commonly used procedures in machine learning/statistics. Typical values of K are 5, 10 and n - 1 (where n = number of data points you have). Cross-validation works as follows
+
+1. Repeat the following M times
+
+- Randomly split the data into two sets (cv-train and cv-test). Put the $\frac{M-1}{M}$ percent of the data into cv-train and the remaining $\frac{1}{M}$ percent of the data into cv-test.
+    
+- For each value of k we are interested in
+    - Fit the model on cv-train.
+    - Compute the cv-error on the cv-test set
+
+2. We now have a k x M matrix of cv-errors. For each value of the tuning parameter k compute the average cv-error across the M folds. 
+
+3. Select the value of k with the best cross validation error.
+
+
+**Warning**: there are many variants on cross-validation. For example, one might first split the data into K roughly equal, mutually exclusive sets (called *folds*). In contrast, we randomly sample the folds each time so they are not necessarily mutually exclusive. The former is probably more common, but the code for the latter is easier to understand.
+
+## perform cross validatoin
+Let select M = 5 i.e. we are doing 5 fold cross-validation.
+```{r}
+M <- 5
+
+# create data frame to store CV errors
+cv_error_df <- matrix(0, nrow=num_k, ncol=M) %>% 
+            as_tibble() %>% 
+            add_column(k=k_values)
+
+# make column names nice
+colnames(cv_error_df) <- str_replace(colnames(cv_error_df), 'V', 'fold')
+
+# seed for cv samples
+set.seed(3124)
+
+# for each of the M folds
+for(m in 1:M){
+    
+    # number of points that go in the cv train set
+    n_cv_tr <- floor(n * (M-1)/M)
+    
+    # randomly select n_tr numbers, without replacement, from 1...n
+    cv_tr_indices <- sample(x=1:n, size=n_cv_tr, replace=FALSE)
+
+    # break the data into a non-overlapping train and test set
+    cv_tr <- data[cv_tr_indices, ]
+    cv_tst <- data[-cv_tr_indices, ]
+    
+    # for each value of k we are interested in
+    for(i in 1:num_k){
+        
+        # fix k for this loop iteration
+        k <- k_values[i]
+
+        # compute the test error on the validation set
+        errs <- get_knn_error_rates(cv_tr, cv_tst, k)
+    
+        # store values in the data frame
+        cv_error_df[i, paste0('fold',m)] <- errs[['tst']]
+    }
+}
+
+cv_error_df
+```
+
+We now have M error curves (i.e. one for each of the M folds).
+```{r}
+cv_error_df %>% 
+    gather(key='type', value='error', contains('fold')) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))+
+    ggtitle('knn cross validation')
+    
+```
+
+Let's compute mean cross-validation error curve i.e. take the mean across the M folds.
+
+```{r}
+# compute the mean cv error for each value of k
+cv_mean_error <- cv_error_df %>% 
+                    select(-k) %>% 
+                    rowMeans()
+
+# compare full train, cv, and test error
+error_df <- error_df %>% 
+     add_column(cv=cv_mean_error)
+
+error_df
+```
+
+
+
+```{r, echo=F}
+error_df %>% 
+    gather(key='type', value='error', tr, tst, valid, cv) %>% 
+    ggplot() +
+    geom_point(aes(x=k, y=error, color=type, shape=type)) +
+    geom_line(aes(x=k, y=error, color=type, linetype=type))
+```
+
+Now we can compare the value of k that each procedure thinks is best (e.g. the raw training error thinks k = 1 is best). The k value we really want to find is the best k for the test data. Since in reality we don't have access to this k we hope that either the validation set or cross-validation will come close to this best k.
+
+```{r}
+# minimum training error
+error_df %>% 
+    filter(tr==min(tr))
+
+# minimum validation error 
+error_df %>% 
+    filter(valid==min(valid))
+
+
+# minimum cv error 
+error_df %>% 
+    filter(cv==min(cv))
+
+# minimum test error 
+error_df %>% 
+    filter(tst==min(tst))
+```
+
+
+
+
+# **Human activity recognition**
+Can your iPhone tell what you are doing based on your physical motion i.e. using only the [accelerometer](http://electronics.howstuffworks.com/iphone-accelerometer.htm) and [gyroscope](https://en.wikipedia.org/wiki/Gyroscope)?
+
+
+Researchers collected data from 30 volunteers performing 6 activities: walking, walking upstairs, walking downstairs, sitting, standing, laying. The original data set and details about the covariates can be [found here](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) from the UCI machine learning repository.
+
+
+```{r, cache=T}
+# this may take a while to load from the internet, I sugget saving it to your computer
+train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
+```
+
+Let's seen how well KNN can tell these different activities apart. For now let's focus only on the difference between walking upstairs and walking downstairs.
+
+```{r}
+train <- train %>% 
+    filter(activity == 2 | activity == 3)
+```
+
+For KNN we only need to provide training data and select a value of k. To decide on the "best" value of K let's use cross-validation
+
+## cross-validation
+
+```{r}
+
+# number of cross-validation folds
+M <- 5
+
+# k values to use
+k_values <- seq(from=1, to= 41, by=4)
+
+# helpful quantities
+num_k <- length(k_values)
+n <- dim(train)[1]
+
+# create data frame to store CV errors
+cv_error_df <- matrix(0, nrow=num_k, ncol=M) %>% 
+            as_tibble() %>% 
+            add_column(k=k_values)
+colnames(cv_error_df) <- str_replace(colnames(cv_error_df), 'V', 'fold')
+
+
+# for each of the M folds
+for(m in 1:M){
+    
+    # number of points that go in the cv train set
+    n_cv_tr <- floor(n * (M-1)/M)
+    
+    # randomly select n_tr numbers, without replacement, from 1...n
+    cv_tr_indices <- sample(x=1:n, size=n_cv_tr, replace=FALSE)
+
+    # break the data into a non-overlapping train and test set
+    cv_tr_data <- train[cv_tr_indices, ]
+    cv_tst_data <- train[-cv_tr_indices, ]
+    
+
+    # break the train/test data into x matrix and y vectors
+    # this formatting is useful for the knn() functions
+    cv_tr_x <- cv_tr_data %>% select(-activity)
+    cv_tr_y <- cv_tr_data %>% 
+                select(activity) %>%
+                .$activity # turn into a vector
+    
+    cv_tst_x <- cv_tst_data %>% select(-activity)
+    cv_tst_y <- cv_tst_data %>% 
+                select(activity) %>%
+                .$activity # turn into a vector
+    
+    # for each value of k
+    for(i in 1:num_k){
+        
+        # fix k for this loop iteration
+        k <- k_values[i]
+
+
+    
+        # get predictions on cv test data data
+        cv_tst_predictions <- knn(train=cv_tr_x, # training x
+                                  test=cv_tst_x, # test x
+                                  cl=cv_tr_y, # train y
+                                  k=k) # set k
+    
+        # compute error rate on cv-test data
+        cv_tst_err <- mean(cv_tst_y != cv_tst_predictions)
+        
+        # store values in the data frame
+        cv_error_df[i, paste0('fold',m)] <- cv_tst_err
+    }
+}
+
+cv_error_df
+
+```
+
+
+Compute mean cv-error
+```{r}
+
+# compute the mean cv error for each value of k
+cv_mean_error <- cv_error_df %>% 
+                    select(-k) %>% 
+                    rowMeans()
+
+cv_error_df <- cv_error_df %>% 
+                add_column(error = cv_mean_error) %>% 
+                select(k, error)
+```
+
+```{r, echo=F}
+ggplot(cv_error_df) +
+    geom_point(aes(x=k, y=error)) +
+    geom_line(aes(x=k, y=error))
+```
+
+```{r}
+# minimum training error
+cv_error_df %>% 
+    filter(error==min(error))
+```
+
+
+
+```{r, cache=T}
+k_best <- 5
+
+# read in the test data
+test <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')
+
+test <- test %>% 
+    filter(activity == 2 | activity == 3)
+```
+
+
+```{r}
+
+# break the train/test data into x matrix and y vectors
+# this formatting is useful for the knn() functions
+train_x <- train %>% select(-activity)
+train_y <- train %>% 
+            select(activity) %>%
+            .$activity # turn into a vector
+
+test_x <- test %>% select(-activity)
+test_y <- test %>% 
+            select(activity) %>%
+            .$activity # turn into a vector
+```
+
+
+
+```{r}
+# get predictions on test data
+test_predictions <- knn(train=train_x, # training x
+                          test=test_x, # test x
+                          cl=train_y, # train y
+                          k=k_best) # set k
+
+
+
+
+# compute test error
+test_error <- mean(test_y != test_predictions)
+test_error
+```
+
+

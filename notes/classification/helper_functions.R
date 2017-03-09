@@ -5,8 +5,12 @@
 # n_pos, n_neg: number of points in each class
 # mu_pos, mu_neg: class means (vector length two)
 # sigma_pos, sigma_neg: number of points in each class (2x2 matrix)
-two_class_guasssian_meatballs <- function(n_pos, n_neg, mu_pos, mu_neg, sigma_pos, sigma_neg){
+two_class_guasssian_meatballs <- function(n_pos, n_neg, mu_pos, mu_neg, sigma_pos, sigma_neg, seed=NA){
 
+    if(!is.na(seed)){
+        set.seed(seed)
+    }
+    
     # generate data from negative class
     class_neg <- rmvnorm(n=n_neg, mean=mu_neg, sigma=sigma_neg) %>% # mvrnorm comes from MASS
                         as_tibble() %>%

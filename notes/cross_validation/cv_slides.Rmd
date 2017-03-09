@@ -1,0 +1,71 @@
+---
+title: "Cross validation"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+
+# Tuning parameters
+- usually control some kind of tradeoff
+- often there is no principled way to select a tuning parameter
+- Examles
+    - K for k-nearest-neighbhors
+    - C for soft-margin Support Vector Machine
+    - $\lambda$ for ridge or lasso regression
+    
+    
+# Predictive classification modeling
+- given some training data
+- want to minimize error on an independent test set
+
+
+# Overfitting
+- selecting the model that minimizes training error leads to overfitting
+- K = 1 leads to zero training error for KNN
+    - not necessarily the best test error!
+    
+# Independent and identically distributed
+- iid
+- data are independent
+- data are identically distributed
+- often "true enough" to be useful
+- iid fails for time series
+
+# Synthetic data
+- useful to study statistical models
+
+# Random seed
+- pseudorandom
+- random = code gives different numbers everytime you run it
+- setting the random seed fixes the random numbers
+- `set.seed()`
+
+
+# Random seed
+```{r}
+# sample 5 numbers from 1-100000
+
+# without setting the seed
+sample(1:100000, 5)
+sample(1:100000, 5)
+
+# with setting the seed
+set.seed(3443)
+sample(1:100000, 5)
+
+set.seed(3443)
+sample(1:100000, 5)
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
