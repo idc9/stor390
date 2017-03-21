@@ -276,7 +276,7 @@ Many popular machine learning algorithms are coded in a lower level language lik
 This means some kind soul (more likely wretched grad student) took the time to code up
 
 a) a good implementation of SVM in C and then release it to the public
-b) a packages in R (and Python and many other languages) so that us data scientists don't have to learn C to aforementioned C implementation of SVM
+b) a package in R (and Python and many other languages) so that us data scientists don't have to learn C to aforementioned C implementation of SVM
 
 This saves you, the user, a lot of time and money. A machine learning PhD student could probably do all of this themselves, but it would likely take them a couple weeks to get the code working correctly and quickly. You could also hire someone to do this, but it would be pricey. 
 
@@ -294,12 +294,34 @@ Like all things in life, there are tradeoffs to using open source software.
 
 
 
-# **Kernels**
+# **Non-linear classifiers**
 
-## Non-linear Variable Transformation
+Approximating complex patterns with simple patterns is a very powerful idea in mathematics. Often this comes down to approximating a non-linear thing with a linear thing (curve are hard, lines are easy!) Linear regression is a very effective regression algorithm even though many relationships are not in fact linear. Similarly, linear classifiers (nearest centroid, LDA, SVM, etc) are very effective classifiers even though many classification problems are not linear. Sometimes, however, the linear approximation is not good enough and we need a more sophiticated pattern. 
 
 
-## Kernel SVM
+
+
+## Explicit variable transformation
+
+[Recall](https://idc9.github.io/stor390/notes/predictive_modeling/predictive_modeling.html) we were able to turn linear regression into non-linear regression by adding transformations of the original variables. For example, instead of linear regression of $y$ on $x$ (`y ~ x`) we added polynomial $x$ terms (e.g. `y ~ x + x^2 + x^3`). The resulting model is linear in the added variables, but non-linear in the original variables. We could have added any function of $x$ we wanted e.g. $e^{4.3 x}, \sin(8.3 x), \max(x, 1),$ etc. This idea also works for classification.
+
+We can use non-linear variable tranformations to turn a linear classifier into a non-linear classifier. 
+
+
+
+```{r}
+# the mixture means should be the same for both training and test sets
+mean_seed <- 238
+
+# draw train and test data
+data <- gmm_distribution2d(n_neg=200, n_pos=201, mean_seed=mean_seed, data_seed=1232)
+```
+
+
+
+
+
+## Kernel (implicit variable transformation)
 
 # **Classification metrics**
 
