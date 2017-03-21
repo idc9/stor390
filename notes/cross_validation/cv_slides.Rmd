@@ -125,7 +125,7 @@ ggplot()+
 # KNN for range of K
 
 
-```{r, results='asis', echo=F, cache=T}
+```{r, results='asis', echo=F, cache=F}
 k_values <- c(1, 3, 5, 9, 17, 33, 65, 399, 401)
 
 plots <- list()
@@ -562,6 +562,52 @@ error_df %>%
 # minimum test error 
 error_df %>% 
     filter(tst==min(tst))
+```
+
+# Human Activity Recognition
+
+- sensors: accelerometer, gyroscope
+
+- six activities
+    - WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING
+
+- see paper:  Human Activity Recognition on Smartphones using a Multiclass Hardware-Friendly Support Vector Machine.
+
+
+# Training data
+
+```{r, echo=F}
+train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
+```
+
+```{r}
+train
+```
+
+# KNN training predictions
+
+```{r, echo=F}
+train <- train %>% 
+    filter(activity == 2 | activity == 3)
+```
+
+```{r}
+train_x <- train %>% select(-activity)
+train_y <- train %>% 
+            select(activity) %>%
+            .$activity # turn into a vector
+
+```
+
+# KNN train predictions
+
+```{r}
+train_predictions <- knn(train=train_x, # training x
+                          test=train_x, # test x
+                          cl=train_y, # train y
+                          k=5)
+
+train_predictions[1:5]
 ```
 
 

@@ -10,7 +10,7 @@ output:
 ---
 
 
-The [support vector machine](https://en.wikipedia.org/wiki/Support_vector_machine) (SVM) is one of the most popular and effective classification algorithms. Like [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html), SVM is a linear classifier. Recall we were able to [turn linear regression into non-linear regression](https://idc9.github.io/stor390/notes/predictive_modeling/predictive_modeling.html) by explicitly adding more variables using non-linear variable transformations (e.g. polynomial terms). Similarly, we can turn a linear classier into a non-linear classifier by adding non-linear terms.
+The [support vector machine](https://en.wikipedia.org/wiki/Support_vector_machine) (SVM) is one of the most popular and effective classification algorithms. Like [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html), SVM is a linear classifier. Recall we were able to [turn linear regression into non-linear regression](https://idc9.github.io/stor390/notes/predictive_modeling/predictive_modeling.html) by explicitly adding more variables using non-linear variable transformations (e.g. polynomial terms). Similarly, we can turn a linear classifier into a non-linear classifier by adding non-linear terms.
 
 There is a way of automatically adding non-linear variables into a linear classifier by doing something called the [kernel trick](https://en.wikipedia.org/wiki/Kernel_method).
 
@@ -154,6 +154,8 @@ Keep the following intuition in mind for this section. A good linear classifier 
 
 ## Soft margin SVM (words)
 
+See [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) chapter 9 for details about SVM.
+
 Maximizing the margin is about putting points as far on the correct side of the separating hyperplane as possible. Soft margin SVM allows some "bad" points to be on the wrong side of the separating hyperplane, but penalizes these bad points. SVM then wants to put the remaining "good" points as far on the correct side of the margin as possible.
 
 SVM thus has two competing objects: maximize the margin, but penalize disobedient points. SVM has a devil one on shoulder and angle on the other shoulder. Like many machine learning algorithms, SVM tries to strike a balance between two competing objectives. 
@@ -172,7 +174,7 @@ make_svm_plot_2d(data, C=1e-2)
 make_svm_plot_2d(data, C=1e-3)
 ```
 
-Notice that as $C$ decreases more points are misclassified. This is another example of the bais-variance tradeoff (recall chapter 2 from ISLR). Large values of $C$ make the classifier try really hard to not misclassify anyone -- the so called low bias, high variance regime (leads to overfitting). Small values of $C$ are more ok with misclassified points -- high bias, low variance. As with many things in life the key is to find the right balance. 
+Notice that as $C$ decreases more points are misclassified. This is another example of the bias-variance tradeoff (recall chapter 2 from ISLR). Large values of $C$ make the classifier try really hard to not misclassify anyone -- the so called low bias, high variance regime (leads to overfitting). Small values of $C$ are more ok with misclassified points -- high bias, low variance. As with many things in life the key is to find the right balance. 
 
 The best value of $C$ is typically selected using [cross-validation](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html).
 
@@ -186,7 +188,7 @@ We will use the [e1071](https://cran.r-project.org/web/packages/e1071/e1071.pdf)
 First let's sample some training data and some test data (same as the data shown above).
 
 ```{r}
-# these functions come from the synthetic_distributions.R package
+# this function comes from the synthetic_distributions.R package
 train <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
                                        mu_pos=c(1,0), mu_neg=c(-1,0),
                                        sigma_pos=diag(2), sigma_neg=diag(2),
@@ -197,7 +199,8 @@ train
 test <- two_class_guasssian_meatballs(n_pos=1000, n_neg=1000,
                                        mu_pos=c(1,0), mu_neg=c(-1,0),
                                        sigma_pos=diag(2), sigma_neg=diag(2),
-                                       seed=2545)
+                                       seed=634)
+
 ```
 
 
@@ -206,12 +209,11 @@ Before fitting SVM we have to decide on the value of the tuning parameter to use
 # fit SVM
 svmfit <- svm(y ~ ., # R's formula notation
               data=train, # data frame to use
+              cost=10, # set the tuning paramter
               scale=FALSE,
               type='C-classification',
               shrinking=FALSE,
-              kernel='linear', 
-              cost=10) # set the tuning paramter
-
+              kernel='linear') 
 ```
 
 **main arguments**
@@ -296,7 +298,7 @@ Like all things in life, there are tradeoffs to using open source software.
 
 # **Non-linear classifiers**
 
-Approximating complex patterns with simple patterns is a very powerful idea in mathematics. Often this comes down to approximating a non-linear thing with a linear thing (curve are hard, lines are easy!) Linear regression is a very effective regression algorithm even though many relationships are not in fact linear. Similarly, linear classifiers (nearest centroid, LDA, SVM, etc) are very effective classifiers even though many classification problems are not linear. Sometimes, however, the linear approximation is not good enough and we need a more sophiticated pattern. 
+Approximating complex patterns with simple patterns is a very powerful idea in mathematics. Often this comes down to approximating a non-linear thing with a linear thing (curve are hard, lines are easy!) Linear regression is a very effective regression algorithm even though many relationships are not in fact linear. Similarly, linear classifiers (nearest centroid, LDA, SVM, etc) are very effective classifiers even though many classification problems are not linear. Sometimes, however, the linear approximation is not good enough and we need a more sophisticated pattern. 
 
 
 
@@ -305,25 +307,241 @@ Approximating complex patterns with simple patterns is a very powerful idea in m
 
 [Recall](https://idc9.github.io/stor390/notes/predictive_modeling/predictive_modeling.html) we were able to turn linear regression into non-linear regression by adding transformations of the original variables. For example, instead of linear regression of $y$ on $x$ (`y ~ x`) we added polynomial $x$ terms (e.g. `y ~ x + x^2 + x^3`). The resulting model is linear in the added variables, but non-linear in the original variables. We could have added any function of $x$ we wanted e.g. $e^{4.3 x}, \sin(8.3 x), \max(x, 1),$ etc. This idea also works for classification.
 
-We can use non-linear variable tranformations to turn a linear classifier into a non-linear classifier. 
+We can use non-linear variable transformations to turn a linear classifier into a non-linear classifier. 
 
 
 
 ```{r}
-# the mixture means should be the same for both training and test sets
-mean_seed <- 238
+# some training data
+train <- gmm_distribution2d(n_neg=200, n_pos=201, mean_seed=238, data_seed=1232)
 
-# draw train and test data
-data <- gmm_distribution2d(n_neg=200, n_pos=201, mean_seed=mean_seed, data_seed=1232)
+# test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
 ```
 
 
+```{r, echo=F}
+ggplot(data=train)+
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank())
 
+```
+
+```{r}
+# fit SVM
+svm_linear <- svm(y ~ ., 
+                  data=train,
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE,
+                  kernel='linear', 
+                  cost=10)
+
+grid_predictions <- predict(svm_linear, newdata = test_grid)
+```
+
+
+```{r, echo=F}
+# plot predictions for linear svm
+test_grid %>% 
+    mutate(y_pred = grid_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('linear SVM fit')
+```
+
+Now let's manually add some polynomial terms.
+```{r}
+# add polynomial terms to 
+train_poly <- train %>% 
+                mutate(x1_sq = x1^2, x1x2 = x1*x2, x2_sq = x2^2)
+
+
+test_grid_poly <- test_grid %>% 
+                    mutate(x1_sq = x1^2, x1x2 = x1*x2, x2_sq = x2^2)
+
+
+# fit SVM
+svm_poly <- svm(y ~ ., 
+                  data=train_poly,
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE,
+                  kernel='linear', 
+                  cost=10)
+
+grid_poly_predictions <- predict(svm_poly, newdata = test_grid_poly)
+
+
+# The above is equivalent to using R's formula notation
+# svm_poly <- svm(y ~ x1 + x2 + x1^2 + x2^2 + x1*x2, 
+#                   data=train,
+#                   scale=FALSE,
+#                   type='C-classification',
+#                   shrinking=FALSE,
+#                   kernel='linear', 
+#                   cost=10)
+# 
+# grid_poly_predictions <- predict(svm_poly, newdata = test_grid)
+
+```
+
+```{r, echo=F}
+# plot predictions for linear svm
+test_grid_poly %>% 
+    mutate(y_pred = grid_poly_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit with degree 2 polynomial variable transformation')
+```
+
+
+Why stop at degree two polynomials -- why not add 3, 4, ... 412, etc? Two issues come up when we add more and more non-linear variables
+
+- **overfitting**: if we add enough non-linear terms we might overfit the data
+- **computational cost**: the more variables we add, the more computational costs we will incur (e.g. time + memory). If we add enough variables the computer may run out of memory and/or it might take until the end of the universe for the algorithm that fits SVM to stop.
+
+
+We can use cross-validation to (attempt) to solve the problem of overfitting. There is not an immediately obvious way to fix the computational problem. Fortunately, there is a mathematical trick that can significantly reduce the computational cost.
 
 
 ## Kernel (implicit variable transformation)
 
+See section 9.3.2 from [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) for the details about Kernel methods.
+
+[Kernel methods](https://en.wikipedia.org/wiki/Kernel_method) (also known as the *kernel trick*) is a trick that reformulates the mathematical problem of fitting a linear classifier to many non-linear variables into an easier to solve problem. This many not sound like much, but it makes more sophisticated algorithms usable in many settings where they would otherwise not be feasible. The key idea is that 
+
+- many algorithms (such as SVM) rely only on the *distance* between *each pair of data points*.
+
+This means that in order to fit SVM we only need to compute the distance between each pair of data points. There are two important consequences
+
+1. If we can compute the distance between points cheaply then we can fit SVM more quickly.
+2. If we have the ability to compute a "distance" between pairs of objects then we can use SVM.
+
+The first point is the focus of this lecture: kernels = easier to compute non-linear version of SVM.
+
+The second point means we can apply SVM to non-standard data such as: [stirngs](https://en.wikipedia.org/wiki/Text_mining), [graphs](https://en.wikipedia.org/wiki/Network_theory) and [images](https://en.wikipedia.org/wiki/Digital_image_processing. For exmaple, there are ways of measuring how similar two strings are (called [string kernels](https://en.wikipedia.org/wiki/String_kernel)). If we have a bunch of strings (e.g. Yelp restaurant reviews) and a bunch of labels (e.g. good/bad) we can use a SVM with a string kernel to build a string classifier. This idea can be applied in many settings such as [protien classification](http://summarization.com/~radev/767w10/papers/Week05/SimilarityKernels/leslie.pdf) (DNA can be viewed as a long string). Other kernel examples include [image kernels](http://setosa.io/ev/image-kernels/) and [graph kernels](https://en.wikipedia.org/wiki/Graph_kernel).
+
+## Polynomial kernel
+
+Suppose we have $n$ data points $x_1, \dots, x_n$ and $d$ variables (i.e. $x_i \in \mathbb{R}^d$). A kernel is a function that takes two data vectors and computes a measure of distance (or equivalently a measure of similarity) between the two points. For example, the degree $m$ polynomial kernel is defined as 
+
+$$K(a, b) = (a^T b + 1)^m$$
+
+where $a, b \in \mathbb{R}^d$ are two vectors and $a^Tb$ is the dot product between the two vectors. Sometimes the polynomial kernel is defined with another parameter $c \in \mathbb{R}$ that replaces the 1 i.e. $(a^T b + c)^m$. Or even a third parameter $\gamma \in \mathbb{R}$ that scales the dot product i.e. $(\gamma a^T b + c)^m$.
+
+Using a degree $m$ polynomial kernel on the original data set is equivalent to adding all polynomial transformations up to degree $m$  of the original data. It's not obvious this is true, but the [wikipedia page on polynomial kernels](https://en.wikipedia.org/wiki/Polynomial_kernel) illustrates this fact with a degree two example.
+
+## Computational complexity
+
+This brief section requires some knowledge of [computational complexity](https://en.wikipedia.org/wiki/Analysis_of_algorithms) (e.g. bit O notation) to appreciate. You can skip this section if you want.
+
+Why does this help? Suppose we have $d$ variables. Suppose we add a ton of transformed variables into the model and now have $D$ variables in the model where $d < D$. For example, if we add all quadratic transformations of our variables we will have $D = \frac{d(d+1)}{2}$ variables in the model. Computing the distance between two data points in the transformed space requires $O(D)=O(d^2)$ computations (e.g. a dot product in $\mathbb{R}^D$). However, computing the polynomial above requires $O(d)$ computations (e.g. a dot product in $\mathbb{R}^d$). 
+
+For a quadratic kernel we go from $O(d^2)$ to $O(d)$ to compute distances between data points. For larger degree polynomials $D$ is an even worse function of $d$ (not hard to work out exactly what it is). However, computing the polynomial kernel is always an order $O(d)$ operations. 
+
+If you want to learn more about how the SVM optimization problem is solved with Kernels read sections 8 and 9 from [Andrew Ng's notes](http://cs229.stanford.edu/notes/cs229-notes3.pdf) and the [Sequentioa Minimization Optimization](https://en.wikipedia.org/wiki/Sequential_minimal_optimization).
+
+
+## Kernel SVM in R
+
+Thanks to the `e1071` package it's easy to use Kernel SVMs in R. Below we fit SVM with a degree 2 polynomial kernel.
+
+```{r}
+# fit SVM
+svm_kern2 <- svm(y ~ ., 
+                  data=train,
+                  cost=10,
+                  kernel='polynomial', # use a polynomial kernel
+                  degree = 2, # degree two polynomial
+                  gamma=1, # other kernel parameters
+                  coef0 =1, # other kernel parameters
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE)
+
+kern2_predictions <- predict(svm_kern2, newdata = test_grid)
+```
+
+
+```{r, echo=F}
+# plot predictions for kerenl svm
+test_grid %>% 
+    mutate(y_pred = kern2_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit for degree 2 polynomial kernel')
+```
+
+The above plot should look the same as the previous plot when we explicitly added degree two variable transformations into the data. What happens when we try a degree 100 polynomial kernel?
+
+```{r, echo=F}
+# fit SVM
+svm_kern <- svm(y ~ ., 
+                  data=train,
+                  cost=10,
+                  kernel='polynomial', # use a polynomial kernel
+                  degree = 100, # degree two polynomial
+                  gamma=1, # other kernel parameters
+                  coef0 =1, # other kernel parameters
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE)
+
+
+test_grid <- expand.grid(x1 = seq(-10, 10, length = 100),
+                         x2 = seq(-10, 10, length = 100)) %>% 
+            as_tibble()
+
+
+kern_predictions <- predict(svm_kern, newdata = test_grid)
+
+# plot predictions for kerenl svm
+test_grid %>% 
+    mutate(y_pred = kern_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit for degree 100 polynomial kernel')
+```
+
+
+There are many kernel functions you might use. Probably the most popular kernel is the [radial basis](https://en.wikipedia.org/wiki/Radial_basis_function_kernel) (aka Gaussian kernel) which you will try on the homework. Different kernels correspond to different explicit variable transformations.
+
+So how do you select the parameters for the kernel? The basic polynomial kernel has one parameter (the degree). It could have up to three parameters (i.e. $\gamma$ and $c$). You still need to select the cost value parameters $C$. Typically, cross-validation (specifically grid-search cross-validation) is used to pick all parameters. In particular
+
+1. Select a sequence of $C$ values (e.g. $C = 1e-5, 1e-4, \dots, 1e5$).
+2. Select a sequence of degrees (e.g. $d = 1, 2, 5, 10, 20, 50, 100$).
+3. For each pair of $C, d$ values (think a grid) use cross-validation to estimate the test error (originally cross validation had 2 for loops, now it has 3 for loops).
+4. Select the pair $C, d$ values that give the best cross-validation error
+
+This should feel some what clunky -- because it is. There are other fancier ways of selecting many tuning parameters (e.g. [Bayesian optimization](https://arxiv.org/pdf/1206.2944.pdf)), but cross-validation is used fairly often.
+
+The code to do this will start to get a little uglier. Luckily someone made an R package that tunes many machine learning models.
+
+## Tuning SVM with the caret package
+
+The `caret` package is built to make fitting models much easier (caret stands for **C**lassification **A**nd **RE**gression **T**raining). The package even [comes with book on how to use it](http://topepo.github.io/caret/index.html).
+
+[TODO] coming soon....
+
 # **Classification metrics**
-
-
+[TODO] coming soon
+- misclassification error
+- precision/recall
+- F1 score
+- ROC AUC
 

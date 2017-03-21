@@ -117,12 +117,13 @@ $(document).ready(function () {
 
 
 <h1 class="title toc-ignore">Assignment 4: cross-validation, KNN, SVM, NC</h1>
-<h3 class="subtitle"><em>does your iPhone know what you’re doing?</em></h3>
+<h3 class="subtitle"><em>Does your iPhone know what you’re doing?</em></h3>
 <h4 class="author"><em><a href="https://idc9.github.io/stor390/">STOR 390</a></em></h4>
 
 </div>
 
 
+<p>Recall the human activity recognition data set we discussed in class. You can find details about the data on the <a href>UCI repository</a>. The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.</p>
 <p>This assignment will give you practice with</p>
 <ul>
 <li>cross-validation</li>
@@ -131,6 +132,14 @@ $(document).ready(function () {
 <li>nearest centroid classifier</li>
 <li>support vector machine</li>
 </ul>
+<pre class="r"><code>library(tidyverse)
+
+library(class) # KNN
+library(e1071) # SVM
+
+train &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
+
+test &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')</code></pre>
 <div id="knn-cross-validation" class="section level1">
 <h1>KNN cross-validation</h1>
 <p>Using cross-validation we found that K = 1 is the “best” value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?</p>
@@ -177,6 +186,7 @@ $(document).ready(function () {
 </div>
 <div id="nearest-centroid" class="section level1">
 <h1>Nearest Centroid</h1>
+<p><a href="https://idc9.github.io/stor390/notes/classification/classification.html">Recall</a> the nearest centroid classifer is a simple linear classifier.</p>
 <div id="nearest-centroid-function" class="section level2">
 <h2>Nearest centroid function</h2>
 <p>Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.</p>
@@ -195,6 +205,7 @@ $(document).ready(function () {
 </div>
 <div id="support-vector-machine" class="section level1">
 <h1><strong>Support Vector Machine</strong></h1>
+<p>(we will discuss this more in lecture on Thursday)</p>
 <p>Let’s see how SVM does on the human activity recognition data. Let’s try linear SVM and kernel SVM with a radial kernel.</p>
 <div id="linear-svm" class="section level2">
 <h2>Linear SVM</h2>

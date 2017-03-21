@@ -1,0 +1,315 @@
+---
+title: "More Classification"
+subtitle: "Support Vector Machine, Kernels, more classification metrics"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+# This lecture
+- maximal margin classifier (MM)
+    - AKA hard margin support vector machine
+- support vector machine (SVM)
+    - AKA soft margin SVM
+- kernels
+- other classification metrics
+
+```{r, message=F, warning=F, echo=F}
+# this library implements SVM
+library(e1071)
+
+library(mvtnorm)
+library(tidyverse)
+
+# some helper functions I wrote
+source('synthetic_distributions.R')
+source('svm_fun.R')
+```
+
+# Binary classes
+
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(4,0), mu_neg=c(-4,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103)
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+```
+
+# Linear classifiers
+
+- nerest centroid
+- split the two classes by a line (hyperplane)
+
+
+# linearly separable data
+
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(4,0), mu_neg=c(-4,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103)
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+```
+
+
+
+# Which separating hyperplane?
+
+```{r, echo=F}
+# fit hm svm
+svmfit <- svm(y ~.,
+              data=data,
+              scale=FALSE,
+              type='C-classification',
+              shrinking=FALSE,
+              kernel='linear',
+              cost=1e4)
+
+
+# get svm direction
+svm_params <- get_svm_parmas(svmfit)
+w_svm <- svm_params['w'][[1]]
+b_svm <- svm_params['b'][[1]]
+
+
+hm_slope <- -w_svm[1]/w_svm[2]
+hm_intercept <- b_svm/w_svm[2]
+
+slope1 <- hm_slope + 30
+slope2 <- hm_slope - 10
+
+intercept1 <- hm_intercept + 20
+intercept2 <- hm_intercept - 10
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) +
+    geom_abline(slope=hm_slope, intercept = hm_intercept) +
+    geom_abline(slope=slope1, intercept = intercept1) +
+    geom_abline(slope=slope2, intercept = intercept2) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+    
+```
+
+
+# The Margin
+Call the distance from the separating hyperplane to the nearest data point the *margin*.
+
+# The Margin
+```{r, echo=F, warning=F}
+svmfit <- svm(y ~.,
+              data=data,
+              scale=FALSE,
+              type='C-classification',
+              shrinking=FALSE,
+              kernel='linear',
+              cost=1e4)
+
+
+# get svm direction
+svm_params <- get_svm_parmas(svmfit)
+w_svm <- svm_params['w'][[1]]
+b_svm <- svm_params['b'][[1]]
+
+# add in support vector indicator column
+data_svm <- data %>% 
+    mutate(support_vector = 1)
+data_svm[svmfit$index, 'support_vector'] <- 2
+
+
+# fudge factor to make the plots work -- not sure why I need this
+w_svm <- 1.05 * w_svm
+
+# support vectors and corresponding points on the separating hyperplane
+sv1 <- svmfit$SV[1, ]
+sv_line1 <- sv1 -  w_svm / norm(matrix(w_svm)) ^ 3
+
+sv2 <- svmfit$SV[2, ]
+sv_line2 <- sv2 -  w_svm / norm(matrix(w_svm)) ^ 3
+
+sv3 <- svmfit$SV[3, ]
+sv_line3 <- sv3 +  w_svm / norm(matrix(w_svm)) ^ 3
+
+
+# plot svm 
+ggplot(data=data_svm) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y, size=support_vector)) +
+    geom_abline(slope=-w_svm[1]/w_svm[2], intercept = b_svm/w_svm[2]) +
+    geom_abline(slope=-w_svm[1]/w_svm[2], intercept = (b_svm + 1)/w_svm[2], linetype = 2) +
+    geom_abline(slope=-w_svm[1]/w_svm[2], intercept = (b_svm - 1)/w_svm[2], linetype = 2) +
+    geom_segment(aes(x=sv1[1], y=sv1[2], xend=sv_line1[1], yend = sv_line1[2]), arrow=arrow(ends="both", length=unit(.2,"cm")), color='red') +
+    geom_segment(aes(x=sv2[1], y=sv2[2], xend=sv_line2[1], yend = sv_line2[2]), arrow=arrow(ends="both", length=unit(.2,"cm")), color='red') +
+    geom_segment(aes(x=sv3[1], y=sv3[2], xend=sv_line3[1], yend = sv_line3[2]), arrow=arrow(ends="both", length=unit(.2,"cm")), color='red') +
+    theme(panel.background = element_blank()) +
+    guides(size=FALSE) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+```
+
+
+# Maximal Margin classifier (intuition)
+- data should be as far away from the separating hyperplane as possible.
+
+
+# Maximal Margin classifier (words)
+
+- The separating hyperplane that maximizes the margin.
+    - Maximizes the minimum distance from the data points to the separating hyperplane.
+- **Warning**: only defined when the data are linearly separable.
+- See ISLR chapter 9 for details.
+
+
+# Non-linearly separable data
+
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(1,0), mu_neg=c(-1,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103)
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank())
+```
+
+
+
+# Soft margin SVM (intuition)
+
+ A good linear classifier should aim to put points
+
+- on the correct side of the separating hyperplane far away from the separating hyperplane
+- on the wrong side of the separating hyperplane close to the separating hyperplane
+
+
+# Soft margin SVM
+
+- Allow points to be on the wrong side of the separating hyperplane, but penalize them.
+- Keep as many points on the correct side of the separating hyperplane as possible.
+
+# Two competing objectives
+- maximize the margin
+- penalize disobedient points
+
+
+# Balance competing objectives
+![[image from http://img04.deviantart.net/a1bc/i/2012/189/4/8/angel_vs_devil_by_sakura_wind-d568jp4.png]](http://img04.deviantart.net/a1bc/i/2012/189/4/8/angel_vs_devil_by_sakura_wind-d568jp4.png)
+
+
+# Tuning parameter!
+- SVM comes with a tuning parameter $C >0$ that controls the balance between the two competing objectives.
+- Larger values of $C$ make SVM care more about "bad" points
+- Smaller values $C$ mean SVM has more chill about misclassified points
+
+
+# C large
+```{r, echo=F, warning=F}
+make_svm_plot_2d(data, C=1e3)
+```
+
+# C moderate
+```{r, echo=F, warning=F}
+make_svm_plot_2d(data, C=1e-2)
+```
+
+# C small
+```{r, echo=F, warning=F}
+make_svm_plot_2d(data, C=1e-3)
+```
+
+
+# Fitting SVM
+
+- cannot be done in closed form
+- requires a numerical optimization algorithm (quadratic programming)
+
+
+# e1071 package
+
+- open source implementation of SVM
+- see documentation `?svm()`
+
+
+
+# Some training data
+
+```{r}
+# this function comes from the synthetic_distributions.R package
+train <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                       mu_pos=c(1,0), mu_neg=c(-1,0),
+                                       sigma_pos=diag(2), sigma_neg=diag(2),
+                                       seed=103)
+
+train
+```
+
+# SVM code
+
+```{r}
+# fit SVM
+svmfit <- svm(y ~ ., # R's formula notation
+              data=train, # data frame to use
+              cost=10, # set the tuning paramter
+              scale=FALSE,
+              type='C-classification',
+              shrinking=FALSE,
+              kernel='linear') 
+```
+
+
+# main arguments
+- `data=train` says fit SVM using the data stored in the `train` data frame. 
+
+- The `svm()` function uses R's formula notation. Recall from linear regression `y ~ .` means fit `y` on all the rest of the columns of data. We could have equivalently used `y ~ x1 + x2`. 
+
+- `cost = 10` fixes the tuning parameter $C$ to 10. The tuning parameter $C$ is also sometimes called a *cost* parameter.
+
+- `shrinking=FALSE` I'm not sure what this does, but I don't want anything extra to happen so I told it to stop.
+
+# Other arguments
+
+- `scale = FALSE` says **please do not center and scale** our data. `svm()` applies some [preprocessing](http://scikit-learn.org/stable/modules/preprocessing.html) to the data by default. While preprocessing (e.g. center and scale) is often a good thing to do, I strongly disagree with making this the default behavior.
+
+- `type='C-classification'` tells `svm()` to do classification. It turns out SVM can be used to do other things than classification](http://kernelsvm.tripod.com/). 
+
+- `kernel='linear'` says do linear SVM. The `svm()` function can do kernel SVM (discussed below). 
+
+# Predictions
+
+```{r}
+# this is equivalent to svmfit$fitted
+train_predictions <- predict(svmfit, newdata = train)
+train_predictions[1:5] 
+```
+
+# Open source software
+
+- `e1071` (R)
+- `LIBSVM` (C)
+
+# Some kind soul took the time to code
+a) a good implementation of SVM in C and then release it to the public
+b) a package in R (and Python and many other languages) so that us data scientists don't have to learn C to aforementioned C implementation of SVM
+
+Saves time and money!
+
+
+# Trade offs
+
+
+- There can be bugs in open source software -- no one has a financial incentive to thoroughly test the code. 
+    - Of course there can be bugs in professional software. Also the more people use a piece of software, the more likely a bug is to be caught.
+    
+- The documentation for open source software can be poor (again no financial incentive to make it clear).
+
+- You don't have control over design choices.
+    - Your favorite SVM package has bells and whistles 1 - 5, but you want bell and whistle number 6? You're [SOL](http://www.urbandictionary.com/define.php?term=SOL) since you didn't write the source code.
+
+

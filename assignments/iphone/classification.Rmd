@@ -4,6 +4,8 @@ subtitle: "Does your iPhone know what you're doing?"
 author: "[STOR 390](https://idc9.github.io/stor390/)"
 output: html_document
 ---
+This assignment is due Tuesday, 3/28/17
+
 Recall the human activity recognition data set we discussed in class. You can find details about the data on the [UCI repository](). The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.
 
 This assignment will give you practice with
@@ -13,6 +15,20 @@ This assignment will give you practice with
 - K nearest neighbors
 - nearest centroid classifier
 - support vector machine
+
+
+```{r, message=FALSE, warning=F}
+library(tidyverse)
+
+library(class) # KNN
+library(e1071) # SVM
+
+train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
+
+test <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')
+```
+
+*Hint*: you might want to save these two data files on your computer since downloading them can be slow.
 
 # KNN cross-validation
 
@@ -65,6 +81,7 @@ knn_tuning_error_plot <- function(train, test, k_cv, k_values, cv_seed=NA){
 
 # Nearest Centroid
 
+[Recall](https://idc9.github.io/stor390/notes/classification/classification.html) the nearest centroid classifer is a simple linear classifier.
 
 
 ## Nearest centroid function
@@ -92,6 +109,7 @@ Using the `nearest_centroid` function compute the test set error for the Human A
 
 
 # **Support Vector Machine**
+(we will discuss this more in lecture on Thursday)
 
 Let's see how SVM does on the human activity recognition data. Let's try linear SVM and kernel SVM with a radial kernel.
 
