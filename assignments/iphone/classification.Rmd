@@ -1,14 +1,18 @@
 ---
-title: "Lab : Classification"
+title: "Assignment 4: cross-validation, KNN, SVM, NC"
+subtitle: "Does your iPhone know what you're doing?"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
 output: html_document
 ---
+Recall the human activity recognition data set we discussed in class. You can find details about the data on the [UCI repository](). The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.
 
-This lab will give you practice with
+This assignment will give you practice with
 
 - cross-validation
 - test/train set
 - K nearest neighbors
 - nearest centroid classifier
+- support vector machine
 
 # KNN cross-validation
 
@@ -87,7 +91,24 @@ nearest_centroid <- function(train_x, train_y, test_x){
 Using the `nearest_centroid` function compute the test set error for the Human Activity Recognition dataset.
 
 
+# **Support Vector Machine**
 
+Let's see how SVM does on the human activity recognition data. Let's try linear SVM and kernel SVM with a radial kernel.
+
+
+## Linear SVM
+
+1. Use cross-validation to select the optimal value of $C$ for linar SVM.
+    - Try 2 different numbers of folds (e.g. K = 5 and K = 10).
+2. Fit SVM to on the full training data set with the "optimal" value of $C$.
+3. Report both the training error and the test set error.
+
+
+## Radial Kernel SVM
+
+1. Use cross-validation to select the optimal value of $C$ and $\gamma$ for SVM with a radial Kernel.
+2. Fit SVM to on the full training data set with the "optimal" values of $C$ and $\gamma$.
+3. Report both the training error and the test set error.
 
 
 
