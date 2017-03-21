@@ -1,0 +1,93 @@
+---
+title: "Lab : Classification"
+output: html_document
+---
+
+This lab will give you practice with
+
+- cross-validation
+- test/train set
+- K nearest neighbors
+- nearest centroid classifier
+
+# KNN cross-validation
+
+
+Using cross-validation we found that K = 1 is the "best" value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?
+
+
+Let's call the plot of error vs. K the *tuning error curve*.
+
+## Test error
+
+
+1. Compute the test set error (using the independent test data) for each value of K. 
+2. Plot the test set error with the the cross-validation test set tuning error curve (from lecture).
+3. What is actually the best value of K?
+4. How well does the cross-validation error approximate the true test set error?
+
+## What happens when we change the number of folds
+
+1. Compute the training error for each value of K.
+2. Add the training error to the tuning error curves (there should now be three tuning error curves).
+3. Write a function that makes this tuning error curve plot.
+4. Make the tuning error plots for 5, 10, 20, and 50 folds.
+
+```{r}
+knn_tuning_error_plot <- function(train, test, k_cv, k_values, cv_seed=NA){
+# Returns the tuning error plot for KNN
+# train and test are the train and test data
+    # both are a data frame with the same column names
+    # one column in named y which is the class labels
+# k_cv is the number of cross validation folds
+# k_values is the sequence of K values try for KNN
+# cv_seed is the seed for the cross validation folds
+# returns a ggplot object    
+    
+    # set seed if it is given
+    if(!is.na(cv_seed)){
+        set.seed(cv_seed)
+    }
+
+    
+    
+    # p <- ggplot() + ...
+    # return(p)
+
+}
+
+```
+
+
+# Nearest Centroid
+
+
+
+## Nearest centroid function
+Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.
+
+
+
+
+```{r}
+nearest_centroid <- function(train_x, train_y, test_x){
+    # returns the predictions for nearest centroid on a test set
+    # train_x and test_x are the train/test x data
+        # assume these are both numerical matrices with the same number of columns
+    # train_y is a vector of class labels for the training data
+    # return a vector of predicted class labels for the test data
+}
+
+
+```
+
+
+## Test error
+
+Using the `nearest_centroid` function compute the test set error for the Human Activity Recognition dataset.
+
+
+
+
+
+

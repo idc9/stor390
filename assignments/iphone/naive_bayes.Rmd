@@ -1,0 +1,70 @@
+---
+title: "Naive Bayes"
+output: html_document
+---
+
+Answering this question is worth one extra credit point.
+
+There are typically several different perspectives one can take on the same statisitcal/machine learning algorithm. Many classifiers have a statistical interpretation that involves fitting a statistical distribution to the data. There can also be a more geometric or "heuristic" interpretation. For example, you can view linear regression fitting a Gaussian distribution to the errors of a linear model or as minimizing the sum of squared residuals (reacall the [linear regression lecture](https://idc9.github.io/stor390/notes/linear_regression/linear_regression.html)). 
+
+This question will help you understand the geometric/heuristic interpretation of the popular naive Bayes classifier. In particular, naive Bayes is essentially the nearest centroid classifier, but with an additional variable transformation.
+
+# Deliverables
+
+To recieve cedit for this question do the following.
+
+1. Read pages 101-103, 106-111 from [Elements of Statistical Learning](http://statweb.stanford.edu/~tibs/ElemStatLearn/download.html) on the statistical interpretation of LDA, naive Bayes, and QDA (this assumes knowledge of the multivariate Gaussian, some linear algebra, indepdendnce and Bayes rule)
+
+2. Implement the niave Bayes function described below (this does not require any of the above statistical background, only an understanding of the [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html) classifier)
+
+3. Use naive Bayes to compute the test set error for the Human Activity dataset and compare this error rate to the other classifiers.
+
+# Background
+
+[Naive Bayes](https://en.wikipedia.org/wiki/Naive_Bayes_classifier) classifiers are a family of probabilistic classifiers that make a very strong independence assumption about the data. In particular, naive Bayes classifiers assume that all X variables are independent. This strong assumption is rarely true, however, frequently leads to simple and effective classifiers.
+
+The statistical interpretation of the nearest centriods classifier is: the data are multivariate Gaussian with identity covariance matrices but the means are different for the two classes of data. [LDA](https://en.wikipedia.org/wiki/Linear_discriminant_analysis) and [QDA](https://en.wikipedia.org/wiki/Quadratic_classifier) are similar, but make more sophisticated assumptions about the class covariance matrices.
+
+
+The naive Bayes version of these classifiers lies in-between NC and LDA. The naive Bayes Gaussian classifier assumes that the x variables are Gaussian and independent i.e. the covariance matrix is diagonal. There is another perspective of niave Bayes.
+
+We can view niave Bayes as essentially the same thing as nearest centroid, but with an additional variable transformation. In particular Naive Bayes works by first scaling each X variable by its standard deviation then computing the nearest centroid. 
+
+# Naive Bayes psuedocode
+
+Suppose we have $d$ x variables, $x_1, \dots, x_d$
+
+1. Compute the mean of each variable $\mu_i$ then mean center each variable $x_i \to x_i - \mu_i$.
+
+2. Compute the standard deviation of each variable $\sigma_i$ and scale each variable $x_i \to \frac{x_i}{\sigma_i}$.
+
+3. Compute the two class means $\mathbf{m}_+, \mathbf{m}_-$.
+
+4. Compute the normal vector and intercept (see [classification lecture](https://idc9.github.io/stor390/notes/classification/classification.html))
+
+$$\mathbf{w} = \mathbf{m}_{+} - \mathbf{m}_{-}$$
+$$b = - \frac{1}{2}\left(||\mathbf{m}_{+}||_2 - ||\mathbf{m}_{-}||_2 \right)$$
+
+Next given some test data
+
+5. Center and scale the test x variables by the mean and standard devations computed above for the training data.
+
+6. Now compute the predictions for the test data i.e.
+
+$$\text{sign}(\mathbf{x}_{test}^T \mathbf{w} + b)$$
+
+In place of computing the discriminant in step 6 we could have decided which of the two class means the test point is closer to.
+
+
+```{r}
+nearest_centroid <- function(train_x, train_y, test_x){
+    # returns the predictions for Gaussian naive Bayes on a test set
+    # train_x and test_x are the train/test x data
+        # assume these are both numerical matrices with the same number of columns
+    # train_y is a vector of class labels for the training data
+    # return a vector of predicted class labels for the test data
+}
+```
+
+
+

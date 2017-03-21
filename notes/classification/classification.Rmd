@@ -30,7 +30,7 @@ Classification is an example of [supervised learning](https://en.wikipedia.org/w
 
 ```{r, warning=F, message=F}
 
-# package to sample from  themultivariate gaussian distribution
+# package to sample from  the multivariate gaussian distribution
 library(mvtnorm)
 
 # calculate distances between points in a data frame

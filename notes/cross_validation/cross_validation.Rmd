@@ -505,13 +505,26 @@ error_df %>%
 
 
 # **Human activity recognition**
-Can your iPhone tell what you are doing based on your physical motion i.e. using only the [accelerometer](http://electronics.howstuffworks.com/iphone-accelerometer.htm) and [gyroscope](https://en.wikipedia.org/wiki/Gyroscope)?
+Can your smartphone tell what you are doing based on your physical motion i.e. using only the [accelerometer](http://electronics.howstuffworks.com/iphone-accelerometer.htm) and [gyroscope](https://en.wikipedia.org/wiki/Gyroscope)? The following dataset is from a paper titled [Human Activity Recognition on Smartphones
+using a Multiclass Hardware-Friendly Support
+Vector Machine](https://pdfs.semanticscholar.org/4f60/5b3bb3ce574f4053f19264434baa522305b7.pdf).
+
+## The data 
+The following description is from this [UCI repository page](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) where you can find more details.
+
+The experiments have been carried out with a group of 30 volunteers within an age bracket of 19-48 years. Each person performed six activities (WALKING, WALKING_UPSTAIRS, WALKING_DOWNSTAIRS, SITTING, STANDING, LAYING) wearing a smartphone (Samsung Galaxy S II) on the waist. Using its embedded accelerometer and gyroscope, we captured 3-axial linear acceleration and 3-axial angular velocity at a constant rate of 50Hz. The experiments have been video-recorded to label the data manually. The obtained dataset has been randomly partitioned into two sets, where 70% of the volunteers was selected for generating the training data and 30% the test data. 
+
+The sensor signals (accelerometer and gyroscope) were pre-processed by applying noise filters and then sampled in fixed-width sliding windows of 2.56 sec and 50% overlap (128 readings/window). The sensor acceleration signal, which has gravitational and body motion components, was separated using a Butterworth low-pass filter into body acceleration and gravity. The gravitational force is assumed to have only low frequency components, therefore a filter with 0.3 Hz cutoff frequency was used. From each window, a vector of features was obtained by calculating variables from the time and frequency domain.
+
+For each record in the dataset it is provided: 
+- Triaxial acceleration from the accelerometer (total acceleration) and the estimated body acceleration. 
+- Triaxial Angular velocity from the gyroscope. 
+- A 561-feature vector with time and frequency domain variables. 
+- Its activity label. 
+- An identifier of the subject who carried out the experiment.
 
 
-Researchers collected data from 30 volunteers performing 6 activities: walking, walking upstairs, walking downstairs, sitting, standing, laying. The original data set and details about the covariates can be [found here](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) from the UCI machine learning repository.
-
-
-```{r, cache=T}
+```{r, cache=T, message=F, warning=F}
 # this may take a while to load from the internet, I sugget saving it to your computer
 train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
 ```
@@ -527,13 +540,44 @@ For KNN we only need to provide training data and select a value of k. To decide
 
 ## cross-validation
 
+```{r, echo=F}
+# This is a helper function that samples mutually exclusive CV folds
+get_folds <- function(N, K){
+    # samples mutually exclusive folds for cross-validation
+    # returns a list of length K where each entry contains
+    # the indices corresponding the each fold
+    # Parameters
+        # N: number of data points
+        # K: number of folds
+    
+    # random permutation of 1:N
+    random_permutation <- sample(1:N, size=N, replace=F)
+    
+    # size of each fold
+    fold_size <- ceiling(N/K)
+    
+    # sample each fold
+    folds <- list()
+    for(k in 1:K){
+        
+        # indices to slice from random_permutation
+        start <- (k-1) * fold_size + 1
+        stop <- min(k * fold_size , N)
+        
+        # 
+        folds[[k]] <- random_permutation[start:stop]
+    }
+    return(folds)
+}
+```
+
 ```{r}
 
 # number of cross-validation folds
-M <- 5
+M <- 10
 
 # k values to use
-k_values <- seq(from=1, to= 41, by=4)
+k_values <- seq(from=1, to= 41, by=2)
 
 # helpful quantities
 num_k <- length(k_values)
@@ -545,6 +589,8 @@ cv_error_df <- matrix(0, nrow=num_k, ncol=M) %>%
             add_column(k=k_values)
 colnames(cv_error_df) <- str_replace(colnames(cv_error_df), 'V', 'fold')
 
+# seed for CV subsampling
+set.seed(345)
 
 # for each of the M folds
 for(m in 1:M){
@@ -577,8 +623,6 @@ for(m in 1:M){
         
         # fix k for this loop iteration
         k <- k_values[i]
-
-
     
         # get predictions on cv test data data
         cv_tst_predictions <- knn(train=cv_tr_x, # training x
@@ -615,19 +659,20 @@ cv_error_df <- cv_error_df %>%
 ```{r, echo=F}
 ggplot(cv_error_df) +
     geom_point(aes(x=k, y=error)) +
-    geom_line(aes(x=k, y=error))
+    geom_line(aes(x=k, y=error)) +
+    ggtitle('cross-validation error')
 ```
 
 ```{r}
-# minimum training error
+# minimum cv error
 cv_error_df %>% 
     filter(error==min(error))
 ```
 
 
 
-```{r, cache=T}
-k_best <- 5
+```{r, cache=T, message=F, warning=F}
+k_best <- 1
 
 # read in the test data
 test <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')
@@ -660,8 +705,6 @@ test_predictions <- knn(train=train_x, # training x
                           test=test_x, # test x
                           cl=train_y, # train y
                           k=k_best) # set k
-
-
 
 
 # compute test error

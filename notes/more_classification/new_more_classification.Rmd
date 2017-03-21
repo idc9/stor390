@@ -1,0 +1,307 @@
+---
+title: "**More classification**"
+subtitle: "SVM, kernels, classification metrics"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+
+The [support vector machine](https://en.wikipedia.org/wiki/Support_vector_machine) (SVM) is one of the most popular and effective classification algorithms. Like [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html), SVM is a linear classifier. Recall we were able to [turn linear regression into non-linear regression](https://idc9.github.io/stor390/notes/predictive_modeling/predictive_modeling.html) by explicitly adding more variables using non-linear variable transformations (e.g. polynomial terms). Similarly, we can turn a linear classier into a non-linear classifier by adding non-linear terms.
+
+There is a way of automatically adding non-linear variables into a linear classifier by doing something called the [kernel trick](https://en.wikipedia.org/wiki/Kernel_method).
+
+
+This lecture will cover
+
+- maximal margin classifier (aka hard margin SVM)
+- soft margin SVM
+- Kernel SVM
+- other classification metrics than just misclassification error
+
+Hard margin SVM is useful to help understand soft margin SVM, but is not commonly used (although sometimes hard margin SVM works well for very high-dimensional data). These notes present the intuition behind soft margin SVM and point to reading for the mathematical details. Classification accuracy is an important metric, but there are other classification metrics you should be aware of.
+
+```{r, message=F, warning=F}
+# this library implements SVM
+library(e1071)
+
+library(mvtnorm)
+library(tidyverse)
+
+# some helper functions I wrote
+source('synthetic_distributions.R')
+source('svm_fun.R')
+```
+
+# **Takeaway and Resources**
+
+The point of this lecture is to introduce the intuitive ideas behind SVM and kernels and show you how to use them in R. The math underlying these algorithms is explained well in the resources listed below. 
+
+For more details see 
+
+- [Andrew Ng's notes on SVM](http://cs229.stanford.edu/notes/cs229-notes3.pdf)
+- [ISLR chapter 9](http://www-bcf.usc.edu/~gareth/ISL/) also [Elements of Statistical Learning chapter 12](http://statweb.stanford.edu/~tibs/ElemStatLearn/printings/ESLII_print10.pdf)
+- [Foundations of Machine Learning chapter 4](http://www.cs.nyu.edu/~mohri/mlbook/) provides a clear explanation of the optimization problem and a theoretical perspective favored in the CS community (generalization bounds).
+
+# **Maximal Margin**
+
+The maximal margin (MM) classifier (also known as *hard margin support vector machine* assumes the two classes of data are [linearly separable](https://en.wikipedia.org/wiki/Linear_separability) i.e. we can draw a line where every data point in the first class is on one side and every point in the other class is on the other side of the line.
+
+
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(4,0), mu_neg=c(-4,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103)
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+```
+
+
+[Recall](https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier) a linear classifier makes predictions by separating the data space into two regions by a hyperplane. When the data are two dimensional, as above, this means a linear classifier draws a line in the plane. 
+
+In the case the data are separable a reasonable aspiration is to have the separating hyperplane lie between the two classes i.e. one class is totally on one side of the hyperplane and the other class is totally on the other side. Suppose we call the distance between the hyperplane and the nearest data point the *margin*. 
+
+The MM hyperplane is allergic to data points; MM seeks to find the hyperplane that is furthest away from the nearest data point. In other words MM finds the hyperplane that maximizes the margin.
+
+
+```{r, echo=F, warning=F}
+svmfit <- svm(y ~.,
+              data=data,
+              scale=FALSE,
+              type='C-classification',
+              shrinking=FALSE,
+              kernel='linear',
+              cost=1e4)
+
+
+# get svm direction
+svm_params <- get_svm_parmas(svmfit)
+w_svm <- svm_params['w'][[1]]
+b_svm <- svm_params['b'][[1]]
+
+# add in support vector indicator column
+data_svm <- data %>% 
+    mutate(support_vector = 1)
+data_svm[svmfit$index, 'support_vector'] <- 2
+
+
+# fudge factor to make the plots work -- not sure why I need this
+w_svm <- 1.05 * w_svm
+
+# support vectors and corresponding points on the separating hyperplane
+sv1 <- svmfit$SV[1, ]
+sv_line1 <- sv1 -  w_svm / norm(matrix(w_svm)) ^ 3
+
+sv2 <- svmfit$SV[2, ]
+sv_line2 <- sv2 -  w_svm / norm(matrix(w_svm)) ^ 3
+
+sv3 <- svmfit$SV[3, ]
+sv_line3 <- sv3 +  w_svm / norm(matrix(w_svm)) ^ 3
+
+
+# plot svm 
+ggplot(data=data_svm) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y, size=support_vector)) +
+    geom_abline(slope=-w_svm[1]/w_svm[2], intercept = b_svm/w_svm[2]) +
+    geom_abline(slope=-w_svm[1]/w_svm[2], intercept = (b_svm + 1)/w_svm[2], linetype = 2) +
+    geom_abline(slope=-w_svm[1]/w_svm[2], intercept = (b_svm - 1)/w_svm[2], linetype = 2) +
+    geom_segment(aes(x=sv1[1], y=sv1[2], xend=sv_line1[1], yend = sv_line1[2]), arrow=arrow(ends="both", length=unit(.2,"cm")), color='red') +
+    geom_segment(aes(x=sv2[1], y=sv2[2], xend=sv_line2[1], yend = sv_line2[2]), arrow=arrow(ends="both", length=unit(.2,"cm")), color='red') +
+    geom_segment(aes(x=sv3[1], y=sv3[2], xend=sv_line3[1], yend = sv_line3[2]), arrow=arrow(ends="both", length=unit(.2,"cm")), color='red') +
+    theme(panel.background = element_blank()) +
+    guides(size=FALSE) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+```
+
+In the plot above the MM separating hyperplane is shown as the solid line. The red arrows show the margin width -- the distance between the separating hyperplane and the nearest point. The dashed lines are the so called *marginal hyperplanes*. These marginal hyperplanes are parallel to the separating hyperplane. The highlighted points are called *support vectors* and are the points that are closest to the separating hyperplane (all three are equidistant to the separating hyperplane and lie on the marginal hyperplanes). 
+
+The support vectors play an important role in understanding MM and SVM in general. The MM normal vector and intercept depend only on the support vectors -- none of the other data points. In contrast, nearest centroid depends on all the data points.
+
+We can write the maximal margin classifier as an optimization problem: of all hyperplanes that separate the two classes, find the one that maximizes the margin. All of the aforementioned resources discuss how to write this as a math problem then solve the math problem.
+
+
+# **Soft Margin Support Vector Machine**
+
+
+Linear separability is a strong assumption that is typically not true for data sets; often the two classes cannot be separating by a hyperplane.
+
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(1,0), mu_neg=c(-1,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103)
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank())
+```
+
+Soft margin [support vector machine](https://en.wikipedia.org/wiki/Support_vector_machine) (which we will call just SVM) is an adaptation of the maximal margin classifier that is cool with data points lying on the wrong side of the separating hyperplane.
+
+Keep the following intuition in mind for this section. A good linear classifier should aim to put points
+
+- on the correct side of the separating hyperplane far away from the separating hyperplane
+- on the wrong side of the separating hyperplane close to the separating hyperplane
+
+
+
+## Soft margin SVM (words)
+
+Maximizing the margin is about putting points as far on the correct side of the separating hyperplane as possible. Soft margin SVM allows some "bad" points to be on the wrong side of the separating hyperplane, but penalizes these bad points. SVM then wants to put the remaining "good" points as far on the correct side of the margin as possible.
+
+SVM thus has two competing objects: maximize the margin, but penalize disobedient points. SVM has a devil one on shoulder and angle on the other shoulder. Like many machine learning algorithms, SVM tries to strike a balance between two competing objectives. 
+
+In order to strike this balance between the two competing objectives, SVM comes with a tuning parameter, $C >0$. This tuning parameter, $C$, controls how much SVM cares about the "bad" points. When $C$ is large SVM tries very hard to put put every training point on the correct side of the separating hyperplane. When $C$ is small SVM has more chill about points being on the wrong side of the separating hyperplane. 
+
+All of the above mentioned resources discuss how to write this as a math problem then solve the math problem. 
+
+## Tuning SVM
+
+The plots below show the SVM fit for three different values of C (C=100, .01, .0001). The solid line shows the SVM separating hyperplane. The dashed lines show the SVM marginal hyperplanes which play an important role in the inner workings of SVM (these do not have the same interpretation as the marginal hyperplanes for the MM classifier). 
+
+```{r, echo=F, warning=F}
+make_svm_plot_2d(data, C=1e3)
+make_svm_plot_2d(data, C=1e-2)
+make_svm_plot_2d(data, C=1e-3)
+```
+
+Notice that as $C$ decreases more points are misclassified. This is another example of the bais-variance tradeoff (recall chapter 2 from ISLR). Large values of $C$ make the classifier try really hard to not misclassify anyone -- the so called low bias, high variance regime (leads to overfitting). Small values of $C$ are more ok with misclassified points -- high bias, low variance. As with many things in life the key is to find the right balance. 
+
+The best value of $C$ is typically selected using [cross-validation](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html).
+
+# **SVM code**
+
+Unlike linear regression, or nearest centroid, SVM cannot be solved in closed form (i.e. there is no simple formula using the data to get the normal vector and intercept). Fitting SVM requires solving a [quadratic program](https://en.wikipedia.org/wiki/Quadratic_programming) which you could probably do after taking one course in optimization. Luckily for us, people have already coded up SVM.
+
+We will use the [e1071](https://cran.r-project.org/web/packages/e1071/e1071.pdf) package to implement SVM. The [kernlab](https://cran.r-project.org/web/packages/kernlab/kernlab.pdf) package also implements SVM in R, but for some reason I prefer `e1071`...
+
+
+First let's sample some training data and some test data (same as the data shown above).
+
+```{r}
+# these functions come from the synthetic_distributions.R package
+train <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                       mu_pos=c(1,0), mu_neg=c(-1,0),
+                                       sigma_pos=diag(2), sigma_neg=diag(2),
+                                       seed=103)
+
+train
+
+test <- two_class_guasssian_meatballs(n_pos=1000, n_neg=1000,
+                                       mu_pos=c(1,0), mu_neg=c(-1,0),
+                                       sigma_pos=diag(2), sigma_neg=diag(2),
+                                       seed=2545)
+```
+
+
+Before fitting SVM we have to decide on the value of the tuning parameter to use -- let's stick with $C = 10$ for now. The `svm()` function is from the `e1071` package. The function might look intimidating -- there are an annoying number of arguments being set discussed below. Pay attention to the three lines with comments next to them -- these are the important lines.
+```{r}
+# fit SVM
+svmfit <- svm(y ~ ., # R's formula notation
+              data=train, # data frame to use
+              scale=FALSE,
+              type='C-classification',
+              shrinking=FALSE,
+              kernel='linear', 
+              cost=10) # set the tuning paramter
+
+```
+
+**main arguments**
+- `data=train` says fit SVM using the data stored in the `train` data frame. 
+
+- The `svm()` function uses R's formula notation. Recall from linear regression `y ~ .` means fit `y` on all the rest of the columns of data. We could have equivalently used `y ~ x1 + x2`. 
+
+- `cost = 10` fixes the tuning parameter $C$ to 10. The tuning parameter $C$ is also sometimes called a *cost* parameter.
+
+- `shrinking=FALSE` I'm not sure what this does, but I don't want anything extra to happen so I told it to stop.
+
+`
+
+**Other arguments**
+Check out the documentation to read more about the arguments (i.e. run `?svm`). The `svm()` function can do a lot of stuff which is why it has so many arguments. 
+
+- `scale = FALSE` says **please do not center and scale** our data. `svm()` applies some [preprocessing](http://scikit-learn.org/stable/modules/preprocessing.html) to the data by default. While preprocessing (e.g. center and scale) is often a good thing to do, I strongly disagree with making this the default behavior.
+
+- `type='C-classification'` tells `svm()` to do classification. It turns out SVM can be used to do other things than classification](http://kernelsvm.tripod.com/). 
+
+- `kernel='linear'` says do linear SVM. The `svm()` function can do kernel SVM (discussed below). 
+
+Now that we have fit SVM let's see what we have. Use the `names()` function to see what the `svmfit` object has stored.
+
+```{r}
+names(svmfit)
+```
+You can read about these in the `?svm()` documentation. One value that might be of interest is the predictions for the training points i.e. (also called fitted values)
+```{r}
+svmfit$fitted[1:5]
+```
+To use SVM to make prediction on new data we can use the `predict` function i.e.
+
+```{r}
+# this is equivalent to svmfit$fitted
+train_predictions <- predict(svmfit, newdata = train)
+train_predictions[1:5] 
+```
+
+Ok let's see how SVM did on the training data
+
+```{r}
+train %>% 
+    mutate(y_pred= train_predictions) %>% 
+    summarise(error = mean(y != y_pred))
+```
+And how about the test set?
+```{r}
+test %>% 
+    mutate(y_pred = predict(svmfit, newdata = test)) %>% 
+    summarise(error = mean(y != y_pred))
+```
+
+In reality we would have first done cross-validation to select $C$. 
+
+## software tangent
+
+The fact that there are good, open source implementations of SVM is something you should take a minute to appreciate. The `e1071` package is written in R and does not do any heavy lifting; it calls the [LIBSVM](https://www.csie.ntu.edu.tw/~cjlin/libsvm/) package which is written in C. C has some benefits over R -- it is typically faster and allows for better memory handling. C, however, is harder to write code it. 
+
+Many popular machine learning algorithms are coded in a lower level language like C. They then wrapped in a higher level language like R or Python so they can be used with minimal headache.
+
+This means some kind soul (more likely wretched grad student) took the time to code up
+
+a) a good implementation of SVM in C and then release it to the public
+b) a packages in R (and Python and many other languages) so that us data scientists don't have to learn C to aforementioned C implementation of SVM
+
+This saves you, the user, a lot of time and money. A machine learning PhD student could probably do all of this themselves, but it would likely take them a couple weeks to get the code working correctly and quickly. You could also hire someone to do this, but it would be pricey. 
+
+These open source software implementations mean that instead of spending weeks and/or lots of money, you have access to a quality implementation of SVM in a matter of seconds for free. I would guess open source software is a big, unsung driver behind the explosion of big data.
+
+Like all things in life, there are tradeoffs to using open source software.
+
+- There can be bugs in open source software -- no one has a financial incentive to thoroughly test the code. 
+    - Of course there can be bugs in professional software. Also the more people use a piece of software, the more likely a bug is to be caught.
+    
+- The documentation for open source software can be poor (again no financial incentive to make it clear).
+
+- You don't have control over design choices.
+    - Your favorite SVM package has bells and whistles 1 - 5, but you want bell and whistle number 6? You're [SOL](http://www.urbandictionary.com/define.php?term=SOL) since you didn't write the source code.
+
+
+
+# **Kernels**
+
+## Non-linear Variable Transformation
+
+
+## Kernel SVM
+
+# **Classification metrics**
+
+
+
