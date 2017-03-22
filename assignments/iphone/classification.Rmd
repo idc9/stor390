@@ -26,6 +26,13 @@ library(e1071) # SVM
 train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
 
 test <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')
+
+# only consider walking upstairs vs downstairs
+train <- train %>% 
+    filter(activity == 2 | activity == 3)
+
+test <- test %>% 
+    filter(activity == 2 | activity == 3)
 ```
 
 *Hint*: You might want to save these two data files on your computer since downloading them can be slow. Many of these questions can be answered by taking the lecture code and modifying it.
@@ -39,6 +46,12 @@ test <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/hum
 [Recall in the lecture notes](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#perform_cross_validatoin) that using cross-validation we found that K = 1 is the "best" value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?
 
 Let's call the plot of error vs. K the *tuning error curve* (e.g. the plot [in this section](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#testtrain_error_as_a_function_of_k) from the notes).
+
+
+```{r}
+# use these k values
+k_values <- seq(from=1, to= 41, by=2)
+```
 
 ## Q1: KNN Test set error
 

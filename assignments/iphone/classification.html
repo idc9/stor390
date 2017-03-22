@@ -140,13 +140,22 @@ library(e1071) # SVM
 
 train &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
 
-test &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')</code></pre>
+test &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')
+
+# only consider walking upstairs vs downstairs
+train &lt;- train %&gt;% 
+    filter(activity == 2 | activity == 3)
+
+test &lt;- test %&gt;% 
+    filter(activity == 2 | activity == 3)</code></pre>
 <p><em>Hint</em>: You might want to save these two data files on your computer since downloading them can be slow. Many of these questions can be answered by taking the lecture code and modifying it.</p>
 <p><em>Final deliverable</em>: Please write your solutions in R Markdown and separate each question with a new section heading. For the questions that ask you to write helper functions write the helper funciton in it’s own chunck. Submit the .html file and the .Rmd file.</p>
 <div id="knn-cross-validation" class="section level1">
 <h1>KNN cross-validation</h1>
 <p><a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#perform_cross_validatoin">Recall in the lecture notes</a> that using cross-validation we found that K = 1 is the “best” value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?</p>
 <p>Let’s call the plot of error vs. K the <em>tuning error curve</em> (e.g. the plot <a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#testtrain_error_as_a_function_of_k">in this section</a> from the notes).</p>
+<pre class="r"><code># use these k values
+k_values &lt;- seq(from=1, to= 41, by=2)</code></pre>
 <div id="q1-knn-test-set-error" class="section level2">
 <h2>Q1: KNN Test set error</h2>
 <p><strong>1a</strong>. Compute the test set error (using the independent test data) for each value of K.</p>
