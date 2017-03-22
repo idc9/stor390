@@ -3,7 +3,8 @@ title: "Naive Bayes"
 output: html_document
 ---
 
-Answering this question is worth one extra credit point.
+
+Answering this question is worth one extra credit point and should be haneded in by the last day of class.
 
 There are typically several different perspectives one can take on the same statisitcal/machine learning algorithm. Many classifiers have a statistical interpretation that involves fitting a statistical distribution to the data. There can also be a more geometric or "heuristic" interpretation. For example, you can view linear regression fitting a Gaussian distribution to the errors of a linear model or as minimizing the sum of squared residuals (reacall the [linear regression lecture](https://idc9.github.io/stor390/notes/linear_regression/linear_regression.html)). 
 

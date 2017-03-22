@@ -120,25 +120,27 @@ $(document).ready(function () {
 </div>
 
 
-<div id="bonus-naive-bayes" class="section level1">
-<h1><strong>Bonus</strong>: Naive Bayes</h1>
+<p>Answering this question is worth one extra credit point and should be haneded in by the last day of class.</p>
 <p>There are typically several different perspectives one can take on the same statisitcal/machine learning algorithm. Many classifiers have a statistical interpretation that involves fitting a statistical distribution to the data. There can also be a more geometric or “heuristic” interpretation. For example, you can view linear regression fitting a Gaussian distribution to the errors of a linear model or as minimizing the sum of squared residuals (reacall the <a href="https://idc9.github.io/stor390/notes/linear_regression/linear_regression.html">linear regression lecture</a>).</p>
 <p>This question will help you understand the geometric/heuristic interpretation of the popular naive Bayes classifier. In particular, naive Bayes is essentially the nearest centroid classifier, but with an additional variable transformation.</p>
+<div id="deliverables" class="section level1">
+<h1>Deliverables</h1>
 <p>To recieve cedit for this question do the following.</p>
 <ol style="list-style-type: decimal">
 <li><p>Read pages 101-103, 106-111 from <a href="http://statweb.stanford.edu/~tibs/ElemStatLearn/download.html">Elements of Statistical Learning</a> on the statistical interpretation of LDA, naive Bayes, and QDA (this assumes knowledge of the multivariate Gaussian, some linear algebra, indepdendnce and Bayes rule)</p></li>
 <li><p>Implement the niave Bayes function described below (this does not require any of the above statistical background, only an understanding of the <a href="https://idc9.github.io/stor390/notes/classification/classification.html">nearest centroid</a> classifier)</p></li>
 <li><p>Use naive Bayes to compute the test set error for the Human Activity dataset and compare this error rate to the other classifiers.</p></li>
 </ol>
-<div id="background" class="section level2">
-<h2>Background</h2>
+</div>
+<div id="background" class="section level1">
+<h1>Background</h1>
 <p><a href="https://en.wikipedia.org/wiki/Naive_Bayes_classifier">Naive Bayes</a> classifiers are a family of probabilistic classifiers that make a very strong independence assumption about the data. In particular, naive Bayes classifiers assume that all X variables are independent. This strong assumption is rarely true, however, frequently leads to simple and effective classifiers.</p>
 <p>The statistical interpretation of the nearest centriods classifier is: the data are multivariate Gaussian with identity covariance matrices but the means are different for the two classes of data. <a href="https://en.wikipedia.org/wiki/Linear_discriminant_analysis">LDA</a> and <a href="https://en.wikipedia.org/wiki/Quadratic_classifier">QDA</a> are similar, but make more sophisticated assumptions about the class covariance matrices.</p>
 <p>The naive Bayes version of these classifiers lies in-between NC and LDA. The naive Bayes Gaussian classifier assumes that the x variables are Gaussian and independent i.e. the covariance matrix is diagonal. There is another perspective of niave Bayes.</p>
 <p>We can view niave Bayes as essentially the same thing as nearest centroid, but with an additional variable transformation. In particular Naive Bayes works by first scaling each X variable by its standard deviation then computing the nearest centroid.</p>
 </div>
-<div id="naive-bayes-psuedocode" class="section level2">
-<h2>Naive Bayes psuedocode</h2>
+<div id="naive-bayes-psuedocode" class="section level1">
+<h1>Naive Bayes psuedocode</h1>
 <p>Suppose we have <span class="math inline">\(d\)</span> x variables, <span class="math inline">\(x_1, \dots, x_d\)</span></p>
 <ol style="list-style-type: decimal">
 <li><p>Compute the mean of each variable <span class="math inline">\(\mu_i\)</span> then mean center each variable <span class="math inline">\(x_i \to x_i - \mu_i\)</span>.</p></li>
@@ -161,7 +163,6 @@ $(document).ready(function () {
     # train_y is a vector of class labels for the training data
     # return a vector of predicted class labels for the test data
 }</code></pre>
-</div>
 </div>
 
 

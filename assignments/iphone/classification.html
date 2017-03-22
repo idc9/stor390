@@ -123,7 +123,8 @@ $(document).ready(function () {
 </div>
 
 
-<p>Recall the human activity recognition data set we discussed in class. You can find details about the data on the <a href>UCI repository</a>. The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.</p>
+<p>This assignment is due Tuesday, 3/28/17</p>
+<p>Recall the human activity recognition data set we discussed in class. You can find details about the data on the <a href="https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones">UCI repository</a>. The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.</p>
 <p>This assignment will give you practice with</p>
 <ul>
 <li>cross-validation</li>
@@ -140,35 +141,34 @@ library(e1071) # SVM
 train &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
 
 test &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')</code></pre>
+<p><em>Hint</em>: You might want to save these two data files on your computer since downloading them can be slow. Many of these questions can be answered by taking the lecture code and modifying it.</p>
+<p><em>Final deliverable</em>: Please write your solutions in R Markdown and separate each question with a new section heading. For the questions that ask you to write helper functions write the helper funciton in it’s own chunck. Submit the .html file and the .Rmd file.</p>
 <div id="knn-cross-validation" class="section level1">
 <h1>KNN cross-validation</h1>
-<p>Using cross-validation we found that K = 1 is the “best” value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?</p>
-<p>Let’s call the plot of error vs. K the <em>tuning error curve</em>.</p>
-<div id="test-error" class="section level2">
-<h2>Test error</h2>
-<ol style="list-style-type: decimal">
-<li>Compute the test set error (using the independent test data) for each value of K.</li>
-<li>Plot the test set error with the the cross-validation test set tuning error curve (from lecture).</li>
-<li>What is actually the best value of K?</li>
-<li>How well does the cross-validation error approximate the true test set error?</li>
-</ol>
+<p><a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#perform_cross_validatoin">Recall in the lecture notes</a> that using cross-validation we found that K = 1 is the “best” value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?</p>
+<p>Let’s call the plot of error vs. K the <em>tuning error curve</em> (e.g. the plot <a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#testtrain_error_as_a_function_of_k">in this section</a> from the notes).</p>
+<div id="q1-knn-test-set-error" class="section level2">
+<h2>Q1: KNN Test set error</h2>
+<p><strong>1a</strong>. Compute the test set error (using the independent test data) for each value of K.</p>
+<p><strong>1b</strong>. Plot the test set error with the the cross-validation tuning error curve (<a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data">from the lecture</a>).</p>
+<p><strong>1c</strong>. What is actually the best value of K?</p>
+<p><strong>1d</strong>. How well does the cross-validation error approximate the true test set error?</p>
 </div>
-<div id="what-happens-when-we-change-the-number-of-folds" class="section level2">
-<h2>What happens when we change the number of folds</h2>
-<ol style="list-style-type: decimal">
-<li>Compute the training error for each value of K.</li>
-<li>Add the training error to the tuning error curves (there should now be three tuning error curves).</li>
-<li>Write a function that makes this tuning error curve plot.</li>
-<li>Make the tuning error plots for 5, 10, 20, and 50 folds.</li>
-</ol>
+<div id="q2-what-happens-when-we-change-the-number-of-folds" class="section level2">
+<h2>Q2: What happens when we change the number of folds</h2>
+<p><strong>2a</strong>. Compute the training error for each value of K.</p>
+<p><strong>2b</strong>. Add the training error to the tuning error curves (there should now be three tuning error curves).</p>
+<p><strong>2c</strong>. Write a function that makes this tuning error curve plot with the three error curves (see below for the function skeleton).</p>
+<p><strong>2d</strong>. Make the tuning error plots for 5, 10, 20, and 50 folds.</p>
 <pre class="r"><code>knn_tuning_error_plot &lt;- function(train, test, k_cv, k_values, cv_seed=NA){
-# Returns the tuning error plot for KNN
-# train and test are the train and test data
+# Returns the tuning error plots for KNN with the three tuning error curves
+    # train, CV, and test error
+# train and test: are the train and test data
     # both are a data frame with the same column names
     # one column in named y which is the class labels
-# k_cv is the number of cross validation folds
-# k_values is the sequence of K values try for KNN
-# cv_seed is the seed for the cross validation folds
+# k_cv: is the number of cross validation folds
+# k_values: is the sequence of K values try for KNN
+# cv_seed: is the seed for the cross validation folds
 # returns a ggplot object    
     
     # set seed if it is given
@@ -180,51 +180,39 @@ test &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/
     
     # p &lt;- ggplot() + ...
     # return(p)
-
 }</code></pre>
+<p><strong>Hint</strong>: 2c is should be a matter of putting the code you have thus far into a function.</p>
 </div>
 </div>
-<div id="nearest-centroid" class="section level1">
-<h1>Nearest Centroid</h1>
+<div id="q3-nearest-centroid" class="section level1">
+<h1>Q3: Nearest Centroid</h1>
 <p><a href="https://idc9.github.io/stor390/notes/classification/classification.html">Recall</a> the nearest centroid classifer is a simple linear classifier.</p>
-<div id="nearest-centroid-function" class="section level2">
-<h2>Nearest centroid function</h2>
-<p>Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.</p>
+<p><strong>3a</strong>. Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.</p>
 <pre class="r"><code>nearest_centroid &lt;- function(train_x, train_y, test_x){
     # returns the predictions for nearest centroid on a test set
-    # train_x and test_x are the train/test x data
+    # train_x and test_x: are the train/test x data
         # assume these are both numerical matrices with the same number of columns
-    # train_y is a vector of class labels for the training data
+    # train_y: is a vector of class labels for the training data
     # return a vector of predicted class labels for the test data
 }</code></pre>
-</div>
-<div id="test-error-1" class="section level2">
-<h2>Test error</h2>
-<p>Using the <code>nearest_centroid</code> function compute the test set error for the Human Activity Recognition dataset.</p>
-</div>
+<p><strong>Hint</strong>: You can do this two ways: either find the closest class mean or use the <a href="https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier">linear classifier definition</a>. If you do the latter you might want to write a helper function that comptues the normal vector <span class="math inline">\(\mathbf{w}\)</span> and intercept <span class="math inline">\(b\)</span>.</p>
+<p><strong>3b</strong>. Using the <code>nearest_centroid</code> function compute the test set error for the Human Activity Recognition dataset.</p>
 </div>
 <div id="support-vector-machine" class="section level1">
 <h1><strong>Support Vector Machine</strong></h1>
 <p>(we will discuss this more in lecture on Thursday)</p>
-<p>Let’s see how SVM does on the human activity recognition data. Let’s try linear SVM and kernel SVM with a radial kernel.</p>
-<div id="linear-svm" class="section level2">
-<h2>Linear SVM</h2>
-<ol style="list-style-type: decimal">
-<li>Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> for linar SVM.
-<ul>
-<li>Try 2 different numbers of folds (e.g. K = 5 and K = 10).</li>
-</ul></li>
-<li>Fit SVM to on the full training data set with the “optimal” value of <span class="math inline">\(C\)</span>.</li>
-<li>Report both the training error and the test set error.</li>
-</ol>
+<p>Let’s see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel.</p>
+<div id="q4-linear-svm" class="section level2">
+<h2>Q4: Linear SVM</h2>
+<p><strong>4a</strong>. Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> for linar SVM. - Try 2 different numbers of folds (e.g. K = 5 and K = 10).</p>
+<p><strong>4b</strong>. Fit SVM to on the full training data set with the “optimal” value of <span class="math inline">\(C\)</span>.</p>
+<p><strong>4c</strong>. Report both the training error and the test set error.</p>
 </div>
-<div id="radial-kernel-svm" class="section level2">
-<h2>Radial Kernel SVM</h2>
-<ol style="list-style-type: decimal">
-<li>Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> and <span class="math inline">\(\gamma\)</span> for SVM with a radial Kernel.</li>
-<li>Fit SVM to on the full training data set with the “optimal” values of <span class="math inline">\(C\)</span> and <span class="math inline">\(\gamma\)</span>.</li>
-<li>Report both the training error and the test set error.</li>
-</ol>
+<div id="q5-radial-kernel-svm" class="section level2">
+<h2>Q5: Radial Kernel SVM</h2>
+<p><strong>5a</strong>. Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> and <span class="math inline">\(\gamma\)</span> for SVM with a radial Kernel.</p>
+<p><strong>5b</strong>. Fit SVM to on the full training data set with the “optimal” values of <span class="math inline">\(C\)</span> and <span class="math inline">\(\gamma\)</span>.</p>
+<p><strong>5c</strong>. Report both the training error and the test set error.</p>
 </div>
 </div>
 

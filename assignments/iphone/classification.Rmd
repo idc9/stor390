@@ -6,7 +6,7 @@ output: html_document
 ---
 This assignment is due Tuesday, 3/28/17
 
-Recall the human activity recognition data set we discussed in class. You can find details about the data on the [UCI repository](). The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.
+Recall the human activity recognition data set we discussed in class. You can find details about the data on the [UCI repository](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones). The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.
 
 This assignment will give you practice with
 
@@ -28,40 +28,48 @@ train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/hu
 test <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_test.csv')
 ```
 
-*Hint*: you might want to save these two data files on your computer since downloading them can be slow.
+*Hint*: You might want to save these two data files on your computer since downloading them can be slow. Many of these questions can be answered by taking the lecture code and modifying it.
+
+*Final deliverable*: Please write your solutions in R Markdown and separate each question with a new section heading. For the questions that ask you to write helper functions write the helper funciton in it's own chunck. Submit the .html file and the .Rmd file.
+
 
 # KNN cross-validation
 
 
-Using cross-validation we found that K = 1 is the "best" value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?
+[Recall in the lecture notes](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#perform_cross_validatoin) that using cross-validation we found that K = 1 is the "best" value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?
 
+Let's call the plot of error vs. K the *tuning error curve* (e.g. the plot [in this section](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#testtrain_error_as_a_function_of_k) from the notes).
 
-Let's call the plot of error vs. K the *tuning error curve*.
+## Q1: KNN Test set error
 
-## Test error
+**1a**. Compute the test set error (using the independent test data) for each value of K.
 
+**1b**. Plot the test set error with the the cross-validation tuning error curve ([from the lecture](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data)).
 
-1. Compute the test set error (using the independent test data) for each value of K. 
-2. Plot the test set error with the the cross-validation test set tuning error curve (from lecture).
-3. What is actually the best value of K?
-4. How well does the cross-validation error approximate the true test set error?
+**1c**. What is actually the best value of K?
 
-## What happens when we change the number of folds
+**1d**. How well does the cross-validation error approximate the true test set error?
 
-1. Compute the training error for each value of K.
-2. Add the training error to the tuning error curves (there should now be three tuning error curves).
-3. Write a function that makes this tuning error curve plot.
-4. Make the tuning error plots for 5, 10, 20, and 50 folds.
+## Q2: What happens when we change the number of folds
+
+**2a**.  Compute the training error for each value of K.
+
+**2b**. Add the training error to the tuning error curves (there should now be three tuning error curves).
+
+**2c**. Write a function that makes this tuning error curve plot with the three error curves (see below for the function skeleton).
+
+**2d**. Make the tuning error plots for 5, 10, 20, and 50 folds.
 
 ```{r}
 knn_tuning_error_plot <- function(train, test, k_cv, k_values, cv_seed=NA){
-# Returns the tuning error plot for KNN
-# train and test are the train and test data
+# Returns the tuning error plots for KNN with the three tuning error curves
+    # train, CV, and test error
+# train and test: are the train and test data
     # both are a data frame with the same column names
     # one column in named y which is the class labels
-# k_cv is the number of cross validation folds
-# k_values is the sequence of K values try for KNN
-# cv_seed is the seed for the cross validation folds
+# k_cv: is the number of cross validation folds
+# k_values: is the sequence of K values try for KNN
+# cv_seed: is the seed for the cross validation folds
 # returns a ggplot object    
     
     # set seed if it is given
@@ -73,60 +81,59 @@ knn_tuning_error_plot <- function(train, test, k_cv, k_values, cv_seed=NA){
     
     # p <- ggplot() + ...
     # return(p)
-
 }
 
 ```
 
+**Hint**: 2c is should be a matter of putting the code you have thus far into a function.
 
-# Nearest Centroid
+# Q3: Nearest Centroid
 
 [Recall](https://idc9.github.io/stor390/notes/classification/classification.html) the nearest centroid classifer is a simple linear classifier.
 
 
-## Nearest centroid function
-Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.
-
-
+**3a**. Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.
 
 
 ```{r}
 nearest_centroid <- function(train_x, train_y, test_x){
     # returns the predictions for nearest centroid on a test set
-    # train_x and test_x are the train/test x data
+    # train_x and test_x: are the train/test x data
         # assume these are both numerical matrices with the same number of columns
-    # train_y is a vector of class labels for the training data
+    # train_y: is a vector of class labels for the training data
     # return a vector of predicted class labels for the test data
 }
-
-
 ```
 
+**Hint**: You can do this two ways: either find the closest class mean or use the [linear classifier definition](https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier). If you do the latter you might want to write a helper function that comptues the normal vector $\mathbf{w}$ and intercept $b$.
 
-## Test error
 
-Using the `nearest_centroid` function compute the test set error for the Human Activity Recognition dataset.
+**3b**. Using the `nearest_centroid` function compute the test set error for the Human Activity Recognition dataset.
 
 
 # **Support Vector Machine**
 (we will discuss this more in lecture on Thursday)
 
-Let's see how SVM does on the human activity recognition data. Let's try linear SVM and kernel SVM with a radial kernel.
+Let's see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel.
 
 
-## Linear SVM
+## Q4: Linear SVM
 
-1. Use cross-validation to select the optimal value of $C$ for linar SVM.
+**4a**. Use cross-validation to select the optimal value of $C$ for linar SVM.
     - Try 2 different numbers of folds (e.g. K = 5 and K = 10).
-2. Fit SVM to on the full training data set with the "optimal" value of $C$.
-3. Report both the training error and the test set error.
+    
+**4b**. Fit SVM to on the full training data set with the "optimal" value of $C$.
+
+**4c**. Report both the training error and the test set error.
 
 
-## Radial Kernel SVM
+## Q5: Radial Kernel SVM
 
-1. Use cross-validation to select the optimal value of $C$ and $\gamma$ for SVM with a radial Kernel.
-2. Fit SVM to on the full training data set with the "optimal" values of $C$ and $\gamma$.
-3. Report both the training error and the test set error.
+**5a**. Use cross-validation to select the optimal value of $C$ and $\gamma$ for SVM with a radial Kernel.
+
+**5b**. Fit SVM to on the full training data set with the "optimal" values of $C$ and $\gamma$.
+
+**5c**. Report both the training error and the test set error.
 
 
 
