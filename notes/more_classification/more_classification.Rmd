@@ -526,7 +526,7 @@ test_grid %>%
 
 There are many kernel functions you might use. Probably the most popular kernel is the [radial basis](https://en.wikipedia.org/wiki/Radial_basis_function_kernel) (aka Gaussian kernel) which you will try on the homework. Different kernels correspond to different explicit variable transformations.
 
-So how do you select the parameters for the kernel? The basic polynomial kernel has one parameter (the degree). It could have up to three parameters (i.e. $\gamma$ and $c$). You still need to select the cost value parameters $C$. Typically, cross-validation (specifically grid-search cross-validation) is used to pick all parameters. In particular
+So how do you select the parameters for the kernel? The basic polynomial kernel has one parameter (the degree). It could have up to three parameters (i.e. $\gamma$ and $C$). You still need to select the cost value parameters $C$. Typically, cross-validation (specifically grid-search cross-validation) is used to pick all parameters. In particular
 
 1. Select a sequence of $C$ values (e.g. $C = 1e-5, 1e-4, \dots, 1e5$).
 2. Select a sequence of degrees (e.g. $d = 1, 2, 5, 10, 20, 50, 100$).
@@ -541,7 +541,7 @@ The code to do this will start to get a little uglier. Luckily someone made an R
 
 The `caret` package is built to make fitting models much easier (caret stands for **C**lassification **A**nd **RE**gression **T**raining). The package even [comes with book on how to use it](http://topepo.github.io/caret/index.html) (if you want to learn more about the packaged I'd start with [chapter 5](https://topepo.github.io/caret/model-training-and-tuning.html)).
 
-Before going forward spend a minute outlining how you would code up cross-validation for the polynomial kernel SVM described above with two tuning parameters (e.g. what goes into the three loops, what variables do you have to creat ahead of time, etc). 
+Before going forward spend a minute outlining how you would code up cross-validation for the polynomial kernel SVM described above with two tuning parameters (e.g. what goes into the three loops, what variables do you have to create ahead of time, etc). 
 
 The code below uses the `caret` package to do this procedure much more succinctly.
 ```{r}
@@ -578,7 +578,7 @@ tuned_svm
 
 The `trainControl` object from the `caret` package sets the tuning procedure. In our case we are using 5 fold cross-validation.
 
-`tune_grid` is the grid of tuning parameters we want to serach over.
+`tune_grid` is the grid of tuning parameters we want to search over.
 
 
 **Main arguments** to `train`
@@ -591,14 +591,14 @@ The `trainControl` object from the `caret` package sets the tuning procedure. In
 
 - `metric='Accuracy'` tells `caret` to use the cross-validation accuracy to pick the optimal tuning parameters (this equivalent to using error rate). 
 
-The `train` function returns a fully trained model that also has some meta data about the tuning procedure (namely the average Accuracy for each value of the tuning parameter). For example, to see the opimtal value of the tuning paramters that the tuning procedure choose
+The `train` function returns a fully trained model that also has some meta data about the tuning procedure (namely the average Accuracy for each value of the tuning parameter). For example, to see the optimal value of the tuning parameters that the tuning procedure choose
 
 ```{r}
 tuned_svm$bestTune
 ```
 
 
-We can now use the `predict` function to get predctions out of `tuned_svm`
+We can now use the `predict` function to get predictions out of `tuned_svm`
 ```{r}
 test_grid_pred <- predict(tuned_svm, newdata = test_grid)
 ```
@@ -619,18 +619,18 @@ test_grid %>%
 
 ## Why `caret`?
 
-The `caret` package implements over 200 machine learning models from many different R packages. These models tend to follow similar patterns, for most models have
+The `caret` package implements over 200 machine learning models from many different R packages. These models tend to follow similar patterns, for example most models have:
  
  - x data
  - y data
- - tuning paramters
+ - tuning parameters.
  
-There are many ways of selecting the tuning parameters for a model that don't depend on the model (for example cross-validation). The `caret` packge does a couple things
+There are many ways of selecting the tuning parameters for a model that don't depend on the model (for example cross-validation). The `caret` package does a couple things
 
 - standardizes the functions (sometimes called a "uniform API")
     - for example, `e1071::svm` was called like `svm(y~., train)` while `class::knn(train=train_x, test=train_y...)` wants you to split the data up into separate x and y objects
 - functionalizes common procedures
-    - instead of you having to hand code cross-validation for every model you want to use you can just use one funciton from `caret` 
+    - instead of you having to hand code cross-validation for every model you want to use you can just use one function from `caret` 
     - the `caret` package has many bells and whistles already implemented (different flavors of CV, bootstrapping, different error metrics, etc)
     
 Basically the `caret` package makes use of [modularity](https://en.wikipedia.org/wiki/Modular_programming) and [abstraction](https://en.wikipedia.org/wiki/Abstraction_(software_engineering)) which makes your code: more likely to be correct, faster to write, and faster to run. 
@@ -639,11 +639,16 @@ As always, there are trade offs. For example, `caret` might do things you don't 
  
 
 # **Classification metrics**
-[TODO] coming soon
-- misclassification error
-- precision/recall
-- F1 score
-- ROC AUC
+
+The obvious way of measuring how well a classifier is doing is the misclassification error rate i.e. $1 - \frac{\text{number classified correctly}}{\text{total}}$. There are a number of other measures of classifier performance. For example, in some applications the classes are very *unbalanced* e.g. 99.9% of the data are in one class and .1% of the data are in the other class. The naive classifier that assigns every point to the larger class would be a great classifier as judged by miclassification error. 
+
+Here are some other standard classification error metrics
+
+- [confusion matrix](https://en.wikipedia.org/wiki/Confusion_matrix)
+    - [precision/recall](https://en.wikipedia.org/wiki/Precision_and_recall)
+- [F1 score](https://en.wikipedia.org/wiki/F1_score)
+- [Kappa statistic](https://en.wikipedia.org/wiki/Cohen%27s_kappa) (also see [this stack exchange post](http://stats.stackexchange.com/questions/82162/cohens-kappa-in-plain-english))
+- [Receiver Operating Characteristic curve](https://en.wikipedia.org/wiki/Receiver_operating_characteristic)
 
 
 # **Other references**

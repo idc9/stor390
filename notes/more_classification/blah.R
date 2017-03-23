@@ -34,13 +34,25 @@ tune_grid <- tibble(cost=c(.01, .1, 1, 10, 100))
 
 
 # fit the SVM model
-svmFit <- train(x=train_x, # x data
+svmfit <- train(x=train_x, # x data
                 y=train_y, # y data
                 method = "svmLinear2", # use linear SVM from the e1071 package
-                preProc = c("center","scale"), # preporocessing
                 tuneGrid = tune_grid,
                 trControl = trControl) # how to select the tuning parameter
 
 
 
-predict(svmFit, newdata = train_x)
+train_y_pred <- predict(svmFit, newdata = train_x)
+
+
+compare <- data.frame(pred=train_y_pred,
+                  obs=train_y)
+
+twoClassSummary(data=compare)
+
+caret::confusionMatrix(compare)
+
+
+
+
+

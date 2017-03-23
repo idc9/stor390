@@ -13,9 +13,17 @@ output: slidy_presentation
 - kernels
 - other classification metrics
 
+# packages
+
+```{r}
+library(e1071) # SVM
+library(caret) # tuning
+library(kernlab) # Kernel SVM
+
+```
+
 ```{r, message=F, warning=F, echo=F}
-# this library implements SVM
-library(e1071)
+
 
 library(mvtnorm)
 library(tidyverse)
@@ -311,5 +319,320 @@ Saves time and money!
 
 - You don't have control over design choices.
     - Your favorite SVM package has bells and whistles 1 - 5, but you want bell and whistle number 6? You're [SOL](http://www.urbandictionary.com/define.php?term=SOL) since you didn't write the source code.
+
+
+# Non-linear classifiers
+
+- sometimes linear doesn't cut it (e.g. the Boston Cream doughnut)
+
+# Explicit variable transformation
+
+- Polynomial regression
+    - `y ~ x + x^2 + x^3`
+- Add any non-linear transformation of the original variables
+    - $\sin(x), e^{5.2 x}$
+
+# Linear classifier
+```{r, echo=F}
+# some training data
+train <- gmm_distribution2d(n_neg=200, n_pos=201, mean_seed=238, data_seed=1232)
+
+# test grid
+test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
+                         x2 = seq(-5, 5, length = 100)) %>% 
+            as_tibble()
+```
+
+```{r, echo=F}
+ggplot(data=train)+
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank())
+```
+
+# Linear classifier
+```{r, echo=F}
+# fit SVM
+svm_linear <- svm(y ~ ., 
+                  data=train,
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE,
+                  kernel='linear', 
+                  cost=10)
+
+grid_predictions <- predict(svm_linear, newdata = test_grid)
+
+test_grid %>% 
+    mutate(y_pred = grid_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('linear SVM fit')
+```
+
+
+# Manually add some non-linear transformations
+```{r}
+# add polynomial terms to 
+train_poly <- train %>% 
+                mutate(x1_sq = x1^2, x1x2 = x1*x2, x2_sq = x2^2)
+
+
+test_grid_poly <- test_grid %>% 
+                    mutate(x1_sq = x1^2, x1x2 = x1*x2, x2_sq = x2^2)
+
+
+# fit SVM
+svm_poly <- svm(y ~ ., 
+                  data=train_poly,
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE,
+                  kernel='linear', 
+                  cost=10)
+
+grid_poly_predictions <- predict(svm_poly, newdata = test_grid_poly)
+```
+
+# Manually add some non-linear transformations
+```{r, echo=F}
+# plot predictions for linear svm
+test_grid_poly %>% 
+    mutate(y_pred = grid_poly_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit with degree 2 polynomial variable transformation')
+```
+
+# Why not keep going?
+Two issues come up when we add more and more non-linear variables
+
+- overfitting
+- computational cost
+
+# Kernels
+
+- computational trick that turns a linear classifer into a non-linear classifier
+- see section 9.3.2 from ISLR
+
+
+
+# Key idea
+
+- Many algorithms (such as SVM) rely only on the *distance* between *each pair of data points*.
+- A kernel is a function $K(a, b)$ that computes the similarity between two things.
+
+
+# Consequences
+
+1. If we can compute the distance between points cheaply then we can fit SVM more quickly.
+2. If we have the ability to compute a "distance" between pairs of objects then we can use SVM.
+
+# Upshot of kernels
+
+kernels = easier to compute non-linear version of SVM.
+
+# Non-standard data
+- strings
+- graphs
+- images
+
+Anything where we can compute a "similarity function"
+
+# Polynomial kernel
+
+- $n$ data points $x_1, \dots, x_n$
+- $d$ variables (i.e. $x_i \in \mathbb{R}^d$).
+- degree $m$ polynomial kernel is defined as 
+
+$$K(a, b) = (a^T b + 1)^m$$
+
+Might have more parameters i.e. $K(a, b) = (\gamma a^T b + c)^m$.
+
+# Suprising math fact
+
+- Degree $m$ polynomial kernel is equivalent to adding in all degree $m$ polynomial terms.
+- See [wikipedia page on polynomial kernels](https://en.wikipedia.org/wiki/Polynomial_kernel) for example.
+
+# Kernel's reduce computational complexity
+
+- Explicitly all quadratic terms
+    - parwise distance = $O(d^2)$
+- Using a degree 2 polynomial kernel
+     - parwise distance = $O(d)$
+
+
+# Kernel SVM in R
+
+```{r}
+# svm() is from the e1071 package
+svm_kern2 <- svm(y ~ ., 
+                  data=train,
+                  cost=10,
+                  kernel='polynomial', # use a polynomial kernel
+                  degree = 2, # degree two polynomial
+                  gamma=1, # other kernel parameters
+                  coef0 =1, # other kernel parameters
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE)
+
+kern2_predictions <- predict(svm_kern2, newdata = test_grid)
+```
+
+# Kernel SVM in R
+```{r, echo=F}
+# plot predictions for kerenl svm
+test_grid %>% 
+    mutate(y_pred = kern2_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit for degree 2 polynomial kernel')
+```
+
+
+# Degree 100 polynomial kernel
+```{r, echo=F}
+# fit SVM
+svm_kern <- svm(y ~ ., 
+                  data=train,
+                  cost=10,
+                  kernel='polynomial', # use a polynomial kernel
+                  degree = 100, # degree two polynomial
+                  gamma=1, # other kernel parameters
+                  coef0 =1, # other kernel parameters
+                  scale=FALSE,
+                  type='C-classification',
+                  shrinking=FALSE)
+
+
+test_grid <- expand.grid(x1 = seq(-10, 10, length = 100),
+                         x2 = seq(-10, 10, length = 100)) %>% 
+            as_tibble()
+
+
+kern_predictions <- predict(svm_kern, newdata = test_grid)
+
+# plot predictions for kerenl svm
+test_grid %>% 
+    mutate(y_pred = kern_predictions) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit for degree 100 polynomial kernel')
+```
+
+# Common kernels
+- Polynomial kernel
+- Radial basis (or Gaussian kernel)
+$$K(a, b) = e^{\frac{1}{\sigma}||a - b||^2}$$
+
+
+# Cross-validation grid search
+SVM with a polynomial kernel has 2 parameter: $C$ (for SVM) and $d$ (degree of the polynomial).
+
+1. Select a sequence of $C$ values (e.g. $C = 1e-5, 1e-4, \dots, 1e5$).
+2. Select a sequence of degrees (e.g. $d = 1, 2, 5, 10, 20, 50, 100$).
+3. For each pair of $C, d$ values (think a grid) use cross-validation to estimate the test error (originally cross validation had 2 for loops, now it has 3 for loops).
+4. Select the pair $C, d$ values that give the best cross-validation error
+
+Triple `for` loop!
+
+# `caret` package
+
+- **C**lassification **A**nd **RE**gression **T**raining.
+- [comes with book on how to use it](http://topepo.github.io/caret/index.html) 
+
+# Format data
+```{r}
+# break the data frame up into separate x and y data
+train_x <- train %>% select(-y)
+train_y <- train$y
+```
+
+# Tuning procedure
+```{r, warning=F}
+# specify tuning procedure
+trControl <- trainControl(method = "cv", # perform cross validation
+                          number = 5) # use 5 folds
+```
+
+# Tuning grid
+```{r}
+# the values of tuning parameters to look over in cross validation
+    # C: cost parameters
+    # degree: polynomial degree
+    # scale: another polynomial kernel paramter -- we don't care about today
+tune_grid <- expand.grid(C=c(.01, .1, 1, 10, 100),
+                         degree=c(1, 5, 10, 20),
+                         scale=1)
+```
+
+# Tune and train model
+```{r}
+# fit the SVM model
+tuned_svm <- train(x=train_x,
+                   y=train_y,
+                   method = "svmPoly", # use linear SVM from the e1071 package
+                   tuneGrid = tune_grid, # tuning parameters to look at
+                   trControl = trControl, # tuning precedure defined above
+                   metric='Accuracy') # what classification metric to use
+```
+
+# End result
+```{r}
+tuned_svm
+```
+
+# Best parameters
+```{r}
+tuned_svm$bestTune
+```
+
+# Main arguments to `train`
+
+- `method = "svmPoly"` says use SVM with a polynomial kernel. `caret` then uses the `ksvm()` function from the `kernlab` package.
+ 
+- `tuneGrid = tune_grid` tells train what tuning parameters to search over (defined above)
+
+- `trControl = trControl` sets the tuning procedure (defined above)
+
+- `metric='Accuracy'` tells `caret` to use the cross-validation accuracy to pick the optimal tuning parameters (this equivalent to using error rate). 
+
+
+
+
+# Predict function
+
+```{r}
+test_grid_pred <- predict(tuned_svm, newdata = test_grid)
+```
+
+```{r, echo=F}
+# plot predictions for kerenl svm
+test_grid %>% 
+    mutate(y_pred = test_grid_pred) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit for tuned polynomial kernel')
+```
+
+
+
+
+
 
 

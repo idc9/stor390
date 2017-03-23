@@ -22,6 +22,8 @@ library(tidyverse)
 
 library(class) # KNN
 library(e1071) # SVM
+library(kernlab) # kernel SVM
+library(caret) # tuning
 
 train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
 
@@ -125,22 +127,38 @@ nearest_centroid <- function(train_x, train_y, test_x){
 
 
 # **Support Vector Machine**
-(we will discuss this more in lecture on Thursday)
 
-Let's see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel.
+Let's see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel. Use the `caret` package to fit the SVM models for this section.
 
 
 ## Q4: Linear SVM
 
+```{r}
+C_values <- 10^seq(from=-5, to=5, by=1)
+```
+
+Use `method = "svmLinear2"` for the `caret` package to get linear SVM from the `e1071` package.
+
 **4a**. Use cross-validation to select the optimal value of $C$ for linar SVM.
+
     - Try 2 different numbers of folds (e.g. K = 5 and K = 10).
-    
+    - Try two different classification metrics (e.g. Accuracy and Kappa)
+
+You now have possibly 4 different models (some of these procedures might pick the same $C$ value).
+
 **4b**. Fit SVM to on the full training data set with the "optimal" value of $C$.
 
-**4c**. Report both the training error and the test set error.
+**4c**. Report both the training error and the test set error. 
 
 
 ## Q5: Radial Kernel SVM
+
+Use `method = "svmRadial"` for the `caret` package to get radial kernel SVM from the `kernlab` package (it's called `ksvm()` in the `kerlab` package).
+
+
+```{r}
+gamma_values <- 10^seq(from=-5, to=5, by=1)
+```
 
 **5a**. Use cross-validation to select the optimal value of $C$ and $\gamma$ for SVM with a radial Kernel.
 

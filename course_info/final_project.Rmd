@@ -8,10 +8,11 @@ output:
     toc_float: yes
 ---
 
+(This document may experience some minor revisions and I will add more details)
 
 You final project is to do a novel data analysis to answer a question and write about it. This can be interpreted broadly and the requirements are discussed below. 
 
-Start with a question. Find data that might get at that question. Play around with the data. Iterate. Communicate.
+The rough outline of the project is: Start with a question. Find data that might get at that question. Play around with the data. Iterate. Communicate.
 
 Your project should have one significant aspect to it. Examples might include,
 
@@ -21,16 +22,11 @@ Your project should have one significant aspect to it. Examples might include,
 - a really compelling visualization
 - write a shiny app
 
-Your project should have an upshot to it (e.g. ""). It should not just be a collection of plots/numbers about a dataset.
-
-
-# Groups
-
-You will work in groups of K people, assigned by the instructor. See grading details below and [the group work policies document]().
+You will work in groups of 3 people, assigned by the instructor. See grading details below and [the group work policies document](group_work.html).
 
 # Final deliverables
 
-There are two final deliverables which will be posted as [Github pages](https://pages.github.com/): a blog post and the analysis code/data. The final project is due Tuesday May 9th at 4:00pm.
+There are two final deliverables which will be posted as [Github pages](https://pages.github.com/): a blog post and the analysis code/data. The final project is due Tuesday May 9th at 11:00pm.
 
 ## Blog post
 
@@ -43,7 +39,7 @@ Write a blog post in R Markdown aimed at a general audience (think [538](https:/
 
 All analysis code should be posted and well documented. The main techincal results (plots, regressions, etc) should be written up in a well documented, supporting techincal document (using R Markdown). You might also include R scripts for cleaning data or helper functions.
 
-Your data set (both raw and processed) should be posted to github as well. See [instructions for creating a github page]() (coming soon...).
+Your data set (both raw and processed) should be posted to github as well. See [instructions for creating a github page](github_pages.html)
 
 # Where to find data?
 
@@ -70,7 +66,6 @@ The project will be graded on
     - How well do your findings support your conclusions? The evidence is inconclusive" is a very possible, and completely acceptable answer. 
 
 - Ambition
-    - 
     
 - Groupwork
     - You will anonomyously rate your team members and yourself on *team citizenship* (e.g. attends meetings, does what they promise, etc), *not* on ability. 
@@ -81,14 +76,36 @@ The project will be graded on
         
 
 # Examples
-Blog posts from [polygraph](https://pudding.cool/)
+- Blog posts from [polygraph](https://pudding.cool/)
 
-http://josh-jacobson.github.io/genre-classification/
+- [David Robinson's text analysis of Trump tweets](http://varianceexplained.org/r/trump-tweets/)
 
-https://fivethirtyeight.com/datalab/how-baby-boomers-get-high/
-https://fivethirtyeight.com/features/a-statistical-analysis-of-the-work-of-bob-ross/
+- [genre classification](http://josh-jacobson.github.io/genre-classification/)
+
+- [538 on how baby boomers get high](https://fivethirtyeight.com/datalab/how-baby-boomers-get-high/)
+
+- [538 on Bob Ross](https://fivethirtyeight.com/features/a-statistical-analysis-of-the-work-of-bob-ross/)
 
 
 # Dates
+
+- Initial project proposal: **due 4/4 at 11pm**
+    - Describe your proposed project (one page)
+        - What question(s) will you try to answer?
+        - What datasets will you use? You should have already found and taken a first look at the data set
+        - How will you use the data to try to answer the question?
+
+- Exploratory analysis: **due 4/18 at 11pm**
+    - Write up your initial findings in an R Markdown document.
+    - You should have at least K plots (still deciding K).
+
+- Data analysis/techincal document: **due 5/2 at 11pm**
+    - Write up your techincal results in an R Markdown document.
+    - Put all code, data, etc together.
+    - Upload to github and create a github page.
+    - Write a "process book" describing your analysis process (see section titled "IPython Process Book" [from this page](http://cs109.github.io/2015/pages/projects.html)
+
+- Blog post: **due 5/9 at 11pm**
+
 
 
