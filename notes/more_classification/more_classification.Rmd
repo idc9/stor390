@@ -25,8 +25,12 @@ This lecture will cover
 Hard margin SVM is useful to help understand soft margin SVM, but is not commonly used (although sometimes hard margin SVM works well for very high-dimensional data). These notes present the intuition behind soft margin SVM and point to reading for the mathematical details. Classification accuracy is an important metric, but there are other classification metrics you should be aware of.
 
 ```{r, message=F, warning=F}
-# this library implements SVM
-library(e1071)
+library(e1071) # implements SVM
+library(kernlab) # implements kernel SVM
+
+# for model tuning
+library(caret)
+
 
 library(mvtnorm)
 library(tidyverse)
@@ -217,6 +221,7 @@ svmfit <- svm(y ~ ., # R's formula notation
 ```
 
 **main arguments**
+
 - `data=train` says fit SVM using the data stored in the `train` data frame. 
 
 - The `svm()` function uses R's formula notation. Recall from linear regression `y ~ .` means fit `y` on all the rest of the columns of data. We could have equivalently used `y ~ x1 + x2`. 
@@ -534,11 +539,104 @@ The code to do this will start to get a little uglier. Luckily someone made an R
 
 ## Tuning SVM with the caret package
 
-The `caret` package is built to make fitting models much easier (caret stands for **C**lassification **A**nd **RE**gression **T**raining). The package even [comes with book on how to use it](http://topepo.github.io/caret/index.html).
+The `caret` package is built to make fitting models much easier (caret stands for **C**lassification **A**nd **RE**gression **T**raining). The package even [comes with book on how to use it](http://topepo.github.io/caret/index.html) (if you want to learn more about the packaged I'd start with [chapter 5](https://topepo.github.io/caret/model-training-and-tuning.html)).
+
+Before going forward spend a minute outlining how you would code up cross-validation for the polynomial kernel SVM described above with two tuning parameters (e.g. what goes into the three loops, what variables do you have to creat ahead of time, etc). 
+
+The code below uses the `caret` package to do this procedure much more succinctly.
+```{r}
+# break the data frame up into separate x and y data
+train_x <- train %>% select(-y)
+train_y <- train$y
+```
 
 
+The two `caret` functions to pay attention to are `trControl()` and `train()`.
+```{r, warning=F}
+# specify tuning procedure
+trControl <- trainControl(method = "cv", # perform cross validation
+                          number = 5) # use 5 folds
 
-[TODO] coming soon....
+# the values of tuning parameters to look over in cross validation
+    # C: cost parameters
+    # degree: polynomial degree
+    # scale: another polynomial kernel paramter -- we don't care about today
+tune_grid <- expand.grid(C=c(.01, .1, 1, 10, 100),
+                         degree=c(1, 5, 10, 20),
+                         scale=1)
+
+# fit the SVM model
+tuned_svm <- train(x=train_x,
+                   y=train_y,
+                   method = "svmPoly", # use linear SVM from the e1071 package
+                   tuneGrid = tune_grid, # tuning parameters to look at
+                   trControl = trControl, # tuning precedure defined above
+                   metric='Accuracy') # what classification metric to use
+
+tuned_svm
+```
+
+The `trainControl` object from the `caret` package sets the tuning procedure. In our case we are using 5 fold cross-validation.
+
+`tune_grid` is the grid of tuning parameters we want to serach over.
+
+
+**Main arguments** to `train`
+
+- `method = "svmPoly"` says use SVM with a polynomial kernel. `caret` then uses the `ksvm()` function from the `kernlab` package.
+ 
+- `tuneGrid = tune_grid` tells train what tuning parameters to search over (defined above)
+
+- `trControl = trControl` sets the tuning procedure (defined above)
+
+- `metric='Accuracy'` tells `caret` to use the cross-validation accuracy to pick the optimal tuning parameters (this equivalent to using error rate). 
+
+The `train` function returns a fully trained model that also has some meta data about the tuning procedure (namely the average Accuracy for each value of the tuning parameter). For example, to see the opimtal value of the tuning paramters that the tuning procedure choose
+
+```{r}
+tuned_svm$bestTune
+```
+
+
+We can now use the `predict` function to get predctions out of `tuned_svm`
+```{r}
+test_grid_pred <- predict(tuned_svm, newdata = test_grid)
+```
+
+
+```{r, echo=F}
+# plot predictions for kerenl svm
+test_grid %>% 
+    mutate(y_pred = test_grid_pred) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, color=y_pred), alpha=.3) +
+    geom_point(data=train, aes(x=x1, y=x2, color=y, shape=y)) +
+    theme(panel.background = element_blank(),
+          legend.position="none") +
+    ggtitle('SVM fit for tuned polynomial kernel')
+```
+
+
+## Why `caret`?
+
+The `caret` package implements over 200 machine learning models from many different R packages. These models tend to follow similar patterns, for most models have
+ 
+ - x data
+ - y data
+ - tuning paramters
+ 
+There are many ways of selecting the tuning parameters for a model that don't depend on the model (for example cross-validation). The `caret` packge does a couple things
+
+- standardizes the functions (sometimes called a "uniform API")
+    - for example, `e1071::svm` was called like `svm(y~., train)` while `class::knn(train=train_x, test=train_y...)` wants you to split the data up into separate x and y objects
+- functionalizes common procedures
+    - instead of you having to hand code cross-validation for every model you want to use you can just use one funciton from `caret` 
+    - the `caret` package has many bells and whistles already implemented (different flavors of CV, bootstrapping, different error metrics, etc)
+    
+Basically the `caret` package makes use of [modularity](https://en.wikipedia.org/wiki/Modular_programming) and [abstraction](https://en.wikipedia.org/wiki/Abstraction_(software_engineering)) which makes your code: more likely to be correct, faster to write, and faster to run. 
+
+As always, there are trade offs. For example, `caret` might do things you don't want or expect. It also encourages you to think of model tuning as a [blackbox](https://en.wikipedia.org/wiki/Black_box). You might get a better model if you look more deeply at the tuning process (for example, plotting the train and cross-validation error curves).
+ 
 
 # **Classification metrics**
 [TODO] coming soon
@@ -546,4 +644,10 @@ The `caret` package is built to make fitting models much easier (caret stands fo
 - precision/recall
 - F1 score
 - ROC AUC
+
+
+# **Other references**
+
+[CS109's classification lab](https://github.com/cs109/2015lab5/blob/master/Classification.ipynb) 
+
 
