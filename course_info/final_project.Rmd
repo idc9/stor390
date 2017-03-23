@@ -43,7 +43,7 @@ Your data set (both raw and processed) should be posted to github as well. See [
 
 # Where to find data?
 
-You can find a seriously large amount of data online. I encourage you to "gather your own data online" by doing something like [scraping Twitter]() (I don't beg your friends to take a survey, although you could...).
+You can find a seriously large amount of data online. I encourage you to "gather your own data online" by doing something like [scraping Twitter](http://varianceexplained.org/r/trump-tweets/).
 
 There are some obvious places to look like [data.gov](data.gov). I've put together a collection (of collections) of interesting datasets you can find online: [here](https://idc9.github.io/stor390/resources/dataset_collection.html). 
 
