@@ -178,7 +178,8 @@ The due date is in the link.
 | February 23 |[Ira Glass on overfitting](labs/7/overfitting_with_scissors) | | |
 | February 28 | | [bikes, EDA and predictive modeling](assignments/bikes/bike_sharing.html) |
 | March 21 | | [classification: does your iPhone know what you're doing?](assignments/iphone/classification.html) |
-| March 21 | | [extra credit: naive bayes](assignments/iphone/naive_bayes.html) |
+| March 21 | | [extra credit: naive bayes](assignments/iphone/naive_bayes.html) | |
+| March 23 | | |[What is AI?](class_exercises/AI/what_is_AI.html) |
 
 
 # **Additional resources**

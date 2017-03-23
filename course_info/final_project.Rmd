@@ -1,6 +1,94 @@
 ---
-title: "Final Project"
-output: html_document
+title: "**Final Project**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
 ---
 
-Details about the final project coming soon...
+
+You final project is to do a novel data analysis to answer a question and write about it. This can be interpreted broadly and the requirements are discussed below. 
+
+Start with a question. Find data that might get at that question. Play around with the data. Iterate. Communicate.
+
+Your project should have one significant aspect to it. Examples might include,
+
+- put together a novel data set (e.g. scrape something from the web)
+- answer an interesting question
+- a "sophisticated" statistical/machine learning model
+- a really compelling visualization
+- write a shiny app
+
+Your project should have an upshot to it (e.g. ""). It should not just be a collection of plots/numbers about a dataset.
+
+
+# Groups
+
+You will work in groups of K people, assigned by the instructor. See grading details below and [the group work policies document]().
+
+# Final deliverables
+
+There are two final deliverables which will be posted as [Github pages](https://pages.github.com/): a blog post and the analysis code/data. The final project is due Tuesday May 9th at 4:00pm.
+
+## Blog post
+
+Write a blog post in R Markdown aimed at a general audience (think [538](https://fivethirtyeight.com/)).
+
+- should be TODO words
+- have at least two figures
+
+## Analysis code
+
+All analysis code should be posted and well documented. The main techincal results (plots, regressions, etc) should be written up in a well documented, supporting techincal document (using R Markdown). You might also include R scripts for cleaning data or helper functions.
+
+Your data set (both raw and processed) should be posted to github as well. See [instructions for creating a github page]() (coming soon...).
+
+# Where to find data?
+
+You can find a seriously large amount of data online. I encourage you to "gather your own data online" by doing something like [scraping Twitter]() (I don't beg your friends to take a survey, although you could...).
+
+There are some obvious places to look like [data.gov](data.gov). I've put together a collection (of collections) of interesting datasets you can find online: [here](https://idc9.github.io/stor390/resources/dataset_collection.html). 
+
+If you are already doing reserach with a dataset you are welcome to use it, but you have to do something new.
+
+
+# Grading
+
+Your team's grade will be 50% blog post and 50% analysis code. Your individual grade will be weighted by your team member's reviews.
+
+The project will be graded on
+
+- Communication
+    - Clear writing (both in the blog post and in the supporting technical document)
+    - Document code
+    
+- Accuracy
+    - Did you use reasonable statistics?
+    - Does your final code run?
+    - How well do your findings support your conclusions? The evidence is inconclusive" is a very possible, and completely acceptable answer. 
+
+- Ambition
+    - 
+    
+- Groupwork
+    - You will anonomyously rate your team members and yourself on *team citizenship* (e.g. attends meetings, does what they promise, etc), *not* on ability. 
+    - Final grades will be adjusted based on peer ratings (see [Peer Ratings in Coorperative Learning Teams](http://www4.ncsu.edu/unity/lockers/users/f/felder/public/Papers/kaufman-asee.PDF)).
+        - Individual grades are based on the project grade and a multiplied computed from the peer ratings. This multiplier will range from 1.05 (for people who go above and beyond) down to 0 (for people who don't participate).
+    - As a last resort you may fire a team member who refuses to participate. Please contact the instructor well before it comes to this.
+        - If you are fired you must start a new project and your peer rating multiplier will take a hit.
+        
+
+# Examples
+Blog posts from [polygraph](https://pudding.cool/)
+
+http://josh-jacobson.github.io/genre-classification/
+
+https://fivethirtyeight.com/datalab/how-baby-boomers-get-high/
+https://fivethirtyeight.com/features/a-statistical-analysis-of-the-work-of-bob-ross/
+
+
+# Dates
+
+

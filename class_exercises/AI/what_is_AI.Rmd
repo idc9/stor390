@@ -1,0 +1,33 @@
+---
+title: "What is AI"
+subtitle: "In class participation 3/23"
+output: html_document
+---
+
+This activity is based on 
+
+- [What is artificial intelligence? A three part definition](http://simplystatistics.org/2017/01/19/what-is-artificial-intelligence/)
+- [An example that isn't that artificial or intelligent](http://simplystatistics.org/2017/01/20/not-artificial-not-intelligent/)
+
+Form groups of 3-4 people. Designate a scribe. Spend 10 minutes discussing the following questions. Upload your answers to the following google form: [https://goo.gl/forms/6HmQnOzMjrY6q3yF2](https://goo.gl/forms/6HmQnOzMjrY6q3yF2). I suggest writing your answers down in a text editor then copy/paste them into the Google form. 
+
+# Examples of AI
+
+The articles define AI as an application consisting of
+
+1. A large collection of data examples
+2. An algorithm for learning a model from that training set.
+3. An interface with the world.
+
+
+List 3-5 examples of AI according to this definition (not including one's mentioned in the articles). Bonus points for unexpected examples.
+
+# Why statistics?
+
+The so called "first wave" of AI did not use much statistics/data (e.g. read about [expert systems](https://en.wikipedia.org/wiki/Expert_system) or watch [this video by DARPA on AI](https://www.youtube.com/watch?v=-O01G3tSYpU)). While it wouldn't be fair to call modern AI a subset of statistics, many modern AI algorithms are fundamentally statistical in nature/are based on data (academics love saying other fields are a subset of their own...)
+
+Speculate about why data/statistical algorithms are now major players in AI?
+
+
+
+
