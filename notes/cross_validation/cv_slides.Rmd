@@ -593,10 +593,7 @@ train <- train %>%
 
 ```{r}
 train_x <- train %>% select(-activity)
-train_y <- train %>% 
-            select(activity) %>%
-            .$activity # turn into a vector
-
+train_y <- train$activity # turn into a vector
 ```
 
 # KNN train predictions

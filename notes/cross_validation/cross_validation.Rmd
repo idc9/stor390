@@ -609,14 +609,10 @@ for(m in 1:M){
     # break the train/test data into x matrix and y vectors
     # this formatting is useful for the knn() functions
     cv_tr_x <- cv_tr_data %>% select(-activity)
-    cv_tr_y <- cv_tr_data %>% 
-                select(activity) %>%
-                .$activity # turn into a vector
+    cv_tr_y <- cv_tr_data$activity
     
     cv_tst_x <- cv_tst_data %>% select(-activity)
-    cv_tst_y <- cv_tst_data %>% 
-                select(activity) %>%
-                .$activity # turn into a vector
+    cv_tst_y <- cv_tst_data$activity # turn into a vector
     
     # for each value of k
     for(i in 1:num_k){
@@ -687,14 +683,10 @@ test <- test %>%
 # break the train/test data into x matrix and y vectors
 # this formatting is useful for the knn() functions
 train_x <- train %>% select(-activity)
-train_y <- train %>% 
-            select(activity) %>%
-            .$activity # turn into a vector
+train_y <- train$activity # turn into a vector
 
 test_x <- test %>% select(-activity)
-test_y <- test %>% 
-            select(activity) %>%
-            .$activity # turn into a vector
+test_y <- test$activity # turn into a vector
 ```
 
 

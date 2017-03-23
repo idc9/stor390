@@ -536,6 +536,8 @@ The code to do this will start to get a little uglier. Luckily someone made an R
 
 The `caret` package is built to make fitting models much easier (caret stands for **C**lassification **A**nd **RE**gression **T**raining). The package even [comes with book on how to use it](http://topepo.github.io/caret/index.html).
 
+
+
 [TODO] coming soon....
 
 # **Classification metrics**

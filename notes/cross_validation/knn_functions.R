@@ -13,9 +13,7 @@ get_knn_test_grid <- function(train_data, k){
     
     # we have to split the training data into an x matrix an y vector to use the knn function
     train_data_x <- train_data %>% select(-y)
-    train_data_y <- train_data %>% 
-        select(y) %>%
-        .$y # turn into a vecotr
+    train_data_y <- train_data$y # turn into a vecotr
     
     # compute KNN predictions
     # the knn function is from the class package
@@ -40,15 +38,11 @@ get_knn_error_rates <- function(train_data, test_data, k){
     # break the train/test data into x matrix and y vectors
     # this formatting is useful for the knn() functions
     train_data_x <- train_data %>% select(-y)
-    train_data_y <- train_data %>% 
-        select(y) %>%
-        .$y # turn into a vector
+    train_data_y <- train_data$y # turn into a vector
     
     
     test_data_x <- test_data %>% select(-y)
-    test_data_y <- test_data %>% 
-        select(y) %>%
-        .$y # turn into a vector
+    test_data_y <- test_data$y # turn into a vector
     
     # get predictions on training data
     knn_train_prediction <- knn(train=train_data_x, # training x

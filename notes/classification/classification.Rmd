@@ -705,9 +705,7 @@ test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
 
 # we have to split the training data into an x matrix an y vector to use the knn function
 train_data_x <- train_data %>% select(-y)
-train_data_y <- train_data %>% 
-                    select(y) %>%
-                    .$y # turn into a vecotr
+train_data_y <- train_data$y # turn into a vecotr
 
 # compute KNN predictions
 # the knn function is from the class package
@@ -766,9 +764,7 @@ test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
 
 # we have to split the training data into an x matrix an y vector to use the knn function
 train_data_x <- train_data %>% select(-y)
-train_data_y <- train_data %>% 
-                    select(y) %>%
-                    .$y # turn into a vecotr
+train_data_y <- train_data$y # turn into a vecotr
 
 # compute KNN predictions
 # the knn function is from the class package
@@ -808,9 +804,7 @@ test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
 
 # we have to split the training data into an x matrix an y vector to use the knn function
 train_data_x <- train_data %>% select(-y)
-train_data_y <- train_data %>% 
-                    select(y) %>%
-                    .$y # turn into a vecotr
+train_data_y <- train_data$y # turn into a vecotr
 
 # compute KNN predictions
 # the knn function is from the class package
@@ -850,9 +844,7 @@ test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
 
 # we have to split the training data into an x matrix an y vector to use the knn function
 train_data_x <- train_data %>% select(-y)
-train_data_y <- train_data %>% 
-                    select(y) %>%
-                    .$y # turn into a vecotr
+train_data_y <- train_data$y # turn into a vecotr
 
 # compute KNN predictions
 # the knn function is from the class package
@@ -892,9 +884,7 @@ test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
 
 # we have to split the training data into an x matrix an y vector to use the knn function
 train_data_x <- train_data %>% select(-y)
-train_data_y <- train_data %>% 
-                    select(y) %>%
-                    .$y # turn into a vecotr
+train_data_y <- train_data$y # turn into a vecotr
 
 # compute KNN predictions
 # the knn function is from the class package
@@ -935,9 +925,7 @@ test_grid <- expand.grid(x1 = seq(-5, 5, length = 100),
 
 # we have to split the training data into an x matrix an y vector to use the knn function
 train_data_x <- train_data %>% select(-y)
-train_data_y <- train_data %>% 
-                    select(y) %>%
-                    .$y # turn into a vecotr
+train_data_y <- train_data$y # turn into a vecotr
 
 # compute KNN predictions
 # the knn function is from the class package

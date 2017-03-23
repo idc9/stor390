@@ -126,18 +126,14 @@ get_knn_error <- function(train_data, test_data, K){
     train_data_x <- train_data %>% dplyr::select(-y)
     
     # get training data class labels as a vector
-    train_data_y <- train_data %>% 
-                        select(y) %>%
-                        .$y
+    train_data_y <- train_data$y
     
     
     # get all test data columns minus the y column
     test_data_x <- test_data %>% dplyr::select(-y)
     
     # get test data class labels as a vector
-    test_data_y <- test_data %>% 
-                        select(y) %>%
-                        .$y
+    test_data_y <- test_data$y
 
 
 
@@ -197,7 +193,3 @@ plot_md_predictions <- function(data, xlim=c(-4,4), ylim=c(-4,4), title=''){
         theme(panel.background = element_blank()) +
         ggtitle(title)
 }
-
-
-
-
