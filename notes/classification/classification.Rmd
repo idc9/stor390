@@ -21,10 +21,6 @@ All of these problems can be phrased as: build a map from some $X$ data (images,
 
 Classification is an example of [supervised learning](https://en.wikipedia.org/wiki/Supervised_learning) meaning have examples of the pattern we are tying to find (both $X$ and $y$ data). This is in contrast to [unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) where you are trying to come up with a possibly interesting pattern (i.e. you only have $X$ data, no pre-specified $y$ data)
 
-# **Outline**
-
-
-
 
 # **Setup and prerequisites**
 
@@ -46,6 +42,10 @@ library(tidyverse)
 source('helper_functions.R')
 ```
 
+```{r, echo=F}
+# remove this when uploading lecture code bc it is a homework problem
+source('md_helper_functions.R')
+```
 
 This lecture assumes you are familiar with
 
@@ -403,7 +403,7 @@ test_grid
 ```
 
 Now let's get the prediction for each test point. First compute the distance between each test point and the two class means. The decide which class mean each test point is closest to.
-```{r, cache=T}
+```{r}
 # compute the distance from each test point to the two class means
 # note the use of the apply function (we could have used a for loop)
 dist_pos <- apply(test_grid, 1, function(x) sqrt(sum((x - mean_pos)^2)))
@@ -955,6 +955,34 @@ err <- mean(train_data_y != knn_train_prediction)
 ```
 
 Training error rate for Boston Cream: `r err`.
+
+
+# **KNN code**
+
+Luckily KNN has already been coded up in the `class` package. The code below computes the KNN predictions for k = 5 on the test grid.
+
+```{r, echo=F}
+# copy the data_gauss data frame to make life easier
+train_data <- data_gauss
+```
+
+```{r}
+# we have to split the training data into an x matrix an y vector to use the knn function
+train_data_x <- train_data %>% select(-y)
+train_data_y <- train_data$y # turn into a vecotr
+
+
+# the knn function is from the class package
+predictions <- knn(train=train_data_x, # training x data
+                   cl=train_data_y, # training y labels 
+                   test=test_grid, # x data to get predictions for
+                   k=5) # set k
+
+
+predictions[0:5]
+```
+
+
 
 
 ----
