@@ -137,6 +137,8 @@ $(document).ready(function () {
 
 library(class) # KNN
 library(e1071) # SVM
+library(kernlab) # kernel SVM
+library(caret) # tuning
 
 train &lt;- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
 
@@ -158,7 +160,7 @@ test &lt;- test %&gt;%
 k_values &lt;- seq(from=1, to= 41, by=2)</code></pre>
 <div id="q1-knn-test-set-error" class="section level2">
 <h2>Q1: KNN Test set error</h2>
-<p><strong>1a</strong>. Compute the test set error (using the independent test data) for each value of K.</p>
+<p><strong>1a</strong>. Compute the test set error (using the independent test data) for each value of K. Use the <code>knn()</code> function from the <code>class</code> package.</p>
 <p><strong>1b</strong>. Plot the test set error with the the cross-validation tuning error curve (<a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data">from the lecture</a>).</p>
 <p><strong>1c</strong>. What is actually the best value of K?</p>
 <p><strong>1d</strong>. How well does the cross-validation error approximate the true test set error?</p>
@@ -209,16 +211,22 @@ k_values &lt;- seq(from=1, to= 41, by=2)</code></pre>
 </div>
 <div id="support-vector-machine" class="section level1">
 <h1><strong>Support Vector Machine</strong></h1>
-<p>(we will discuss this more in lecture on Thursday)</p>
-<p>Let’s see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel.</p>
+<p>Let’s see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel. Use the <code>caret</code> package to fit the SVM models for this section.</p>
 <div id="q4-linear-svm" class="section level2">
 <h2>Q4: Linear SVM</h2>
-<p><strong>4a</strong>. Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> for linar SVM. - Try 2 different numbers of folds (e.g. K = 5 and K = 10).</p>
+<pre class="r"><code>C_values &lt;- 10^seq(from=-5, to=5, by=1)</code></pre>
+<p>Use <code>method = &quot;svmLinear2&quot;</code> for the <code>caret</code> package to get linear SVM from the <code>e1071</code> package.</p>
+<p><strong>4a</strong>. Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> for linar SVM.</p>
+<pre><code>- Try 2 different numbers of folds (e.g. K = 5 and K = 10).
+- Try two different classification metrics (e.g. Accuracy and Kappa)</code></pre>
+<p>You now have possibly 4 different models (some of these procedures might pick the same <span class="math inline">\(C\)</span> value).</p>
 <p><strong>4b</strong>. Fit SVM to on the full training data set with the “optimal” value of <span class="math inline">\(C\)</span>.</p>
 <p><strong>4c</strong>. Report both the training error and the test set error.</p>
 </div>
 <div id="q5-radial-kernel-svm" class="section level2">
 <h2>Q5: Radial Kernel SVM</h2>
+<p>Use <code>method = &quot;svmRadial&quot;</code> for the <code>caret</code> package to get radial kernel SVM from the <code>kernlab</code> package (it’s called <code>ksvm()</code> in the <code>kerlab</code> package).</p>
+<pre class="r"><code>gamma_values &lt;- 10^seq(from=-5, to=5, by=1)</code></pre>
 <p><strong>5a</strong>. Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> and <span class="math inline">\(\gamma\)</span> for SVM with a radial Kernel.</p>
 <p><strong>5b</strong>. Fit SVM to on the full training data set with the “optimal” values of <span class="math inline">\(C\)</span> and <span class="math inline">\(\gamma\)</span>.</p>
 <p><strong>5c</strong>. Report both the training error and the test set error.</p>
