@@ -217,8 +217,10 @@ k_values &lt;- seq(from=1, to= 41, by=2)</code></pre>
 <pre class="r"><code>C_values &lt;- 10^seq(from=-5, to=5, by=1)</code></pre>
 <p>Use <code>method = &quot;svmLinear2&quot;</code> for the <code>caret</code> package to get linear SVM from the <code>e1071</code> package.</p>
 <p><strong>4a</strong>. Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> for linar SVM.</p>
-<pre><code>- Try 2 different numbers of folds (e.g. K = 5 and K = 10).
-- Try two different classification metrics (e.g. Accuracy and Kappa)</code></pre>
+<ul>
+<li>Try 2 different numbers of folds (e.g. K = 5 and K = 10).</li>
+<li>Try two different classification metrics (e.g. Accuracy and Kappa)</li>
+</ul>
 <p>You now have possibly 4 different models (some of these procedures might pick the same <span class="math inline">\(C\)</span> value).</p>
 <p><strong>4b</strong>. Fit SVM to on the full training data set with the “optimal” value of <span class="math inline">\(C\)</span>.</p>
 <p><strong>4c</strong>. Report both the training error and the test set error.</p>

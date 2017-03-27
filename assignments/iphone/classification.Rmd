@@ -141,8 +141,8 @@ Use `method = "svmLinear2"` for the `caret` package to get linear SVM from the `
 
 **4a**. Use cross-validation to select the optimal value of $C$ for linar SVM.
 
-    - Try 2 different numbers of folds (e.g. K = 5 and K = 10).
-    - Try two different classification metrics (e.g. Accuracy and Kappa)
+- Try 2 different numbers of folds (e.g. K = 5 and K = 10).
+- Try two different classification metrics (e.g. Accuracy and Kappa)
 
 You now have possibly 4 different models (some of these procedures might pick the same $C$ value).
 
