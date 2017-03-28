@@ -4,7 +4,7 @@ subtitle: "Does your iPhone know what you're doing?"
 author: "[STOR 390](https://idc9.github.io/stor390/)"
 output: html_document
 ---
-This assignment is due Tuesday, 3/28/17
+This assignment is due Saturday, 4/1/17 at [8:48 pm ET](http://www.diddukewin.com/). 
 
 Recall the human activity recognition data set we discussed in class. You can find details about the data on the [UCI repository](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones). The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.
 

@@ -163,6 +163,8 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 - read [ISLR sections 9.1-9.2](http://www-bcf.usc.edu/~gareth/ISL/) on support vector machines
 
 **March 28**
+
+- read  [ISLR section 9.3, 9.4](http://www-bcf.usc.edu/~gareth/ISL/) on SVMs.
 - read  [ISLR section 5.1](http://www-bcf.usc.edu/~gareth/ISL/) on cross validation.
 
 
