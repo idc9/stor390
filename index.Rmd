@@ -166,7 +166,7 @@ Readings should be complete by the following class (r4ds = [R for Data Science](
 
 - read  [ISLR section 9.3, 9.4](http://www-bcf.usc.edu/~gareth/ISL/) on SVMs.
 - read  [ISLR section 5.1](http://www-bcf.usc.edu/~gareth/ISL/) on cross validation.
-
+- read through the [custom viz notes](https://idc9.github.io/stor390/notes/custom_viz/custom_viz.html)
 
 
 # **Coding**
