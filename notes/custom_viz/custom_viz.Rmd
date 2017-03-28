@@ -1,0 +1,184 @@
+---
+title: "**Customizing ggplot**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+The primary references for this lecture are
+
+- [r4ds chapter 28](http://r4ds.had.co.nz/graphics-for-communication.html#scales)
+- [ggplot theme vignette](http://docs.ggplot2.org/dev/vignettes/themes.html)
+- [ggplot theme documentation](http://docs.ggplot2.org/0.9.2.1/theme.html)
+
+These notes contain some basic examples and the references are a more comprehensive overview.
+
+# **Load data**
+
+
+```{r, warning=F, message=F}
+library(tidyverse)
+data<- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/movies.csv')
+```
+
+# **Basic plot**
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score))
+```
+
+
+
+
+# **Labels**
+
+
+## axis, title
+
+
+`ggplot` will label the axes with the original variable names -- let's change that (and add a title).  See [r4ds 28.2](http://r4ds.had.co.nz/graphics-for-communication.html#label) for more information.
+
+```{r}
+# add labs()
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    labs(x='IMDB',
+         y='Rotten Tomatoes (critics)',
+         title='IMDB scores are predictive of Rotton Tomatoes')
+
+# using ggtitle, xlab
+# ggplot(data=data) +
+#     geom_point(aes(x=imdb_rating, y=critics_score)) +
+#     ggtitle('IMDB scores are predictive of Rotton Tomatoes') +
+#     xlab('IMDB')
+```
+
+If you do a variable transformation in the `geom_` ggplot will automatically add the transformation.
+```{r}
+# add labs()
+ggplot(data=data) +
+    geom_point(aes(x=log10(imdb_rating), y=log10(critics_score)))
+```
+
+
+
+
+
+## Annotation
+
+Sometimes it's useful to annotate a point.
+```{r}
+# data frame for annotation
+bad_movie <- data %>% 
+    filter(critics_score== min(critics_score))
+
+
+# add text label
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) + 
+    geom_text(data=bad_movie, aes(x=imdb_rating, y=critics_score, label=title), color='red')
+```
+The label goes off the plot -- let's nudge it back onto the plot. 
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) + 
+    geom_text(data=bad_movie, aes(x=imdb_rating, y=critics_score, label=title),color='red', nudge_x= .3, nudge_y= 2)
+```
+
+
+Like everything in `ggplot`, `geom_text` takes a data frame as input. You can also use this to add text anywhere to the plot.
+
+```{r}
+# data frame storing some text and the position the text should go on the plot
+text_df <- tibble(x=4, y=75, text='some text goes here')
+
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    geom_text(data=text_df, aes(x=x, y=y, label=text))
+```
+
+## axis limits
+
+You can set the axis limits by adding `lims()`.
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    lims(x=c(-5, 15), y=c(-10, 100))
+```
+
+
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    scale_y_continuous(breaks=seq(from=0, to=100, by=10))
+```
+
+# **Theme**
+
+The `theme` controls the plot background and the legend. See the [theme documentation](http://docs.ggplot2.org/0.9.2.1/theme.html) for a long list of examples of what you can do. Below are a few important examples.
+
+## Change the background
+By default `ggplot` uses a grey background -- let's make a blank background.
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    theme(panel.background = element_blank())
+```
+
+# **Legend**
+Adding additional aesthetic mappings like color or shape will automatically add a legend.
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom))
+```
+
+Change the legend position
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom)) +
+    theme(legend.position = "bottom")
+```
+
+Or turn the legend off
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom)) +
+    theme(legend.position = "none")
+```
+
+
+## Customize colors
+
+
+`ggplot` has default colors/shapes. You can customize the color with `scale_colour_manual`.
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom)) +
+    scale_colour_manual(values = c(no = "red", yes = "blue"))
+```
+Each of the aesthetic mapping (color, shape, fill, etc) have their own `scale_BLAH_manual`. For example, we could also change the size and shape
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom, size=best_pic_nom)) +
+    scale_colour_manual(values = c(no = "red", yes = "blue")) +
+    scale_size_manual(values = c(no = 1, yes = 2)) +
+    scale_shape_manual(values = c(no = 15, yes = 17)) 
+```
+
+```
+
+
+
+
+
+

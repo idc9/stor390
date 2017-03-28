@@ -45,7 +45,7 @@ test <- test %>%
 # Subsampling
 This homework involves a lot of computation which means it might take a while for your code to run. This can make problem solving hard if you have to wait everytime you want to run some code. 
 
-You might try writing the code using a smaller data set. When you get the code working you can then run it on the larger, original data set. The code below randomly samples 200 observations (out of the `r dim(train)[1]` original observations.
+You might try writing the code using a smaller data set. When you get the code working you can then run it on the larger, original data set. The code below randomly samples 200 observations (out of the `r dim(train)[1]`) original observations).
 
 ```{r}
 # subsample the data
