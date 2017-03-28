@@ -152,16 +152,26 @@ test &lt;- test %&gt;%
     filter(activity == 2 | activity == 3)</code></pre>
 <p><em>Hint</em>: You might want to save these two data files on your computer since downloading them can be slow. Many of these questions can be answered by taking the lecture code and modifying it.</p>
 <p><em>Final deliverable</em>: Please write your solutions in R Markdown and separate each question with a new section heading. For the questions that ask you to write helper functions write the helper funciton in it’s own chunck. Submit the .html file and the .Rmd file.</p>
+<div id="subsampling" class="section level1">
+<h1>Subsampling</h1>
+<p>This homework involves a lot of computation which means it might take a while for your code to run. This can make problem solving hard if you have to wait everytime you want to run some code.</p>
+<p>You might try writing the code using a smaller data set. When you get the code working you can then run it on the larger, original data set. The code below randomly samples 200 observations (out of the 1320 original observations.</p>
+<pre class="r"><code># subsample the data
+set.seed(8599)
+train &lt;- train[sample(x=1:dim(train)[1], size=200), ]</code></pre>
+<p>Use the subsampled data to get the code working. Once the code is working re-run it on the entire data set (which might take a while, but if your code works you should be able to just chill while it runs).</p>
+<p>If the <code>knn()</code> function really takes a long time on your computer (e.g. a minute for one call to <code>knn()</code>) then you can hand in the assignment for the subsampled data.</p>
+</div>
 <div id="knn-cross-validation" class="section level1">
 <h1>KNN cross-validation</h1>
 <p><a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#perform_cross_validatoin">Recall in the lecture notes</a> that using cross-validation we found that K = 1 is the “best” value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?</p>
 <p>Let’s call the plot of error vs. K the <em>tuning error curve</em> (e.g. the plot <a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#testtrain_error_as_a_function_of_k">in this section</a> from the notes).</p>
-<pre class="r"><code># use these k values
+<pre class="r"><code># use these k values for KNN
 k_values &lt;- seq(from=1, to= 41, by=2)</code></pre>
 <div id="q1-knn-test-set-error" class="section level2">
 <h2>Q1: KNN Test set error</h2>
-<p><strong>1a</strong>. Compute the test set error (using the independent test data) for each value of K. Use the <code>knn()</code> function from the <code>class</code> package.</p>
-<p><strong>1b</strong>. Plot the test set error with the the cross-validation tuning error curve (<a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data">from the lecture</a>).</p>
+<p><strong>1a</strong>. Compute the test set error (using the independent test data) for each value of K (number of neighbors for KNN). Use the <code>knn()</code> function from the <code>class</code> package.</p>
+<p><strong>1b</strong>. Plot the test set error with the the cross-validation tuning error curve (<a href="https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data">from the lecture</a> i.e. the mean crosss-validation error rate for 10 fold cross-validation).</p>
 <p><strong>1c</strong>. What is actually the best value of K?</p>
 <p><strong>1d</strong>. How well does the cross-validation error approximate the true test set error?</p>
 </div>

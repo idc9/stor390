@@ -42,6 +42,21 @@ test <- test %>%
 *Final deliverable*: Please write your solutions in R Markdown and separate each question with a new section heading. For the questions that ask you to write helper functions write the helper funciton in it's own chunck. Submit the .html file and the .Rmd file.
 
 
+# Subsampling
+This homework involves a lot of computation which means it might take a while for your code to run. This can make problem solving hard if you have to wait everytime you want to run some code. 
+
+You might try writing the code using a smaller data set. When you get the code working you can then run it on the larger, original data set. The code below randomly samples 200 observations (out of the `r dim(train)[1]` original observations.
+
+```{r}
+# subsample the data
+set.seed(8599)
+train <- train[sample(x=1:dim(train)[1], size=200), ]
+```
+
+Use the subsampled data to get the code working. Once the code is working re-run it on the entire data set (which might take a while, but if your code works you should be able to just chill while it runs). 
+
+If the `knn()` function really takes a long time on your computer (e.g. a minute for one call to `knn()`) then you can hand in the assignment for the subsampled data.
+
 # KNN cross-validation
 
 
@@ -51,15 +66,15 @@ Let's call the plot of error vs. K the *tuning error curve* (e.g. the plot [in t
 
 
 ```{r}
-# use these k values
+# use these k values for KNN
 k_values <- seq(from=1, to= 41, by=2)
 ```
 
 ## Q1: KNN Test set error
 
-**1a**. Compute the test set error (using the independent test data) for each value of K. Use the `knn()` function from the `class` package.
+**1a**. Compute the test set error (using the independent test data) for each value of K (number of neighbors for KNN). Use the `knn()` function from the `class` package.
 
-**1b**. Plot the test set error with the the cross-validation tuning error curve ([from the lecture](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data)).
+**1b**. Plot the test set error with the the cross-validation tuning error curve ([from the lecture](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data) i.e. the mean crosss-validation error rate for 10 fold cross-validation). 
 
 **1c**. What is actually the best value of K?
 
