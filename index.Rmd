@@ -188,8 +188,16 @@ The due date is in the link.
 | March 23 | | |[What is AI?](class_exercises/AI/what_is_AI.html) |
 
 # **Final project**
-See [**this document**](final_project/description.html) for details about the **final project**.
+See [**this document for the final project description**](final_project/description.html).
 
+
+
+| Deliverable | Due Date |
+| ------------|----------|
+|[proposal](final_project/proposal.html) | 4/6  |
+|exploratory analysis | 4/20|
+|techincal documents | 5/2|
+|blog post | 5/9 |
 
 
 # **Additional resources**

@@ -95,13 +95,13 @@ These are some examples of interesting analyses. Many of these examples would ta
 
 # **Important Dates**
 
-- Initial project proposal: **due 4/4 at 11pm**
+- Initial project proposal: **due 4/6 at 11pm**
     - Describe your proposed project (one page)
         - What question(s) will you try to answer?
         - What datasets will you use? You should have already found and taken a first look at the data set
         - How will you use the data to try to answer the question?
 
-- Exploratory analysis: **due 4/18 at 11pm**
+- Exploratory analysis: **due 4/20 at 11pm**
     - Write up your initial findings in an R Markdown document.
     - You should have at least K plots (still deciding K).
 
