@@ -12,7 +12,7 @@ output:
 
 You final project is to do a novel data analysis to answer a question and write about it. This can be interpreted broadly and the requirements are discussed below. 
 
-The rough outline of the project is: Start with a question. Find data that might get at that question. Play around with the data. Iterate. Communicate.
+The rough outline of the project is: Start with a question. Find data that might get at that question. Play around with the data. Attempt to answer the question. Iterate. Communicate.
 
 Your project should have one significant aspect to it. Examples might include,
 
@@ -20,11 +20,11 @@ Your project should have one significant aspect to it. Examples might include,
 - answer an interesting question
 - a "sophisticated" statistical/machine learning model
 - a really compelling visualization
-- write a shiny app
+- write a [shiny app](https://shiny.rstudio.com/)
 
 You will work in groups of 3 people, assigned by the instructor. See grading details below and [the group work policies document](group_work.html).
 
-# Final deliverables
+# **Final deliverables**
 
 There are two final deliverables which will be posted as [Github pages](https://pages.github.com/): a blog post and the analysis code/data. The final project is due Tuesday May 9th at 11:00pm.
 
@@ -32,7 +32,7 @@ There are two final deliverables which will be posted as [Github pages](https://
 
 Write a blog post in R Markdown aimed at a general audience (think [538](https://fivethirtyeight.com/)).
 
-- should be TODO words
+- should be 1000-1500 words
 - have at least two figures
 
 ## Analysis code
@@ -41,7 +41,7 @@ All analysis code should be posted and well documented. The main techincal resul
 
 Your data set (both raw and processed) should be posted to github as well. See [instructions for creating a github page](github_pages.html)
 
-# Where to find data?
+# **Where to find data?**
 
 You can find a seriously large amount of data online. I encourage you to "gather your own data online" by doing something like [scraping Twitter](http://varianceexplained.org/r/trump-tweets/).
 
@@ -50,7 +50,7 @@ There are some obvious places to look like [data.gov](data.gov). I've put togeth
 If you are already doing reserach with a dataset you are welcome to use it, but you have to do something new.
 
 
-# Grading
+# **Grading**
 
 Your team's grade will be 50% blog post and 50% analysis code. Your individual grade will be weighted by your team member's reviews.
 
@@ -66,6 +66,8 @@ The project will be graded on
     - How well do your findings support your conclusions? The evidence is inconclusive" is a very possible, and completely acceptable answer. 
 
 - Ambition
+    - You 
+    
     
 - Groupwork
     - You will anonomyously rate your team members and yourself on *team citizenship* (e.g. attends meetings, does what they promise, etc), *not* on ability. 
@@ -75,7 +77,10 @@ The project will be graded on
         - If you are fired you must start a new project and your peer rating multiplier will take a hit.
         
 
-# Examples
+# **Examples for inspiration**
+
+These are some examples of interesting analyses. Many of these examples would take longer than you have for the final project.
+
 - Blog posts from [polygraph](https://pudding.cool/)
 
 - [David Robinson's text analysis of Trump tweets](http://varianceexplained.org/r/trump-tweets/)
@@ -86,8 +91,9 @@ The project will be graded on
 
 - [538 on Bob Ross](https://fivethirtyeight.com/features/a-statistical-analysis-of-the-work-of-bob-ross/)
 
+- see [this page](https://d1b10bmlvqabco.cloudfront.net/attach/icf0cypdc3243c/hcwsitww5k95ka/ii7mfqhc946l/CS109_Presentation_Day.pdf) for links to the final final projects from [CS109](http://cs109.github.io/2015/pages/projects.html) (warning: a couple of links are broken).
 
-# Dates
+# **Important Dates**
 
 - Initial project proposal: **due 4/4 at 11pm**
     - Describe your proposed project (one page)

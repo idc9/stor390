@@ -67,8 +67,6 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 
 - options for [extra credit](course_info/extra_credit.html)
 
-- see [this document](course_info/final_project.html) for details about the final project.
-
 
 # **Reading**
 Readings should be complete by the following class (r4ds = [R for Data Science](http://r4ds.had.co.nz/))
@@ -188,6 +186,10 @@ The due date is in the link.
 | March 21 | | [classification: does your iPhone know what you're doing?](assignments/iphone/classification.html) |
 | March 21 | | [extra credit: naive bayes](assignments/iphone/naive_bayes.html) | |
 | March 23 | | |[What is AI?](class_exercises/AI/what_is_AI.html) |
+
+# **Final project**
+See [**this document**](final_project/description.html) for details about the **final project**.
+
 
 
 # **Additional resources**

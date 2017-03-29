@@ -137,7 +137,6 @@ $(document).ready(function () {
 
 # you might have to install some of these libraries
 library(class) # KNN
-library(e1071) # SVM
 library(kernlab) # kernel SVM
 library(caret) # tuning
 library(stringr)
@@ -161,7 +160,7 @@ test &lt;- test %&gt;%
 <pre class="r"><code># subsample the data
 set.seed(8599)
 train &lt;- train[sample(x=1:dim(train)[1], size=200), ]</code></pre>
-<p>Use the subsampled data to get the code working. Once the code is working re-run it on the entire data set (which might take a while, but if your code works you should be able to just chill while it runs).</p>
+<p>Use the subsampled data to get the code working (you can also subsample the test data). Once the code is working re-run it on the entire data set (which might take a while, but if your code works you should be able to just chill while it runs).</p>
 <p>If the <code>knn()</code> function really takes a long time on your computer (e.g. a minute for one call to <code>knn()</code>) then you can hand in the assignment for the subsampled data.</p>
 </div>
 <div id="knn-cross-validation" class="section level1">
@@ -222,28 +221,34 @@ k_values &lt;- seq(from=1, to= 41, by=2)</code></pre>
     # return a vector of predicted class labels for the test data
 }</code></pre>
 <p><strong>Hint</strong>: You can do this two ways: either find the closest class mean or use the <a href="https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier">linear classifier definition</a>. If you do the latter you might want to write a helper function that comptues the normal vector <span class="math inline">\(\mathbf{w}\)</span> and intercept <span class="math inline">\(b\)</span>.</p>
+<p>You can change the function arguments (e.g. you might want to input the full <code>train</code> data etc) but the function should return a vector of predictions for each test point.</p>
 <p><strong>3b</strong>. Using the <code>nearest_centroid</code> function compute the training and test set error for the Human Activity Recognition dataset.</p>
 </div>
 <div id="support-vector-machine" class="section level1">
 <h1><strong>Support Vector Machine</strong></h1>
+<p>This questions examins how the “optimal” parameter values can change depending on how you do cross-validation and also compares linear SVM to radial SVM.</p>
 <p>Let’s see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel. Use the <code>caret</code> package to fit the SVM models for this section.</p>
-<p>The “optimal” parameter values can change depending on how you do cross-validation.</p>
+<p><strong>Hint</strong>: The code should be pretty similar to <a href="https://idc9.github.io/stor390/notes/more_classification/more_classification.html#tuning_svm_with_the_caret_package">the lecture code</a>, you mostly have to play around with the arguments to <code>train</code>.</p>
 <div id="q4-linear-svm" class="section level2">
 <h2>Q4: Linear SVM</h2>
-<p>Use <code>method = &quot;svmLinear2&quot;</code> for the <code>caret</code> package to get linear SVM from the <code>e1071</code> package.</p>
-<pre class="r"><code>C_values &lt;- 10^seq(from=-5, to=5, by=1)</code></pre>
+<p>Use <code>method = &quot;svmLinear&quot;</code> for the <code>caret</code> package to get linear SVM from the <code>kernlab</code> package.</p>
+<pre class="r"><code>C_values &lt;- tibble(C=10^seq(from=-5, to=5, by=1))</code></pre>
 <p>Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> for linar SVM. Using this SVM model with this optimal <span class="math inline">\(C\)</span> value compute both the test and training error.</p>
 <ul>
 <li>Try 2 different numbers of folds (e.g. K = 5 and K = 10).</li>
 <li>Try two different classification metrics (e.g. Accuracy and Kappa)</li>
 </ul>
 <p>You now have possibly 4 different models (some of these procedures might pick the same <span class="math inline">\(C\)</span> value).</p>
+<p><em>Warning:</em> You need to set <code>train_y</code> to be a factor for this function i.e. <code>y=factor(train_y)</code>.</p>
 </div>
 <div id="q5-radial-kernel-svm" class="section level2">
 <h2>Q5: Radial Kernel SVM</h2>
-<p>Use <code>method = &quot;svmRadial&quot;</code> for the <code>caret</code> package to get radial kernel SVM from the <code>kernlab</code> package (it’s called <code>ksvm()</code> in the <code>kerlab</code> package). Type <code>?ksvm()</code> to see the documentation for this function.</p>
-<pre class="r"><code>sigma_values &lt;- 10^seq(from=-5, to=5, by=1)</code></pre>
-<p>Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> and <span class="math inline">\(\sigma\)</span> for SVM with a radial Kernel to find the “optimal” values of <span class="math inline">\(C\)</span> and <span class="math inline">\(\sigma\)</span>. Report both the training error and the test set error for the model you chose in 5a.</p>
+<p>Use <code>method = &quot;svmRadial&quot;</code> for the <code>caret</code> package to get radial kernel SVM from the <code>kernlab</code> package (it’s called <code>ksvm()</code> in the <code>kernlab</code> package). Type <code>?ksvm</code> to see the documentation for this function.</p>
+<pre class="r"><code># sigma values to use
+sigma_values &lt;- 10^seq(from=-5, to=5, by=1)
+
+# hint: you need to use expand.grid to make a grid of sigma and C values.</code></pre>
+<p>Use cross-validation to select the optimal value of <span class="math inline">\(C\)</span> and <span class="math inline">\(\sigma\)</span> for SVM with a radial Kernel to find the “optimal” values of <span class="math inline">\(C\)</span> and <span class="math inline">\(\sigma\)</span>. Report both the training error and the test set error for the model you chose in 5.</p>
 <p><em>Hint</em>: See <a href="https://idc9.github.io/stor390/notes/more_classification/more_classification.html#tuning_svm_with_the_caret_package">the notes</a> for an example of how to use <code>caret</code> to fit SVM with a polynomial kernel.</p>
 <p>For questions 4 and 5 you need to make the tuning parameter grid. For liner SVM there is one paramter, <code>C</code>. For the radial basis kernel there are now two parameters, the original <code>C</code> for SVM another parameter called <code>sigma</code> for the kernel. See <a href="http://blog.revolutionanalytics.com/2015/10/the-5th-tribe-support-vector-machines-and-caret.html">this post</a> for some more exmaple code using the <code>caret</code> package. <a href="https://topepo.github.io/caret/train-models-by-tag.html">Chapter 7</a> of the <code>caret</code> book has details about the tuning parameter names.</p>
 </div>
