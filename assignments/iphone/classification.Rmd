@@ -24,6 +24,7 @@ library(class) # KNN
 library(e1071) # SVM
 library(kernlab) # kernel SVM
 library(caret) # tuning
+library(stringr)
 
 train <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/human_activity_train.csv')
 
@@ -72,21 +73,27 @@ k_values <- seq(from=1, to= 41, by=2)
 
 ## Q1: KNN Test set error
 
+The mean CV error is mean to be a proxy for the test error. This question explores how well this approximation holds for the HAR data.
+
 **1a**. Compute the test set error (using the independent test data) for each value of K (number of neighbors for KNN). Use the `knn()` function from the `class` package.
 
 **1b**. Plot the test set error with the the cross-validation tuning error curve ([from the lecture](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#cross-validation_on_the_har_data) i.e. the mean crosss-validation error rate for 10 fold cross-validation). 
 
-**1c**. What is actually the best value of K?
+**1c**. What is actually the best value of K for both test and CV?
 
-**1d**. How well does the cross-validation error approximate the true test set error?
+**1d**. How well does the cross-validation error approximate the true test set error? Describe in words how well the 
 
 ## Q2: What happens when we change the number of folds
 
-**2a**.  Compute the training error for each value of K.
+The CV error curves can change dramatically depending on the number of folds used. If you are doing M fold CV then each fold should be (approximately) 1/M * (number of training points).
 
-**2b**. Add the training error to the tuning error curves (there should now be three tuning error curves).
+This question explores how the CV curve changes as the number of folds change. Question 2 is an extension of the first question. 
 
-**2c**. Write a function that makes this tuning error curve plot with the three error curves (see below for the function skeleton).
+**2a**.  Compute the training error for each value of K (= number of neighbors for KNN).
+
+**2b**. Add the training error to the tuning error curves you made in question 1b (there should now be three tuning error curves).
+
+**2c**. Write a function that makes this tuning error curve plot with the three error curves (see below for the function skeleton). This question is asking you to take the code you wrote for the questions 1a, 1b and turn it into a function so you can look at how these plots change as the number of CV folds change.
 
 **2d**. Make the tuning error plots for 5, 10, 20, and 50 folds.
 
