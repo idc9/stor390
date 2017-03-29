@@ -20,6 +20,7 @@ This assignment will give you practice with
 ```{r, message=FALSE, warning=F}
 library(tidyverse)
 
+# you might have to install some of these libraries
 library(class) # KNN
 library(e1071) # SVM
 library(kernlab) # kernel SVM
@@ -81,7 +82,7 @@ The mean CV error is mean to be a proxy for the test error. This question explor
 
 **1c**. What is actually the best value of K for both test and CV?
 
-**1d**. How well does the cross-validation error approximate the true test set error? Describe in words how well the 
+**1d**. Describe how well the cross-validation error approximates the true test set error?
 
 ## Q2: What happens when we change the number of folds
 
@@ -93,9 +94,9 @@ This question explores how the CV curve changes as the number of folds change. Q
 
 **2b**. Add the training error to the tuning error curves you made in question 1b (there should now be three tuning error curves).
 
-**2c**. Write a function that makes this tuning error curve plot with the three error curves (see below for the function skeleton). This question is asking you to take the code you wrote for the questions 1a, 1b and turn it into a function so you can look at how these plots change as the number of CV folds change.
+**2c**. Write a function that makes this tuning error curve plot with the three error curves (see below for the function skeleton). This question is asking you to take the code you wrote for the questions 1a, 1b, 2a, 2b and turn it into a function so you can look at how these plots change as the number of CV folds change.
 
-**2d**. Make the tuning error plots for 5, 10, 20, and 50 folds.
+**2d**. Make the tuning error plots for 5, 10, and 20 folds (try 50 if it doesn't take too long to run).
 
 ```{r}
 knn_tuning_error_plot <- function(train, test, k_cv, k_values, cv_seed=NA){
@@ -145,48 +146,46 @@ nearest_centroid <- function(train_x, train_y, test_x){
 **Hint**: You can do this two ways: either find the closest class mean or use the [linear classifier definition](https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier). If you do the latter you might want to write a helper function that comptues the normal vector $\mathbf{w}$ and intercept $b$.
 
 
-**3b**. Using the `nearest_centroid` function compute the test set error for the Human Activity Recognition dataset.
+**3b**. Using the `nearest_centroid` function compute the training and test set error for the Human Activity Recognition dataset.
 
 
 # **Support Vector Machine**
 
 Let's see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel. Use the `caret` package to fit the SVM models for this section.
 
+The "optimal" parameter values can change depending on how you do cross-validation.
+
 
 ## Q4: Linear SVM
+
+Use `method = "svmLinear2"` for the `caret` package to get linear SVM from the `e1071` package.
 
 ```{r}
 C_values <- 10^seq(from=-5, to=5, by=1)
 ```
 
-Use `method = "svmLinear2"` for the `caret` package to get linear SVM from the `e1071` package.
-
-**4a**. Use cross-validation to select the optimal value of $C$ for linar SVM.
+Use cross-validation to select the optimal value of $C$ for linar SVM. Using this SVM model with this optimal $C$ value compute both the test and training error.
 
 - Try 2 different numbers of folds (e.g. K = 5 and K = 10).
 - Try two different classification metrics (e.g. Accuracy and Kappa)
 
 You now have possibly 4 different models (some of these procedures might pick the same $C$ value).
 
-**4b**. Fit SVM to on the full training data set with the "optimal" value of $C$.
-
-**4c**. Report both the training error and the test set error. 
-
 
 ## Q5: Radial Kernel SVM
 
-Use `method = "svmRadial"` for the `caret` package to get radial kernel SVM from the `kernlab` package (it's called `ksvm()` in the `kerlab` package).
+Use `method = "svmRadial"` for the `caret` package to get radial kernel SVM from the `kernlab` package (it's called `ksvm()` in the `kerlab` package). Type `?ksvm()` to see the documentation for this function.
 
 
 ```{r}
-gamma_values <- 10^seq(from=-5, to=5, by=1)
+sigma_values <- 10^seq(from=-5, to=5, by=1)
 ```
 
-**5a**. Use cross-validation to select the optimal value of $C$ and $\gamma$ for SVM with a radial Kernel.
+Use cross-validation to select the optimal value of $C$ and $\sigma$ for SVM with a radial Kernel to find the "optimal" values of $C$ and $\sigma$. Report both the training error and the test set error for the model you chose in 5a.
 
-**5b**. Fit SVM to on the full training data set with the "optimal" values of $C$ and $\gamma$.
 
-**5c**. Report both the training error and the test set error.
+*Hint*: See [the notes](https://idc9.github.io/stor390/notes/more_classification/more_classification.html#tuning_svm_with_the_caret_package) for an example of how to use `caret` to fit SVM with a polynomial kernel.
 
+For questions 4 and 5 you need to make the tuning parameter grid. For liner SVM there is one paramter, `C`. For the radial basis kernel there are now two parameters, the original `C` for SVM another parameter called `sigma` for the kernel. See [this post](http://blog.revolutionanalytics.com/2015/10/the-5th-tribe-support-vector-machines-and-caret.html) for some more exmaple code using the `caret` package. [Chapter 7](https://topepo.github.io/caret/train-models-by-tag.html) of the `caret` book has details about the tuning parameter names. 
 
 

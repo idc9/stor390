@@ -541,6 +541,8 @@ The code to do this will start to get a little uglier. Luckily someone made an R
 
 The `caret` package is built to make fitting models much easier (caret stands for **C**lassification **A**nd **RE**gression **T**raining). The package even [comes with book on how to use it](http://topepo.github.io/caret/index.html) (if you want to learn more about the packaged I'd start with [chapter 5](https://topepo.github.io/caret/model-training-and-tuning.html)).
 
+`caret` works as an interface to functions that have already been implemented in other packages (e.g. `e1071::svm()`). 
+
 Before going forward spend a minute outlining how you would code up cross-validation for the polynomial kernel SVM described above with two tuning parameters (e.g. what goes into the three loops, what variables do you have to create ahead of time, etc). 
 
 The code below uses the `caret` package to do this procedure much more succinctly.
@@ -578,7 +580,10 @@ tuned_svm
 
 The `trainControl` object from the `caret` package sets the tuning procedure. In our case we are using 5 fold cross-validation.
 
-`tune_grid` is the grid of tuning parameters we want to search over.
+`tune_grid` is the grid of tuning parameters we want to search over.  **Warning:** the names of the columns for the `tune_grid` data frame are important; they need to match the tuning parameter names from underlying function. For example, `svmPoly` calls `e1071::svm` so the columns names need to match the parameter names from `e1071::svm` (in this case:`C`, `degree`, `scale`). 
+
+You can find more information about the tuning paramters [in this section of the book](https://topepo.github.io/caret/train-models-by-tag.html).
+
 
 
 **Main arguments** to `train`
@@ -616,6 +621,7 @@ test_grid %>%
     ggtitle('SVM fit for tuned polynomial kernel')
 ```
 
+See [this post](http://blog.revolutionanalytics.com/2015/10/the-5th-tribe-support-vector-machines-and-caret.html) for some more example code using the `caret` package.
 
 ## Why `caret`?
 
