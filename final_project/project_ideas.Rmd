@@ -1,13 +1,17 @@
 ---
-title: "Final project "
-output: html_document
+title: "**Final project suggestions**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
 ---
-
-# Shiny app
+# **Shiny app**
 
 Look through [the shiny gallery](https://shiny.rstudio.com/gallery/). Shiny allows you to make amazing, interactive visualizations easily in R. While this is not a specific project proposal, these apps might serve as inspiration.
 
-# State voter registrations
+# **State voter registrations**
 
 [Ryan Thornburg](http://ryanthornburg.com/) and the [Reese News lab](https://www.reesenewslab.org/) has a number of suggestions for a final project(s). If you are interested in these let me know. If you choose this project there may be a job offer at the end...
 
@@ -25,16 +29,33 @@ Here are a few things I’m interested in doing with the state voter file (which
 
 
 
-# word2vec and shiny
+# **word2vec and shiny**
 
-Make a [shiny app](https://shiny.rstudio.com/) exploring "word addition" with [word2vec](https://en.wikipedia.org/wiki/Word2vec). The only prerequiste for this project is linear algebra. 
+Make a [shiny app](https://shiny.rstudio.com/) exploring "word addition" with [word2vec](https://en.wikipedia.org/wiki/Word2vec). The only prerequisite for this project is linear algebra. Let me know if your group is interested in this project. 
 
-[Word embeddings](https://en.wikipedia.org/wiki/Word_embedding) are a way of assinging each word a vector that captures the "meaning" of words in some sense. Suppose we somehow assign each word (e.g. cat, program, beer, etc) a vector in $\mathbb{R}^d$ where $d$ might be any integer (typically somewhere between 100 and 1000). We might hope the following happens
+[Word embeddings](https://en.wikipedia.org/wiki/Word_embedding) are a way of assigning each word a vector that captures the "meaning" of words in some sense. Suppose we somehow assign each word (e.g. cat, program, beer, etc) a vector in $\mathbb{R}^d$ where $d$ might be any integer (typically somewhere between 100 and 1000). We might hope the following happens
 
 > if two words are close in meaning then their vectors are close together and vice versa.
 
-The word2vec algorithm takes a large corpus of text (e.g. [wikipedia](http://mattmahoney.net/dc/textdata)) uses a [neural network](http://www.deeplearningbook.org/) to assign each word in the corpus a vector. For a more indepth explaination see [**TensorFlow's word2vec tutorial**](https://www.tensorflow.org/tutorials/word2vec). You do not need to understand neural networks to do this project!
+The word2vec algorithm takes a large corpus of text (e.g. [wikipedia](http://mattmahoney.net/dc/textdata)) uses a [neural network](http://www.deeplearningbook.org/) to assign each word in the corpus a vector. For a more in depth explanation see [**TensorFlow's word2vec tutorial**](https://www.tensorflow.org/tutorials/word2vec). You do not need to understand neural networks to do this project!
 
+A good word embedding has some pretty amazing features; it might capture [semantic and syntactic relationships](https://en.wikipedia.org/wiki/Word2vec#Preservation_of_semantic_and_syntactic_relationships). Since each word has a vector associated with it, we can do "word arithmetic". For example, take the vectors associated with "brother", "man" and "woman" and compute
+
+> "brother" - "man" + "woman"
+
+The resulting vector will then be very close to the vector corresponding to "sister" (semantic meaning). Similarly 
+
+> "walked" - "walking" + "swimming"
+
+will be close to "swam" (syntactic). You even get analogies 
+
+> "Spain" - "Madrid" + "Italy"
+
+will be close to Rome. The fact that a well trained word2vec model actually exhibits these properties is kind of amazing. 
+
+The point of this project is to build a shiny app that let's the user explore word arithmetic i.e. they input the words for A - B + C and the app spits out the resulting output word. You can find [pre-trained word2vec models online](http://ahogrammer.com/2017/01/20/the-list-of-pretrained-word-embeddings/). This is just matrix where there is one column per word and the columns are the vectors (if there are W words in the corpus and we embed the words into $\mathbb{R}^d$ then the matrix is d $\times$ W).
+
+For a related idea see [this 538 article on subbreddit algebra](https://fivethirtyeight.com/features/dissecting-trumps-most-rabid-online-following/?ex_cid=538fb).
 
 
 

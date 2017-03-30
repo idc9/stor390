@@ -44,7 +44,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |March 9| cross-validation| [cross-validation](notes/cross_validation/cross_validation.html) | [cv](slides/cv_slides.html)|
 |March 21|support vector machine, kernels| [more classification](notes/more_classification/more_classification.html) | |
 |March 23| |[more classification](notes/more_classification/more_classification.html) |[more classification](slides/slides_more_classification.html) |
-|March 28| customizing ggplo2| [custom viz](notes/custom_viz/custom_viz.html) | |
+|March 28| more classification| [custom viz](notes/custom_viz/custom_viz.html) | |
 |March 30| APIs| | |
 |April 4| | | |
 |April 6| | | |
