@@ -1,0 +1,117 @@
+---
+title: "**Lab 8: APIs**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+The [Open Movie Database](https://www.omdbapi.com/) has an API that let's you query lot's of movie metadata (title, imdb rating, summary of the plot, etc). The webpage has instructions and example queries. This lab will give you practice querying an API.
+
+
+```{r, message=F, warning=F}
+library(jsonlite)
+library(stringr)
+library(tidyverse)
+```
+
+# Example query
+
+The code below shows you how to query the OMDb API based on a movie title.
+```{r, warning=F}
+# URL for API request based on a movie title
+url <- "http://www.omdbapi.com/?t=Logan&y=&plot=full&r=json"
+
+# query the API to get some json
+raw_json <- readLines(url)
+
+# turn the json into a nice list
+movie <- fromJSON(raw_json)
+movie
+```
+
+
+# Question 1
+
+**1a**. Write a function that takes a list of movie titles, queries OMDB for each movie then returns a data frame with the following columns indicated in the function body below.
+
+
+```{r, eval=F}
+
+# given some movie titles returns a data frame with metadata about each movie
+get_movie_data_from_title <- function(titles){
+    
+    # start and end of query url
+    url_start <- 
+    url_end <- 
+    
+    # movie data frame to return
+    # get the data for each colum
+    movie_df <- tibble(title = titles,
+                       imdbRating = NA,
+                       imdbID = NA,
+                       Year = NA,
+                       Rated = NA,
+                       Runtime = NA,
+                       Genre = NA)
+    
+    
+    # for each title in the list query the data base and extract the metadata
+    for(i in 1:length(titles)){
+        title <- titles[i]
+        
+        # replace all spaces in title with +
+        modified_title <- 
+        
+        # create url for movie (hint: paste())
+        url <- 
+        
+        # query the API to get some json
+        raw_json <- 
+        
+        # turn the json into a nice list
+        movie <- 
+        
+        # the Response will be false if you mispelled a moive title 
+        if(movie$Response){
+            
+            # add each information for each column
+            movie_df[i, 'imdbRating'] <- 
+        }
+        
+    }
+    
+    return(movie_df)
+}
+
+```
+
+
+**1b**. Test your function by querying five movies.
+
+```{r, eval=F}
+titles <- c("Harry Potter and the Sorcerer's Stone", "Logan")
+get_movie_data_from_title(titles)
+```
+
+# Question 2
+
+**2a**. Modify the above function to instead take a list of imdb ids. **Hint**: This should be a matter of modifying the url -- you can get an example from the [OMDb website](https://www.omdbapi.com/) under the *By ID* section.
+
+```{r}
+get_movie_data_from_imdb_id <- function(imdb_ids){
+    
+}
+
+```
+
+
+**2b**. Test your function by querying five movies. **Hint**: You can find a movie's imdb id on it's imdb page.
+
+
+```{r, eval=F}
+imdb_ids <- c('tt0241527')
+get_imdb_score_from_title(imdb_ids)
+```

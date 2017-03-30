@@ -45,9 +45,9 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |March 21|support vector machine, kernels| [more classification](notes/more_classification/more_classification.html) | |
 |March 23| |[more classification](notes/more_classification/more_classification.html) |[more classification](slides/slides_more_classification.html) |
 |March 28| more classification| [custom viz](notes/custom_viz/custom_viz.html) | |
-|March 30| APIs ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/))| | |
+|March 30| APIs ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/))|[APIs](notes/API/APIs.html) | |
 |April 4| | | |
-|April 6| | | |
+|April 6| [Shiny](https://shiny.rstudio.com/) ([Frances Tong](https://www.linkedin.com/in/francestong)| | |
 |April 11| guest Dan Yang | | |
 |April 13| | | |
 |April 18| guest Lucia Gjeltema| | |
@@ -186,6 +186,7 @@ The due date is in the link.
 | March 21 | | [classification: does your iPhone know what you're doing?](assignments/iphone/classification.html) |
 | March 21 | | [extra credit: naive bayes](assignments/iphone/naive_bayes.html) | |
 | March 23 | | |[What is AI?](class_exercises/AI/what_is_AI.html) |
+| March 30 |[APIs](labs/8/moives_api.html) | | |
 
 # **Final project**
 See [**this document for the final project description**](final_project/description.html).
