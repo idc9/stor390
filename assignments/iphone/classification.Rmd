@@ -132,14 +132,79 @@ knn_tuning_error_plot <- function(train, test, k_cv, k_values, cv_seed=NA){
 **3a**. Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.
 
 
-```{r}
+```{r, eval=F}
+train_x <- train %>% select(-activity)
+train_y <- train$activity
+
+
+test_x <- test %>% select(-activity)
+test_y <- test$activity
+
 nearest_centroid <- function(train_x, train_y, test_x){
     # returns the predictions for nearest centroid on a test set
     # train_x and test_x: are the train/test x data
         # assume these are both numerical matrices with the same number of columns
     # train_y: is a vector of class labels for the training data
     # return a vector of predicted class labels for the test data
+    
+    
+    # find number of test points
+    n_test <- 
+    
+    # find unique class labels (hint: the unique() function)
+    # you will designate one class the "positive" class and the
+    # other class the "negative" class
+    class_labels <- 
+    
+    # separate x training data by classes
+    train_x_pos <- 
+    train_x_neg <-
+    
+    # compute each class mean
+    mean_pos <-
+    mean_neg <-
+    
+    
+    # you can EITHER use a for loop or the apply() function to compute the predictiosn
+    # WARNING: on my computer a for loop took 45 seconds while apply() took .01 seconds
+    ######## compute predictions with a for loop #########
+    # initialize test prediciton vector
+    test_y_pred <-
+    
+    # get prediciton for each test point
+    for(i in 1:n_test){
+        
+        # grab one test point
+        x <- 
+        
+        # compute the euclidean distance between the test point and each class mean
+        dist_pos <-
+        dist_neg <- 
+        
+        # decide which mean the test point is closer to and classify the test point to that class
+        # you can either use an if/else statment or the ifelse() function
+        test_y_pred[i] <-
+    }
+    
+    # if you don't want to use apply() ignore this code
+    ########### compute predictions with the apply function #############
+    
+    # use apply to compute the distance from each test point to the positive class mean
+    # dist_pos <-
+    
+    # similarly for the negative class mean
+    # dist_neg <- 
+    
+    # use the ifelse() function to compute the test predictions
+    # test_y_pred <-
+    
+    ##############################################################################
+        
+    return(test_y_pred)
 }
+
+
+nearest_centroid(train_x, train_y, test_x)
 ```
 
 **Hint**: You can do this two ways: either find the closest class mean or use the [linear classifier definition](https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier). If you do the latter you might want to write a helper function that comptues the normal vector $\mathbf{w}$ and intercept $b$.

@@ -213,13 +213,78 @@ k_values &lt;- seq(from=1, to= 41, by=2)</code></pre>
 <h1>Q3: Nearest Centroid</h1>
 <p><a href="https://idc9.github.io/stor390/notes/classification/classification.html">Recall</a> the nearest centroid classifer is a simple linear classifier.</p>
 <p><strong>3a</strong>. Write a function that implements the nearest centroid classifier. The function should take the training and test data as input and return the predictions on the test data set.</p>
-<pre class="r"><code>nearest_centroid &lt;- function(train_x, train_y, test_x){
+<pre class="r"><code>train_x &lt;- train %&gt;% select(-activity)
+train_y &lt;- train$activity
+
+
+test_x &lt;- test %&gt;% select(-activity)
+test_y &lt;- test$activity
+
+nearest_centroid &lt;- function(train_x, train_y, test_x){
     # returns the predictions for nearest centroid on a test set
     # train_x and test_x: are the train/test x data
         # assume these are both numerical matrices with the same number of columns
     # train_y: is a vector of class labels for the training data
     # return a vector of predicted class labels for the test data
-}</code></pre>
+    
+    
+    # find number of test points
+    n_test &lt;- 
+    
+    # find unique class labels (hint: the unique() function)
+    # you will designate one class the &quot;positive&quot; class and the
+    # other class the &quot;negative&quot; class
+    class_labels &lt;- 
+    
+    # separate x training data by classes
+    train_x_pos &lt;- 
+    train_x_neg &lt;-
+    
+    # compute each class mean
+    mean_pos &lt;-
+    mean_neg &lt;-
+    
+    
+    # you can EITHER use a for loop or the apply() function to compute the predictiosn
+    # WARNING: on my computer a for loop took 45 seconds while apply() took .01 seconds
+    ######## compute predictions with a for loop #########
+    # initialize test prediciton vector
+    test_y_pred &lt;-
+    
+    # get prediciton for each test point
+    for(i in 1:n_test){
+        
+        # grab one test point
+        x &lt;- 
+        
+        # compute the euclidean distance between the test point and each class mean
+        dist_pos &lt;-
+        dist_neg &lt;- 
+        
+        # decide which mean the test point is closer to and classify the test point to that class
+        # you can either use an if/else statment or the ifelse() function
+        test_y_pred[i] &lt;-
+    }
+    
+    # if you don't want to use apply() ignore this code
+    ########### compute predictions with the apply function #############
+    
+    # use apply to compute the distance from each test point to the positive class mean
+    # dist_pos &lt;-
+    
+    # similarly for the negative class mean
+    # dist_neg &lt;- 
+    
+    # use the ifelse() function to compute the test predictions
+    # test_y_pred &lt;-
+    
+    ##############################################################################
+        
+    return(test_y_pred)
+}
+
+
+nearest_centroid(train_x, train_y, test_x)</code></pre>
 <p><strong>Hint</strong>: You can do this two ways: either find the closest class mean or use the <a href="https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier">linear classifier definition</a>. If you do the latter you might want to write a helper function that comptues the normal vector <span class="math inline">\(\mathbf{w}\)</span> and intercept <span class="math inline">\(b\)</span>.</p>
 <p>You can change the function arguments (e.g. you might want to input the full <code>train</code> data etc) but the function should return a vector of predictions for each test point.</p>
 <p><strong>3b</strong>. Using the <code>nearest_centroid</code> function compute the training and test set error for the Human Activity Recognition dataset.</p>
