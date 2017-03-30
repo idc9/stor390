@@ -1,0 +1,51 @@
+---
+title: "Final project "
+output: html_document
+---
+
+# Shiny app
+
+Look through [the shiny gallery](https://shiny.rstudio.com/gallery/). Shiny allows you to make amazing, interactive visualizations easily in R. While this is not a specific project proposal, these apps might serve as inspiration.
+
+# State voter registrations
+
+[Ryan Thornburg](http://ryanthornburg.com/) and the [Reese News lab](https://www.reesenewslab.org/) has a number of suggestions for a final project(s). If you are interested in these let me know. If you choose this project there may be a job offer at the end...
+
+Below is an email from Professor Thornburg:
+
+Here are a few things I’m interested in doing with the state voter file (which includes a variety of data tables – one table that includes demographic information about each registered voter, one table that includes information about whether a particular voter participated in a particular election, one file (for each election) that shows the number of votes that each candidate received in each precinct).
+ 
+- How reliably Democratic or Republican is each voting precinct?
+- Which precincts are “trending” in one direction or another? Becoming more or less Democratic, for example?
+- When a precinct votes against its party preference, are there significant differences in the demographics of the voters who turn out?
+- Based on the home address, age, gender, and race for each voter, use census data to find their expected educational attainment, income, employment, insurance coverage status, language spoken, marital status, migration status, national origin, family size, household relationships, veteran status, rent amount, mortgage amount, what utilities they have at home (such as high speed internet and indoor plumbing).
+- Based on the preference of a precinct, and the demographic makeup of voters in a particular election, can we say how much various demographic factors of voters generally contribute to candidate preference?
+- Does a precinct’s presidential, US Senate or gubernatorial candidate preference have any value predicting the precinct’s preferences in local, nonpartisan elections such as mayor and school board?
+- What demographic factors in each precinct are the best indicators of whether someone will turn out to vote in a specific election (local primary, local general, legislative/congressional general/primary, US Senate general/primary, gubernatorial general/primary, presidential general/primary)
+
+
+
+# word2vec and shiny
+
+Make a [shiny app](https://shiny.rstudio.com/) exploring "word addition" with [word2vec](https://en.wikipedia.org/wiki/Word2vec). The only prerequiste for this project is linear algebra. 
+
+[Word embeddings](https://en.wikipedia.org/wiki/Word_embedding) are a way of assinging each word a vector that captures the "meaning" of words in some sense. Suppose we somehow assign each word (e.g. cat, program, beer, etc) a vector in $\mathbb{R}^d$ where $d$ might be any integer (typically somewhere between 100 and 1000). We might hope the following happens
+
+> if two words are close in meaning then their vectors are close together and vice versa.
+
+The word2vec algorithm takes a large corpus of text (e.g. [wikipedia](http://mattmahoney.net/dc/textdata)) uses a [neural network](http://www.deeplearningbook.org/) to assign each word in the corpus a vector. For a more indepth explaination see [**TensorFlow's word2vec tutorial**](https://www.tensorflow.org/tutorials/word2vec). You do not need to understand neural networks to do this project!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -199,6 +199,8 @@ See [**this document for the final project description**](final_project/descript
 |techincal documents | 5/2|
 |blog post | 5/9 |
 
+I've posted some ideas for project ideas in [this document](final_project/project_ideas.html).
+
 
 # **Additional resources**
 
