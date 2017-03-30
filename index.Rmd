@@ -32,7 +32,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 | January 26 | if/else, loops, functions|[intro programming](notes/programming/prog_notes.html) |[intro prog](slides/intro_prog.html) |
 | January 31 |vectors, lists and eda |[more prog](notes/programming/prog_notes.html) and [EDA](notes/EDA/EDA.html) | [intro prog](slides/intro_prog.html) and [EDA](slides/EDA.html)|
 |February 2| spread, gather |[tidy data](notes/tidy_data/tidy_data.html) | |
-|February 7| inner, outer joins | | [joins](slides/joins.pdf)|
+|February 7| inner, outer joins ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/)) | | [joins](slides/joins.pdf)|
 |February 9| match, extract, replace with `stringr`| [regular expressions](notes/strings/strings.html) |[regex](slides/regex.html) |
 |February 14| look ahead/behinds|[regular expressions](notes/strings/strings.html) | |
 |February 16| | | |
@@ -45,13 +45,13 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |March 21|support vector machine, kernels| [more classification](notes/more_classification/more_classification.html) | |
 |March 23| |[more classification](notes/more_classification/more_classification.html) |[more classification](slides/slides_more_classification.html) |
 |March 28| more classification| [custom viz](notes/custom_viz/custom_viz.html) | |
-|March 30| APIs| | |
+|March 30| APIs ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/))| | |
 |April 4| | | |
 |April 6| | | |
-|April 11| speaker Dan Yang | | |
+|April 11| guest Dan Yang | | |
 |April 13| | | |
-|April 18| speaker Lucia Gjeltema| | |
-|April 20| | | |
+|April 18| guest Lucia Gjeltema| | |
+|April 20| guest [Ryan Thornburg](https://ryanthornburg.com/) | | |
 |April 25| | | |
 |April 27| | | |
 
