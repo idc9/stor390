@@ -28,7 +28,6 @@ library(tidyverse)
 
 # you should keep your API key a secret
 my_key <- 'XXXXXXX' # copy and paste your API key here
-my_key <- 'AIzaSyAW--YNqKDQButqmt3lRtVktT0TtoRpD7s' #TODO: delete me before relasing publicly
 ```
 
 
