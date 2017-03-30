@@ -285,8 +285,8 @@ nearest_centroid &lt;- function(train_x, train_y, test_x){
 
 
 nearest_centroid(train_x, train_y, test_x)</code></pre>
-<p><strong>Hint</strong>: You can do this two ways: either find the closest class mean or use the <a href="https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier">linear classifier definition</a>. If you do the latter you might want to write a helper function that comptues the normal vector <span class="math inline">\(\mathbf{w}\)</span> and intercept <span class="math inline">\(b\)</span>.</p>
-<p>You can change the function arguments (e.g. you might want to input the full <code>train</code> data etc) but the function should return a vector of predictions for each test point.</p>
+<p>You can write this function many different ways – if you do it another way than above that’s fine (as long as it works!).</p>
+<p>You will get <strong>3 bonus points on this assignment if you use the <code>apply</code> function</strong>. For example code using the <code>apply()</code> function see <a href="https://idc9.github.io/stor390/notes/classification/classification.html#programtically">this section of the notes</a> and/or read <a href="https://www.datacamp.com/community/tutorials/r-tutorial-apply-family#gs.fESyrdw">this tutorial</a>.</p>
 <p><strong>3b</strong>. Using the <code>nearest_centroid</code> function compute the training and test set error for the Human Activity Recognition dataset.</p>
 </div>
 <div id="support-vector-machine" class="section level1">

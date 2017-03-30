@@ -207,9 +207,10 @@ nearest_centroid <- function(train_x, train_y, test_x){
 nearest_centroid(train_x, train_y, test_x)
 ```
 
-**Hint**: You can do this two ways: either find the closest class mean or use the [linear classifier definition](https://idc9.github.io/stor390/notes/classification/classification.html#nc_is_a_linear_classifier). If you do the latter you might want to write a helper function that comptues the normal vector $\mathbf{w}$ and intercept $b$.
+You can write this function many different ways -- if you do it another way than above that's fine (as long as it works!). 
 
-You can change the function arguments (e.g. you might want to input the full `train` data etc) but the function should return a vector of predictions for each test point.
+You will get **3 bonus points on this assignment if you use the `apply` function**. For example code using the `apply()` function see [this section of the notes](https://idc9.github.io/stor390/notes/classification/classification.html#programtically) and/or read [this tutorial](https://www.datacamp.com/community/tutorials/r-tutorial-apply-family#gs.fESyrdw). 
+
 
 **3b**. Using the `nearest_centroid` function compute the training and test set error for the Human Activity Recognition dataset.
 
