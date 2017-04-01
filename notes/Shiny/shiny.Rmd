@@ -1,0 +1,36 @@
+---
+title: "**Shiny**"
+subtitle: "Introduction to web application development with Shiny"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+
+
+This lecture will cover
+
+- first Shiny app
+- beer to burpees app
+- the basics of reactivity
+- renderUI
+- advanced: file uploading & downloading
+
+
+# **Hello Shiny!**
+
+```{r, eval=FALSE}
+if (!require('shiny')) install.packages("shiny")
+shiny::runGitHub("shiny-examples", "rstudio", subdir = "001-hello")
+```
+
+
+
+# **Additional materials**
+
+* [RStudio Webinar - How to start with Shiny – Part 1](https://www.rstudio.com/resources/webinars/how-to-start-with-shiny-part-1/)
+* [RStudio Shiny Examples](https://github.com/rstudio/shiny-examples)
+* [Show Me Shiny App Gallery](https://www.showmeshiny.com/)
