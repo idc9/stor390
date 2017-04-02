@@ -221,18 +221,27 @@ div.tocify {
 </div>
 
 
-<p>This lecture will cover</p>
+<p>This lecture will cover (<strong>list in progress</strong>)</p>
 <ul>
 <li>first Shiny app</li>
 <li>beer to burpees app</li>
 <li>the basics of reactivity</li>
 <li>renderUI</li>
-<li>advanced: file uploading &amp; downloading</li>
+<li>advanced:
+<ul>
+<li>file uploading &amp; downloading</li>
+<li>pdf/html/word generation</li>
+</ul></li>
 </ul>
+<p>You can make interactive web applications easily and entirely in R with Shiny.</p>
 <div id="hello-shiny" class="section level1">
 <h1><strong>Hello Shiny!</strong></h1>
+<p>Running the code below in the R console will start up a simple Shiny app that plots a histogram and lets the user choose the number of bins in the histogram using a slider. The code that powers the app is included, and relevant parts of the code will be highlighted yellow as you interact with the app.</p>
 <pre class="r"><code>if (!require('shiny')) install.packages(&quot;shiny&quot;)
 shiny::runGitHub(&quot;shiny-examples&quot;, &quot;rstudio&quot;, subdir = &quot;001-hello&quot;)</code></pre>
+</div>
+<div id="key-components-of-a-shiny-app" class="section level1">
+<h1><strong>Key components of a Shiny app</strong></h1>
 </div>
 <div id="additional-materials" class="section level1">
 <h1><strong>Additional materials</strong></h1>

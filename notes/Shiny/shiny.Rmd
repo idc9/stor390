@@ -11,22 +11,35 @@ output:
 
 
 
-This lecture will cover
+This lecture will cover (**list in progress**)
 
 - first Shiny app
 - beer to burpees app
 - the basics of reactivity
 - renderUI
-- advanced: file uploading & downloading
+- advanced: 
+    - file uploading & downloading
+    - pdf/html/word generation
+
+
+
+You can make interactive web applications easily and entirely in R with Shiny.
 
 
 # **Hello Shiny!**
+
+Running the code below in the R console will start up a simple Shiny app that
+plots a histogram and lets the user choose the number of bins in the histogram 
+using a slider.  The code that powers the app is included, and relevant parts 
+of the code will be highlighted yellow as you interact with the app.
+
 
 ```{r, eval=FALSE}
 if (!require('shiny')) install.packages("shiny")
 shiny::runGitHub("shiny-examples", "rstudio", subdir = "001-hello")
 ```
 
+# **Key components of a Shiny app**
 
 
 # **Additional materials**
