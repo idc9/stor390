@@ -11,6 +11,11 @@ output:
 
 
 
+You can make interactive web applications easily and entirely in R with Shiny.
+Shiny apps are a great way to share your analysis with others without them having to 
+run any R themselves.
+
+
 This lecture will cover (**list in progress**)
 
 - first Shiny app
@@ -20,10 +25,11 @@ This lecture will cover (**list in progress**)
 - advanced: 
     - file uploading & downloading
     - pdf/html/word generation
+    - database connection
+    - modules
 
 
-
-You can make interactive web applications easily and entirely in R with Shiny.
+.
 
 
 # **Hello Shiny!**
@@ -36,10 +42,45 @@ of the code will be highlighted yellow as you interact with the app.
 
 ```{r, eval=FALSE}
 if (!require('shiny')) install.packages("shiny")
-shiny::runGitHub("shiny-examples", "rstudio", subdir = "001-hello")
+runExample("01_hello")
 ```
 
 # **Key components of a Shiny app**
+
+A Shiny app is composed of two fundamental parts:
+
+- **ui** - This codes the __user interface__ that controls the layout and appearance of the app.
+- **server** - This codes the computations and plots that show up in the user interface.
+
+## File structure
+
+These two parts can either be included in one file called **app.R** or 
+in two separate files called **ui.R** and **server.R**.  Both methods work
+equivalently, and it's a matter of preference which one you choose and may 
+depend on if your app is very short or long.
+
+This is the bare minimum code (it does nothing!) if the app is on one **app.R** file:
+
+```{r, eval=FALSE}
+library(shiny)
+ui <- fluidPage()
+server <- function(input, output) {}
+shinyApp(ui = ui, server = server)
+```
+
+And as you may suspect already, for two separate files, **ui.R** will contain
+
+```{r, eval=FALSE}
+library(shiny)
+ui <- fluidPage()
+```
+
+and **server.R** has
+
+```{r, eval=FALSE}
+library(shiny)
+server <- function(input, output) {}
+```
 
 
 # **Additional materials**
@@ -47,3 +88,12 @@ shiny::runGitHub("shiny-examples", "rstudio", subdir = "001-hello")
 * [RStudio Webinar - How to start with Shiny – Part 1](https://www.rstudio.com/resources/webinars/how-to-start-with-shiny-part-1/)
 * [RStudio Shiny Examples](https://github.com/rstudio/shiny-examples)
 * [Show Me Shiny App Gallery](https://www.showmeshiny.com/)
+* [Building Shiny apps - an interactive tutorial](http://deanattali.com/blog/building-shiny-apps-tutorial/)
+
+
+
+
+
+
+
+

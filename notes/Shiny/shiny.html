@@ -221,6 +221,7 @@ div.tocify {
 </div>
 
 
+<p>You can make interactive web applications easily and entirely in R with Shiny. Shiny apps are a great way to share your analysis with others without them having to run any R themselves.</p>
 <p>This lecture will cover (<strong>list in progress</strong>)</p>
 <ul>
 <li>first Shiny app</li>
@@ -231,17 +232,39 @@ div.tocify {
 <ul>
 <li>file uploading &amp; downloading</li>
 <li>pdf/html/word generation</li>
+<li>database connection</li>
+<li>modules</li>
 </ul></li>
 </ul>
-<p>You can make interactive web applications easily and entirely in R with Shiny.</p>
+<p>.</p>
 <div id="hello-shiny" class="section level1">
 <h1><strong>Hello Shiny!</strong></h1>
 <p>Running the code below in the R console will start up a simple Shiny app that plots a histogram and lets the user choose the number of bins in the histogram using a slider. The code that powers the app is included, and relevant parts of the code will be highlighted yellow as you interact with the app.</p>
 <pre class="r"><code>if (!require('shiny')) install.packages(&quot;shiny&quot;)
-shiny::runGitHub(&quot;shiny-examples&quot;, &quot;rstudio&quot;, subdir = &quot;001-hello&quot;)</code></pre>
+runExample(&quot;01_hello&quot;)</code></pre>
 </div>
 <div id="key-components-of-a-shiny-app" class="section level1">
 <h1><strong>Key components of a Shiny app</strong></h1>
+<p>A Shiny app is composed of two fundamental parts:</p>
+<ul>
+<li><strong>ui</strong> - This codes the <strong>user interface</strong> that controls the layout and appearance of the app.</li>
+<li><strong>server</strong> - This codes the computations and plots that show up in the user interface.</li>
+</ul>
+<div id="file-structure" class="section level2">
+<h2>File structure</h2>
+<p>These two parts can either be included in one file called <strong>app.R</strong> or in two separate files called <strong>ui.R</strong> and <strong>server.R</strong>. Both methods work equivalently, and it’s a matter of preference which one you choose and may depend on if your app is very short or long.</p>
+<p>This is the bare minimum code (it does nothing!) if the app is on one <strong>app.R</strong> file:</p>
+<pre class="r"><code>library(shiny)
+ui &lt;- fluidPage()
+server &lt;- function(input, output) {}
+shinyApp(ui = ui, server = server)</code></pre>
+<p>And as you may suspect already, for two separate files, <strong>ui.R</strong> will contain</p>
+<pre class="r"><code>library(shiny)
+ui &lt;- fluidPage()</code></pre>
+<p>and <strong>server.R</strong> has</p>
+<pre class="r"><code>library(shiny)
+server &lt;- function(input, output) {}</code></pre>
+</div>
 </div>
 <div id="additional-materials" class="section level1">
 <h1><strong>Additional materials</strong></h1>
@@ -249,6 +272,7 @@ shiny::runGitHub(&quot;shiny-examples&quot;, &quot;rstudio&quot;, subdir = &quot
 <li><a href="https://www.rstudio.com/resources/webinars/how-to-start-with-shiny-part-1/">RStudio Webinar - How to start with Shiny – Part 1</a></li>
 <li><a href="https://github.com/rstudio/shiny-examples">RStudio Shiny Examples</a></li>
 <li><a href="https://www.showmeshiny.com/">Show Me Shiny App Gallery</a></li>
+<li><a href="http://deanattali.com/blog/building-shiny-apps-tutorial/">Building Shiny apps - an interactive tutorial</a></li>
 </ul>
 </div>
 
