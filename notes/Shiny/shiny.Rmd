@@ -26,6 +26,7 @@ This lecture will cover (**list in progress**)
 - beer to burpees app
 - the basics of reactivity
 - renderUI
+- interactive visualization
 - advanced: 
     - file uploading & downloading
     - pdf/html/word generation
@@ -73,23 +74,29 @@ if the app is on one **app.R** file:
 
 ```{r, eval=FALSE}
 library(shiny)
+
 ui <- fluidPage()
 server <- function(input, output) {}
+
 shinyApp(ui = ui, server = server)
 ```
 
-And as you may suspect already, for two separate files, **ui.R** will contain
+For two separate files, **ui.R** will contain
 
 ```{r, eval=FALSE}
 library(shiny)
-ui <- fluidPage()
+
+shinyUI(fluidPage(
+))
 ```
 
 and **server.R** has
 
 ```{r, eval=FALSE}
 library(shiny)
-server <- function(input, output) {}
+
+shinyServer(function(input, output) {
+})
 ```
 
 If the two files are stored in a directory called `my_app`, then you can run the

@@ -70,7 +70,7 @@ h6 {
 }
 </style>
 
-<link href="data:text/css;charset=utf-8,div%20img%20%7B%0Aborder%3A%201px%20solid%20%23999%3B%0Abox%2Dshadow%3A%201px%202px%205px%200%20%23000000%3B%0A%7D" rel="stylesheet" type="text/css" />
+<link href="data:text/css;charset=utf-8,div%20img%20%7B%0Abox%2Dshadow%3A%201px%202px%205px%200%20%23000000%3B%0A%7D" rel="stylesheet" type="text/css" />
 
 </head>
 
@@ -229,6 +229,7 @@ div.tocify {
 <li>beer to burpees app</li>
 <li>the basics of reactivity</li>
 <li>renderUI</li>
+<li>interactive visualization</li>
 <li>advanced:
 <ul>
 <li>file uploading &amp; downloading</li>
@@ -260,15 +261,21 @@ runExample(&quot;01_hello&quot;)</code></pre>
 <p>These two parts can either be included in one file called <strong>app.R</strong> or in two separate files called <strong>ui.R</strong> and <strong>server.R</strong>. Both methods work equivalently, and it’s a matter of preference which one you choose and may depend on if your app is very short or long.</p>
 <p>This is the bare minimum code (it does nothing - a blank page shows up) if the app is on one <strong>app.R</strong> file:</p>
 <pre class="r"><code>library(shiny)
+
 ui &lt;- fluidPage()
 server &lt;- function(input, output) {}
+
 shinyApp(ui = ui, server = server)</code></pre>
-<p>And as you may suspect already, for two separate files, <strong>ui.R</strong> will contain</p>
+<p>For two separate files, <strong>ui.R</strong> will contain</p>
 <pre class="r"><code>library(shiny)
-ui &lt;- fluidPage()</code></pre>
+
+shinyUI(fluidPage(
+))</code></pre>
 <p>and <strong>server.R</strong> has</p>
 <pre class="r"><code>library(shiny)
-server &lt;- function(input, output) {}</code></pre>
+
+shinyServer(function(input, output) {
+})</code></pre>
 <p>If the two files are stored in a directory called <code>my_app</code>, then you can run the app with:</p>
 <pre class="r"><code>runApp(&quot;my_app&quot;)</code></pre>
 <p>Extra: if you want your code to show up alongside your app like in the example, then change the display mode to <code>showcase</code>.</p>
