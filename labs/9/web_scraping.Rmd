@@ -1,0 +1,41 @@
+---
+title: "**Lab 9: web scraping**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+This lab will give you practice with 
+
+- web scraping with the `rvest` package
+- twitter's API with the `rtweet` package
+
+```{r, warning=FALSE, message=F}
+library(rvest)
+library(stringr)
+```
+
+The lab is due: 
+
+# **Q1: NYT**
+
+Use the `rvest` package to get a list of all the story titles appearing on the NTY homepage: [https://www.nytimes.com/](https://www.nytimes.com/).
+
+
+```{r, eval=F}
+
+# some code to get articles titles
+article_titles <-
+    
+# print out the first 10 titles so the grader can tell your code ran
+article_titles[1:10]
+```
+
+# **Q2: twitter**
+TODO: set parameters
+
+Use the `rtweet` package to scrape twitter and answer the following question. How many of **USER**'s most recent **N** tweets mention the word **WORD**.
+

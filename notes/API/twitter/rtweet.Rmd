@@ -1,0 +1,99 @@
+---
+title: "rtweets"
+output: html_document
+---
+
+
+The [rtweets](https://github.com/mkearney/rtweet) package makes it easy to scrape twitter.
+
+- [Getting started instructions](https://mkearney.github.io/rtweet/articles/auth.html)
+
+- Additional example code from the [vignette](https://cran.r-project.org/web/packages/rtweet/vignettes/intro.html) for more example code.
+
+
+```{r, message=F, warning=F}
+library(rtweet)
+
+library(tidyverse)
+```
+
+
+
+# **initialize twitter_token**
+
+```{r, eval=F}
+consumer_key <- "YYYYYYYYYYY"
+consumer_secret <- "XXXXXXXXXXXX"
+appname <- 'stor390'
+
+twitter_token <- create_token(app = appname,
+                            consumer_key = consumer_key,
+                            consumer_secret = consumer_secret)
+
+```
+
+
+```{r, echo=F}
+consumer_key <- "AjX70tmIt3Ts08YhRiwigc8dK"
+consumer_secret <- "qaKkrHFWNMQ0N9PwbPo1lC80mnZ6CnvDnudNo3gfLThaN94MP5"
+appname <- 'stor390'
+
+twitter_token <- create_token(app = appname,
+                            consumer_key = consumer_key,
+                            consumer_secret = consumer_secret)
+```
+# **Search twitter**
+
+```{r}
+search_results <- search_tweets("data science")
+```
+
+```{r, echo=F}
+# tibbles print better
+as_tibble(search_results)
+```
+
+
+```{r}
+search_results$text[1]
+```
+
+# **User's timeline**
+
+```{r}
+timelime <- get_timeline("UNC_Basketball")
+```
+
+```{r, echo=F}
+# tibbles print better
+as_tibble(timelime)
+```
+
+
+# **Look up a user**
+
+```{r}
+user <- lookup_users('UNC_basketball')
+```
+
+```{r, echo=F}
+# tibbles print better
+as_tibble(user)
+```
+
+# **Recent trends**
+
+```{r}
+trends <- get_trends()
+```
+
+```{r, echo=F}
+# tibbles print better
+as_tibble(trends)
+```
+
+
+
+
+
+
