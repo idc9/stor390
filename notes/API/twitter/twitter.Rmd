@@ -1,0 +1,11 @@
+---
+title: "**Twitter API**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+This brief lecture demonstrates how to use the [twitteR]() package to scrape data from Twitter.

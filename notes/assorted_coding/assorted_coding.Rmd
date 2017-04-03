@@ -1,0 +1,14 @@
+---
+title: "**Assorted coding topics**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+
+# apply functions
+
+# Try catch
