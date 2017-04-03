@@ -4,11 +4,15 @@ subtitle: "Introduction to web application development with Shiny"
 author: "[STOR 390](https://idc9.github.io/stor390/)"
 output:
   html_document:
+    css: styles.css
     theme: cosmo
     toc: yes
     toc_float: yes
 ---
 
+```{r setup, include=FALSE, warning=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
 
 
 You can make interactive web applications easily and entirely in R with Shiny.
@@ -45,6 +49,11 @@ if (!require('shiny')) install.packages("shiny")
 runExample("01_hello")
 ```
 
+
+![](hello_shiny_screenshot.jpeg)
+
+
+
 # **Key components of a Shiny app**
 
 A Shiny app is composed of two fundamental parts:
@@ -59,7 +68,8 @@ in two separate files called **ui.R** and **server.R**.  Both methods work
 equivalently, and it's a matter of preference which one you choose and may 
 depend on if your app is very short or long.
 
-This is the bare minimum code (it does nothing!) if the app is on one **app.R** file:
+This is the bare minimum code (it does nothing - a blank page shows up) 
+if the app is on one **app.R** file:
 
 ```{r, eval=FALSE}
 library(shiny)
@@ -82,14 +92,35 @@ library(shiny)
 server <- function(input, output) {}
 ```
 
+If the two files are stored in a directory called `my_app`, then you can run the
+app with:
+
+```{r, eval=FALSE}
+runApp("my_app")
+```
+
+Extra: if you want your code to show up alongside your app like in the example, 
+then change the display mode to `showcase`.
+
+```{r}
+runApp("my_app", display.mode = "showcase")
+```
+
+
+# **App layout**
+
+
+
+
 
 # **Additional materials**
 
+* [RStudio Teach Yourself Shiny](https://shiny.rstudio.com/tutorial/)
 * [RStudio Webinar - How to start with Shiny – Part 1](https://www.rstudio.com/resources/webinars/how-to-start-with-shiny-part-1/)
 * [RStudio Shiny Examples](https://github.com/rstudio/shiny-examples)
 * [Show Me Shiny App Gallery](https://www.showmeshiny.com/)
 * [Building Shiny apps - an interactive tutorial](http://deanattali.com/blog/building-shiny-apps-tutorial/)
-
+* [RStudio Reactivity Tutorial](https://github.com/rstudio/reactivity-tutorial)
 
 
 
