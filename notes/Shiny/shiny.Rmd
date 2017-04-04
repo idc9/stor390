@@ -215,6 +215,23 @@ There are several standard widgets available in Shiny.  You can play with them a
 | submitButton |	A submit button |
 | textInput	| A field to enter text |
 
+The first two arguments to a widget function is always
+
+- **inputId**: Give an unique id to the widget so that the server side knows how to access it
+- **label**: This is the text that shows up next to the widget to guide the user.
+
+The rest of the arguments depend on the function of the widget.  For example, 
+the `sliderInput` from the earlier example requires the setting of the
+minimum and maximum value of the slider, as well as the value it should be set
+as default when the user loads the app.
+
+```{r}
+sliderInput(inputId = "bins",
+            label = "Number of bins:",
+            min = 1,
+            max = 50,
+            value = 30)
+```
 
 
 
@@ -230,6 +247,26 @@ There are several standard widgets available in Shiny.  You can play with them a
 | textOutput | text |
 | uiOutput | raw HTML |
 | verbatimTextOutput | text |
+
+The one required argument to an output function is the `outputId`, which helps
+connect it to the render function on the server side that generates the output.  
+
+On the **ui** side:
+
+```{r}
+plotOutput(outputId = "distPlot")
+```
+
+On the **server** side:
+
+```{r}
+output$distPlot <- renderPlot({
+    
+  [...put your plotting code here...]
+    
+})
+```
+
 
 
 ## Server render functions
