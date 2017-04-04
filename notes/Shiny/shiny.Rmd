@@ -4,6 +4,7 @@ subtitle: "Introduction to web application development with Shiny"
 author: "[STOR 390](https://idc9.github.io/stor390/)"
 output:
   html_document:
+    runtime: shiny
     css: styles.css
     theme: cosmo
     toc: yes
@@ -142,12 +143,11 @@ the same outputId `distPlot` as specified in `plotOutput`.  The user-supplied nu
 bins from the slider is available in the `input` vector under the same inputId `bins`
 as in `sliderInput`.
 
-```{r}
+```{r, eval = TRUE}
 library(shiny)
+library(ggplot2)
 
 ui <- fluidPage(
-    
-    titlePanel("Hello Shiny!"),
     
     # Sidebar with a slider input for the number of bins
     sidebarLayout(
@@ -185,7 +185,8 @@ server <- function(input, output) {
     
 }
 
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server,
+         options = list(height = 500))
 ```
 
 
@@ -219,6 +220,28 @@ shinyApp(ui = ui, server = server)
 # **App layout**
 
 
+
+```{r, eval = TRUE, include = FALSE}
+library(shiny)
+
+shinyApp(
+  
+  ui = fluidPage(
+    selectInput("region", "Region:", 
+                choices = colnames(WorldPhones)),
+    plotOutput("phonePlot")
+  ),
+  
+  server = function(input, output) {
+    output$phonePlot <- renderPlot({
+      barplot(WorldPhones[,input$region]*1000, 
+              ylab = "Number of Telephones", xlab = "Year")
+    })
+  },
+  
+  options = list(height = 500)
+)
+```
 
 
 
