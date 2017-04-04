@@ -284,7 +284,7 @@ output$distPlot <- renderPlot({
 
 One of the more powerful render functions is renderUI().  
 
-
+[TODO]
 
 
 
@@ -353,10 +353,55 @@ shinyApp(ui = ui, server = server)
 
 ## shinydashboard
 
+A popular and easy way to create dashboard apps is with 
+[shinydashboard](https://rstudio.github.io/shinydashboard/).
+
+You need to specify three parts:
+
+- header
+- sidebar
+- body
+
+Here's the basic skeleton of how to specify these parts:
+
+```{r}
+library(shiny)
+library(shinydashboard)
+
+ui <- dashboardPage(
+    dashboardHeader(),
+    dashboardSidebar(),
+    dashboardBody()
+)
+
+server <- function(input, output) { }
+
+shinyApp(ui, server)
+```
+
+Here's an example with some parts filled out:
+
+```{r}
+library(shiny)
+library(shinydashboard)
+
+ui <- dashboardPage(
+    dashboardHeader(title = "My Dashboard"),
+    dashboardSidebar(
+        sidebarMenu(
+            menuItem("About", tabName = "about_tab", icon = icon("info"))
+        )
+    ),
+    dashboardBody("This is the body!")
+)
+
+server <- function(input, output) { }
+
+shinyApp(ui, server)
+```
 
 
-
-
+![shinydashboard](shinydashboard_filled.png)
 
 
 
