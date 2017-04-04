@@ -410,6 +410,52 @@ shinyApp(ui, server)
 
 
 
+# **Interactive Visualization**
+
+
+There are several well-developed packages for generating interactive
+graphics in a Shiny app:
+
+- [Shiny built-in support for interacting with static plots](https://shiny.rstudio.com/articles/plot-interaction.html)
+- [plotly](https://plot.ly/)
+- [Leaflet](https://rstudio.github.io/leaflet/shiny.html) for interactive maps
+- [htmlwidgets for R](http://www.htmlwidgets.org/) - use JavaScript visualization libraries & [Crosstalk](http://rstudio.github.io/crosstalk/) - add-on to htmlwidgets
+
+
+```{r, eval=TRUE}
+suppressMessages(library(plotly))
+library(shiny)
+
+ui <- fluidPage(
+  plotlyOutput("plot"),
+  verbatimTextOutput("hover"),
+  verbatimTextOutput("click")
+)
+
+server <- function(input, output) {
+
+  output$plot <- renderPlotly({
+    plot_ly(x = rnorm(10), y = rnorm(10), z = rnorm(10), type = "scatter3d")
+  })
+
+  output$hover <- renderPrint({
+    d <- event_data("plotly_hover")
+    if (is.null(d)) "Hover events appear here (unhover to clear)" else d
+  })
+
+  output$click <- renderPrint({
+    d <- event_data("plotly_click")
+    if (is.null(d)) "Click events appear here (double-click to clear)" else d
+  })
+
+}
+
+shinyApp(ui, server,
+         options = list(height = 800))
+```
+
+
+
 
 
 ```{r, eval = TRUE, include = FALSE}
@@ -445,6 +491,7 @@ shinyApp(
 * [Show Me Shiny App Gallery](https://www.showmeshiny.com/)
 * [Building Shiny apps - an interactive tutorial](http://deanattali.com/blog/building-shiny-apps-tutorial/)
 * [RStudio Reactivity Tutorial](https://github.com/rstudio/reactivity-tutorial)
+* [Plotly Shiny Gallery](https://plot.ly/r/shiny-gallery/)
 
 
 
