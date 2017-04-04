@@ -410,7 +410,11 @@ shinyApp(ui, server)
 
 
 
-# **Interactive Visualization**
+# **Getting data in and out**
+
+
+
+# **Interactive visualization**
 
 
 There are several well-developed packages for generating interactive
@@ -420,6 +424,7 @@ graphics in a Shiny app:
 - [plotly](https://plot.ly/)
 - [Leaflet](https://rstudio.github.io/leaflet/shiny.html) for interactive maps
 - [htmlwidgets for R](http://www.htmlwidgets.org/) - use JavaScript visualization libraries & [Crosstalk](http://rstudio.github.io/crosstalk/) - add-on to htmlwidgets
+- [ggvis](http://ggvis.rstudio.com/interactivity.html)
 
 
 ```{r, eval=TRUE}
@@ -482,9 +487,23 @@ shinyApp(
 
 
 
+# **More cool Shiny stuff**
+
+
+## DataTables
+
+## Dynamic document generation (pdf/html/word)
+
+
+## Shiny modules
+
+
+
+
 
 # **Additional materials**
 
+* [RStudio Shiny Cheatsheet](https://www.rstudio.com/wp-content/uploads/2016/01/shiny-cheatsheet.pdf)
 * [RStudio Teach Yourself Shiny](https://shiny.rstudio.com/tutorial/)
 * [RStudio Webinar - How to start with Shiny – Part 1](https://www.rstudio.com/resources/webinars/how-to-start-with-shiny-part-1/)
 * [RStudio Shiny Examples](https://github.com/rstudio/shiny-examples)
@@ -492,6 +511,7 @@ shinyApp(
 * [Building Shiny apps - an interactive tutorial](http://deanattali.com/blog/building-shiny-apps-tutorial/)
 * [RStudio Reactivity Tutorial](https://github.com/rstudio/reactivity-tutorial)
 * [Plotly Shiny Gallery](https://plot.ly/r/shiny-gallery/)
+* [Persistent data storage](https://shiny.rstudio.com/articles/persistent-data-storage.html)
 
 
 
