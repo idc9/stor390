@@ -24,8 +24,8 @@ run any R themselves.
 This lecture will cover (**list in progress**)
 
 - first Shiny app
-- beer to burpees app
 - the basics of reactivity
+- beer to burpees app
 - renderUI
 - interactive visualization
 - advanced: 
@@ -126,14 +126,14 @@ your apps come alive when you build reactive objects that interact with the user
 You construct a reactive object in two parts:
 
 - **ui**: In the user-interface or ui part of your code, specify the type of object you want to include.
-This can be an _input_ object like a checkbox, drop-down menu or even a spreadsheet, 
+This can be an _input_ or _widget_ object like a checkbox, drop-down menu or even a spreadsheet, 
 or an _output_ object like a plot, a table or just text display.
 - **server**: In the server part of your code, you code this object up.
 
 
 Here's the same example as before (with the histogram code rewritten with ggplot2).
 
-In the **ui** section below, there is an input object `sliderInput` that codes for 
+In the **ui** section below, there is an input/widget object `sliderInput` that codes for 
 a slider that the user can use to choose the number of bins in the histogram,
 and there's an output object `plotObject` that displays the histogram.
 
@@ -190,6 +190,35 @@ shinyApp(ui = ui, server = server,
 ```
 
 
+Below are tables of the possible input/output and render functions available to 
+construct reactive objects in the app with.  
+
+## UI input functions or Shiny widgets
+
+Shiny widgets are web elements that enable your user to interact with the app.
+There are several standard widgets available in Shiny.  You can play with them at the [Shiny widgets gallery](http://shiny.rstudio.com/gallery/widget-gallery.html).
+
+![Shiny Widgets Gallery](shiny_widgets.png)
+
+| input function | widget |
+|----------------|---------|
+| actionButton | Action Button |
+| checkboxGroupInput | A group of check boxes |
+| checkboxInput | A single check box |
+| dateInput | A pair of calendars for selecting a date range |
+| fileInput | A file upload control wizard |
+| helpText | Help text that can be added to an input form |
+| numericInput |	A field to enter numbers |
+| radioButtons |	A set of radio buttons |
+| selectInput |	A box with choices to select from |
+| sliderInput |	A slider bar |
+| submitButton |	A submit button |
+| textInput	| A field to enter text |
+
+
+
+
+
 ## UI output functions
 
 | output function | creates |
@@ -213,6 +242,12 @@ shinyApp(ui = ui, server = server,
 | renderTable | data frame, matrix, other table like structures |
 | renderText | character strings |
 | renderUI | a Shiny tag object or HTML |
+
+
+## renderUI 
+
+One of the more powerful render functions is renderUI().  
+
 
 
 
