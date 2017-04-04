@@ -297,6 +297,8 @@ and lot of iterations as you test different layouts on your users.
 
 ## Basic layout
 
+
+
 ```{r}
 library(shiny)
 
@@ -320,6 +322,32 @@ shinyApp(ui = ui, server = server)
 ![Basic app layout](shiny_layout.png)
 
 
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+    
+    titlePanel("title panel"),
+    
+    sidebarLayout(
+        sidebarPanel( "sidebar panel"),
+        mainPanel(tabsetPanel(
+            tabPanel("Plot", "put plot here!"),
+            tabPanel("Summary"),
+            tabPanel("Table")
+        )
+        )
+    )
+    
+)
+
+server <- function(input, output) {}
+
+shinyApp(ui = ui, server = server)
+```
+
+
+![Basic app layout with tabsets](shiny_tabsets.png)
 
 
 
