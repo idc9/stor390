@@ -263,6 +263,7 @@ runExample(&quot;01_hello&quot;)</code></pre>
 <pre class="r"><code>library(shiny)
 
 ui &lt;- fluidPage()
+
 server &lt;- function(input, output) {}
 
 shinyApp(ui = ui, server = server)</code></pre>
@@ -281,6 +282,61 @@ shinyServer(function(input, output) {
 <p>Extra: if you want your code to show up alongside your app like in the example, then change the display mode to <code>showcase</code>.</p>
 <pre class="r"><code>runApp(&quot;my_app&quot;, display.mode = &quot;showcase&quot;)</code></pre>
 </div>
+</div>
+<div id="basics-of-reactivity" class="section level1">
+<h1><strong>Basics of reactivity</strong></h1>
+<p>The coolness of Shiny apps comes from its use of reactivity. This means that your apps come alive when you build reactive objects that interact with the user.</p>
+<p>You construct a reactive object in two parts:</p>
+<ul>
+<li><strong>ui</strong>: In the user-interface or ui part of your code, specify the type of object you want to include. This can be an <em>input</em> object like a checkbox, drop-down menu or even a spreadsheet, or an <em>output</em> object like a plot, a table or just text display.</li>
+<li><strong>server</strong>: In the server part of your code, you code this object up.</li>
+</ul>
+<p>Here’s the same example as before (with the histogram code rewritten with ggplot2).</p>
+<p>In the <strong>ui</strong> section below, there is an input object <code>sliderInput</code> that codes for a slider that the user can use to choose the number of bins in the histogram, and there’s an output object <code>plotObject</code> that displays the histogram.</p>
+<p>In the <strong>server</strong> section below, the code that generates the histogram is returned in a <code>renderPlot</code> function that is saved to the <code>output</code> vector under the same outputId <code>distPlot</code> as specified in <code>plotOutput</code>. The user-supplied number of bins from the slider is available in the <code>input</code> vector under the same inputId <code>bins</code> as in <code>sliderInput</code>.</p>
+<pre class="r"><code>library(shiny)
+
+ui &lt;- fluidPage(
+    
+    titlePanel(&quot;Hello Shiny!&quot;),
+    
+    # Sidebar with a slider input for the number of bins
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput(inputId = &quot;bins&quot;,
+                        label = &quot;Number of bins:&quot;,
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
+        
+        # Show a plot of the generated distribution
+        mainPanel(
+            plotOutput(outputId = &quot;distPlot&quot;)
+        )
+    )
+    
+)
+
+server &lt;- function(input, output) {
+    
+    # Expression that generates a histogram. The expression is
+    # wrapped in a call to renderPlot to indicate that:
+    #
+    #  1) It is &quot;reactive&quot; and therefore should be automatically
+    #     re-executed when inputs change
+    #  2) Its output type is a plot
+    
+    output$distPlot &lt;- renderPlot({
+        
+        ggplot(faithful, aes(x = waiting)) +
+            geom_histogram(bins = input$bins, colour = &quot;white&quot;)
+        
+    })
+    
+}
+
+shinyApp(ui = ui, server = server)</code></pre>
 </div>
 <div id="app-layout" class="section level1">
 <h1><strong>App layout</strong></h1>

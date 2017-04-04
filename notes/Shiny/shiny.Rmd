@@ -76,6 +76,7 @@ if the app is on one **app.R** file:
 library(shiny)
 
 ui <- fluidPage()
+
 server <- function(input, output) {}
 
 shinyApp(ui = ui, server = server)
@@ -114,7 +115,86 @@ runApp("my_app", display.mode = "showcase")
 ```
 
 
+
+
+# **Basics of reactivity**
+
+The coolness of Shiny apps comes from its use of reactivity.  This means that 
+your apps come alive when you build reactive objects that interact with the user.
+
+You construct a reactive object in two parts:
+
+- **ui**: In the user-interface or ui part of your code, specify the type of object you want to include.
+This can be an _input_ object like a checkbox, drop-down menu or even a spreadsheet, 
+or an _output_ object like a plot, a table or just text display.
+- **server**: In the server part of your code, you code this object up.
+
+
+Here's the same example as before (with the histogram code rewritten with ggplot2).
+
+In the **ui** section below, there is an input object `sliderInput` that codes for 
+a slider that the user can use to choose the number of bins in the histogram,
+and there's an output object `plotObject` that displays the histogram.
+
+In the **server** section below, the code that generates the histogram is 
+returned in a `renderPlot` function that is saved to the `output` vector under
+the same outputId `distPlot` as specified in `plotOutput`.  The user-supplied number of
+bins from the slider is available in the `input` vector under the same inputId `bins`
+as in `sliderInput`.
+
+```{r}
+library(shiny)
+
+ui <- fluidPage(
+    
+    titlePanel("Hello Shiny!"),
+    
+    # Sidebar with a slider input for the number of bins
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput(inputId = "bins",
+                        label = "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
+        
+        # Show a plot of the generated distribution
+        mainPanel(
+            plotOutput(outputId = "distPlot")
+        )
+    )
+    
+)
+
+server <- function(input, output) {
+    
+    # Expression that generates a histogram. The expression is
+    # wrapped in a call to renderPlot to indicate that:
+    #
+    #  1) It is "reactive" and therefore should be automatically
+    #     re-executed when inputs change
+    #  2) Its output type is a plot
+    
+    output$distPlot <- renderPlot({
+        
+        ggplot(faithful, aes(x = waiting)) +
+            geom_histogram(bins = input$bins, colour = "white")
+        
+    })
+    
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+
+
+
+
+
 # **App layout**
+
 
 
 
