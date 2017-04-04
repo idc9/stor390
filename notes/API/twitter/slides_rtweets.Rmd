@@ -1,0 +1,86 @@
+---
+title: "Scrape twitter"
+subtitle: "rtweets"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+
+# rtweet
+
+https://www.rdocumentation.org/packages/rtweet/versions/0.3.0
+
+```{r, message=F, warning=F}
+library(rtweet)
+
+library(tidyverse)
+```
+
+# Make an app
+
+apps.twitter.com/
+
+# Set token
+
+```{r, eval=F}
+consumer_key <- "YYYYYYYYYYY"
+consumer_secret <- "XXXXXXXXXXXX"
+appname <- 'stor390'
+
+twitter_token <- create_token(app = appname,
+                            consumer_key = consumer_key,
+                            consumer_secret = consumer_secret)
+```
+
+
+# Search twitter
+
+```{r}
+search_results <- search_tweets("data science")
+```
+
+```{r, echo=F}
+# tibbles print better
+as_tibble(search_results)
+```
+
+
+
+# User's timeline
+
+```{r}
+timelime <- get_timeline("UNC_Basketball")
+```
+
+```{r, echo=F}
+# tibbles print better
+as_tibble(timelime)
+```
+
+
+# User's timeline
+
+```{r}
+# last five tweets
+timelime$text[1:5]
+```
+
+
+# Recent trends
+
+```{r}
+trends <- get_trends()
+```
+
+```{r, echo=F}
+# tibbles print better
+as_tibble(trends)
+```
+
+
+
+
+
+
+
+

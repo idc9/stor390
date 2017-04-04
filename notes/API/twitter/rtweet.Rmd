@@ -1,10 +1,14 @@
 ---
-title: "rtweets"
-output: html_document
+title: "**Scraping twitter with the rtweet package**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
 ---
 
-
-The [rtweets](https://github.com/mkearney/rtweet) package makes it easy to scrape twitter.
+The [rtweet](https://github.com/mkearney/rtweet) package makes it easy to scrape twitter. You fird need a twitter account and your access tokens (see instructions in the following link).
 
 - [Getting started instructions](https://mkearney.github.io/rtweet/articles/auth.html)
 
@@ -19,7 +23,7 @@ library(tidyverse)
 
 
 
-# **initialize twitter_token**
+# **set twitter token**
 
 ```{r, eval=F}
 consumer_key <- "YYYYYYYYYYY"
@@ -42,6 +46,7 @@ twitter_token <- create_token(app = appname,
                             consumer_key = consumer_key,
                             consumer_secret = consumer_secret)
 ```
+
 # **Search twitter**
 
 ```{r}
@@ -70,6 +75,12 @@ as_tibble(timelime)
 ```
 
 
+
+```{r}
+# last five tweets
+timelime$text[1:5]
+```
+
 # **Look up a user**
 
 ```{r}
@@ -91,7 +102,6 @@ trends <- get_trends()
 # tibbles print better
 as_tibble(trends)
 ```
-
 
 
 
