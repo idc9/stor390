@@ -322,6 +322,11 @@ shinyApp(ui = ui, server = server)
 ![Basic app layout](shiny_layout.png)
 
 
+## Basic layout with tabs
+
+Another nice way to organize a layout is through tabs:
+
+
 ```{r}
 library(shiny)
 
