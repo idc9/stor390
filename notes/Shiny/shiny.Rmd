@@ -189,6 +189,29 @@ shinyApp(ui = ui, server = server)
 ```
 
 
+## UI output functions
+
+| output function | creates |
+|-----------------|---------|
+| htmlOutput | raw HTML |
+| imageOutput | image |
+| plotOutput | plot |
+| tableOutput | table |
+| textOutput | text |
+| uiOutput | raw HTML |
+| verbatimTextOutput | text |
+
+
+## Server render functions
+
+| render function | creates |
+|-----------------|---------|
+| renderImage | images |
+| renderPlot | plots |
+| renderPrint | any printed output |
+| renderTable | data frame, matrix, other table like structures |
+| renderText | character strings |
+| renderUI | a Shiny tag object or HTML |
 
 
 

@@ -337,6 +337,84 @@ server &lt;- function(input, output) {
 }
 
 shinyApp(ui = ui, server = server)</code></pre>
+<div id="ui-output-functions" class="section level2">
+<h2>UI output functions</h2>
+<table>
+<thead>
+<tr class="header">
+<th>output function</th>
+<th>creates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>htmlOutput</td>
+<td>raw HTML</td>
+</tr>
+<tr class="even">
+<td>imageOutput</td>
+<td>image</td>
+</tr>
+<tr class="odd">
+<td>plotOutput</td>
+<td>plot</td>
+</tr>
+<tr class="even">
+<td>tableOutput</td>
+<td>table</td>
+</tr>
+<tr class="odd">
+<td>textOutput</td>
+<td>text</td>
+</tr>
+<tr class="even">
+<td>uiOutput</td>
+<td>raw HTML</td>
+</tr>
+<tr class="odd">
+<td>verbatimTextOutput</td>
+<td>text</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="server-render-functions" class="section level2">
+<h2>Server render functions</h2>
+<table>
+<thead>
+<tr class="header">
+<th>render function</th>
+<th>creates</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>renderImage</td>
+<td>images</td>
+</tr>
+<tr class="even">
+<td>renderPlot</td>
+<td>plots</td>
+</tr>
+<tr class="odd">
+<td>renderPrint</td>
+<td>any printed output</td>
+</tr>
+<tr class="even">
+<td>renderTable</td>
+<td>data frame, matrix, other table like structures</td>
+</tr>
+<tr class="odd">
+<td>renderText</td>
+<td>character strings</td>
+</tr>
+<tr class="even">
+<td>renderUI</td>
+<td>a Shiny tag object or HTML</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 <div id="app-layout" class="section level1">
 <h1><strong>App layout</strong></h1>
