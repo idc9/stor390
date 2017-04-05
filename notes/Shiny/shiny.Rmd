@@ -282,10 +282,59 @@ output$distPlot <- renderPlot({
 
 ## renderUI 
 
-One of the more powerful render functions is renderUI().  
+One of the more powerful render functions is renderUI() - it enables us to 
+generate dynamic UI, i.e. construct reactive objects that depend user input. 
+We illustrate how it works with a toy example that requires this function.
 
-[TODO]
+Let's say we are selecting colors for plotting in R, and we want to help the 
+user narrow down the choices through color families.
 
+If the user wants a red color, then the drop-down menu can display only the
+red options.  We can't put a `selectInput` drop down menu in **ui** when we 
+can't populate the choices argument with the correct list of colors that 
+depend on what the user chooses in the `radioButtons`.  This means that we need 
+to dynamically generate this `selectInput` inside `renderUI` (on **server** side)
+based on the user-chosen color family `input$color_family`.
+
+
+```{r, eval=TRUE}
+library(shiny)
+
+color_list <- list(red = c("tomato", "violetred", "firebrick"),
+                   green = c("chartreuse", "forestgreen", "olivedrab"),
+                   blue = c("navy", "dodgerblue", "torquoise"))
+
+ui <- fluidPage(
+    
+    radioButtons(inputId = "color_family",
+                 label = "Choose a color family",
+                 choices = c("red", "green", "blue")),
+    
+    uiOutput(outputId = "color_selector"),
+    
+    verbatimTextOutput(outputId = "color_chosen")
+    
+)
+
+server <- function(input, output) {
+    
+    output$color_selector <- renderUI({
+        
+        selectInput(inputId = "color",
+                    label = "Select color",
+                    choices = color_list[input$color_family])
+        
+    })
+        
+    output$color_chosen <- renderText({
+        paste("You chose this color:", input$color)
+    })
+    
+    
+}
+
+shinyApp(ui = ui, server = server)
+```
 
 
 # **App layout**
@@ -295,8 +344,8 @@ development.  The goal is to make an app that is intuitive and friendly to use
 so people will actually want to use it!  This requires thoughtful planning
 and lot of iterations as you test different layouts on your users.
 
-## Basic layout
 
+## Basic layout
 
 
 ```{r}
@@ -494,10 +543,13 @@ shinyApp(
 
 ## Dynamic document generation (pdf/html/word)
 
-
 ## Shiny modules
 
+## Hosting apps 
 
+- https://www.shinyapps.io/
+- cloud - Amazon
+- local server
 
 
 
