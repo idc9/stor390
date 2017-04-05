@@ -20,7 +20,7 @@ library(stringr)
 
 The lab is due: 
 
-# **Q1: NYT**
+# **Q1: scrape NYT homepage**
 
 Use the `rvest` package to get a list of all the story titles appearing on the NTY homepage: [https://www.nytimes.com/](https://www.nytimes.com/).
 
@@ -34,8 +34,6 @@ article_titles <-
 article_titles[1:10]
 ```
 
-# **Q2: twitter**
-TODO: set parameters
-
-Use the `rtweet` package to scrape twitter and answer the following question. How many of **USER**'s most recent **N** tweets mention the word **WORD**.
+# **Q2: scrape Hadley Wickham's twitter**
+Use the `rtweet` package to scrape twitter and answer the following question. How many of Hadley Wickham's most recent 100 tweets mention the word **data** (his twitter handle is @hadleywickham).
 
