@@ -8,8 +8,6 @@ output:
     toc_float: yes
 ---
 
-(This document may experience some minor revisions and I will add more details)
-
 You final project is to do a novel data analysis to answer a question and write about it. This can be interpreted broadly and the requirements are discussed below. 
 
 The rough outline of the project is: Start with a question. Find data that might get at that question. Play around with the data. Attempt to answer the question. Iterate. Communicate.
@@ -22,7 +20,7 @@ Your project should have one significant aspect to it. Examples might include,
 - a really compelling visualization
 - write a [shiny app](https://shiny.rstudio.com/)
 
-You will work in groups of 3 people, assigned by the instructor. See grading details below and [the group work policies document](group_work.html).
+You will work in groups of 3 people, assigned by the instructor. See below for grading details and the group work policies.
 
 # **Final deliverables**
 
@@ -66,8 +64,7 @@ The project will be graded on
     - How well do your findings support your conclusions? The evidence is inconclusive" is a very possible, and completely acceptable answer. 
 
 - Ambition
-    - You 
-    
+    - The project should take some creativity and effort i.e. should be more than a matter of copy/pasting code.    
     
 - Groupwork
     - You will anonomyously rate your team members and yourself on *team citizenship* (e.g. attends meetings, does what they promise, etc), *not* on ability. 
