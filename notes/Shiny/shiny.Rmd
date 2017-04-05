@@ -337,12 +337,6 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
-# **Reactive expressions**
-
-https://shiny.rstudio.com/tutorial/lesson6/
-
-[TODO]
-
 
 # **App layout**
 
@@ -470,7 +464,7 @@ shinyApp(ui, server)
 
 Now that we know how to set up an app, what are some ways to interact with data?
 
-## **global.R**
+## global.R
 
 Data can be loaded from files in a Shiny specific file called **global.R**.
 Anything run in that file will be available in the global environment, which means
@@ -484,6 +478,29 @@ Things that you can typically include in **global.R**:
 - constant variables `my_colors <- c("orange", "blue")`
 - helper functions that aren't Shiny reactive functions `calculate_percent <- function(...)`
 - database connnections `db_conn <- dplyr::src_postgres(...db_credentials...)`
+
+
+## Reactive expressions
+
+Reactive expressions are a way for your app to update efficiently when users
+interact with it.  They are a bit nuanced to use - here's the RStudio tutorial on them https://shiny.rstudio.com/tutorial/lesson6/. 
+
+In general, any code you put in a `render` function will continually be updated, 
+even if you don't necessarily need them to be rerun every single time.  This will
+slow down your app considerably.  If you want to use data inside a `render` function
+that does not need to be updated every time if `input` doesn't change, 
+then you can wrap your data inside a reactive expression that can be called inside `render`.
+The reactive expression will only recalculate if `input` has changed.
+
+[add example here]
+
+- You can create reactive expressions with `reactive({})`.
+- Reactive expressions depend on the status of `input` values or values from other reactive expressions.
+- You can access a reactive expression with its name followed by `()`.
+- You can only call a reactive expression within a `reactive` or `render` function.
+
+
+
 
 
 # **Interactive visualization**
