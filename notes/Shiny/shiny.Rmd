@@ -33,8 +33,8 @@ This lecture will cover (**list in progress**)
     - pdf/html/word generation
     - database connection
     - modules
-
-
+    - hosting apps
+    - reactivity overview
 
 
 # **Hello Shiny!**
@@ -113,6 +113,7 @@ then change the display mode to `showcase`.
 ```{r}
 runApp("my_app", display.mode = "showcase")
 ```
+
 
 
 
@@ -283,7 +284,7 @@ output$distPlot <- renderPlot({
 ## renderUI 
 
 One of the more powerful render functions is renderUI() - it enables us to 
-generate dynamic UI, i.e. construct reactive objects that depend user input. 
+generate dynamic UI, i.e. construct reactive objects that depend on user input. 
 We illustrate how it works with a toy example that requires this function.
 
 Let's say we are selecting colors for plotting in R, and we want to help the 
@@ -293,7 +294,7 @@ If the user wants a red color, then the drop-down menu can display only the
 red options.  We can't put a `selectInput` drop down menu in **ui** when we 
 can't populate the choices argument with the correct list of colors that 
 depend on what the user chooses in the `radioButtons`.  This means that we need 
-to dynamically generate this `selectInput` inside `renderUI` (on **server** side)
+to dynamically generate this `selectInput` inside `renderUI` (on the **server** side!)
 based on the user-chosen color family `input$color_family`.
 
 
@@ -335,6 +336,12 @@ server <- function(input, output) {
 
 shinyApp(ui = ui, server = server)
 ```
+
+# **Reactive expressions**
+
+https://shiny.rstudio.com/tutorial/lesson6/
+
+[TODO]
 
 
 # **App layout**
@@ -459,8 +466,24 @@ shinyApp(ui, server)
 
 
 
-# **Getting data in and out**
+# **Dealing with data**
 
+Now that we know how to set up an app, what are some ways to interact with data?
+
+## **global.R**
+
+Data can be loaded from files in a Shiny specific file called **global.R**.
+Anything run in that file will be available in the global environment, which means
+that both **ui.R** and **server.R** can access the variables and functions.
+
+Things that you can typically include in **global.R**:
+
+- reading in data files `my_data <- read_csv("data/my_data_file.csv")`
+- loading packages `library(dplyr)`
+- sourcing helper scripts `source(my_utils.R)`
+- constant variables `my_colors <- c("orange", "blue")`
+- helper functions that aren't Shiny reactive functions `calculate_percent <- function(...)`
+- database connnections `db_conn <- dplyr::src_postgres(...db_credentials...)`
 
 
 # **Interactive visualization**
@@ -564,7 +587,7 @@ shinyApp(
 * [RStudio Reactivity Tutorial](https://github.com/rstudio/reactivity-tutorial)
 * [Plotly Shiny Gallery](https://plot.ly/r/shiny-gallery/)
 * [Persistent data storage](https://shiny.rstudio.com/articles/persistent-data-storage.html)
-
+* [RStudio Reactivity Overview](https://shiny.rstudio.com/articles/reactivity-overview.html)
 
 
 
