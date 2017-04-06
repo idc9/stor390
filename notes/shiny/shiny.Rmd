@@ -33,7 +33,7 @@ This lecture will cover
     - modules
     - hosting apps
 
-To run the code on your computer download [this .zip file](stor390_Shiny.zip) and open `shiny.Rmd` in R Studio.
+To run the code on your computer download [this .zip file](https://github.com/idc9/stor390/blob/master/notes/shiny/stor390_Shiny.zip), open `shiny.Rmd` in R Studio then click `Run Document`.
 
 # **Hello Shiny!**
 
