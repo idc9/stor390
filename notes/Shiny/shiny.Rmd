@@ -621,6 +621,44 @@ shinyApp(
 
 ## DataTables
 
+The Javascript library DataTables provides very powerful functionality to 
+working with data tables in a web browser.  Shiny apps can tap this through 
+the R package [DT](https://rstudio.github.io/DT/) that interfaces with DataTables.  
+
+Some of the useful things implemented are:
+
+- selecting rows in the table
+- search capabilities
+- sorting columns
+- filter columns
+- showing user-specified number of rows
+- styling such as highlighting and formatting
+
+Here's a minimal example that you can run in the R console:
+
+```{r, eval=TRUE}
+suppressMessages(library(DT))
+datatable(iris)
+```
+
+Here's how that table gets into a Shiny app:
+
+```{r, eval=FALSE}
+library(shiny)
+
+ui <- fluidPage(
+    DT::dataTableOutput('tbl')
+)
+
+server <- function(input, output) {
+    output$tbl = DT::renderDataTable(
+        iris
+    )
+}
+
+shinyApp(ui, server)
+```
+
 
 
 
