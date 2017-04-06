@@ -21,20 +21,18 @@ Shiny apps are a great way to share your analysis with others without them havin
 run any R themselves.
 
 
-This lecture will cover (**list in progress**)
+This lecture will cover 
 
 - first Shiny app
 - the basics of reactivity
-- beer to burpees app
 - renderUI
+- app layouts
 - interactive visualization
-- advanced: 
-    - file uploading & downloading
+- extra: 
+    - DataTables
     - pdf/html/word generation
-    - database connection
     - modules
     - hosting apps
-    - reactivity overview
 
 
 # **Hello Shiny!**
