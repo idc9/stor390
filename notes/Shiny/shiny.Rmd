@@ -5,7 +5,7 @@ author: "[STOR 390](https://idc9.github.io/stor390/)"
 output:
   html_document:
     runtime: shiny
-    css: styles.css
+    css: www/styles.css
     theme: cosmo
     toc: yes
     toc_float: yes
@@ -51,7 +51,7 @@ runExample("01_hello")
 ```
 
 
-![](hello_shiny_screenshot.jpeg)
+![](screenshots/hello_shiny_screenshot.jpeg)
 
 
 
@@ -198,7 +198,7 @@ construct reactive objects in the app with.
 Shiny widgets are web elements that enable your user to interact with the app.
 There are several standard widgets available in Shiny.  You can play with them at the [Shiny widgets gallery](http://shiny.rstudio.com/gallery/widget-gallery.html).
 
-![Shiny Widgets Gallery](shiny_widgets.png)
+![Shiny Widgets Gallery](screenshots/shiny_widgets.png)
 
 | input function | widget |
 |----------------|---------|
@@ -370,7 +370,7 @@ shinyApp(ui = ui, server = server)
 ```
 
 
-![Basic app layout](shiny_layout.png)
+![Basic app layout](screenshots/shiny_layout.png)
 
 
 ## Basic layout with tabs
@@ -403,7 +403,7 @@ shinyApp(ui = ui, server = server)
 ```
 
 
-![Basic app layout with tabsets](shiny_tabsets.png)
+![Basic app layout with tabsets](screenshots/shiny_tabsets.png)
 
 
 
@@ -457,7 +457,7 @@ shinyApp(ui, server)
 ```
 
 
-![shinydashboard](shinydashboard_filled.png)
+![shinydashboard](screenshots/shinydashboard_filled.png)
 
 
 
