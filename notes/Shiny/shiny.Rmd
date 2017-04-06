@@ -334,7 +334,8 @@ server <- function(input, output) {
     
 }
 
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server,
+         options = list(height = 300))
 ```
 
 
@@ -498,7 +499,7 @@ library(shiny)
 ui <- fluidPage(
     
     sliderInput(inputId = "rate",
-                label = "Enter rate",
+                label = "Choose rate",
                 min = 0,
                 max = 1, 
                 value = 0.5),
@@ -529,7 +530,8 @@ server <- function(input, output) {
     
 }
 
-shinyApp(ui = ui, server = server)
+shinyApp(ui = ui, server = server,
+         options = list(height = 200))
 ```
 
 - Reactive expressions depend on the status of `input` values or values from other reactive expressions.
@@ -623,6 +625,82 @@ shinyApp(
 
 ## Shiny modules
 
+Large and complex Shiny apps will have many many lines of code.  Having it all
+in just one or two files can get very disorganized and unreadable. Just like how we modularize reusable R code into functions, we can modularize Shiny code into [Shiny modules](https://shiny.rstudio.com/articles/modules.html)!
+
+You can construct a Shiny module with two functions - one for the UI and one for the
+server.  
+
+This lecture won't go into detail on how it works - it can get complicated but
+here's a simple module that will function if you run it.
+
+Some key points:
+
+- `linkedScatter` is the module - `linkedScatterUI()` specifies the UI, `linkedScatter()` specifies the server part of the module (this requires the `session` argument after `input` and `output`).
+- You use `callModule()` to call the module in the main server part.
+- Object ids need to be wrapped with the namespace function (`NS()`) in the module so that it enforces unique ids across the entire app.
+- You can return things with a module and supply it as an input into another module.
+
+```{r, eval=TRUE}
+library(shiny)
+
+linkedScatterUI <- function(id) {
+    ns <- NS(id)
+    
+    fluidRow(
+        column(6, plotOutput(ns("plot1"), brush = ns("brush"))),
+        column(6, plotOutput(ns("plot2"), brush = ns("brush")))
+    )
+}
+
+linkedScatter <- function(input, output, session, data, left, right) {
+    # Yields the data frame with an additional column "selected_"
+    # that indicates whether that observation is brushed
+    dataWithSelection <- reactive({
+        brushedPoints(data(), input$brush, allRows = TRUE)
+    })
+    
+    output$plot1 <- renderPlot({
+        scatterPlot(dataWithSelection(), left())
+    })
+    
+    output$plot2 <- renderPlot({
+        scatterPlot(dataWithSelection(), right())
+    })
+    
+    return(dataWithSelection)
+}
+
+scatterPlot <- function(data, cols) {
+    ggplot(data, aes_string(x = cols[1], y = cols[2])) +
+        geom_point(aes(color = selected_)) +
+        scale_color_manual(values = c("black", "#66D65C"), guide = FALSE)
+}
+
+
+ui <- fixedPage(
+    h2("Module example"),
+    linkedScatterUI("scatters"),
+    textOutput("summary")
+)
+
+server <- function(input, output, session) {
+    df <- callModule(linkedScatter, "scatters", reactive(mpg),
+                     left = reactive(c("cty", "hwy")),
+                     right = reactive(c("drv", "hwy"))
+    )
+    
+    output$summary <- renderText({
+        sprintf("%d observation(s) selected", nrow(dplyr::filter(df(), selected_)))
+    })
+}
+
+shinyApp(ui, server,
+         options = list(height = 600))
+```
+
+
+
 ## Hosting apps 
 
 - https://www.shinyapps.io/
@@ -643,7 +721,7 @@ shinyApp(
 * [Plotly Shiny Gallery](https://plot.ly/r/shiny-gallery/)
 * [Persistent data storage](https://shiny.rstudio.com/articles/persistent-data-storage.html)
 * [RStudio Reactivity Overview](https://shiny.rstudio.com/articles/reactivity-overview.html)
-
+* [RStudio Understanding Shiny Modules Webinar](https://www.rstudio.com/resources/webinars/understanding-shiny-modules/)
 
 
 
