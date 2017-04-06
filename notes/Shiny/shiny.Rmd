@@ -621,7 +621,11 @@ shinyApp(
 
 ## DataTables
 
+
+
+
 ## Dynamic document generation (pdf/html/word)
+
 
 ## Shiny modules
 
@@ -703,9 +707,17 @@ shinyApp(ui, server,
 
 ## Hosting apps 
 
-- https://www.shinyapps.io/
-- cloud - Amazon
-- local server
+Once you've made your awesome Shiny app, how do you share it with world or at 
+least the people you've designed it for? Remember that apps are great because
+the user does not need to download and install R or know any R code whatsoever 
+to be able to use them.  But this means that the app has to be hosted somewhere 
+that does have R, shiny, and all the required packages installed.  
+
+The easiest way to host your app is to have RStudio host it for you at [https://www.shinyapps.io/](https://www.shinyapps.io/).  The pros are that you
+don't have to worry about any IT infrastructure in maintaining your own server;
+but if your app processes sensitive or confidential data or you don't want the
+public to be able to access it, then you either have to pay RStudio for more 
+capabilities over the free version or deploy apps yourself with [Shiny Server](https://www.rstudio.com/products/shiny/shiny-server/) - locally or on the cloud.
 
 
 
