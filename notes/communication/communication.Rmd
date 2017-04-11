@@ -480,7 +480,7 @@ There are two posts about reproducible examples because they are so important.
 
 Unfortunately Trees, Maps and Theorems is not free online, however you can find [suplementary material here](http://www.treesmapsandtheorems.com/X0300.php).
 
-[Beautiful Evidence](https://www.amazon.com/Beautiful-Evidence-Edward-R-Tufte/dp/1930824165) by Edward Tufte is a famous book on communicating visual evidence.
+Edward Tufte has a number of famous books on communicating visual evidence (see [here](https://www.edwardtufte.com/tufte/)).
 
 
 [viz.wtf/](http://viz.wtf/) has some wonderful examples of bad visualizations
@@ -502,3 +502,5 @@ Kieran Healy's class on data visualization has a lot of good resources and advic
 [Effective writing in mathematical statistics](http://www.stat.yale.edu/~lc436/marron.pdf) by Steve Marron.
 
 For more on reproducible research see these articles ([1](http://simplystatistics.org/2015/12/11/instead-of-research-on-reproducibility-just-do-reproducible-research/), [2](http://kbroman.org/Tools4RR/), [3](https://www.coursera.org/learn/reproducible-research)).
+
+[Flowing Data](http://flowingdata.com/) is a wonderful blog on visualizations.
