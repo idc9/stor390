@@ -9,20 +9,20 @@ output:
 ---
 
 
-This lecture is about communication in various contexts in data science. It firsts provides four general principles of communication, then discusses some strategies, and finally examines how these suggestions apply in a few examples. Much of the lecture material is based on [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/) by Jean-luc Doumont. Other refernces are list at the bottom of the page. 
+This lecture is about communication in various contexts in data science. It firsts provides four general principles of communication, then discusses some strategies that implement these principles, and finally examines how these suggestions apply in a few examples. Much of the lecture material is based on [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/) by Jean-luc Doumont. Other refernces are list at the bottom of the page. 
 
 > Effective communication is optimization under constraints. -- *Trees, Maps and Theorems*
 
-Communication is context dependent; the context determines the constraints.
+Communication is context dependent; the context determines the constraints. The context often depends upon:
 
 - Audience (business executives, data scientists, etc)
-- Medium (power point, text document, etc)
+- Medium (slide show, text document, etc)
 - Purpose (convey results, impress an employer, etc)
 - Content (we built a predictive model, drug A doesn't work, etc)
 - Time (do you have a day or a week to prepare?)
 
 
-Communicating well is challenging and takes lots of practice to do well. In my experience communication involves as much design, engineering and empathy as well as the ability to work with words. 
+Communicating well is challenging and takes lots of practice. In my experience communication involves design, engineering and empathy as well as the ability to work with words. In data science it requires the ability to work in different mediums.
 
 In some cases the medium will be constrained by the context while in others you have some freedom. In data science there are many mediums you may end up using:
 
@@ -30,7 +30,7 @@ In some cases the medium will be constrained by the context while in others you 
 - Static visualizations
 - Dynamic visualizations
 - Interactive application (e.g. Shiny)
-- PowerPoint
+- Slideshow
 - Web page
 - Speaking
 - Literate programming (e.g. R Markdown)
@@ -51,13 +51,13 @@ This section presents four general rules for communicating effectively:
 3. Use effective redundancy.
 4. There are usually trade-offs
 
-The first three of these come from [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/). They are general principles which apply to many different contexts. These rules might remind you of [information and coding theory](https://en.wikipedia.org/wiki/Information_theory). 
+The first three of these come from [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/) (these rules might remind you of [information and coding theory](https://en.wikipedia.org/wiki/Information_theory). They are general principles which apply to many different contexts. 
 
 
 
 ## 1. Adapt your audience
 
-Adapting to the audience means you take responsibility for the success or failure of your message reaching the audience. It comes naturally to us; you talk to your parents differently from how you talk to your best friend. The act of adapting requires empathy; you have to understand how the recipient perceives the information you are conveying. Adapting also requires some persistence; if the first strategy does not succeed try another one.
+Adapting to the audience means you take responsibility for the success or failure of your message reaching the audience. It comes naturally to us; you talk to your parents differently from how you talk to your best friend. The act of adapting requires empathy; you have to understand how the recipient perceives the information you are conveying. Adapting also requires some persistence; if the first strategy does not succeed then try another one.
 
 Adapting is partially an act of generosity. How many hours of your life have been wasted sitting through a lecture that you didn't get much out of? More importantly adapting is about being effective.
 
@@ -80,7 +80,7 @@ Understanding who is in the audience is a critical step. Some common types of au
 
 The audience sees every dot in a graphic and hears every word you speak. Anything that does not convey your message to the audience hampers your message. Often message optimization is more about minimizing noise than maximizing signal. 
 
-For visualization simple and focused is often better than fancy and detailed. For example watch the progression of a poor graphic to an effective graphic (see [here](http://www.storytellingwithdata.com/blog/2017/3/29/declutter-this-graph)).
+For visualization simple and focused is often better than fancy and detailed. For example watch the progression of a poor graphic to an effective graphic in  [this blog post](http://www.storytellingwithdata.com/blog/2017/3/29/declutter-this-graph).
 
 Documents/presentations/webpages should be consistent and minimal. All formatting (font, text size, structure, webpage style, graph colors, etc) should remain uniform throughout. Changes in formatting will draw the audience's attention so use it selectively. Similarly, bolding and emphasis words (very, really, etc) should be used only occasionally. 
 
@@ -96,7 +96,7 @@ Optimizing a message's delivery first requires a clear understanding of exactly 
 
 ## 3. Use effective redundancy
 
-If you convey your message via multiple channels the audience has more than one chance to understand the message. When I lecture in class I communicate orally and visually (with a power point). A stop sign conveys its message in three ways: color, text and shape. 
+If you convey your message via multiple channels the audience has more than one chance to understand the message. When I lecture in class I communicate orally and visually (with a slideshow). A stop sign conveys its message in three ways: color, text and shape. 
 
 <!-- ![http://www.huffingtonpost.com/mitch-ditkoff/the-curious-origins-of-th_b_9720358.html](http://images.huffingtonpost.com/2016-04-18-1460992862-2887201-iStock_000022162723_Small.jpg) -->
 
@@ -137,7 +137,7 @@ You should attack any work you are editing (your own or someone else’s). To qu
 
 > When editing go for the jugular. -- *Calum Carmichael*
 
-If you are publishing something publicly you should revise it several times. If it's something that really matters you should get outside feedback from several people.
+If you are publishing something publicly you should revise it several times. If it's something that really matters then you should get outside feedback from several people.
 
 
 
