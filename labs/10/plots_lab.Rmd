@@ -1,0 +1,34 @@
+---
+title: "Lab 10: effective visualizations"
+author: "STOR 390"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+(Note: I'm not done writing the lab. I won't add more questions, but will flush out some details)
+
+This lab asks you to think about effective visualizations. 
+
+# Question 1: plots for communication
+
+
+**1a**:  Take any plot that you made earlier this semester (even one that I made in a lecture) and turn it into a plot for communication (include the original plot as well).
+
+**1b**: Explicitly state the message of the plot and the design choices you made to create the plot. How do the choices you made follow the principles of communication from lecture?
+
+
+# Question 2: call BS
+
+Link to a bad plot somone posted online and answer the following questions:
+
+- What is the message of the plot?
+- What is wrong with the plot?
+- How would you improve the plot to better convey the message?
+
+Any graphic you find is fine. Here are some places you might look
+
+- [viz.wtf/](http://viz.wtf/)
+
+http://gizmodo.com/one-officer-involved-in-dragging-bloodied-united-airlin-1794194857

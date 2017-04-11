@@ -1,0 +1,183 @@
+---
+title: "Customize ggplot"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+
+# References
+
+- [r4ds chapter 28](http://r4ds.had.co.nz/graphics-for-communication.html#scales)
+- [ggplot theme vignette](http://docs.ggplot2.org/dev/vignettes/themes.html)
+- [ggplot theme documentation](http://docs.ggplot2.org/0.9.2.1/theme.html)
+
+
+# **Load data**
+
+```{r, warning=F, message=F}
+library(tidyverse)
+data<- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/movies.csv')
+```
+
+
+
+# Basic plot
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score))
+```
+
+
+
+# Axis labels
+
+```{r}
+# add labs()
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    labs(x='IMDB',
+         y='Rotten Tomatoes (critics)',
+         title='IMDB scores are predictive of Rotton Tomatoes')
+
+# using ggtitle, xlab
+# ggplot(data=data) +
+#     geom_point(aes(x=imdb_rating, y=critics_score)) +
+#     ggtitle('IMDB scores are predictive of Rotton Tomatoes') +
+#     xlab('IMDB')
+```
+
+
+
+# ggplot automatically adds variable transforms
+
+```{r}
+# add labs()
+ggplot(data=data) +
+    geom_point(aes(x=log10(imdb_rating), y=log10(critics_score)))
+```
+
+
+
+# Annotate a point
+```{r}
+# data frame for annotation
+bad_movie <- data %>% 
+    filter(critics_score== min(critics_score))
+
+
+# add text label
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) + 
+    geom_text(data=bad_movie, aes(x=imdb_rating, y=critics_score, label=title), color='red')
+```
+
+
+# Fix the label
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) + 
+    geom_text(data=bad_movie, aes(x=imdb_rating, y=critics_score, label=title),color='red', nudge_x= .3, nudge_y= 2)
+```
+
+
+# text from data frame
+```{r}
+# data frame storing some text and the position the text should go on the plot
+text_df <- tibble(x=4, y=75, text='some text goes here')
+
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    geom_text(data=text_df, aes(x=x, y=y, label=text))
+```
+
+
+# Set axis limits
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    lims(x=c(-5, 15), y=c(-10, 100))
+```
+
+
+# Tick marks
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    scale_y_continuous(breaks=seq(from=0, to=100, by=10))
+```
+
+
+
+# Blank background
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score)) +
+    theme(panel.background = element_blank())
+```
+
+
+
+# Legend
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom))
+```
+
+
+# Change legend position
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom)) +
+    theme(legend.position = "bottom")
+```
+
+
+
+# Turn legend off
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom)) +
+    theme(legend.position = "none")
+```
+
+
+# Customize colors
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom)) +
+    scale_colour_manual(values = c(no = "red", yes = "blue"))
+```
+
+
+# scale_BLAH_manual
+
+
+```{r}
+ggplot(data=data) +
+    geom_point(aes(x=imdb_rating, y=critics_score, color=best_pic_nom, shape=best_pic_nom, size=best_pic_nom)) +
+    scale_colour_manual(values = c(no = "red", yes = "blue")) +
+    scale_size_manual(values = c(no = 1, yes = 2)) +
+    scale_shape_manual(values = c(no = 15, yes = 17)) 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
