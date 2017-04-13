@@ -9,7 +9,7 @@ output:
 ---
 
 
-This lecture is about communication in various contexts in data science. It first provides four general principles of communication, then discusses some strategies that implement these principles, and finally examines how these suggestions apply in a few examples. The primary reference is [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/) by Jean-luc Doumont and other refernces are listed at the bottom of the page. 
+This lecture is about communication in various contexts in data science. It first provides four general principles of communication, then discusses some strategies that implement these principles, and finally examines how these suggestions apply in a few examples. The primary reference is [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/) by Jean-luc Doumont and other references are listed at the bottom of the page. 
 
 > Effective communication is optimization under constraints. -- *Trees, Maps and Theorems*
 
@@ -429,7 +429,7 @@ See the RMD [**gallary**](http://rmarkdown.rstudio.com/gallery.html) for more id
 R Markdown can be used as a basic text editor that easily creates HTML documents with some light formatting. It's capabilities include:
 
 - Text formatting
-    - **bold**, *italics*, ~~strikethrough~~`
+    - **bold**, *italics*, ~~strike-through~~`
 - [Add links](http://www.diddukewin.com/)
 - Create sections and subsections
 - Add block quotes
