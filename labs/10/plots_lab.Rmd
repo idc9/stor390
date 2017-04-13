@@ -1,25 +1,29 @@
 ---
 title: "Lab 10: effective visualizations"
-author: "STOR 390"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
 output:
   html_document:
     theme: cosmo
     toc: yes
     toc_float: yes
 ---
-(Note: I'm not done writing the lab. I won't add more questions, but will flush out some details)
 
-This lab asks you to think about effective visualizations. 
+This lab asks you to think about effective visualizations by making one of your own and critiquing someone else's visualization. Before attempting this lab make sure you are familiar with the content of the [effective communication lecture](https://idc9.github.io/stor390/notes/communication/communication.html).
 
-# Question 1: plots for communication
+This lab is due Tuesday 4/18/17. Please hand in a .Rmd file (make sure it knits) and possibly accompanying data (the grader will be happier if you load data from a url...)
+
+# Question 1: Make your own plot
 
 
-**1a**:  Take any plot that you made earlier this semester (even one that I made in a lecture) and turn it into a plot for communication (include the original plot as well).
+**1a**:  Take any plot that you made earlier this semester (even one that I made in a lecture) and turn it into a plot for communication (include the original plot as well). 
+
+Include the code for both the original and the new plot. [This lecture](https://idc9.github.io/stor390/notes/custom_viz/custom_viz.html) and the resources listed at the top might be helpful.
 
 **1b**: Explicitly state the message of the plot and the design choices you made to create the plot. How do the choices you made follow the principles of communication from lecture?
 
 
-# Question 2: call BS
+
+# Question 2: Critique a bad plot
 
 Link to a bad plot somone posted online and answer the following questions:
 
@@ -27,8 +31,6 @@ Link to a bad plot somone posted online and answer the following questions:
 - What is wrong with the plot?
 - How would you improve the plot to better convey the message?
 
-Any graphic you find is fine. Here are some places you might look
+Any graphic you find is fine. [viz.wtf/](http://viz.wtf/) has many examples of bad visualizations to pick on.
 
-- [viz.wtf/](http://viz.wtf/)
 
-http://gizmodo.com/one-officer-involved-in-dragging-bloodied-united-airlin-1794194857
