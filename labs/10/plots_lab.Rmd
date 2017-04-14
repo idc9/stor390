@@ -34,3 +34,15 @@ Link to a bad plot somone posted online and answer the following questions:
 Any graphic you find is fine. [viz.wtf/](http://viz.wtf/) has many examples of bad visualizations to pick on.
 
 
+# Bonus question
+Find an example of profesional communication and analyze it using the principles discussed in the [effective communication lecture](https://idc9.github.io/stor390/notes/communication/communication.html). Discuss how it uses and/or does not use these princples. Are their design choices effective? How would you improve their design choices? Submit a one page write up.
+
+
+For example check out this [pitch deck](https://www.twine.fm/blog/pitch-deck-used-to-raise-a-million/) used by a startup called twine.
+
+
+
+
+
+
+
