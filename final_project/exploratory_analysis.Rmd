@@ -1,0 +1,47 @@
+---
+title: "Final project: exploratory analysis"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+By this point you should have done an exploratory analysis and have initial results. What this means will vary from project to project so there aren't many formal requirements. The point of this is to: take stock of where you are, show us that you have made good progress and convince us you will be able to finish the project.
+
+Basically we exepct to see that you
+
+- have the data
+- asked/answered a bunch of questions by making lots of plots and computing statistics
+- narrowed down the scope of the project to something coherent and managable
+- have some initial results
+
+
+What "initial results" means will also vary from project to project. For example,
+
+- if the project is to build a model to predict Y based on X then you should have a looked at few simple models
+- if you are building a shiny app you should have the basic version of the app (it's doesn't need to look nice or have all of the functionality)
+
+# Deliverables
+
+Gather everything into one folder called **n_eda** (where n= your group number). This folder should have foud subfolders: **/summary**, **initial_results**, **/everything**, and **/data**. Please zip the **n_eda** folder and email it to the instructor.
+
+1. Write a summary of what you have tried, what you found and what you have left to do. This document should be about a page and can be mostly bullet points. Put this document into a folder called **summary**.
+
+2. Have some form of initilal results. This could be a .Rmd document with a couple plots or .R script with a shiny app. The initial results should be short and to the point. Put the initial results into a folder called **initial_results**.
+
+3. Include the rest of the work you have done. Simply gather all the scripts/.Rmd files you have so far from each team member and put them into one folder (called **everything**). This is just so we can see all the work you have done.
+
+4. Include the data.
+
+
+
+
+
+
+
+
+
+
+
