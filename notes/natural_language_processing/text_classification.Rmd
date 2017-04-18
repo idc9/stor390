@@ -1,0 +1,147 @@
+---
+title: "**Text classification with document term matrices and tf-idf**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+
+These notes show an example text classification with the `tidytext` package in R. They assume you are familiar with chapters 1, 3, and 5 from [Tidy text mining with R](http://tidytextmining.com/) and the [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html) classifier. 
+
+The data can be found [here]().
+
+
+```{r setup, include=FALSE, echo=F}
+knitr::opts_chunk$set(message = F, warning = F)
+```
+
+
+```{r,message=F, warning=F}
+library(tidyverse)
+library(stringr)
+library(tidytext)
+
+library(klaR) # mean difference classifier
+
+# see github repo for this script
+source('read_text.R')
+```
+
+
+
+
+
+
+# Load "raw" data
+
+For this section we will use a collection of 40 of George Orwell's essays scraped from [here]().
+
+```{r}
+# read in the raw text
+books <- read_author('orwell_essays')
+books
+```
+
+The goal of this section is to illustrate a classification example with text data. The classes in this case are the essay titles. Right now we have one observation per class i.e. the whole text of the essay. To make things more interesting we are going to split each text into 10 line *chunks* of text.
+
+```{r}
+# convert books into chunks
+chunks <- books %>% 
+    mutate(chunk = str_c(book,'_', linenumber %/% 10))
+
+dim(chunks)
+```
+
+# Tokenization
+
+Breaking a document up into words is called [tokenization](https://en.wikipedia.org/wiki/Tokenization_(lexical_analysis)).
+
+
+There are currently `r dim(chunks)[1]` observations (i.e. one 10 line chunk from an essay is an observation). Using the `unnest_tokens` function from the `tidytext` package we can turn this data frame into a tidy data frame where the rows are individual words (i.e. tokenization). 
+
+```{r}
+chunk_words <- chunks %>%
+    unnest_tokens(word, text) 
+
+chunk_words
+```
+
+Now we count the number of times each word occurs in each chunk
+```{r}
+chunk_words <- chunk_words %>% 
+    count(chunk, word, sort = TRUE) %>%
+    ungroup() %>% 
+    rename(count=n)
+
+chunk_words
+```
+
+# TF-IDF
+The raw word counts are not always ideal. For example, the word "the" shows up a lot, but this is not very informative. Therefore, we can down-weight commonly occurring words using [term frequency, inverse document frequency](https://en.wikipedia.org/wiki/Tf%E2%80%93idf) scores.
+
+Using the `bind_tf_idf` function from `tidytext` we can compute the tf-idf scores.
+
+```{r}
+chunk_words <- chunk_words %>% 
+    bind_tf_idf(word, chunk, count)
+
+
+chunk_words
+```
+
+# Document term matrix
+
+The `cast_dtm` will turn the tidy data frame into a document term matrix. This object is from the `tm` package which you may need to install first. We actually make two document term matrices: one with the raw word counts and one with the tf-idf scores.
+
+```{r}
+# install,packages('tm')
+
+# convert to dtm matrix
+bag_of_words_dtm <- chunk_words %>% cast_dtm(chunk, word, count)
+tfidf_dtm <- chunk_words %>% cast_dtm(chunk, word, tf_idf)
+```
+
+
+First let's grab the book titles to use as training labels.
+
+```{r}
+# training classes (i.e. book titles)
+# yes this is super hacky
+row_names <- bag_of_words_dtm$dimnames$Docs
+tr_classes <- str_sub(str_extract(row_names, '[a-z_]+'), start=1, end=-2)%>% factor
+
+tr_classes[0:5]
+```
+
+
+The package we will use for classification doesn't like the above format so let's turn it into a regular R matrix. **Warning**: if you have a large data set a regular R matrix will be too slow and memory intensive to work with.
+
+```{r}
+X_bag_of_words <- as.matrix(bag_of_words_dtm)
+X_tfidf <- as.matrix(tfidf_dtm)
+
+dim(X_bag_of_words)
+```
+
+
+# Nearest centroid classifier
+
+Now we have both the X (document term matrices) and Y data (book titles). Let's fit the nearest centroid classifier on the document term matrices (this is the `nm` function from the `klaR` package). We actually fit two classifiers: one on the raw word counts (bag of words) and another on the tf-idf matrix.
+
+
+```{r}
+# fit mean difference classifier (AKA nearest centroid or nearest mean)
+bow_classifier <- nm(x=X_bag_of_words, grouping=tr_classes)
+tfidf_classifier <- nm(x=X_tfidf, grouping=tr_classes)
+
+# get training predictions
+bow_tr_pred <- predict(bow_classifier, newdata = X_bag_of_words)$class
+tfidf_tr_pred <- predict(tfidf_classifier, newdata = X_tfidf)$class
+
+# training error
+paste0('bag of words based classifier training error: ', mean(tr_classes != bow_tr_pred))
+paste0('tf-idf based classifier training error: ', mean(tr_classes != tfidf_tr_pred))
+```

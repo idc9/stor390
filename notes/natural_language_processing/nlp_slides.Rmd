@@ -1,0 +1,445 @@
+---
+title: "NLP"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(message = F, warning = F)
+```
+
+
+
+```{r, echo=F, message=F, warning=F}
+
+library(tidyverse)
+library(stringr)
+library(tidytext)
+
+read_author <- function(author) {
+    # Reads in a collection of texts in one folder
+    # returns a data frame
+    
+    DATADIR <- str_c(author, '/')
+    files <- list.files(DATADIR)
+    
+    books <- tibble()
+    for(i in 1:length(files)){
+        file_name <- files[i]
+        book_title <- str_split(file_name, '.txt', simplify = TRUE)[1]
+        
+        book_df <- readLines(str_c(DATADIR, file_name)) %>% # read in text file
+            .[. != ""] %>% # remove blank lines
+            tibble(text=.) %>% # convert into data frame
+            mutate(linenumber = row_number(),
+                   author = author,
+                   book = book_title) # add some meta data
+        
+        books <- rbind(books, book_df)
+    }
+    books
+}
+
+
+
+get_tfidf <- function(book_words){
+    
+    # compute tf-idf scores
+    book_words <- book_words %>%
+        count(book, word, sort = TRUE) %>%
+        ungroup()
+    
+    total_words <- book_words %>% 
+        group_by(book) %>% 
+        summarize(total = sum(n))
+    
+    book_words <- left_join(book_words, total_words)
+    
+    book_words <- book_words %>%
+        bind_tf_idf(word, book, n)
+    
+    book_words <- book_words %>%
+        arrange(desc(tf_idf)) %>%
+        mutate(word = factor(word, levels = rev(unique(word))))
+    
+    book_words
+}
+
+```
+
+
+```{r, echo=F}
+
+# read in the raw text
+books <- read_author('rowling')
+
+```
+
+# Corpus
+- Corpus = collection of documents
+    - 7 Harry Potter books
+    - 20,000 NYT articles
+
+
+# TidyText: book-word rows
+
+- each row is one word from one book
+
+# Harrpy Potter
+
+```{r}
+books
+```
+
+# Book-word rows
+
+```{r}
+#make rows book-word pairs
+book_words <- books %>%
+    unnest_tokens(word, text)
+book_words
+```
+
+
+# Term-frequency
+```{r}
+# count number of times each word appears in each book
+book_words <- book_words %>%
+    count(book, word, sort = TRUE) %>%
+    ungroup()
+
+book_words
+```
+
+
+# Most common words in each book
+```{r, echo=F, message=F, warning=F}
+# count total number of words in each book
+total_words <- book_words %>% 
+    group_by(book) %>% 
+    summarize(total = sum(n))
+
+# add totals to book words
+book_words <- left_join(book_words, total_words)
+
+# show most common words in each book
+book_words %>% 
+    group_by(book) %>% 
+    top_n(n=15, wt=n) %>% 
+    ungroup %>%
+    ggplot(aes(word, n, fill = book)) +
+    geom_col(show.legend = FALSE) +
+    labs(x = NULL, y = "count") +
+    facet_wrap(~book, ncol = 4, scales = "free") +
+    coord_flip()
+```
+
+
+# Term frequency distribution
+
+```{r, echo=F}
+ggplot(book_words, aes(n/total, fill = book)) +
+  geom_histogram(show.legend = FALSE) +
+  xlim(NA, 0.0009) +
+  facet_wrap(~book, ncol = 3, scales = "free_y")
+```
+
+# Heavy tail
+
+- A few words appear a lot!
+
+
+# Zipf’s law
+
+The frequency that a word appears is inversely proportional to its rank.
+
+
+
+# Zipf’s law
+
+```{r, echo=F}
+book_words %>% 
+  group_by(book) %>% 
+  mutate(rank = row_number(), 
+         `term frequency` = n/total) %>% 
+  ggplot(aes(rank, `term frequency`, color = book)) + 
+  geom_line(size = 1.2, alpha = 0.8) + 
+  scale_x_log10() +
+  scale_y_log10()
+```
+
+
+# Term frequency is driven by commonly occuring wrods
+
+- "the" appears many times
+- common words may not be interesting
+- somehow downweight commonly occuring words
+
+# Inverse document frequency
+
+$$\text{idf}(\textbf{word}) =  \ln \left( \frac{\text{total number of documents}}{\text{number of documents containing } \textbf{word}} \right)$$
+
+# Term frequency, inverse document frequency
+
+idf downweights the term frequency
+$$\text{tf-idf}(w)  = \text{tf}(w)  \cdot \text{idf}(w) $$
+
+# compute tf-idf scores
+
+```{r, eval=F}
+book_words <- book_words %>%
+    bind_tf_idf(word, book, n)
+```
+
+```{r, echo=F}
+book_words <- book_words %>%
+    bind_tf_idf(word, book, n)
+
+book_words %>%
+    select(-total) %>%
+    arrange(desc(tf_idf))
+```
+
+
+# words with highest tf-idf scores
+
+```{r, echo=F}
+# some formatting
+plot_book <- book_words %>%
+    arrange(desc(tf_idf)) %>%
+    mutate(word = factor(word, levels = rev(unique(word))))
+
+
+# show words with highest tf-idf score
+plot_book %>% 
+    top_n(20) %>%
+    ggplot(aes(word, tf_idf, fill = book)) +
+    geom_col() +
+    labs(x = NULL, y = "tf-idf") +
+    coord_flip()
+```
+
+
+
+# TF-IDF by book
+```{r, echo=F}
+
+# show words with highest tf-idf scores by each book
+plot_book %>% 
+    group_by(book) %>% 
+    top_n(20) %>% 
+    ungroup %>%
+    ggplot(aes(word, tf_idf, fill = book)) +
+    geom_col(show.legend = FALSE) +
+    labs(x = NULL, y = "tf-idf") +
+    facet_wrap(~book, ncol = 4, scales = "free") +
+    coord_flip()
+
+```
+
+
+# Text normalization
+
+- pick a cannonical representation of a word
+    - Dog, dog, dogs
+- lower case
+- stemming/lemmatization
+
+
+# All words
+```{r, echo=F}
+# read in the raw text
+books <- read_author('rowling')
+
+#make rows book-word pairs
+book_words <- books %>%
+    unnest_tokens(word, text, to_lower=F)
+
+
+all_words <- filter(book_words, book == 'philosophers_stone')$word
+
+all_words[0:10]
+```
+
+# Unique words
+```{r}
+all_words %>% unique %>% length
+```
+
+# Unique words after lower casing
+```{r}
+all_words %>% unique %>% length
+all_words %>%  str_to_lower %>% unique %>% length
+```
+
+
+# Stemming
+
+- Goal: reduce word to base form
+    - am, are, is $\Rightarrow$ be 
+    - car, cars, car's, cars' $\Rightarrow$ car
+
+
+# Porter stemmer
+
+```{r}
+library(SnowballC)
+
+wordStem(c("argue", "argued", "argues", "arguing", "argus", "argument", "arguments"))
+wordStem(c("dog", "dogs"))
+wordStem(c("crying", "cried", "cries"))
+wordStem(c('am', 'are', 'is'))
+```
+
+# Unique words after lower casing and stemming
+```{r}
+all_words %>% unique %>% length
+all_words %>%  str_to_lower %>% unique %>% length
+all_words %>%  wordStem %>% str_to_lower %>% unique %>% length
+```
+
+
+
+
+# top tf-idf before stemming
+
+```{r, echo=F, message=F}
+# read in the raw text
+books <- read_author('rowling')
+
+#make rows book-word pairs
+book_words <- books %>%
+    unnest_tokens(word, text)
+
+
+
+# Compute tf-idf scores
+tfidf <- get_tfidf(book_words)
+
+
+# stem all words
+book_words_stemmed <- book_words %>% 
+                    mutate(word = wordStem(word))
+
+
+
+tfidf_stemmed <- get_tfidf(book_words_stemmed)
+```
+
+```{r}
+# which tf-idf ranks to show
+word_range <- 30:45
+```
+
+
+
+```{r, echo=F}
+# show words with highest tf-idf scores by each book
+tfidf %>% 
+    group_by(book) %>% 
+    # arrange(desc(tf_idf)) %>% 
+    slice(word_range) %>% 
+    ungroup %>%
+    ggplot(aes(word, tf_idf, fill = book)) +
+    geom_col(show.legend = FALSE) +
+    labs(x = NULL, y = "tf-idf") +
+    facet_wrap(~book, ncol = 4, scales = "free") +
+    coord_flip() 
+```
+
+# top tf-idf after stemming
+
+```{r, echo=F}
+# show words with highest tf-idf scores by each book
+tfidf_stemmed %>% 
+    group_by(book) %>% 
+    # arrange(desc(tf_idf)) %>% 
+    slice(word_range) %>% 
+    ungroup %>%
+    ggplot(aes(word, tf_idf, fill = book)) +
+    geom_col(show.legend = FALSE) +
+    labs(x = NULL, y = "tf-idf") +
+    facet_wrap(~book, ncol = 4, scales = "free") +
+    coord_flip()
+```
+
+
+# Document-term matrix (bag of words)
+
+- rows = documents
+- columns = words
+- values = count
+
+
+# Document-term matrix (bag of words)
+
+![](http://2.bp.blogspot.com/-9luDlh0KY7g/VI8L5EWm_SI/AAAAAAAADXU/gstouZMQw8E/s1600/documentterm%2Bmatrix.jpg)
+
+# tf-idf matrix
+
+- values = tf-idf scores
+- rescale columns of bag of words matrix 
+
+
+# George Orwell texts
+
+```{r, echo=F}
+books <- read_author('orwell_essays')
+
+
+chunks <- books %>% 
+    mutate(chunk = str_c(book,'_', linenumber %/% 10))
+
+n_chunks <- dim(chunks)[1]
+
+
+chunks <- chunks%>% 
+    unnest_tokens(word, text) 
+
+
+chunk_words <- chunks %>% 
+    count(chunk, word, sort = TRUE) %>%
+    ungroup() %>% 
+    rename(count=n)%>% 
+    bind_tf_idf(word, chunk, count)
+```
+
+- 40 essays by George Orwell
+- 12177 unique words
+- break essays into chucks (`r n_chunks` chuncks)
+
+
+
+
+# Clasificaiton task
+
+- X = document term matrix (`r n_chunks` x 12177 matrix)
+    - raw counts or tf-idf scores
+- Y = book titles (40 classes)
+
+# Sparse matrices
+
+- document term matrices are (usually sparse)
+- faster
+- less memory
+
+
+# Mean difference classifier
+
+- Two different data object representations
+    - bag of words matrix
+    - tf-idf matrix
+
+# Training error comparision
+
+- bag of words: 19% error rate
+- tf-idf: 5% error rate
+
+
+
+
+
+
+
+
+

@@ -49,8 +49,8 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |April 4|web scraping, twitter, ggplot|[web scraping](notes/web_scraping/web_scraping.html), [rtweets](notes/API/twitter/rtweet.html), [custom viz](notes/custom_viz/custom_viz.html) | |
 |April 6| [Shiny](https://shiny.rstudio.com/) ([Frances Tong](https://www.linkedin.com/in/francestong))| [shiny](notes/shiny.html)| |
 |April 11| communication | [effective communication](notes/communication/communication.html)|[slides](slides/communication.pdf) |
-|April 13| guest Dan Yang, natural language processing| |[NLP](slides/nlp.pdf), [Dan Yang](slides/dan_yang.pdf) |
-|April 18| guest Lucia Gjeltema| | |
+|April 13|natural language processing| [TidyText](http://tidytextmining.com/tidytext.html) |[NLP](slides/nlp_intro.pdf), [guest Dan Yang](slides/dan_yang.pdf) |
+|April 18|tf-idf, stemming | [text classification](notes/natural_language_processing/text_classification.html) | [slides](slides/tfidf_slides.html)|
 |April 20| guest [Ryan Thornburg](https://ryanthornburg.com/) | | |
 |April 25| | | |
 |April 27| | | |
@@ -186,6 +186,13 @@ Readings should be complete by the following class. There are three (free) prima
 
 - read [chapter 1](http://tidytextmining.com/tidytext.html) of Text Mining with R
 
+** April 18**
+
+- read [chapter 3](http://tidytextmining.com/tfidf.html) from TMR
+- (optional) read [chapter 4](http://tidytextmining.com/ngrams.html) from TMR
+- read about [stemming and lemmatization](https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html)
+
+
 # **Coding**
 
 The due date is in the link. 
@@ -217,7 +224,7 @@ See [**this document for the final project description**](final_project/descript
 | Deliverable | Due Date |
 | ------------|----------|
 |[proposal](final_project/proposal.html) | 4/6  |
-|exploratory analysis | 4/25|
+|[exploratory analysis](final_project/exploratory_analysis.html) | 4/25|
 |techincal documents | 5/2|
 |blog post | 5/9 |
 
