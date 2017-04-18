@@ -11,7 +11,7 @@ output:
 
 These notes show an example text classification with the `tidytext` package in R. They assume you are familiar with chapters 1, 3, and 5 from [Tidy text mining with R](http://tidytextmining.com/) and the [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html) classifier. 
 
-The data can be found [here]().
+The data can be found [here](https://github.com/idc9/stor390/tree/master/notes/natural_language_processing).
 
 
 ```{r setup, include=FALSE, echo=F}
