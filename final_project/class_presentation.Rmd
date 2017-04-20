@@ -37,9 +37,11 @@ This is meant to be a low stress exercise! Since I'm not giving you much time to
 
 You will be graded on participation (primarily audience participation).
 
-**1.** Your team presentation graded will be graded on a binary scale (i.e. either you gave one or your whole group decided to skip). Each team should show at least one figure on your screen.
+**1.** (required) Your team presentation graded will be graded on a binary scale (i.e. either you gave one or your whole group decided to skip). Each team should show at least one figure on your screen.
 
-**2.** Audience participation (written): you will provide written comments to two other teams (selected by the instructor).
+**2.** (required) Audience participation (written): you will provide written comments to two other teams (selected by the instructor).
+
+- see [here](https://github.com/idc9/stor390/blob/master/final_project/team_feedback_schedule.csv) for which teams you are required to give feedback to
 
 **3.** Audience participation (oral): you will receive double credit for asking questions/giving feedback during the two minute. If you don't have a chance to give your comment in class you can leave it on slack.  
 
