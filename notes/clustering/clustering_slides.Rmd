@@ -1,0 +1,323 @@
+---
+title: "Clustering with K-means"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+```{r, echo=F}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+# Outline
+
+- unsupervised vs. supervised learning
+- clustering
+- K-means
+
+# Unsupervised learning
+
+> Unsupervised machine learning is the machine learning task of inferring a function to describe hidden structure from "unlabeled" data.
+
+# Supervised learning
+
+> Supervised learning is the machine learning task of inferring a function from labeled training data.
+
+
+# Examples
+
+- supervised
+    - regression (e.g. linear model)
+    - classification (e.g. KNN)
+    
+- unsupervised 
+    - clustering (e.g. K-means)
+    - dimensionality reduction (e.g. PCA)
+    
+    
+# Unsupervised learning: find a meaningful pattern
+
+- what does "meaningful" mean?
+
+# Clustering
+
+- Goal: automatically find meaningful subgroups in the data
+
+
+```{r, echo=F}
+library(mvtnorm)
+library(tidyverse)
+
+source('synthetic_distributions.R')
+source('k_means.R') # contains code for the basic k-means algorithm
+```
+
+
+# Two dimensional example (raw data)
+
+```{r, echo=F}
+# generate data from two guassian point clouds with different means
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(4,0), mu_neg=c(-4,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103)
+
+# relabel the latent class assignment names to 1 and 2
+# data <- data %>% mutate(y = factor(ifelse(1, 1, 2)))
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2)) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+
+```
+
+# Two dimensional example (after clustering)
+
+```{r, echo=F}
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape = y)) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+```
+    
+# K-means
+
+- simple clustering algorithm 
+    - similar go nearest centroid
+    
+- user picks K
+
+# K-means algorithm
+
+1. Randomly assign a number, from 1 to K, to each of the observations.
+These serve as initial cluster assignments for the observations. 
+
+2. Iterate until the cluster assignments stop changing:
+
+    (a) For each of the K clusters, compute the cluster centroid. 
+
+    (b) Assign each observation to the cluster whose centroid is closest.
+    
+
+# Raw data
+
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(1,0), mu_neg=c(-1,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103) %>% select(-y)
+
+
+ggplot(data) +
+    geom_point(aes(x=x1, y=x2))  +
+    theme(panel.background = element_blank()) +
+    ggtitle('raw data')
+```
+
+# Random initialization
+
+```{r, echo=F}
+K <- 3
+
+set.seed(8349)
+# randomly initialize cluster assignments
+init_assignments <- sample(1:K, dim(data)[1], replace = T)
+
+
+km_fitted <- data
+km_fitted$cl <- factor(init_assignments)
+
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=10, alpha=.5) +
+    theme(panel.background = element_blank()) +
+    ggtitle(paste0('k means random initialization'))
+```
+    
+# Assign points to nearest cluster
+
+```{r, echo=F}
+n_iter <- 1
+# run kmeans for 1 iteration
+km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=10, alpha=.5) +
+    theme(panel.background = element_blank()) +
+    ggtitle(paste0('k-means after ', n_iter, ' iteration'))
+```
+
+# Iterate again
+
+```{r, echo=F}
+n_iter <- 2
+# run kmeans for 1 iteration
+km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=10, alpha=.5) +
+    theme(panel.background = element_blank()) +
+    ggtitle(paste0('k-means after ', n_iter, ' iterations'))
+```
+
+# Final iteration
+
+```{r, echo=F}
+n_iter <- 20
+# run kmeans for 1 iteration
+km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+```
+
+# Raw data
+```{r}
+data
+```
+
+# run K-means
+```{r}
+# number of desired clusters
+K <- 3
+
+# run Kmeans algorithm
+km_fitted <- kmeans(x=data, centers=K)
+
+km_fitted
+```
+
+
+# Cluster assignments
+```{r}
+# first 5 entries of vector with cluster assignments
+km_fitted$cluster[1:5]
+```
+
+# Visualize results
+```{r, echo=F}
+# add a column for cluster assignments
+data <- data %>% 
+    add_column(cl=factor(km_fitted$cluster))
+
+
+ggplot(data) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    theme(panel.background = element_blank())
+```
+ 
+
+# Changing K
+
+https://shiny.rstudio.com/gallery/kmeans-example.html
+
+
+# K-means intuition
+-  points in a cluster should be close to their cluster mean.
+
+# Within class sum of square (WCSS)
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(1,0), mu_neg=c(-1,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103) %>% select(-y)
+
+km_fitted <- k_means(X=data, K=3, max_iter = 20, init_seed = 8349)
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+
+pt1 <- km_fitted %>% filter(cl==1) %>% .[1, ]
+cent1 <- km_centroids %>% filter(cl==1) %>% .[1, ]
+
+
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl), alpha=.5) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=10, alpha=1) +
+    geom_segment(aes(x=pt1$x1, y=pt1$x2, xend=cent1$x1, yend=cent1$x2)) +
+    theme(panel.background = element_blank())
+
+```
+
+
+# Clustering vs. classification
+
+- classification: labels -> patterns
+- clustering: patterns -> labels
+- missing data/latent variables
+
+
+# How to pick K
+
+- some what of an art
+- cluster validation
+
+
+# **WARNING: clustering algorithms always give you clusters!**
+
+- K-means always returns K clusters
+- even if there is nothing there
+
+# Terrifying example
+
+- 200 IID data points 
+- there is no signal in the data
+-  only be one cluseter
+- run K-means with K = 5
+
+# Sample data
+
+```{r}
+# two dimensional standard normal
+X <- rmvnorm(n=200, mean=c(0, 0), sigma=diag(2))
+```
+
+
+# Raw data
+
+
+```{r, echo=F}
+colnames(X) <- c('x1', 'x2')
+
+as_tibble(X) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2) )+
+    theme(panel.background = element_blank()) +
+    ggtitle('the raw data')
+```
+
+# Fit kmeans with K = 4
+```{r}
+# run kmeans
+km_fitted <- kmeans(x=X, centers = 4)
+```
+
+# Results
+```{r, echo=F}
+as_tibble(X) %>% 
+    add_column(cl=factor(km_fitted$cluster)) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, shape=cl, color=cl))+
+    theme(panel.background = element_blank()) +
+    ggtitle('the raw data')
+```
+
+
+# K-means is very sensitive to data choices
+- center/scale
+- different variables
+- different K
+
+
+
+
+

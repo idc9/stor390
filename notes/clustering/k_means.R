@@ -1,5 +1,6 @@
-# this script contains a minimal example of the k-means algorithm
-library(flexclust)
+# this script contains a minimal example of the k-means algorithm for STOR 390
+library(flexclust) # for computing euclidean distances
+library(tidyverse)
 
 k_means <- function(X, K, max_iter = 10, init_seed=NA){
     # Runs the K-means algorithm
@@ -59,15 +60,3 @@ k_means <- function(X, K, max_iter = 10, init_seed=NA){
     
     return(X)
 }
-
-
-# cl <- k_means(X=data, K=2)
-
-
-
-
-
-
-
-
-

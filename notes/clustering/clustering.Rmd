@@ -8,13 +8,12 @@ output:
     toc_float: yes
 ---
 
-```{r setup}
+```{r setup, echo=F}
 knitr::opts_chunk$set(warning = F, message = F)
 ```
 
 
-
-This lecture introduces [clustering](https://en.wikipedia.org/wiki/Cluster_analysis) with the [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) and briefly discusses other types of [unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning). The primary reference is [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 10.1 and 10.3.1
+This lecture introduces [clustering](https://en.wikipedia.org/wiki/Cluster_analysis) with the [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering). The primary reference is [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 10.1, 10.3.1, and 10.3.3
 
 Borrowing from Wikipedia, 
 
@@ -24,7 +23,6 @@ Where is in contrast with [supervised learning](https://en.wikipedia.org/wiki/Su
 
 > Supervised learning is the machine learning task of inferring a function from labeled training data.
 
-TODO: what to cite?
 Regression and classification are two examples of *supervised* learning; there is prespecified $X$ and $Y$ data and the goal is to understand the relationship between $X$ and $Y$. In linear regression $Y$ is numerical (e.g. stock price, life expectancy). In classification $Y$ is categorical (e.g. yes/no, walking/running).
 
 In *unsupervised* learning there is no prespecified, special $Y$ variable; there are $X$ variables and the goal is to find some kind of "meaningful pattern". The phrase "meaningful pattern" can mean a lot of things, but a very common example is clustering.
@@ -95,7 +93,7 @@ These serve as initial cluster assignments for the observations.
 
     (b) Assign each observation to the cluster whose centroid is closest.
     
-I've implemented a minimal example of k-means which you can see [here]().
+I've implemented a minimal example of k-means which you can see [here](https://github.com/idc9/stor390/blob/master/notes/clustering/k_means.R).
 
 
 Let's see k-means in action on a data set. The first plot shows the raw data. The successive plots show the cluster assignments after some number of iterations and the current cluster centroids.
@@ -114,7 +112,7 @@ ggplot(data) +
     ggtitle('raw data')
 ```
 
-We initialize the K-means with random cluster assignments and the compute the mean of each cluster.
+We initialize the K-means with random cluster assignments (colors/shapes) and the compute the mean of each cluster (the colored Xs).
 
 ```{r, echo=F}
 K <- 3
@@ -132,7 +130,7 @@ km_fitted$cl <- factor(init_assignments)
 km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
 ggplot(km_fitted) +
     geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
-    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=5) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=10, alpha=.5) +
     theme(panel.background = element_blank()) +
     ggtitle(paste0('k means random initialization'))
 ```
@@ -147,7 +145,7 @@ km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
 km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
 ggplot(km_fitted) +
     geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
-    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=5) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=10, alpha=.5) +
     theme(panel.background = element_blank()) +
     ggtitle(paste0('k-means after ', n_iter, ' iteration'))
 ```
@@ -163,11 +161,26 @@ km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
 km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
 ggplot(km_fitted) +
     geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
-    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=5) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=10, alpha=.5) +
     theme(panel.background = element_blank()) +
     ggtitle(paste0('k-means after ', n_iter, ' iterations'))
 ```
 
+After a bunch of iterations we are left with
+
+
+```{r, echo=F}
+n_iter <- 20
+# run kmeans for 1 iteration
+km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    theme(panel.background = element_blank()) +
+    ggtitle(paste0('k-means'))
+```
 
 # **What is K-means doing?**
 
@@ -185,10 +198,13 @@ It turns out that finding the cluster assignments $S_1, \dots, S_K$ to minimize 
 
 In the paragraphs above we motivated minimizing WCSS though a heuristic argument. There is actually a statistical interpretation to minimizing WCSS. Suppose each data point is generated independently from one of K Gaussian distributions where each of the K Gaussian distributions has a different mean but identity covariance matrix. It then turns out that finding the maximum likelihood solution to this problem is exactly minimizing the WCSS. This is a special case of the more general [gaussian mixture model](https://en.wikipedia.org/wiki/Mixture_model).
 
+# **What happens when you change K?**
+
+See [this shiny app](https://shiny.rstudio.com/gallery/kmeans-example.html) to see what happens when we change $K$.
 
 # **Code**
 
-You can see a simple implementation of K-means [here](). There are a number of bells and whistles that you might want to add to the K-means algorithm (e.g. see [r documentation](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kmeans.html)). K-means is implemented well in the `stat` package which comes with R.
+You can see a simple implementation of K-means [here](https://github.com/idc9/stor390/blob/master/notes/clustering/k_means.R). There are a number of bells and whistles that you might want to add to the K-means algorithm (e.g. see [r documentation](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kmeans.html)). K-means is implemented well in the `stat` package which comes with R.
 
 
 K-means works on a numerical data matrix
@@ -198,19 +214,91 @@ data
 
 You need to decide on K then run `kmeans`
 ```{r}
+
+# number of desired clusters
 K <- 3
 
+# run Kmeans algorithm
 km_fitted <- kmeans(x=data, centers=K)
 
+km_fitted
 ```
 
 
-## Data example
+The `kmeans` function returns a bunch of information including the cluster assignments
 
-# **Caveats**
+```{r}
+# first 5 entries of vector with cluster assignments
+km_fitted$cluster[1:5]
+```
+
+Since the data are two dimensional we can visualize the cluster assignments
+
+```{r}
+# add a column for cluster assignments
+data <- data %>% 
+    add_column(cl=factor(km_fitted$cluster))
 
 
-\
+ggplot(data) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    theme(panel.background = element_blank())
+```
+
+# **Relation to classification**
+
+Classification is about going from labels to patterns while clustering is about going from patterns to labels. This lecture hopefully reminded you of classification [classification lecture](https://idc9.github.io/stor390/notes/classification/classification.html) In classification we had labeled data (classes) and we tried to find patterns that distingusighed different classes (e.g. one class is on the left of a separating hyperplane and the other on the right). In clustering we come up with the class labels ourselves based on patterns in the data.
+
+One way to interpret clustering is as a [missing data](https://en.wikipedia.org/wiki/Missing_data) problem. We might imagine the X data we were given orginally had a $y$ class label column, but this label column was removed. In other words, the class labels are [latent variables](https://en.wikipedia.org/wiki/Latent_variable) (variables that exist, but we don't observe them).
+
+
+#**How to select K**
+
+For K-means (and most clustering algorithms) you have to pre-specify $K$, the number of clusters you want to find. This is a hard problem. Occasinally you have outside or domain specific information that tells you how many clusters you want to find. In most cases you would like to use the data to select the number of clusters. There is not a well established method to select K.
+
+Most of the methods to select $K$ are cluster validation methods. You first perform clustering to select $K$ clusters, then perfom some kind of hypothesis test to check if the clusters you have found are the result of purely noise. Cluster validation is very important for reasons discussed below.
+
+
+# **WARNING: clustering algorithms always give you clusters!**
+
+Clustering algorithms are partisan zealots that will always find clusters *even if there is nothing there*. If you run K-means with K = 5, it will *always* find 5 clusters. Maybe there were 4 clusters, maybe there were 20 or maybe there were 0 clustes. K-means doesn't care -- it will stick with 4. 
+
+The following example should scare you. We will generate 200 data points independently and identically distributed from a standard normal distribution. There is no signal in the data; there should only be one cluseter. Next we run K-means with K = 5 and plot the results.
+
+
+```{r}
+# two dimensional standard normal
+X <- rmvnorm(n=200, mean=c(0, 0), sigma=diag(2))
+```
+
+
+```{r, echo=F}
+colnames(X) <- c('x1', 'x2')
+
+as_tibble(X) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2) )+
+    theme(panel.background = element_blank()) +
+    ggtitle('the raw data')
+```
+```{r}
+# run kmeans
+km_fitted <- kmeans(x=X, centers = 4)
+```
+
+```{r, echo=F}
+as_tibble(X) %>% 
+    add_column(cl=factor(km_fitted$cluster)) %>% 
+    ggplot() +
+    geom_point(aes(x=x1, y=x2, shape=cl, color=cl))+
+    theme(panel.background = element_blank()) +
+    ggtitle('the raw data')
+```
+
+#**Additional warnings**
+
+Before applying a clustering algorithm to real data you should read [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) section 10.3.3 and the references therein. K-means (and other clustering algorithms) are very sensitive to the many choices you make about the data such as: center/scaling, removing/adding columns, value of K, etc. In general you should re-run your clustering procedure several times with various different parameter settings.
+
 
 
 # References

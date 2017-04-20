@@ -1,0 +1,61 @@
+---
+title: "**Final project in class presentation**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+
+Each group give a **three minute  presentation** about their final project followed by a **two minute Q/A** period. Each team member should talk for roughly equal amounts of time (e.g. one minute each). 
+
+Your presentation should address:
+
+- **what is the data and how did you get it?**
+- **what question(s) are you trying to answer?**
+- what have you tried so far?
+- what have you found?
+- what did you try that didn't work?
+- what do you have left to do?
+
+The first two questions are the most important and team should address them. Since you have very little time to present you should prioritize the remaining questions depending on your project. 
+
+The point of this exercise is:
+
+- give you practice communicating
+- help you hone in on the main point of your project ("How can I know what I think until I see what I say")
+- learn about what everyone else in the class is doing.
+
+You should spend some time ahead of class with your team decided what you are going to present and who will say what.
+
+This is meant to be a low stress exercise! Since I'm not giving you much time to prepare I do not expect to see super polished presentations. You are being graded primarily on class participation (see below). 
+
+
+# **Grading and feedback**
+
+You will be graded on participation (primarily audience participation).
+
+**1.** Your team presentation graded will be graded on a binary scale (i.e. either you gave one or your whole group decided to skip). Each team should show at least one figure on your screen.
+
+**2.** Audience participation (written): you will provide written comments to two other teams (selected by the instructor).
+
+**3.** Audience participation (oral): you will receive double credit for asking questions/giving feedback during the two minute. If you don't have a chance to give your comment in class you can leave it on slack.  
+
+Options 1 and 2 are required and 3 is optional (though highly encouraged). 
+
+
+# **Logistics**
+
+Teams will present in order of team number and should sit together in the pod that will be assigned ahead of time. You should put up your plot on the screen before your group presents. 
+
+All feedback should be given on slack. There is one channel for each team to receive feedback (e.g. if you are posting about team 1 you should post in the #1 channel).
+
+To facilitate grading I've posted google forms for each of the above three categories. Fill this out at the end of class with the number of comments you give.
+
+1. **in class presentation**: https://goo.gl/forms/PWtywa2KhSiHgynu2
+
+2. **required in class feedback**: https://goo.gl/forms/6tey6tTSzAGXKDsF2
+
+3. **optional in class feedback**: https://goo.gl/forms/GU7YGAzROktYqp222
