@@ -1,0 +1,218 @@
+---
+title: "**Clustering**"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
+---
+
+```{r setup}
+knitr::opts_chunk$set(warning = F, message = F)
+```
+
+
+
+This lecture introduces [clustering](https://en.wikipedia.org/wiki/Cluster_analysis) with the [k-means algorithm](https://en.wikipedia.org/wiki/K-means_clustering) and briefly discusses other types of [unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning). The primary reference is [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 10.1 and 10.3.1
+
+Borrowing from Wikipedia, 
+
+> Unsupervised machine learning is the machine learning task of inferring a function to describe hidden structure from "unlabeled" data.
+
+Where is in contrast with [supervised learning](https://en.wikipedia.org/wiki/Supervised_learning)
+
+> Supervised learning is the machine learning task of inferring a function from labeled training data.
+
+TODO: what to cite?
+Regression and classification are two examples of *supervised* learning; there is prespecified $X$ and $Y$ data and the goal is to understand the relationship between $X$ and $Y$. In linear regression $Y$ is numerical (e.g. stock price, life expectancy). In classification $Y$ is categorical (e.g. yes/no, walking/running).
+
+In *unsupervised* learning there is no prespecified, special $Y$ variable; there are $X$ variables and the goal is to find some kind of "meaningful pattern". The phrase "meaningful pattern" can mean a lot of things, but a very common example is clustering.
+
+
+```{r}
+library(mvtnorm)
+library(tidyverse)
+
+source('synthetic_distributions.R')
+source('k_means.R') # contains code for the basic k-means algorithm
+```
+
+# **Clustering**
+
+A basic clustering task attempts to group points together that appear similar. Borrowing from ISLR:
+
+> Clustering refers to a very broad set of techniques for **finding subgroups**, or clusters, in a data set. When we cluster the observations of a data set, we seek to partition them into distinct groups so that the observations within each group are quite similar to each other, while observations in different groups are quite different from each other
+
+
+
+The below two dimensional illustrates a simple example. Just by eye balling the data we can see two apparent subgroups. 
+
+
+```{r, echo=F}
+# generate data from two guassian point clouds with different means
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(4,0), mu_neg=c(-4,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103)
+
+# relabel the latent class assignment names to 1 and 2
+# data <- data %>% mutate(y = factor(ifelse(1, 1, 2)))
+
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2)) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+
+```
+
+It would be fairly straightforward for you to hand code clusters i.e. assign the points on the left to one cluster and the points on the right to another cluster. You might come up with the following cluster assignment:
+
+
+```{r, echo=F}
+ggplot(data=data) +
+    geom_point(aes(x=x1, y=x2, color=y, shape = y)) +
+    theme(panel.background = element_blank()) +
+    lims(x=c(-8, 8), y=c(-8, 8))
+```
+
+A clustering algorithm is a way of automatically generating a cluster assignment. 
+
+The above example may seem trivial, but it illustrates the idea. If all data came in 2 or 3 dimensions then we could visually inspect the data and clustering algorithms would be far less important (though sill useful). Most data comes with more than 3 variables and most clustering tasks are far less obvious that the pictures above. 
+
+# **K-means**
+
+[**K-means**](https://en.wikipedia.org/wiki/K-means_clustering) is perhaps the most simple clustering algorithm (it should kind of remind you of the [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html) classifier). K-means groups data points into K subgroups where K is specified by you, the user ahead of time. You decided ahead of time how many clusters you want K-means to find! See below for a longer discussion about selecting K, but you should hear subjective bells going off in your head.
+
+K-means works as follows. The user inputs the value of K then runs the following iterative procedure (this is algorithm 10.1 from ISLR)
+
+1. Randomly assign a number, from 1 to K, to each of the observations.
+These serve as initial cluster assignments for the observations. 
+
+2. Iterate until the cluster assignments stop changing:
+
+    (a) For each of the K clusters, compute the cluster centroid. 
+
+    (b) Assign each observation to the cluster whose centroid is closest.
+    
+I've implemented a minimal example of k-means which you can see [here]().
+
+
+Let's see k-means in action on a data set. The first plot shows the raw data. The successive plots show the cluster assignments after some number of iterations and the current cluster centroids.
+    
+
+```{r, echo=F}
+data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
+                                      mu_pos=c(1,0), mu_neg=c(-1,0),
+                                      sigma_pos=diag(2), sigma_neg=diag(2),
+                                      seed=103) %>% select(-y)
+
+
+ggplot(data) +
+    geom_point(aes(x=x1, y=x2))  +
+    theme(panel.background = element_blank()) +
+    ggtitle('raw data')
+```
+
+We initialize the K-means with random cluster assignments and the compute the mean of each cluster.
+
+```{r, echo=F}
+K <- 3
+
+set.seed(8349)
+# randomly initialize cluster assignments
+init_assignments <- sample(1:K, dim(data)[1], replace = T)
+
+
+km_fitted <- data
+km_fitted$cl <- factor(init_assignments)
+
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=5) +
+    theme(panel.background = element_blank()) +
+    ggtitle(paste0('k means random initialization'))
+```
+    
+Next we reassign points to clusters based on which centroid they are closest to. 
+```{r, echo=F}
+n_iter <- 1
+# run kmeans for 1 iteration
+km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=5) +
+    theme(panel.background = element_blank()) +
+    ggtitle(paste0('k-means after ', n_iter, ' iteration'))
+```
+
+And iterate again.
+
+```{r, echo=F}
+n_iter <- 2
+# run kmeans for 1 iteration
+km_fitted <- k_means(X=data, K=K, max_iter = n_iter, init_seed = 8349)
+
+# plot results
+km_centroids <- km_fitted %>% group_by(cl) %>% summarise_all(mean)
+ggplot(km_fitted) +
+    geom_point(aes(x=x1, y=x2, color=cl, shape = cl)) +
+    geom_point(data=km_centroids, aes(x=x1, y=x2, color=cl), shape='X', size=5) +
+    theme(panel.background = element_blank()) +
+    ggtitle(paste0('k-means after ', n_iter, ' iterations'))
+```
+
+
+# **What is K-means doing?**
+
+K-means is based on the following intuition: points in a cluster should be close to their cluster mean. 
+
+Suppose we have $n$ observations $x_1, \dots, x_n$ we want to cluster in to K subgroups. Let $S_1, \dots, S_K$ be sets containing the indices of observations in each cluster. E.g. if $n=5$ and $K=2$ then we might have $S_1 = \{1, 3, 5\}$ and $S_2 = \{2, 4\}$. Let $\mu_1, \dotsm \mu_K$ be the mean of each cluster. 
+
+We can measure how close each point is to its cluster mean by summing the squared distance from each point to its cluster center i.e. $\sum_{i \in S_j} ||x_i - \mu_k||^2$. Then we can define the *within cluster sum of squares* (WCSS) as follows
+
+$$WCSS = \sum_{k=1}^K \sum_{i \in S_j} ||x_i - \mu_k||^2$$
+
+Note that WCSSS depends only on the cluster assignments $S_1, \dots, S_K$. WCSS is a measure of how well the points cluster. This suggests we select the cluster assignments that minimizes WCSS. 
+
+It turns out that finding the cluster assignments $S_1, \dots, S_K$ to minimize WCSS is [NP complete](https://en.wikipedia.org/wiki/NP-completeness) meaning we have no hope of actually solving it exactly for anything but small problems. **K-means is a way of approximately solving the WCSS minimization problem**.
+
+In the paragraphs above we motivated minimizing WCSS though a heuristic argument. There is actually a statistical interpretation to minimizing WCSS. Suppose each data point is generated independently from one of K Gaussian distributions where each of the K Gaussian distributions has a different mean but identity covariance matrix. It then turns out that finding the maximum likelihood solution to this problem is exactly minimizing the WCSS. This is a special case of the more general [gaussian mixture model](https://en.wikipedia.org/wiki/Mixture_model).
+
+
+# **Code**
+
+You can see a simple implementation of K-means [here](). There are a number of bells and whistles that you might want to add to the K-means algorithm (e.g. see [r documentation](https://stat.ethz.ch/R-manual/R-devel/library/stats/html/kmeans.html)). K-means is implemented well in the `stat` package which comes with R.
+
+
+K-means works on a numerical data matrix
+```{r}
+data
+```
+
+You need to decide on K then run `kmeans`
+```{r}
+K <- 3
+
+km_fitted <- kmeans(x=data, centers=K)
+
+```
+
+
+## Data example
+
+# **Caveats**
+
+
+\
+
+
+# References
+
+https://www-users.cs.umn.edu/~kumar/dmbook/ch8.pdf
