@@ -53,7 +53,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 |April 18|tf-idf, stemming | [text classification](notes/natural_language_processing/text_classification.html) | [slides](slides/tfidf_slides.html)|
 |April 20| K-means,([Ryan Thornburg](https://ryanthornburg.com/)) |[clustering](notes/clustering/clustering.html) |[slides](notes/clustering/clustering_slides.html) |
 |April 25|in class presentations|[in class presentations](final_project/class_presentation.html) | |
-|April 27|data ethics | | |
+|April 27|data ethics, [Quinn Underriner](https://www.linkedin.com/in/quinn-underriner-69138249/) | | |
 
 
 - the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
@@ -91,47 +91,47 @@ Readings should be complete by the following class. There are three (free) prima
 
 **January 17**
 
-- read sections 3.5 - 3.10 ([data viz](http://r4ds.had.co.nz/data-visualisation.html)) and section 8 ([workflow](http://r4ds.had.co.nz/workflow-projects.html)) from r4ds
-- read [Reproducibility is not just for researchers](http://www.dataschool.io/reproducibility-is-not-just-for-researchers/)
+- sections 3.5 - 3.10 ([data viz](http://r4ds.had.co.nz/data-visualisation.html)) and section 8 ([workflow](http://r4ds.had.co.nz/workflow-projects.html)) from r4ds
+- [Reproducibility is not just for researchers](http://www.dataschool.io/reproducibility-is-not-just-for-researchers/)
     - (optionally) [The real reason reproducible research is important](http://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/) from Simply Statistics
 
 
 **January 19**
 
-- read section 5 ([data transformation](http://r4ds.had.co.nz/transform.html)) from r4ds
+- section 5 ([data transformation](http://r4ds.had.co.nz/transform.html)) from r4ds
 - (optionally) [the dplyr flights vignettes](https://cran.rstudio.com/web/packages/dplyr/vignettes/introduction.html)
 
 **January 24**
 
-- read section 18 ([pipes](http://r4ds.had.co.nz/pipes.html)) and sections 19.1-19.4 ([functions](http://r4ds.had.co.nz/functions.html)) from r4ds
+- section 18 ([pipes](http://r4ds.had.co.nz/pipes.html)) and sections 19.1-19.4 ([functions](http://r4ds.had.co.nz/functions.html)) from r4ds
 
 **January 26**
 
-- read section 19.5-7 and sections 21.1-21.3 ([loops](http://r4ds.had.co.nz/iteration.html)) from r4ds
+- section 19.5-7 and sections 21.1-21.3 ([loops](http://r4ds.had.co.nz/iteration.html)) from r4ds
 
 **January 31**
 
-- read r4ds section 12 ([tidy data](http://r4ds.had.co.nz/tidy-data.html))
+- r4ds section 12 ([tidy data](http://r4ds.had.co.nz/tidy-data.html))
 
 **February 2**
 
-- read r4ds section 13.1-13.4 ([relational data](http://r4ds.had.co.nz/relational-data.html))
+- r4ds section 13.1-13.4 ([relational data](http://r4ds.had.co.nz/relational-data.html))
 - read [about non-tidy data](http://simplystatistics.org/2016/02/17/non-tidy-data/)
 - (optional) [how to share data with a statistician](https://github.com/jtleek/datasharing)
 
 **February 7**
 
-- read r4ds chapter 14 ([strings](http://r4ds.had.co.nz/strings.html#introduction-8))
-- (optional) read the rest of the relational data chapter (13.5-13.7)
+- r4ds chapter 14 ([strings](http://r4ds.had.co.nz/strings.html#introduction-8))
+- (optional) the rest of the relational data chapter (13.5-13.7)
 
 **February 16**
 
-- read r4ds section 22, 23.1-23.3 ([models](http://r4ds.had.co.nz/model-intro.html))
+- r4ds section 22, 23.1-23.3 ([models](http://r4ds.had.co.nz/model-intro.html))
 
 
 **February 21**
 
-- read r4ds sections 23.4-23.6 ([models](http://r4ds.had.co.nz/model-intro.html))
+- r4ds sections 23.4-23.6 ([models](http://r4ds.had.co.nz/model-intro.html))
 - alternate sources for regression (optional)
     - [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 3.1-3.2
     - [Machine Learning for Hackers](https://www.amazon.com/Machine-Learning-Hackers-Studies-Algorithms/dp/1449303714) chapter 5
@@ -139,36 +139,36 @@ Readings should be complete by the following class. There are three (free) prima
 
 **February 23**
  
-- read [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 2.1-2.2 for an overview of modeling
-- read r4ds [chapter 24](http://r4ds.had.co.nz/model-building.html)
+- [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 2.1-2.2 for an overview of modeling
+- r4ds [chapter 24](http://r4ds.had.co.nz/model-building.html)
 
 
 **February 28**
 
-- read [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 6.1-6.1 on variable selection
+- [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 6.1-6.1 on variable selection
 
 **March 2**
 
 - make sure you have read and understand linear regression and model selection from [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) i.e. section 2.1, 2.2, 3.1, 3.2, 6.1, 6.2
-- read ISLR sections 4.1-4.3 about classification
+- ISLR sections 4.1-4.3 about classification
 
 
 **March 9**
 
-- read [What is artificial intelligence?](http://simplystatistics.org/2017/01/19/what-is-artificial-intelligence/) by Jeff Leek
+- [What is artificial intelligence?](http://simplystatistics.org/2017/01/19/what-is-artificial-intelligence/) by Jeff Leek
 
 
 **March 21**
 
-- read [An example that isn't that artificial or intelligent
+- [An example that isn't that artificial or intelligent
 ](http://simplystatistics.org/2017/01/20/not-artificial-not-intelligent/)
     - be prepared to discuss this article and the other AI article from Jeff Leek in class on Thursday
-- read [ISLR sections 9.1-9.2](http://www-bcf.usc.edu/~gareth/ISL/) on support vector machines
+- [ISLR sections 9.1-9.2](http://www-bcf.usc.edu/~gareth/ISL/) on support vector machines
 
 **March 28**
 
-- read  [ISLR section 9.3, 9.4](http://www-bcf.usc.edu/~gareth/ISL/) on SVMs.
-- read  [ISLR section 5.1](http://www-bcf.usc.edu/~gareth/ISL/) on cross validation.
+-  [ISLR section 9.3, 9.4](http://www-bcf.usc.edu/~gareth/ISL/) on SVMs.
+-  [ISLR section 5.1](http://www-bcf.usc.edu/~gareth/ISL/) on cross validation.
 - read through the [custom viz notes](https://idc9.github.io/stor390/notes/custom_viz/custom_viz.html)
 
 **Apri 4**
@@ -184,18 +184,26 @@ Readings should be complete by the following class. There are three (free) prima
 
 **April 13**
 
-- read [chapter 1](http://tidytextmining.com/tidytext.html) of Text Mining with R
+- [chapter 1](http://tidytextmining.com/tidytext.html) of Text Mining with R
 
 **April 18**
 
-- read [chapter 3](http://tidytextmining.com/tfidf.html) from TMR
-- (optional) read [chapter 4](http://tidytextmining.com/ngrams.html) from TMR
-- read about [stemming and lemmatization](https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html)
+- [chapter 3](http://tidytextmining.com/tfidf.html) from TMR
+- (optional) [chapter 4](http://tidytextmining.com/ngrams.html) from TMR
+- [stemming and lemmatization](https://nlp.stanford.edu/IR-book/html/htmledition/stemming-and-lemmatization-1.html)
 
 
 **April 20**
 
-- read [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 10.1, 10.3.1, and 10.3.3 about K-means and clustering
+- [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) sections 10.1, 10.3.1, and 10.3.3 about K-means and clustering
+
+**April 25**
+
+- [interview with Cathy O'Neil on weapons of math destruction](https://qz.com/819245/data-scientist-cathy-oneil-on-the-cold-destructiveness-of-big-data/)
+- [Unroll.me Service Faces Backlash Over a Widespread Practice: Selling User Data](https://www.nytimes.com/2017/04/24/technology/personal-data-firm-slice-unroll-me-backlash-uber.html)
+- [Data, privacy, and the greater good](http://erichorvitz.com/data_privacy_greater_good.pdf) (optional, but super interesting)
+
+
 
 # **Coding**
 
