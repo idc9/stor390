@@ -237,8 +237,8 @@ See [**this document for the final project description**](final_project/descript
 | ------------|----------|
 |[proposal](final_project/proposal.html) | 4/6  |
 |[exploratory analysis](final_project/exploratory_analysis.html) | 4/25|
-|techincal documents | 5/2|
-|blog post | 5/9 |
+|[techincal documents](final_project/technical_documents.html) | 5/2|
+|[blog post](final_project/blog_post.html) | 5/9 |
 
 I've posted some ideas for project ideas in [this document](final_project/project_ideas.html).
 
