@@ -1,5 +1,6 @@
 ---
 title: "Acknowledgements"
+author: "[STOR 390](https://idc9.github.io/stor390/)"
 output: html_document
 ---
 
@@ -55,7 +56,7 @@ Many people provided input for this course
 - Jeffry Finkelstein (CS PhD student at BU)
 - Walter Cai (CS PhD student at UW)
 
- and of course my parents.
+ and of course **my parents**.
  
  Much of the course content was inspired by other fantastic data science courses offered around the country.
  
@@ -63,5 +64,26 @@ Many people provided input for this course
  - [STAT 545](http://stat545.com/) at UBC by Jenny Bryan
  - [Intoduction to Data Analysis](http://stat405.had.co.nz/) at Rice by Hadley Wickham
  - [CS 109](http://cs109.github.io/2015/) at Harvard by Joe Blitzstein
+ 
+The course content was drew on a number of other sources:
+
+- [Teaching and Learning STEM](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118925815.html) by Richard Felder and Rebecca Brent
+- [Trees, Maps and Theorems: Effective Communication for Rational Minds](http://www.treesmapsandtheorems.com/) by Jean-luc Doumont
+- [R for Data Science](http://r4ds.had.co.nz/) by Garrett Grolemund and Hadley Wickham
+- [An Introduction to Statistical Learning with Applications in R](http://www-bcf.usc.edu/~gareth/ISL/) by Gareth James, Daniela Witten, Trevor Hastie and Robert Tibshirani
+- [The Data Science Handbook](http://www.thedatasciencehandbook.com/)
+- [Partially Derivative](http://partiallyderivative.com/)
+- [Simply Statistics](http://simplystatistics.org/)
+
+There were a number of wonderful guest speakers
+
+- Marshall Markham
+- Dan Yang
+- Lucia Gjeltema
+- Frances Tong
+- Ryan Thornburg
+- Quinn Underriner
+
+
 
  

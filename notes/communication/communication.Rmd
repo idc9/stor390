@@ -233,7 +233,7 @@ hour <- read_csv('https://raw.githubusercontent.com/idc9/stor390/master/data/bik
 # hour <- read_csv('/Users/iaincarmichael/Dropbox/stor390/data/bikes_2011.csv')
 ```
 
-This section compares exploratory vs. communicatory plots and then discusses some ways in which plots can be misleading.
+This section compares exploratory vs. communicatory plots and then discusses some ways in which plots can be misleading. 
 
 The first two plots below compare different ways of visualizing the same data -- one version for exploration and one version for communication. The data for these plots are rental counts per hour over the course of one year for a bike sharing service (see [previous lecture](https://idc9.github.io/stor390/notes/predictive_modeling/predictive_modeling.html)). An exploratory analysis discovered that the rental trends throughout the day was qualitatively different between working and non-working days (e.g. M-F vs. weekends). 
 
@@ -482,6 +482,9 @@ Unfortunately Trees, Maps and Theorems is not free online, however you can find 
 
 Edward Tufte has a number of famous books on communicating visual evidence (see [here](https://www.edwardtufte.com/tufte/)).
 
+[Chart dos and don’ts](http://www.eea.europa.eu/data-and-maps/daviz/learn-more/chart-dos-and-donts)
+
+[Tips for Giving Clear Talks](http://www.cs.cmu.edu/~kayvonf/misc/cleartalktips.pdf)
 
 [viz.wtf/](http://viz.wtf/) has some wonderful examples of bad visualizations
 
