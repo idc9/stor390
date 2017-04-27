@@ -228,6 +228,8 @@ The due date is in the link.
 | April 4 |[Web scraping](labs/9/web_scraping.html) | | |
 | April 11 |[effective viz](labs/10/plots_lab.html) | | |
 | April 25 | | | [final project presentation](final_project/class_presentation.html)|
+| April 27 | | | [data ethics](https://goo.gl/forms/9o91AoU1YlZKpzIv2)|
+
 
 # **Final project**
 See [**this document for the final project description**](final_project/description.html).
