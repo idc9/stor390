@@ -1,11 +1,76 @@
 ---
-title: "Final project: technical documents"
+title: "Final project: the analysis"
 author: "[STOR 390](https://idc9.github.io/stor390/)"
 output:
-    html_document:
+  html_document:
     theme: cosmo
-toc: yes
-toc_float: yes
+    toc: yes
+    toc_float: yes
 ---
     
-coming soon...
+Using R Markdown write a document called process_notebook describing process you used to conduct your analysis (note this description is borrowed from [here](http://cs109.github.io/2015/pages/projects.html)). The the process_notebook the core document for the analysis. It should show the code for the entire analysis you did and include text justifying decisions you made (e.g. why did you remove certain observations, why median instead of mean, how did you select the variables for a model, etc). The target audience is: someone who knows R/statistics, but is unfamiliar with your project (i.e. the graders or even yourself three months from now).
+
+The process book should detail the steps you took to develop a solution. This includes where you got the data, other solutions you tried, the statistical methods you chose and your findings. How you got to your conclusions is as important as the conclusions. This is where you can show all the work you put into this project.  You should have lots of visualizations in the notebooks. Your discussion should hit on the following topics (depending on the project some of these will be more important than others):
+
+- Abstract: one paragraph at the very beginning of the document summarizing everything. 
+
+- Overview and Motivation: Provide an overview of the project goals and the motivation for it. Consider that this will be read by people who did not see your project proposal.
+
+- Related Work: Anything that inspired you, such as a paper, a web site, or something we discussed in class.
+
+- Initial Questions: What questions are you trying to answer? How did these questions evolve over the course of the project? What new questions did you consider in the course of your analysis? - Data: Source, scraping method, cleanup, storage, etc.
+
+- Exploratory Data Analysis: What visualizations did you use to look at your data in different ways? What are the different statistical methods you considered? Justify the decisions you made, and show any major changes to your ideas. How did you reach these conclusions?
+
+- Final Analysis: What did you learn about the data? How did you answer the questions? How can you justify your answers?
+
+Make sure the reader can answer the question "What is the point?" (e.g. see [here](http://www.storytellingwithdata.com/blog/2017/3/22/so-what)).
+
+
+# **If you made a shiny app**
+
+If the core deliverable is a shiny app you should still write a process_notebook, but it will probably be a little shorter. Your app should have a purpose and you should discuss how the app accomplishes that purpose. For example, if your app makes plots you discuss a few interesting things you found in these plots (maybe include some screen shots).
+
+The main functionality of the shiny app should be built by this point and the app should be included in this submission. You can (and should) continue polishing the front end of the app for the blog post that due a couple days later.
+
+
+# **Submission**
+
+Gather everything into a folder called **/n_analysis** (where n = your group number). This folder should have three sub-folders: **/data**, **/results**, **/everything_else**. Compress **/n_analysis** and email the instructor.
+
+1. **/results**: The /results folder should have a R Markdown document called process_notebook (include both the .Rmd and .html documents) and possibly several supporting .R scripts for helper functions you wrote.
+
+If you write helper functions (recommended) you should include them in separate .R scripts. The .Rmd document should assume the working directory is the n_analysis folder and should load the data accordingly (i.e. read_csv(‘data/my_cool_dataset.csv’)). We may knit the process_notebook.Rmd and it should run!
+
+The process_notebook should be mostly a matter of copy/pasting your analysis into a .Rmd document then adding discussion (discussion should be in text, not in comments). 
+
+If you made a shiny app include it in this folder.
+
+2. **/data** Put the data sets you used in this folder. 
+
+If you started with a messy data set and did significant processing then you should include both the raw and the cleaned data sets in separate sub-folders i.e. /data/raw/ and /data/clean/. 
+
+3. **/everything_else** You probably did a lot of stuff that didn’t make it in your final analysis. Include anything you did that you want to get credit for in this folder.  If you have a lot of material in here that you want us to look at then you should include a text document in this folder pointing us to what you want us to look at.
+
+
+# **Grading**
+
+The analysis is 50% of the final project grade. The main criteria it is graded on will be: accuracy, ambition, and communication.
+
+- Accuracy (70%)
+    - Did you do a correct statistical analysis?
+    - Does your code run?
+    - How well do your findings support your conclusions? The evidence is inconclusive" is a very possible, and completely acceptable answer.
+    
+- Ambition (20%)
+    - Did you choose the appropriate complexity and level of difficulty of your project?
+    - Why should someone else care about what you did?
+
+- Communication (10%)
+    - Is your code readable?
+    - After reading your analysis can the reader answer the "so what?" question?
+    
+    
+    
+    
+    

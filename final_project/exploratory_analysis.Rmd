@@ -25,7 +25,7 @@ What "initial results" means will also vary from project to project. For example
 
 # Deliverables
 
-Gather everything into one folder called **n_eda** (where n= your group number). This folder should have foud subfolders: **/summary**, **initial_results**, **/everything**, and **/data**. Please zip the **n_eda** folder and email it to the instructor.
+Gather everything into one folder called **n_eda** (where n= your group number). This folder should have four subfolders: **/summary**, **initial_results**, **/everything**, and **/data**. Please zip the **n_eda** folder and email it to the instructor.
 
 1. Write a summary of what you have tried, what you found and what you have left to do. This document should be about a page and can be mostly bullet points. Put this document into a folder called **summary**.
 

@@ -2,10 +2,61 @@
 title: "Final project: blog post"
 author: "[STOR 390](https://idc9.github.io/stor390/)"
 output:
-    html_document:
+  html_document:
     theme: cosmo
-toc: yes
-toc_float: yes
+    toc: yes
+    toc_float: yes
 ---
-    
-coming soon...
+Write a blog post explaining what you found. It should answer:
+
+1. **What is the question(s) you tried to answer? Why should someone care?**
+2. What is the data/how did you get it?
+3. How did you answer the questions (e.g. what statistical techniques, etc)?
+4. **What are your findings?**
+
+Points 1 and 4 are the most important for the blog post (your analysis document focuses on 2 and 3). This blog post should be aimed at a **general audience** who is not afraid of graphs/a little data (think [538](https://fivethirtyeight.com/)). The vast majority of the technical details should be in the [analysis document](https://idc9.github.io/stor390/final_project/technical_documents.html).
+
+
+
+
+# **Requirements for the blog post**
+
+- The post should be **1000-1500 words** (unless you made a shiny app -- see below).
+    - Include a title, a link to the STOR 390 homepage and your names.
+    - Don't display R code unless it is used to convey a point. 
+- There should be at least **2 visualizations**.
+    - Make sure to describe the figures somewhere in the text.
+    - These plots should be communicatory plots, not exploratory plots.
+- The post should be submitted in html (probably written in R Markdown)
+- Write a one paragraph summary of the project to be included separately in a text file.
+
+# **Submission**
+
+Include everything that went into creating this plot post in a folder called **n_blog** (where n = your group number). You can name the blog post whatever you want, just make sure it is a .html document. Please compress **n_blog** and email it to the instructor.
+
+I plan on posting these blog posts and your analyses on the course webpage. If you do not want your name associated with the post (or if you don't want even an anonymous version of the post displayed to the outside world) please email the instructor
+
+# **Grading**
+
+- Communication (80%)
+    - Does your main point come through (e.g. see [here](http://www.storytellingwithdata.com/blog/2017/3/22/so-what))?
+    - Is the document written well and clearly? Yes spelling and grammar matter.
+    - Quality of the figures.
+    - Does the document follow principles of effective communication? You might want to review the [communication lecture](https://idc9.github.io/stor390/notes/communication/communication.html).
+
+- Accuracy (10%)
+    - Do you accurately convey a rigorous argument?
+
+- Ambition (10%)
+
+
+# **Requirement flexibility**
+
+If you think the final deliverable for your project should be significantly better if is not constrained by the above **please reach out to the instructor**. For example,
+
+- Your project is aimed at a more particular audience (e.g. if you did some fancy machine learning). In this case we migh weight your technical analysis more heavily and you can write your blog post for a technical audience.
+
+- If you wrote a shiny app:
+    - The written component of the blog plots can be much shorter.
+    - The graders will focus more on the app. Test it to make sure it works. The principles of [effective communication](https://idc9.github.io/stor390/notes/communication/communication.html) apply to an app.
+
