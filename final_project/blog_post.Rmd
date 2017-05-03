@@ -68,4 +68,4 @@ Your team will get **up to 5 extra points on the final project grade** if you do
 - make a wepage using github pages (see [here](https://pages.github.com/))
 - (if you made a shiny app) post your shiny app (see [here](https://www.shinyapps.io/))
 
-Github pages are very easy to make. The webpage should showoff all asspects of your project including the blog post and techincal analysis. The better this page is the more points you will get.
+Github pages are very easy to make. The webpage should showoff all asspects of your project including the blog post and technical analysis. The better this page is the more points you will get.
