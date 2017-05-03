@@ -70,7 +70,8 @@ The analysis is 50% of the final project grade. The main criteria it is graded o
     - Is your code readable?
     - After reading your analysis can the reader answer the "so what?" question?
     
-    
-    
+
+
+
     
     
