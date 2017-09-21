@@ -54,7 +54,7 @@ I plan on posting these blog posts and your analyses on the course webpage. If y
 
 If you think the final deliverable for your project should be significantly better if is not constrained by the above **please reach out to the instructor**. For example,
 
-- Your project is aimed at a more particular audience (e.g. if you did some fancy machine learning). In this case we migh weight your technical analysis more heavily and you can write your blog post for a technical audience.
+- Your project is aimed at a more particular audience (e.g. if you did some fancy machine learning). In this case we might weight your technical analysis more heavily and you can write your blog post for a technical audience.
 
 - If you wrote a shiny app:
     - The written component of the blog plots can be much shorter.

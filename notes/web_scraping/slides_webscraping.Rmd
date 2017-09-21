@@ -1,0 +1,182 @@
+---
+title: "Web scraping"
+subtitle: "rvest and SelectorGaget"
+author: "STOR 390"
+output: slidy_presentation
+---
+
+
+# This lecture
+
+- Webscraping
+- `rvest`
+- SelectorGaget
+
+```{r}
+library(rvest)
+```
+
+
+# The web
+
+- HTML
+- CSS
+- JavaScript
+
+# HTML
+
+- **H**yper**T**ext **M**arkup **L**anguage
+- links
+- formatting (e.g. **bold**, *italics* ~~strikethrough~~)
+- text structuring (e.g. lists, quots, headings, etc)
+
+# CSS
+
+- **C**ascading **S**tyle **S**heets and is what makes webpages pretty
+- separation of presentation and content
+
+# CSS vs. no CSS 
+
+![from http://html.com/css/](css.png)
+
+# HTML tags
+- angled brackets 
+    - </div>, </li>, <br />
+
+
+# I Kissed a Girl
+
+http://www.songlyrics.com/katy-perry/i-kissed-a-girl-lyrics/
+
+
+# rvest
+
+- another Hadley package
+
+https://github.com/hadley/rvest
+
+
+# read_html
+
+```{r}
+song_url <- 'http://www.songlyrics.com/katy-perry/i-kissed-a-girl-lyrics/'
+
+html <- read_html(song_url)  # from rvest
+html
+```
+
+#html_nodes
+
+```{r}
+html_nodes(html, 'div')
+```
+
+# SelectorGaget
+
+- identify the tag you want
+
+
+# html_text
+
+```{r}
+html_nodes(html, "#songLyricsDiv")
+```
+
+# html_text
+
+```{r}
+html_nodes(html, "#songLyricsDiv") %>% html_text()
+```
+
+# Get every KP song
+
+- http://www.songlyrics.com/katy-perry-lyrics/
+- 91 songs on songlyrics
+- some duplicates
+
+# Outline
+1. scrape a list of every KP song on songlyrics 
+1.5 get links to each song lyric
+2. scrape each song
+
+
+# Song list
+```{r}
+artist_url <- 'http://www.songlyrics.com/katy-perry-lyrics/'
+
+song_nodes <- read_html(artist_url) %>% # load the html
+             html_nodes("#colone-container .tracklist a")
+
+song_nodes[1:3]
+```
+
+
+# Link patterns
+
+- Artist link
+> http://www.songlyrics.com/katy-perry/
+
+> http://www.songlyrics.com/ARTIST/
+- Song link
+
+> http://www.songlyrics.com/katy-perry/i-kissed-a-girl-lyrics/
+
+> http://www.songlyrics.com/ARTIST/SONG/
+
+# Get links (html_attr)
+
+```{r}
+song_links <-  html_attr(song_nodes, name='href')
+song_links[1:3]
+```
+
+
+# WARNING
+
+- websites don't like it when you scrape lots of their data
+- can get banned from Facebook
+
+# Pause between requests
+
+```{r}
+Sys.sleep(10)
+```
+
+# Putting it all together
+
+```{r, eval=F}
+
+# data frame to store 
+lyrics <- tibble()
+for(i in 1:length(song_links[1:2])){ # only grab 3 songs in the .rmd document
+    
+    # always nice to know where a long program is
+    message(str_c('scraping song ', i, ' of ', length(song_links) ))
+    
+    # scape the text of a song
+    lyrics_scraped <- song_links[i] %>%
+                      read_html() %>% 
+                      html_nodes("#songLyricsDiv") %>%
+                      html_text()
+    
+
+    # format the song name for the data frame
+    song_name <- song_titles[i] %>% 
+                 str_to_lower() %>% 
+                 gsub("[^[:alnum:] ]", "", .) %>%
+                 gsub("[[:space:]]", "_", .)
+
+    # add song to lyrics data frame
+    lyrics <- rbind(lyrics, tibble(text=lyrics_scraped, artist = 'katy_perry', song=song_name) )
+   
+    # pause so we don't get banned!
+    Sys.sleep(10) 
+}
+```
+
+
+
+
+
+
+

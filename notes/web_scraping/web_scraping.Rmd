@@ -43,7 +43,7 @@ Webpage (HBD Annie!)  |  Raw html
 
 [HTML](https://en.wikipedia.org/wiki/HTML) stands for **H**yper**T**ext **M**arkup **L**anguage. HTML deals with links and basic formatting. Hypertext is text that links to another webpage. A markup language displays text with formatting (e.g. **bold**, *italics* ~~strikethrough~~, etc)  and turns text into images, tables, etc. R Mardown uses [markdown](https://en.wikipedia.org/wiki/Markdown) with is a lightweight mark up language.
 
-[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets) stands for Cascading Style Sheets and is what makes webpages pretty. CSS allows for [separation of presentation and content](https://en.wikipedia.org/wiki/Separation_of_presentation_and_content)
+[CSS](https://en.wikipedia.org/wiki/Cascading_Style_Sheets) stands for **C**ascading **S**tyle **S**heets and is what makes webpages pretty. CSS allows for [separation of presentation and content](https://en.wikipedia.org/wiki/Separation_of_presentation_and_content)
 
 <div style="width:400px; height=600px">
 ![CSS vs. no CSS (from http://html.com/css/)](css.png)
@@ -227,6 +227,8 @@ The following are good references for using `rvest`
 - [scraping imdb](https://stat4701.github.io/edav/2015/04/02/rvest_tutorial/)
 
 - [SelectorGaget vignette](https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html)
+
+
 
 ## HTML references
 

@@ -7,7 +7,6 @@ output:
     toc_float: yes
 ---
 
-
 This course is an application-driven introduction to data science. Statistical and computational tools are valued throughout the modern workplace from Silicon Valley startups, to marine biology labs, to Wall Street firms. These tools require technical skills such as programming and statistics. They also require professional skills such as communication, teamwork, problem solving, and critical thinking.
 
 You will learn these tools and hone these skills through hands-on experience working with datasets such as: Museum of Modern Art records, TCGA Gene Expressions and the text script of Beauty and the Beast. The first half of the semester will cover R programming skills. The second half will cover a number of topics: exploratory data analysis, web scraping, text processing, and effective visualization through a series of modules.
@@ -22,38 +21,39 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 
 # **Course Material**
 
+Most of the course material can be found in the notes linked to below. The notes are suplemented by readings (mostly from [R for Data Science](http://r4ds.had.co.nz/)) which are listed in the [#reading](#reading) section.
 
-| Date | Lecture | Notes | Slides |
+| Date | Lecture | **Notes** | Slides |
 |------|---------|-------|-------|
-|January 12 |install R, basic commands | [getting started](notes/getting_started/getting_started.html) | [slides](slides/welcome.pdf)|
-|January 17 | R Markdown, working directory, R projects |[workflow](notes/workflow/workflow.html) | |
-|January 19 | select, filter, mutate | [dplyr](notes/dplyr/dplyr.html)| |
-|January 24 | pipes, group_by, summarise| [dplyr](notes/dplyr/dplyr.html)| [slides](slides/dplyr2.html)|
-| January 26 | if/else, loops, functions|[intro programming](notes/programming/prog_notes.html) |[slides](slides/intro_prog.html) |
-| January 31 |vectors, lists and eda |[more prog](notes/programming/prog_notes.html) and [EDA](notes/EDA/EDA.html) | [prog](slides/intro_prog.html) and [eda](slides/EDA.html)|
-|February 2| spread, gather |[tidy data](notes/tidy_data/tidy_data.html) | |
-|February 7| inner, outer joins ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/)) | | [slides](slides/joins.pdf)|
-|February 9| match, extract, replace with `stringr`| [regular expressions](notes/strings/strings.html) |[slides](slides/regex.html) |
-|February 14| look ahead/behinds|[regular expressions](notes/strings/strings.html) | |
+|January 12 |install R, basic commands | [**getting started**](notes/getting_started/getting_started.html) | [slides](slides/welcome.pdf)|
+|January 17 | R Markdown, working directory, R projects |[**workflow**](notes/workflow/workflow.html) | |
+|January 19 | select, filter, mutate | [**dplyr**](notes/dplyr/dplyr.html)| |
+|January 24 | pipes, group_by, summarise| [**dplyr**](notes/dplyr/dplyr.html)| [slides](slides/dplyr2.html)|
+| January 26 | if/else, loops, functions|[**intro programming**](notes/programming/prog_notes.html) |[slides](slides/intro_prog.html) |
+| January 31 |vectors, lists and eda |[**more prog**](notes/programming/prog_notes.html) and [**EDA**](notes/EDA/EDA.html) | [prog](slides/intro_prog.html) and [eda](slides/EDA.html)|
+|February 2| spread, gather |[**tidy data**](notes/tidy_data/tidy_data.html) | |
+|February 7| inner, outer joins ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/)) |[**slides**](slides/joins.pdf) | |
+|February 9| match, extract, replace with `stringr`| [**regular expressions**](notes/strings/strings.html) |[slides](slides/regex.html) |
+|February 14| look ahead/behinds|[**regular expressions**](notes/strings/strings.html) | |
 |February 16| | | |
-|February 21| least squares, factors, `lm()`| [linear regression](notes/linear_regression/linear_regression.html)| |
-|February 23|test set, nonlinear, interactions|[predictive modeling](notes/predictive_modeling/predictive_modeling.html) | [slides](slides/predictive_modeling.html) |
+|February 21| least squares, factors, `lm()`| [**linear regression**](notes/linear_regression/linear_regression.html)| |
+|February 23|test set, nonlinear, interactions|[**predictive modeling**](notes/predictive_modeling/predictive_modeling.html) | [slides](slides/predictive_modeling.html) |
 |February 28| exploratory data analysis| | |
 |March 2| more exploratory analysis| | |
-|March 7| nearest centroid, KNN | [classification](notes/classification/classification.html)|[slides](slides/classification.html) |
-|March 9| cross-validation| [cross-validation](notes/cross_validation/cross_validation.html) | [slides](slides/cv_slides.html)|
-|March 21|support vector machine, kernels| [more classification](notes/more_classification/more_classification.html) | |
-|March 23| |[more classification](notes/more_classification/more_classification.html) |[slides](slides/slides_more_classification.html) |
+|March 7| nearest centroid, KNN | [**classification**](notes/classification/classification.html)|[slides](slides/classification.html) |
+|March 9| cross-validation| [**cross-validation**](notes/cross_validation/cross_validation.html) | [slides](slides/cv_slides.html)|
+|March 21|support vector machine, kernels| [**more classification**](notes/more_classification/more_classification.html) | |
+|March 23| |[**more classification**](notes/more_classification/more_classification.html) |[slides](slides/slides_more_classification.html) |
 |March 28| more classification| | |
-|March 30| APIs ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/))|[slides](notes/API/APIs.html) | [APIs](slides/API.pdf) |
-|April 4|web scraping, twitter, ggplot|[web scraping](notes/web_scraping/web_scraping.html), [rtweets](notes/API/twitter/rtweet.html), [custom viz](notes/custom_viz/custom_viz.html) | |
-|April 6| [Shiny](https://shiny.rstudio.com/) ([Frances Tong](https://www.linkedin.com/in/francestong))| [shiny](notes/shiny.html)| |
-|April 11| communication | [effective communication](notes/communication/communication.html)|[slides](slides/communication.pdf) |
-|April 13|natural language processing| [TidyText](http://tidytextmining.com/tidytext.html) |[NLP](slides/nlp_intro.pdf), [guest Dan Yang](slides/dan_yang.pdf) |
-|April 18|tf-idf, stemming | [text classification](notes/natural_language_processing/text_classification.html) | [slides](slides/tfidf_slides.html)|
-|April 20| K-means,([Ryan Thornburg](https://ryanthornburg.com/)) |[clustering](notes/clustering/clustering.html) |[slides](notes/clustering/clustering_slides.html) |
+|March 30| APIs ([Marshall Markham](https://www.linkedin.com/in/marshall-markham-840ab24a/))|[**APIs**](notes/API/APIs.html) | [slides](slides/API.pdf) |
+|April 4|web scraping, twitter, ggplot|[**web scraping**](notes/web_scraping/web_scraping.html), [**rtweets**](notes/API/twitter/rtweet.html), [**custom viz**](notes/custom_viz/custom_viz.html) | |
+|April 6| [Shiny](https://shiny.rstudio.com/) ([Frances Tong](https://www.linkedin.com/in/francestong))| [**shiny**](notes/shiny.html)| |
+|April 11| communication | [**effective communication**](notes/communication/communication.html)|[slides](slides/communication.pdf) |
+|April 13|natural language processing| [**TidyText**](http://tidytextmining.com/tidytext.html) |[NLP](slides/nlp_intro.pdf), [guest Dan Yang](slides/dan_yang.pdf) |
+|April 18|tf-idf, stemming | [**text classification**](notes/natural_language_processing/text_classification.html) | [slides](slides/tfidf_slides.html)|
+|April 20| K-means,([Ryan Thornburg](https://ryanthornburg.com/)) |[**clustering**](notes/clustering/clustering.html) |[slides](notes/clustering/clustering_slides.html) |
 |April 25|in class presentations|[in class presentations](final_project/class_presentation.html) | |
-|April 27|data ethics, [Quinn Underriner](https://www.linkedin.com/in/quinn-underriner-69138249/) |[data ethics](slides/Data_Ethics.pdf) | [course summary](slides/course_summary.pdf)|
+|April 27|data ethics, [Quinn Underriner](https://www.linkedin.com/in/quinn-underriner-69138249/) |[**data ethics**](slides/Data_Ethics.pdf) | [course summary](slides/course_summary.pdf)|
 
 
 - the datasets use in the class are on [data.world](https://data.world/iain/stor-390/) and [github](https://github.com/idc9/stor390/tree/master/data/)
@@ -205,7 +205,7 @@ Readings should be complete by the following class. There are three (free) prima
 
 
 
-# **Coding**
+# **Homework**
 
 The due date is in the link. 
 
