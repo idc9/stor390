@@ -5,7 +5,8 @@ author: "STOR 320 - Introduction to Data Science"
 output:
   html_document:
     runtime: shiny
-    #css: www/styles.css
+    #runtime: shiny_prerendered
+    css: www/styles.css
     theme: cosmo
     toc: yes
     toc_float: yes
