@@ -31,6 +31,7 @@ shinyUI(
                       verbatimTextOutput("beer_calories"),
                       h4('Number of Burpees needed to offset beer consumption:'),
                       verbatimTextOutput("n_burpees"),
+                      hr(),
                       h3('How to Perform Burpees:'),
                       img(src = "BurpeeImage.png", height = 300, width = 700),
                       p("Sources:"),
