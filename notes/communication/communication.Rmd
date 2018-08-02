@@ -402,8 +402,6 @@ The repository contains a README document (analogous to the executive summary). 
 
 The code itself is organized into many functions and separate scripts (see [here](https://github.com/juliasilge/tidytext/tree/master/R)).  The package also has well written vignettes (see [here](https://cran.rstudio.com/web/packages/tidytext/vignettes/tidytext.html) or [here](https://cran.rstudio.com/web/packages/tidytext/vignettes/tf_idf.html)). These vignettes contain **minimal**, **reproducible** snippets of example code that demonstrate how to get started with the package.
 
-The final project description contains some details on how to organize folders for data science project TODO: add this.
-
 # **R Markdown**
 
 R Markdown (RMD) is a powerful medium for communication that allows you to weave code into a text document with some basic formatting. This section first discusses RMD's capabilities as a text editor then literate programming.
