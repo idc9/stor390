@@ -1,6 +1,8 @@
 # To get some data you can use to run the code in the classification lecture/notes run this script
 # it will produce a data frame called data with three columns: two x variables and the class labels
 
+library(tidyverse)
+library(mvtnorm)
 
 # set the random seed
 set.seed(100)

@@ -13,7 +13,7 @@ This lecture is about communication in various contexts in data science. It firs
 
 > Effective communication is optimization under constraints. -- *Trees, Maps and Theorems*
 
-Communication is context dependent; the context determines the constraints. The context often depends upon:
+What makes for effective communication is context dependent; the context determines the constraints. The context often depends upon:
 
 - Audience (business executives, data scientists, etc)
 - Medium (slide show, text document, etc)
