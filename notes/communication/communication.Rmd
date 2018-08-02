@@ -321,7 +321,7 @@ It is possible to mislead both yourself and others with visualizations.
 
 - [Why you should be skeptical of choropleth maps](https://kieranhealy.org/blog/archives/2015/06/12/americas-ur-choropleths/)
     - Easy for patterns to be driven by confounding variables
-- [What makes bad figures bad](http://vissoc.co/wk01.html#4_what_makes_bad_figures_bad)
+- [What makes bad figures bad](http://socviz.co/lookatdata.html#what-makes-bad-figures-bad)
 - Why pie charts are bad and how you can do better (see [here](https://kieranhealy.org/blog/archives/2017/04/06/saying-no-to-pie/)).
 - For a longer discussion on misleading visualizations see [here]( http://avoinelama.fi/hingo/kirjoituksia/misleadingvisualizations.html)
 
