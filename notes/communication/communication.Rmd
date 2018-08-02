@@ -22,9 +22,7 @@ What makes for effective communication is context dependent; the context determi
 - Time (do you have a day or a week to prepare?)
 
 
-Communicating well is challenging and takes lots of practice. In my experience communication involves design, engineering and empathy as well as the ability to work with words. In data science it requires the ability to work in different mediums.
-
-In some cases the medium will be constrained by the context while in others you have some freedom. In data science there are many mediums you may end up using:
+Communicating well is challenging and takes lots of practice. In my experience communication involves design, engineering and empathy as well as the ability to work with words. In data science it requires the ability to work in different mediums, for example:
 
 - Written document
 - Static visualizations
@@ -51,7 +49,7 @@ This section presents four general rules for communicating effectively:
 3. Use effective redundancy.
 4. There are usually trade-offs
 
-The first three of these come from [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/) (these rules might remind you of [information and coding theory](https://en.wikipedia.org/wiki/Information_theory). They are general principles which apply to many different contexts. 
+The first three of these come from [Trees, Maps and Theorems](http://www.treesmapsandtheorems.com/) (these rules might remind you of [information and coding theory](https://en.wikipedia.org/wiki/Information_theory)). They are general principles which apply to many different contexts. 
 
 
 
@@ -59,18 +57,19 @@ The first three of these come from [Trees, Maps and Theorems](http://www.treesma
 
 Adapting to the audience means you take responsibility for the success or failure of your message reaching the audience. It comes naturally to us; you talk to your parents differently from how you talk to your best friend. The act of adapting requires empathy; you have to understand how the recipient perceives the information you are conveying. Adapting also requires some persistence; if the first strategy does not succeed then try another one.
 
-Adapting is partially an act of generosity. How many hours of your life have been wasted sitting through a lecture that you didn't get much out of? More importantly adapting is about being effective.
+Adapting is partially an act of generosity. How many hours of your life have been wasted sitting through a lecture that you didn't get much out of? However, communicating well is also beneficial to your career.
 
 > Much like being customer-minded in business or being user-friendly in software development, adapting to one's audience is really a question of **effectiveness** more than one of selflessness. -- *Trees, Maps and Theorems*
 
-Understanding who is in the audience is a critical step. Some common types of audience variety you may face include:
+Understanding who is in the audience is a critical step. Some common types of audience members you may face include:
 
 - Familiar or unfamiliar with the topic
 - Technical or non-technical
 - Expert in the topic at hand or in a similar but distinct topic
 - Native or non-native language speakers
 - Interested or uninterested in the topic
-- Mixed audience
+
+Many audiences are heterogenous which presents an extra challenge.
 
 
 ## 2. Maximize the signal to noise ratio
@@ -80,7 +79,7 @@ Understanding who is in the audience is a critical step. Some common types of au
 
 The audience sees every dot in a graphic and hears every word you speak. Anything that does not convey your message to the audience hampers your message. Often message optimization is more about minimizing noise than maximizing signal. 
 
-For visualization simple and focused is often better than fancy and detailed. For example watch the progression of a poor graphic to an effective graphic in  [this blog post](http://www.storytellingwithdata.com/blog/2017/3/29/declutter-this-graph).
+For visualization, simple and focused is often better than fancy and detailed. For example watch the progression of a poor graphic to an effective graphic in  [this blog post](http://www.storytellingwithdata.com/blog/2017/3/29/declutter-this-graph).
 
 Documents/presentations/webpages should be consistent and minimal. All formatting (font, text size, structure, webpage style, graph colors, etc) should remain uniform throughout. Changes in formatting will draw the audience's attention so use it selectively. Similarly, bolding and emphasis words (very, really, etc) should be used only occasionally. 
 
@@ -115,7 +114,7 @@ You may have come across the famous quote in an Economics class that means there
 
 > There ain't no such thing as a free lunch. -- *(popularized by) Milton Friedman*
 
-In the context of communication the biggest "cost" is likely to be time spend preparing; it takes time to communicate more effectively. Tweaking a single graphic can take hours.  Your goal is not perfection; your goal is "good enough" for the purpose at hand. 
+In the context of communication the biggest "cost" is likely to be time spent preparing; it takes time to communicate well. Tweaking a single graphic can take hours. Your goal is not perfection; your goal is "good enough" for the purpose at hand. 
 
 "Good enough" is once again context dependent. An email to your mom might get a quick glace over while an email to a potential employer likely takes multiple rounds of revision. 
 
@@ -150,7 +149,7 @@ If you are publishing something publicly you should revise it several times. If 
 
 ## State the message first then state the details
 
-An effective presentation/document states the message *before* the details of the argument. The message is more important than the details. Therefore the structure of the document should reflect this inequality. The audience may not appreciate the message without motivation so providing context should come before the message. 
+An effective presentation/document states the message *before* the details of the argument. The message is (usually) more important than the details. Therefore the structure of the document should reflect this inequality. The audience may not appreciate the message without motivation so providing context should come before the message. 
 
 Most professional communications are structured as:
 
@@ -448,7 +447,7 @@ These tools should used in the way the best communicates the message to the audi
 
 ## **R** Markdown: literate programming
 
-Traditional literate programming is about making a complex program easy to read by a programmer by including documentation/commentary in the code. In the context of data science literate programming means you can weave code, figures and text together into one document. [This presentation](https://philchodrow.github.io/resources/rmarkdown/rmarkdown.html#1) gives a good overview of using RMD for literate programming and I will quote a few of the slides in this section.
+Traditional literate programming is about making a complex program easy to read for a programmer by including documentation/commentary in the code. In the context of data science literate programming means you can weave code, figures and text together into one document. [This presentation](https://philchodrow.github.io/resources/rmarkdown/rmarkdown.html#1) gives a good overview of using RMD for literate programming and I will quote a few of the slides in this section.
 
 In the context of data science [reproducibility](http://simplystatistics.org/2014/06/06/the-real-reason-reproducible-research-is-important/) means the ability for someone else to access your data, run your code and get the same results you got. This is surprisingly challenging. With R Markdown you can write all of the analysis code in the same document that you use to communicate it. The .Rmd file is now reproducible research! 
 
