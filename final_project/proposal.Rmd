@@ -11,7 +11,7 @@ output:
 
 Read the [final project description](description.html) then write a project proposal with your team. 
 
-You should brainstorm a long list of ideas, the narrow it down to a couple that are feasable given your knowledge of R, the time constraints and available data. Write the proposal for one of these ideas, but you should keep a couple backups in case the original project doesn't work out for some reason.
+You should brainstorm a long list of ideas, the narrow it down to a couple that are feasible given your knowledge of R, the time constraints and available data. Write the proposal for one of these ideas, but you should keep a couple backups in case the original project doesn't work out for some reason.
 
 The point of this exercise it to think though a reasonable project (and get feedback from the instructional staff). You will not be held to doing exactly what you say you will do in this proposal; expect to adapt your project as you continue to work on it (just ask [Robert Burns](https://en.wiktionary.org/wiki/best_laid_plans) or [Mike Tyson](http://articles.sun-sentinel.com/2012-11-09/sports/sfl-mike-tyson-explains-one-of-his-most-famous-quotes-20121109_1_mike-tyson-undisputed-truth-famous-quotes).) The more you put into the proposal, however, the better your life will be 2 weeks from now.
 
@@ -33,7 +33,7 @@ On a second page include a list of 3 other ideas you brainstormed with a couple 
 
 Meet once very early for an initial brainstorm. Have everyone go off and explore some ideas. Meet again for a final brainstorm. Then write the proposal.
 
-Look at the datasets you plan on using to make sure they aren't aweful. If you plan on creating a dataset (e.g. by scraping a website) convince me this will be feasable (you don't have to have the scraper working perfectly).
+Look at the datasets you plan on using to make sure they aren't awful. If you plan on creating a dataset (e.g. by scraping a website) convince me this will be feasible (you don't have to have the scraper working perfectly).
 
 
 

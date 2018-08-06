@@ -247,23 +247,23 @@ ggplot(data) +
 
 # **Relation to classification**
 
-Classification is about going from labels to patterns while clustering is about going from patterns to labels. This lecture hopefully reminded you of classification [classification lecture](https://idc9.github.io/stor390/notes/classification/classification.html) In classification we had labeled data (classes) and we tried to find patterns that distingusighed different classes (e.g. one class is on the left of a separating hyperplane and the other on the right). In clustering we come up with the class labels ourselves based on patterns in the data.
+Classification is about going from labels to patterns while clustering is about going from patterns to labels. This lecture hopefully reminded you of classification [classification lecture](https://idc9.github.io/stor390/notes/classification/classification.html) In classification we had labeled data (classes) and we tried to find patterns that distinguished different classes (e.g. one class is on the left of a separating hyperplane and the other on the right). In clustering we come up with the class labels ourselves based on patterns in the data.
 
-One way to interpret clustering is as a [missing data](https://en.wikipedia.org/wiki/Missing_data) problem. We might imagine the X data we were given orginally had a $y$ class label column, but this label column was removed. In other words, the class labels are [latent variables](https://en.wikipedia.org/wiki/Latent_variable) (variables that exist, but we don't observe them).
+One way to interpret clustering is as a [missing data](https://en.wikipedia.org/wiki/Missing_data) problem. We might imagine the X data we were given originally had a $y$ class label column, but this label column was removed. In other words, the class labels are [latent variables](https://en.wikipedia.org/wiki/Latent_variable) (variables that exist, but we don't observe them).
 
 
 #**How to select K**
 
-For K-means (and most clustering algorithms) you have to pre-specify $K$, the number of clusters you want to find. This is a hard problem. Occasinally you have outside or domain specific information that tells you how many clusters you want to find. In most cases you would like to use the data to select the number of clusters. There is not a well established method to select K.
+For K-means (and most clustering algorithms) you have to pre-specify $K$, the number of clusters you want to find. This is a hard problem. Occasionally you have outside or domain specific information that tells you how many clusters you want to find. In most cases you would like to use the data to select the number of clusters. There is not a well established method to select K.
 
-Most of the methods to select $K$ are cluster validation methods. You first perform clustering to select $K$ clusters, then perfom some kind of hypothesis test to check if the clusters you have found are the result of purely noise. Cluster validation is very important for reasons discussed below.
+Most of the methods to select $K$ are cluster validation methods. You first perform clustering to select $K$ clusters, then perform some kind of hypothesis test to check if the clusters you have found are the result of purely noise. Cluster validation is very important for reasons discussed below.
 
 
 # **WARNING: clustering algorithms always give you clusters!**
 
-Clustering algorithms are partisan zealots that will always find clusters *even if there is nothing there*. If you run K-means with K = 5, it will *always* find 5 clusters. Maybe there were 4 clusters, maybe there were 20 or maybe there were 0 clustes. K-means doesn't care -- it will stick with 4. 
+Clustering algorithms are partisan zealots that will always find clusters *even if there is nothing there*. If you run K-means with K = 5, it will *always* find 5 clusters. Maybe there were 4 clusters, maybe there were 20 or maybe there were 0 clusters. K-means doesn't care -- it will stick with 4. 
 
-The following example should scare you. We will generate 200 data points independently and identically distributed from a standard normal distribution. There is no signal in the data; there should only be one cluseter. Next we run K-means with K = 5 and plot the results.
+The following example should scare you. We will generate 200 data points independently and identically distributed from a standard normal distribution. There is no signal in the data; there should only be one cluster. Next we run K-means with K = 5 and plot the results.
 
 
 ```{r}

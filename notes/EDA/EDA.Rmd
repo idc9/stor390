@@ -1,6 +1,10 @@
 ---
 title: "EDA: visualizing variation"
-output: html_document
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
 ---
 
 

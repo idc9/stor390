@@ -21,7 +21,7 @@ See the **[course syllabus](https://idc9.github.io/stor390/course_info/syllabus.
 
 # **Course Material**
 
-Most of the course material can be found in the notes linked to below. The notes are suplemented by readings (mostly from [R for Data Science](http://r4ds.had.co.nz/)) which are listed in the [#reading](#reading) section.
+Most of the course material can be found in the notes linked to below. The notes are supplemented by readings (mostly from [R for Data Science](http://r4ds.had.co.nz/)) which are listed in the [#reading](#reading) section.
 
 | Date | Lecture | **Notes** | Slides |
 |------|---------|-------|-------|
@@ -247,7 +247,7 @@ I've posted some ideas for project ideas in [this document](final_project/projec
 
 # **Additional resources**
 
-- [the extra resources page](resources/extra_resources.html) conatins a number of books, blogs, MOOCS and other courses about data science
+- [the extra resources page](resources/extra_resources.html) contains a number of books, blogs, MOOCS and other courses about data science
 - [a collection of lot's of datasets](resources/dataset_collection.html)
 - [finding a job/internship](resources/jobs.html)
 

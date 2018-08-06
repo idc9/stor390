@@ -35,7 +35,7 @@ movie
 
 # Question 1
 
-**1a**. Write a function that takes a list of movie titles, queries OMDB for each movie then returns a data frame with the following columns indicated in the function body below.
+**1a**. Write a function that takes a list of movie titles, queries OMDb for each movie then returns a data frame with the following columns indicated in the function body below.
 
 
 ```{r, eval=F}
@@ -74,7 +74,7 @@ get_movie_data_from_title <- function(titles){
         # turn the json into a nice list
         movie <- 
         
-        # the Response will be false if you mispelled a moive title 
+        # the response will be false if you misspelled a movie title 
         if(movie$Response){
             
             # add each information for each column
@@ -113,5 +113,5 @@ get_movie_data_from_imdb_id <- function(imdb_ids){
 
 ```{r, eval=F}
 imdb_ids <- c('tt0241527')
-get_imdb_score_from_title(imdb_ids)
+get_movie_data_from_imdb_id(imdb_ids)
 ```

@@ -238,79 +238,79 @@ movie &lt;- fromJSON(raw_json)
 movie</code></pre>
 <pre><code>## $Title
 ## [1] &quot;Logan&quot;
-## 
+##
 ## $Year
 ## [1] &quot;2017&quot;
-## 
+##
 ## $Rated
 ## [1] &quot;R&quot;
-## 
+##
 ## $Released
 ## [1] &quot;03 Mar 2017&quot;
-## 
+##
 ## $Runtime
 ## [1] &quot;137 min&quot;
-## 
+##
 ## $Genre
 ## [1] &quot;Action, Drama, Sci-Fi&quot;
-## 
+##
 ## $Director
 ## [1] &quot;James Mangold&quot;
-## 
+##
 ## $Writer
 ## [1] &quot;James Mangold (story by), Scott Frank (screenplay), James Mangold (screenplay), Michael Green (screenplay)&quot;
-## 
+##
 ## $Actors
 ## [1] &quot;Hugh Jackman, Patrick Stewart, Dafne Keen, Boyd Holbrook&quot;
-## 
+##
 ## $Plot
 ## [1] &quot;In 2029 the mutant population has shrunk significantly and the X-Men have disbanded. Logan, whose power to self-heal is dwindling, has surrendered himself to alcohol and now earns a living as a chauffeur. He takes care of the ailing old Professor X whom he keeps hidden away. One day, a female stranger asks Logan to drive a girl named Laura to the Canadian border. At first he refuses, but the Professor has been waiting for a long time for her to appear. Laura possesses an extraordinary fighting prowess and is in many ways like Wolverine. She is pursued by sinister figures working for a powerful corporation; this is because her DNA contains the secret that connects her to Logan. A relentless pursuit begins - In this third cinematic outing featuring the Marvel comic book character Wolverine we see the superheroes beset by everyday problems. They are ageing, ailing and struggling to survive financially. A decrepit Logan is forced to ask himself if he can or even wants to put his remaining powers to good use. It would appear that in the near-future, the times in which they were able put the world to rights with razor sharp claws and telepathic powers are now over.&quot;
-## 
+##
 ## $Language
 ## [1] &quot;English, Spanish&quot;
-## 
+##
 ## $Country
 ## [1] &quot;USA&quot;
-## 
+##
 ## $Awards
 ## [1] &quot;N/A&quot;
-## 
+##
 ## $Poster
 ## [1] &quot;https://images-na.ssl-images-amazon.com/images/M/MV5BMjI1MjkzMjczMV5BMl5BanBnXkFtZTgwNDk4NjYyMTI@._V1_SX300.jpg&quot;
-## 
+##
 ## $Ratings
 ##                    Source  Value
 ## 1 Internet Movie Database 8.5/10
 ## 2         Rotten Tomatoes    93%
 ## 3              Metacritic 77/100
-## 
+##
 ## $Metascore
 ## [1] &quot;77&quot;
-## 
+##
 ## $imdbRating
 ## [1] &quot;8.5&quot;
-## 
+##
 ## $imdbVotes
 ## [1] &quot;181,361&quot;
-## 
+##
 ## $imdbID
 ## [1] &quot;tt3315342&quot;
-## 
+##
 ## $Type
 ## [1] &quot;movie&quot;
-## 
+##
 ## $DVD
 ## [1] &quot;N/A&quot;
-## 
+##
 ## $BoxOffice
 ## [1] &quot;N/A&quot;
-## 
+##
 ## $Production
 ## [1] &quot;20th Century Fox&quot;
-## 
+##
 ## $Website
 ## [1] &quot;http://www.foxmovies.com/movies/logan&quot;
-## 
+##
 ## $Response
 ## [1] &quot;True&quot;</code></pre>
 </div>
@@ -319,11 +319,11 @@ movie</code></pre>
 <p><strong>1a</strong>. Write a function that takes a list of movie titles, queries OMDB for each movie then returns a data frame with the following columns indicated in the function body below.</p>
 <pre class="r"><code># given some movie titles returns a data frame with metadata about each movie
 get_movie_data_from_title &lt;- function(titles){
-    
+
     # start and end of query url
-    url_start &lt;- 
-    url_end &lt;- 
-    
+    url_start &lt;-
+    url_end &lt;-
+
     # movie data frame to return
     # get the data for each colum
     movie_df &lt;- tibble(title = titles,
@@ -333,33 +333,33 @@ get_movie_data_from_title &lt;- function(titles){
                        Rated = NA,
                        Runtime = NA,
                        Genre = NA)
-    
-    
+
+
     # for each title in the list query the data base and extract the metadata
     for(i in 1:length(titles)){
         title &lt;- titles[i]
-        
+
         # replace all spaces in title with +
-        modified_title &lt;- 
-        
+        modified_title &lt;-
+
         # create url for movie (hint: paste())
-        url &lt;- 
-        
+        url &lt;-
+
         # query the API to get some json
-        raw_json &lt;- 
-        
+        raw_json &lt;-
+
         # turn the json into a nice list
-        movie &lt;- 
-        
-        # the Response will be false if you mispelled a moive title 
+        movie &lt;-
+
+        # the response will be false if you misspelled a movie title
         if(movie$Response){
-            
+
             # add each information for each column
-            movie_df[i, 'imdbRating'] &lt;- 
+            movie_df[i, 'imdbRating'] &lt;-
         }
-        
+
     }
-    
+
     return(movie_df)
 }</code></pre>
 <p><strong>1b</strong>. Test your function by querying five movies.</p>
@@ -370,11 +370,11 @@ get_movie_data_from_title(titles)</code></pre>
 <h1>Question 2</h1>
 <p><strong>2a</strong>. Modify the above function to instead take a list of imdb ids. <strong>Hint</strong>: This should be a matter of modifying the url – you can get an example from the <a href="https://www.omdbapi.com/">OMDb website</a> under the <em>By ID</em> section.</p>
 <pre class="r"><code>get_movie_data_from_imdb_id &lt;- function(imdb_ids){
-    
+
 }</code></pre>
 <p><strong>2b</strong>. Test your function by querying five movies. <strong>Hint</strong>: You can find a movie’s imdb id on it’s imdb page.</p>
 <pre class="r"><code>imdb_ids &lt;- c('tt0241527')
-get_imdb_score_from_title(imdb_ids)</code></pre>
+get_movie_data_from_imdb_id(imdb_ids)</code></pre>
 </div>
 
 

@@ -3,9 +3,9 @@ title: "Assignment 3: bikes, EDA and predictive modeling"
 output: html_document
 ---
 
-[Captial Bikeshare](https://www.capitalbikeshare.com/) releases a large amount of their data to the public about bike rentals in Washinton, DC. For example they released a data set with the hourly count of bike rentals in 2011 and 2012 with correspoonding weather/seasonal covariates on the famous UCI Machine Learning Repository. You can find information on what the variables mean [**here**](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset).
+[Captial Bikeshare](https://www.capitalbikeshare.com/) releases a large amount of their data to the public about bike rentals in Washington, DC. For example they released a data set with the hourly count of bike rentals in 2011 and 2012 with corresponding weather/seasonal covariates on the famous UCI Machine Learning Repository. You can find information on what the variables mean [**here**](https://archive.ics.uci.edu/ml/datasets/Bike+Sharing+Dataset).
 
-In this assigment you will first do an exploratory analysis of the 2011 data. You will then build a model to predict rental counts for the 2012 data. 
+In this assignment you will first do an exploratory analysis of the 2011 data. You will then build a model to predict rental counts for the 2012 data. 
 
 Assignment 3 is due **Friday March 10th**. There are three deliverables: 2 .Rmd files and one .csv file. Some examples are given below.
 
@@ -46,17 +46,17 @@ The predictions .csv should be the original 2012 file with a new column added ca
 
 For this task you should first split the 2011 data into a `train` and `test` set. First train each of your models on the `train` set then compare them using the `test` set to help decide which model is better.
 
-For our pupose "different" means different features. You know how to create new features with variable transformations and interactions. One way to do build a model is to hand engineer some features you think make sense. Another way is to build a ton of features then apply a variable selection procedure to narrow this large set down. Include a breif discussion of how you built each model and why you made the choices that you made. 
+For our purpose "different" means different features. You know how to create new features with variable transformations and interactions. One way to do build a model is to hand engineer some features you think make sense. Another way is to build a ton of features then apply a variable selection procedure to narrow this large set down. Include a brief discussion of how you built each model and why you made the choices that you made. 
 
 
-For grading pusposes we are mainly looking for a reasonable, honest effort. Some don'ts
+For grading purposes we are mainly looking for a reasonable, honest effort. Some don'ts
 
 - your final model should probably have a little more to it than one variable linear regression (unless you include some evidence that this model is in fact the right way to go)
 
 - for the second model don't take the first model, make one minor modification and call it a day
 
 
-**#winning** Whomever builds the best predictive model, as measured by mean squared error on the 2012 data, will recieve one extra credit point. Additionally, another extra credit point will be awarded to the best insight from the EDA. More extra credit points may be awarded for going above and beyond the assignment requirments. 
+**#winning** Whomever builds the best predictive model, as measured by mean squared error on the 2012 data, will receive one extra credit point. Additionally, another extra credit point will be awarded to the best insight from the EDA. More extra credit points may be awarded for going above and beyond the assignment requirements. 
 
 # Hints
 
@@ -88,7 +88,7 @@ hour11 %>%
     labs(x = 'hour', y = 'rental count')
 ```
 
-Figure 1 shows bike rental counts per hour for each hour in 2011. As might be expected the rental traffic is higher during the day than at night. There appear to be two traffic spikes: one in the morning (around 8am) and one in the evening (around 5pm). These spikes might suggest that people use Capital Bike rentals to get to and from work. Looking carefully at the morning spike ther appears to be two clusters: one with higher traffic, one with lower traffic. It could be worthwhile to determine what is driving this possible difference in bike rental behavior in the morning.
+Figure 1 shows bike rental counts per hour for each hour in 2011. As might be expected the rental traffic is higher during the day than at night. There appear to be two traffic spikes: one in the morning (around 8am) and one in the evening (around 5pm). These spikes might suggest that people use Capital Bike rentals to get to and from work. Looking carefully at the morning spike there appear to be two clusters: one with higher traffic, one with lower traffic. It could be worthwhile to determine what is driving this possible difference in bike rental behavior in the morning.
 
 
 ## Predictive model example

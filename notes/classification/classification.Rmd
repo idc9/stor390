@@ -305,7 +305,7 @@ The [nearest centroid](https://en.wikipedia.org/wiki/Nearest_centroid_classifier
 The principle of [sufficiency](https://en.wikipedia.org/wiki/Sufficient_statistic) in statistics says we should build algorithms off simple yet meaningful summaries of our data. Probably the most simple way of summarizing a set of data is with the mean. The nearest centroid says you should classify a data point to the class whose mean is closest to that data point (*centroid* is another word for mean).
 
 
-## Psueodo code
+## Pseudo code
 Writing the nearest centroid procedure out a little more explicitly
 
 - given the training data compute the class means

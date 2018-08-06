@@ -65,7 +65,7 @@ If you think the final deliverable for your project should be significantly bett
 
 Your team will get **up to 5 extra points on the final project grade** if you do the following:
 
-- make a wepage using github pages (see [here](https://pages.github.com/))
+- make a webpage using github pages (see [here](https://pages.github.com/))
 - (if you made a shiny app) post your shiny app (see [here](https://www.shinyapps.io/))
 
-Github pages are very easy to make. The webpage should showoff all asspects of your project including the blog post and techincal analysis. The better this page is the more points you will get.
+Github pages are very easy to make. The webpage should showoff all aspects of your project including the blog post and technical analysis. The better this page is the more points you will get.

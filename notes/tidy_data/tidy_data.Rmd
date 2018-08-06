@@ -1,6 +1,10 @@
 ---
 title: "Tidy and relational data: Shaping and combining datasets"
-output: html_document
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
 ---
 This lecture covers tidy data. The main reference is 
 
@@ -14,7 +18,7 @@ The focus of this lecture is how to reshape datasets to be ready for analysis us
     - `spread`
 
 
-The Museum of Modern Art (MoMA) publically releases data about its entire collection (see  [MoMA collection](https://github.com/MuseumofModernArt/collection)). This lecture uses a couple data files from their collection.
+The Museum of Modern Art (MoMA) publicly releases data about its entire collection (see  [MoMA collection](https://github.com/MuseumofModernArt/collection)). This lecture uses a couple data files from their collection.
 
 
 # Some initial data cleaning
@@ -59,7 +63,6 @@ artists <- mutate(artists,
 These notes instead will walk through how to apply those concepts on our sample dataset for the lecture. The goal is to demonstrate how you might apply tidy and relational data concepts, and to show some issues you could run into.
 
 If you do something cool with this dataset let the instructor know. The MoMA is interested in showing off what people do with its data!
-
 # Dataset
 ![Wangechi Mutu, Untitled from Eve, 2006 MoMA](https://www.moma.org/media/W1siZiIsIjEzOTAxOCJdLFsicCIsImNvbnZlcnQiLCItcmVzaXplIDEyODB4MTI4MFx1MDAzZSJdXQ.jpg?sha=b0ff0242ed6bffab)
 
@@ -181,14 +184,14 @@ Oops. We told separate to split the cells every time there was a column, but we 
 
 We have two options: If we know the maximum number of columns we will need, we can set that to be the number of columns we separate into, filling un-needed columns with `NA`. Alternatively, we could do our splitting column by column.
 
-The second option is more cumbersome, so let's figure out how many columns we need. Here's one way to do it, using the `stringr` package for manipulating character vectors. `str_replace_all` here removes all occurances of non-commas, `nchar` tells us how many characters are in each string, and max returns the maximum number.
+The second option is more cumbersome, so let's figure out how many columns we need. Here's one way to do it, using the `stringr` package for manipulating character vectors. `str_replace_all` here removes all occurrences of non-commas, `nchar` tells us how many characters are in each string, and max returns the maximum number.
 
 
 ```{r sep2, warning=FALSE, echo=TRUE, message=FALSE}
 str_replace_all(art$constituentid, "[^,]", "") %>% nchar %>% max
 ```
 
-This approach comes at a cost: We will have to create 30 more columns for a total of 31 possible artist ids---since the number of commas plus one is the number of artists. But that's not exactly even what we want. We want one row per artist per peice, which we will do later.
+This approach comes at a cost: We will have to create 30 more columns for a total of 31 possible artist ids---since the number of commas plus one is the number of artists. But that's not exactly even what we want. We want one row per artist per piece, which we will do later.
 
 For now, let's run `separate` on our test dataset, using only the maximum number of columns we need there. We also specify that we want `separate` to fill in `NA` values for missing values on the right.
 
@@ -225,7 +228,7 @@ Our data frame has one value per cell, but it still only has one observation per
 
 
 ```{r, eval=F}
-gather(`1999`, `2000`, key = "year", value = "cases")
+gather(1999, 2000, key = "year", value = "cases")
 ```
 
 ![Gathering columns into key-value pairs, R for Data Science](http://r4ds.had.co.nz/images/tidy-9.png)
@@ -233,7 +236,7 @@ gather(`1999`, `2000`, key = "year", value = "cases")
 
 `gather` in the `tidyr` package gives an easy way to deal with that. See the textbook for details, but the image above tells you what's going on. 
 
-We are going to gather the **artistid** columns into two new columns: **artistnum** (key) and **id** (value). The resulting data frame no longers has the **artistid** column, but has two new columns (**artistnum** and **id**)
+We are going to gather the **artistid** columns into two new columns: **artistnum** (key) and **id** (value). The resulting data frame no longer has the **artistid** column, but has two new columns (**artistnum** and **id**)
 
 
 ```{r gath, warning=TRUE, echo=TRUE, message=FALSE}

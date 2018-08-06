@@ -6,7 +6,7 @@ output: html_document
 ---
 This assignment is due Saturday, 4/1/17 at [8:48 pm ET](http://www.diddukewin.com/). 
 
-Recall the human activity recognition data set we discussed in class. You can find details about the data on the [UCI repository](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones). The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the acceleromenter and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.
+Recall the human activity recognition data set we discussed in class. You can find details about the data on the [UCI repository](https://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones). The point of this data set is to teach a smart phone to recognize what activity the user is doing based only on the accelerometer and gyroscope. This kind of system is actually deployed in the iPhone health app when it tracks the number of miles you have walked/run each day.
 
 This assignment will give you practice with
 
@@ -40,11 +40,11 @@ test <- test %>%
 
 *Hint*: You might want to save these two data files on your computer since downloading them can be slow. Many of these questions can be answered by taking the lecture code and modifying it.
 
-*Final deliverable*: Please write your solutions in R Markdown and separate each question with a new section heading. For the questions that ask you to write helper functions write the helper funciton in it's own chunck. Submit the .html file and the .Rmd file.
+*Final deliverable*: Please write your solutions in R Markdown and separate each question with a new section heading. For the questions that ask you to write helper functions write the helper function in it's own chunk. Submit the .html file and the .Rmd file.
 
 
 # Subsampling
-This homework involves a lot of computation which means it might take a while for your code to run. This can make problem solving hard if you have to wait everytime you want to run some code. 
+This homework involves a lot of computation which means it might take a while for your code to run. This can make problem solving hard if you have to wait every time you want to run some code. 
 
 You might try writing the code using a smaller data set. When you get the code working you can then run it on the larger, original data set. The code below randomly samples 200 observations (out of the `r dim(train)[1]`) original observations).
 
@@ -61,7 +61,7 @@ If the `knn()` function really takes a long time on your computer (e.g. a minute
 # KNN cross-validation
 
 
-[Recall in the lecture notes](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#perform_cross_validatoin) that using cross-validation we found that K = 1 is the "best" value for KNN on the Human Activity Recogntion dataset. But is this truly the best value of K?
+[Recall in the lecture notes](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#perform_cross_validatoin) that using cross-validation we found that K = 1 is the "best" value for KNN on the Human Activity Recognition dataset. But is this truly the best value of K?
 
 Let's call the plot of error vs. K the *tuning error curve* (e.g. the plot [in this section](https://idc9.github.io/stor390/notes/cross_validation/cross_validation.html#testtrain_error_as_a_function_of_k) from the notes).
 
@@ -122,7 +122,7 @@ knn_tuning_error_plot <- function(train, test, k_cv, k_values, cv_seed=NA){
 
 ```
 
-**Hint**: 2c is should be a matter of putting the code you have thus far into a function.
+**Hint**: 2c should be a matter of putting the code you have thus far into a function.
 
 # Q3: Nearest Centroid
 
@@ -217,7 +217,7 @@ You will get **3 bonus points on this assignment if you use the `apply` function
 
 # **Support Vector Machine**
 
-This questions examins how the "optimal" parameter values can change depending on how you do cross-validation and also compares linear SVM to radial SVM.
+This questions examines how the "optimal" parameter values can change depending on how you do cross-validation and also compares linear SVM to radial SVM.
 
 Let's see how SVM does on the human activity recognition data: try linear SVM and kernel SVM with a radial kernel. Use the `caret` package to fit the SVM models for this section.
 
@@ -232,7 +232,7 @@ Use `method = "svmLinear"` for the `caret` package to get linear SVM from the `k
 C_values <- tibble(C=10^seq(from=-5, to=5, by=1))
 ```
 
-Use cross-validation to select the optimal value of $C$ for linar SVM. Using this SVM model with this optimal $C$ value compute both the test and training error.
+Use cross-validation to select the optimal value of $C$ for linear SVM. Using this SVM model with this optimal $C$ value compute both the test and training error.
 
 - Try 2 different numbers of folds (e.g. K = 5 and K = 10).
 - Try two different classification metrics (e.g. Accuracy and Kappa)
@@ -259,6 +259,6 @@ Use cross-validation to select the optimal value of $C$ and $\sigma$ for SVM wit
 
 *Hint*: See [the notes](https://idc9.github.io/stor390/notes/more_classification/more_classification.html#tuning_svm_with_the_caret_package) for an example of how to use `caret` to fit SVM with a polynomial kernel.
 
-For questions 4 and 5 you need to make the tuning parameter grid. For liner SVM there is one paramter, `C`. For the radial basis kernel there are now two parameters, the original `C` for SVM another parameter called `sigma` for the kernel. See [this post](http://blog.revolutionanalytics.com/2015/10/the-5th-tribe-support-vector-machines-and-caret.html) for some more exmaple code using the `caret` package. [Chapter 7](https://topepo.github.io/caret/train-models-by-tag.html) of the `caret` book has details about the tuning parameter names. 
+For questions 4 and 5 you need to make the tuning parameter grid. For liner SVM there is one parameter, `C`. For the radial basis kernel there are now two parameters, the original `C` for SVM another parameter called `sigma` for the kernel. See [this post](http://blog.revolutionanalytics.com/2015/10/the-5th-tribe-support-vector-machines-and-caret.html) for some more example code using the `caret` package. [Chapter 7](https://topepo.github.io/caret/train-models-by-tag.html) of the `caret` book has details about the tuning parameter names. 
 
 

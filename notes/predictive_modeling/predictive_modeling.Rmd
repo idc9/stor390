@@ -1,6 +1,10 @@
 ---
 title: "Predictive modeling and bike sharing"
-output: html_document
+output:
+  html_document:
+    theme: cosmo
+    toc: yes
+    toc_float: yes
 ---
 
 [Capital Bikeshare](https://www.capitalbikeshare.com/how-it-works) is a bike sharing system for Washington DC. They make a lot of their [data publically](https://www.capitalbikeshare.com/system-data) available. 
@@ -208,7 +212,7 @@ test <- hour[-tr_indices, ]
 ```
 
 
-Now we are going to lock the test set into a closet and forget about it. **Warning**: don't peak at the test data. Next we are going to build a bunch of models using the training data. In real applications you try build 100s or 1000s of models. After we build a ton of models we are going to use the training data and some critical thinking to narrow down the list of models to just a few of our favorite ones! Once we have a couple models we really like we *then* use the test set to compare test models and select the best one!
+Now we are going to lock the test set into a closet and forget about it. **Warning**: don't peek at the test data. Next we are going to build a bunch of models using the training data. In real applications you try build 100s or 1000s of models. After we build a ton of models we are going to use the training data and some critical thinking to narrow down the list of models to just a few of our favorite ones! Once we have a couple models we really like we *then* use the test set to compare test models and select the best one!
 
 There are many types of models one might build -- skim the table of contents of [ISLR](http://www-bcf.usc.edu/~gareth/ISL/) or any other machine learning text book (e.g. linear model, add regularization, regression spline, generalized additive model, neural network, etc).
 

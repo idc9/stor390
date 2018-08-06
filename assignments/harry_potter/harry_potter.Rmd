@@ -91,7 +91,7 @@ Put the data into tidy format with one row per paragraph.
 
 - create a tibble called `paragraph_df` with one column `text` with the text of each paragraph (*hint*: you might need to use `as.character(paragraphs)`)
 - add a new column `index` that gives the index of each paragraph
-- **wighout** using dplyr add a column called `Harry` that counts the number of times Harry is referenced in each paragraph
+- **without** using dplyr add a column called `Harry` that counts the number of times Harry is referenced in each paragraph
 
 
 ```{r}
@@ -211,7 +211,7 @@ Now use `geom_smooth` to plot the linear regression line on top of the jitter pl
 
 
 # Question 11
-Is there are relationship between the length of the paragraph a the number of times Harry is mentioned? Add a column called `num_words` to `paragraph_df` counting the number of words in each paragraph. Then use a linear regression to answer for the question. Provide both a statistical summary and a visualization.
+Is there are relationship between the length of the paragraph and the number of times Harry is mentioned? Add a column called `num_words` to `paragraph_df` counting the number of words in each paragraph. Then use a linear regression to answer for the question. Provide both a statistical summary and a visualization.
 
 
 ```{r}

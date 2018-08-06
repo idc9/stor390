@@ -33,7 +33,7 @@ For those reasons, you will want to know how to work with text in R, called stri
 
 You will also see examples of how to apply visualization and summarization to text data as you've done with other types of data. These notes will assume you have read the resources below or will refer back to them when you need. 
 
-A few poeple took the time to type up the scirpts for a number of Disney movie scripts: [http://www.fpx.de/fp/Disney/Scripts/](http://www.fpx.de/fp/Disney/Scripts/). This lecture will use the script for Beauty and the Beast. 
+A few people took the time to type up the scripts for a number of Disney movie scripts: [http://www.fpx.de/fp/Disney/Scripts/](http://www.fpx.de/fp/Disney/Scripts/). This lecture will use the script for Beauty and the Beast. 
 
 
 We will start with a quick **application on a cleaned-up movie script,** to use a few string manipulation tools from the resources. Then we will step back to show how string manipulation turned the raw text file into something usable.

@@ -27,7 +27,7 @@ The beginning of this lecture introduces some stats/programming concepts. The re
 
 A common assumption we make in statistics is that our data are [independent and identically distributed](https://en.wikipedia.org/wiki/Independent_and_identically_distributed_random_variables) (iid) random variables. I will assume the reader is some what familiar with what iid means. This assumptions is rarely perfectly true (e.g. sampling biases), but in many many cases it is true enough. The iid assumption breaks down in a big way for data such as time series. The upshot is we are usually comfortable with the iid assumption. 
 
-The iid assumption is what allows us to feel comfortable that we can gather some data and build a model which will then work well on some future, unseen data. A lot of the time when things go wrong with statistical models it is because something as strongly violated the iid assumption (e.g. due to the way you gathered your training data, your test data looks different than the training data).
+The iid assumption is what allows us to feel comfortable that we can gather some data and build a model which will then work well on some future, unseen data. A lot of the time when things go wrong with statistical models it is because something has strongly violated the iid assumption (e.g. due to the way you gathered your training data, your test data looks different than the training data).
 
 
 ## Synthetic data
@@ -107,7 +107,7 @@ data <- gmm_distribution2d(n_neg=200, n_pos=201, mean_seed=mean_seed, data_seed=
 test_data <- gmm_distribution2d(n_neg=1000, n_pos=1000, mean_seed=mean_seed, data_seed=52345)
 ```
 
-You could uncommment this code to get a different synthetic distribution and see what happens to the figures below.
+You could uncomment this code to get a different synthetic distribution and see what happens to the figures below.
 ```{r}
 # data <- two_class_guasssian_meatballs(n_pos=200, n_neg=200,
 #                                             mu_pos=c(1,0), mu_neg=c(-1,0),
@@ -154,7 +154,7 @@ tst_err <- errs['tst']
 
 The training error rate is **`r tr_err`** and the test error is **`r tst_err`**. Notice the training error is better than the test error. It's almost always true that a statistical algorithm will perform better on the data it was trained on that on an independent test set (hence the problem of overfitting). 
 
-# **KNN for differnt values of K**
+# **KNN for different values of K**
 
 Now let's look at the predictions resulting from KNN for different values of K. First we show what the predictions will be at every point in the plane (ok really every point in our test grid).
 

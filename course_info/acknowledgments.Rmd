@@ -65,7 +65,7 @@ Many people provided input for this course
  - [Intoduction to Data Analysis](http://stat405.had.co.nz/) at Rice by Hadley Wickham
  - [CS 109](http://cs109.github.io/2015/) at Harvard by Joe Blitzstein
  
-The course content was drew on a number of other sources:
+The course content drew on a number of other sources:
 
 - [Teaching and Learning STEM](http://www.wiley.com/WileyCDA/WileyTitle/productCd-1118925815.html) by Richard Felder and Rebecca Brent
 - [Trees, Maps and Theorems: Effective Communication for Rational Minds](http://www.treesmapsandtheorems.com/) by Jean-luc Doumont

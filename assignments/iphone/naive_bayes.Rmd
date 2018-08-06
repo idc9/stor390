@@ -4,19 +4,19 @@ output: html_document
 ---
 
 
-Answering this question is worth one extra credit point and should be haneded in by the last day of class.
+Answering this question is worth one extra credit point and should be handed in by the last day of class.
 
-There are typically several different perspectives one can take on the same statisitcal/machine learning algorithm. Many classifiers have a statistical interpretation that involves fitting a statistical distribution to the data. There can also be a more geometric or "heuristic" interpretation. For example, you can view linear regression fitting a Gaussian distribution to the errors of a linear model or as minimizing the sum of squared residuals (reacall the [linear regression lecture](https://idc9.github.io/stor390/notes/linear_regression/linear_regression.html)). 
+There are typically several different perspectives one can take on the same statistical/machine learning algorithm. Many classifiers have a statistical interpretation that involves fitting a statistical distribution to the data. There can also be a more geometric or "heuristic" interpretation. For example, you can view linear regression fitting a Gaussian distribution to the errors of a linear model or as minimizing the sum of squared residuals (recall the [linear regression lecture](https://idc9.github.io/stor390/notes/linear_regression/linear_regression.html)). 
 
 This question will help you understand the geometric/heuristic interpretation of the popular naive Bayes classifier. In particular, naive Bayes is essentially the nearest centroid classifier, but with an additional variable transformation.
 
 # Deliverables
 
-To recieve cedit for this question do the following.
+To receive credit for this question do the following.
 
-1. Read pages 101-103, 106-111 from [Elements of Statistical Learning](http://statweb.stanford.edu/~tibs/ElemStatLearn/download.html) on the statistical interpretation of LDA, naive Bayes, and QDA (this assumes knowledge of the multivariate Gaussian, some linear algebra, indepdendnce and Bayes rule)
+1. Read pages 101-103, 106-111 from [Elements of Statistical Learning](http://statweb.stanford.edu/~tibs/ElemStatLearn/download.html) on the statistical interpretation of LDA, naive Bayes, and QDA (this assumes knowledge of the multivariate Gaussian, some linear algebra, independence and Bayes rule)
 
-2. Implement the niave Bayes function described below (this does not require any of the above statistical background, only an understanding of the [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html) classifier)
+2. Implement the naive Bayes function described below (this does not require any of the above statistical background, only an understanding of the [nearest centroid](https://idc9.github.io/stor390/notes/classification/classification.html) classifier)
 
 3. Use naive Bayes to compute the test set error for the Human Activity dataset and compare this error rate to the other classifiers.
 
@@ -27,11 +27,11 @@ To recieve cedit for this question do the following.
 The statistical interpretation of the nearest centriods classifier is: the data are multivariate Gaussian with identity covariance matrices but the means are different for the two classes of data. [LDA](https://en.wikipedia.org/wiki/Linear_discriminant_analysis) and [QDA](https://en.wikipedia.org/wiki/Quadratic_classifier) are similar, but make more sophisticated assumptions about the class covariance matrices.
 
 
-The naive Bayes version of these classifiers lies in-between NC and LDA. The naive Bayes Gaussian classifier assumes that the x variables are Gaussian and independent i.e. the covariance matrix is diagonal. There is another perspective of niave Bayes.
+The naive Bayes version of these classifiers lies in-between NC and LDA. The naive Bayes Gaussian classifier assumes that the x variables are Gaussian and independent i.e. the covariance matrix is diagonal. There is another perspective of naive Bayes.
 
-We can view niave Bayes as essentially the same thing as nearest centroid, but with an additional variable transformation. In particular Naive Bayes works by first scaling each X variable by its standard deviation then computing the nearest centroid. 
+We can view naive Bayes as essentially the same thing as nearest centroid, but with an additional variable transformation. In particular Naive Bayes works by first scaling each X variable by its standard deviation then computing the nearest centroid. 
 
-# Naive Bayes psuedocode
+# Naive Bayes pseudocode
 
 Suppose we have $d$ x variables, $x_1, \dots, x_d$
 
@@ -48,7 +48,7 @@ $$b = - \frac{1}{2}\left(||\mathbf{m}_{+}||_2 - ||\mathbf{m}_{-}||_2 \right)$$
 
 Next given some test data
 
-5. Center and scale the test x variables by the mean and standard devations computed above for the training data.
+5. Center and scale the test x variables by the mean and standard deviations computed above for the training data.
 
 6. Now compute the predictions for the test data i.e.
 

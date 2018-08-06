@@ -386,9 +386,9 @@ The `source` command will look for R scripts relative to the current working dir
 
 # Vectors
 
-See [section 20](http://r4ds.had.co.nz/vectors.html) from r4ds for more deails.
+See [section 20](http://r4ds.had.co.nz/vectors.html) from r4ds for more details.
 
-Vectors are a basic data type in R and there are two types: atomic vectors and lists. Atomic vectors are homogenous, one dimensional objects while lists are heterogeneous, hierarchical objects.
+Vectors are a basic data type in R and there are two types: atomic vectors and lists. Atomic vectors are homogeneous, one dimensional objects while lists are heterogeneous, hierarchical objects.
 
 If you are familiar with python: atomic vectors in R are lists in Python while lists in R are dicts in python.
 
@@ -438,7 +438,7 @@ Sometimes vectors are **implicitly** coerced
 c(1, 2, TRUE)
 ```
 
-Implicit coercsion sometimes happens within a function
+Implicit coercion sometimes happens within a function
 ```{r}
 sum(c(T, T, F))
 ```
@@ -449,12 +449,12 @@ Vectorized operations are very common
 c(-2, -1, 1, 2) + 2
 ```
 
-often they are combined with implicit coercsion
+often they are combined with implicit coercion
 ```{r}
 sum(c(-2, -1, 1, 2) > 0)
 ```
 
-You can subsect a vector with `[]` and a vector of indices
+You can subset a vector with `[]` and a vector of indices
 
 ```{r}
 v <- 1:10
@@ -486,7 +486,7 @@ you can use a single `[]` and this will return a list
 L['number']
 ```
 
-See section 20.5.3 for an explaination of the differece. Lists can store other lists making them hierarchical
+See section 20.5.3 for an explanation of the difference. Lists can store other lists making them hierarchical
 
 ```{r}
 LoL <- list(names = list('Iain', 'Brendan', 'Varun'),

@@ -25,7 +25,7 @@ Include the code for both the original and the new plot. [This lecture](https://
 
 # Question 2: Critique a bad plot
 
-Link to a bad plot somone posted online and answer the following questions:
+Link to a bad plot someone posted online and answer the following questions:
 
 - What is the message of the plot?
 - What is wrong with the plot?
@@ -35,7 +35,7 @@ Any graphic you find is fine. [viz.wtf/](http://viz.wtf/) has many examples of b
 
 
 # Bonus question
-Find an example of profesional communication and analyze it using the principles discussed in the [effective communication lecture](https://idc9.github.io/stor390/notes/communication/communication.html). Discuss how it uses and/or does not use these princples. Are their design choices effective? How would you improve their design choices? Submit a one page write up.
+Find an example of professional communication and analyze it using the principles discussed in the [effective communication lecture](https://idc9.github.io/stor390/notes/communication/communication.html). Discuss how it uses and/or does not use these principles. Are their design choices effective? How would you improve their design choices? Submit a one page write up.
 
 
 For example check out this [pitch deck](https://www.twine.fm/blog/pitch-deck-used-to-raise-a-million/) used by a startup called twine.
