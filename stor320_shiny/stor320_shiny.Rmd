@@ -1,0 +1,117 @@
+---
+title: "STOR 320 Shiny"
+author: | 
+  | Frances Tong
+  | Data Scientist
+  | BD Technologies & Innovation
+  |
+  | Code for talk available  [here](https://github.com/francestong/stor390/tree/master/stor320_shiny/stor320_shiny.Rmd)
+runtime: shiny
+output: slidy_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Leaflet
+
+
+```{r}
+library(leaflet)
+
+inputPanel(
+  actionButton("recalc", "New points")
+
+)
+
+points <- eventReactive(input$recalc, {
+  cbind(rnorm(40) * 2 + 13, rnorm(40) + 48)
+}, ignoreNULL = FALSE)
+
+
+renderLeaflet({
+  leaflet() %>%
+    addProviderTiles(providers$Stamen.TonerLite,
+                     options = providerTileOptions(noWrap = TRUE)
+    ) %>%
+    addMarkers(data = points())
+})
+```
+
+## Leaflet code
+
+```{r, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
+library(shiny)
+library(leaflet)
+
+r_colors <- rgb(t(col2rgb(colors()) / 255))
+names(r_colors) <- colors()
+
+ui <- fluidPage(
+  leafletOutput("mymap"),
+  p(),
+  actionButton("recalc", "New points")
+)
+
+server <- function(input, output) {
+
+  points <- eventReactive(input$recalc, {
+    cbind(rnorm(40) * 2 + 13, rnorm(40) + 48)
+  }, ignoreNULL = FALSE)
+
+  output$mymap <- renderLeaflet({
+    leaflet() %>%
+      addProviderTiles(providers$Stamen.TonerLite,
+        options = providerTileOptions(noWrap = TRUE)
+      ) %>%
+      addMarkers(data = points())
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
+
+
+## Shiny Presentation
+
+This R Markdown presentation is made interactive using Shiny. The viewers of the presentation can change the assumptions underlying what's presented and see the results immediately. 
+
+To learn more, see [Interactive Documents](http://rmarkdown.rstudio.com/authoring_shiny.html).
+
+## Interactive Plot
+
+```{r eruptions}
+inputPanel(
+  selectInput("n_breaks", label = "Number of bins:",
+              choices = c(10, 20, 35, 50), selected = 20),
+  
+  sliderInput("bw_adjust", label = "Bandwidth adjustment:",
+              min = 0.2, max = 2, value = 1, step = 0.2)
+)
+
+renderPlot({
+  hist(faithful$eruptions, probability = TRUE, breaks = as.numeric(input$n_breaks),
+       xlab = "Duration (minutes)", main = "Geyser eruption duration")
+  
+  dens <- density(faithful$eruptions, adjust = input$bw_adjust)
+  lines(dens, col = "blue")
+})
+```
+
+## Bullets
+
+- Bullet 1
+- Bullet 2
+- Bullet 3
+
+## R Output
+
+```{r cars}
+summary(cars)
+```
+
+

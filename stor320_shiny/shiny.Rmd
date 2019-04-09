@@ -555,6 +555,8 @@ graphics in a Shiny app:
 - [ggvis](http://ggvis.rstudio.com/interactivity.html)
 
 
+## Plotly example
+
 ```{r, eval=TRUE, warning=FALSE}
 suppressMessages(library(plotly))
 library(shiny)
@@ -613,6 +615,54 @@ shinyApp(
   options = list(height = 500)
 )
 ```
+
+
+
+## Leaflet example
+
+```{r}
+# library(leaflet)
+# 
+# m <- leaflet() %>%
+#   addTiles() %>%  # Add default OpenStreetMap map tiles
+#   addMarkers(lng = 174.768, lat = -36.852, popup = "The birthplace of R")
+# m  # Print the map
+```
+
+
+```{r}
+library(shiny)
+library(leaflet)
+
+r_colors <- rgb(t(col2rgb(colors()) / 255))
+names(r_colors) <- colors()
+
+ui <- fluidPage(
+  leafletOutput("mymap"),
+  p(),
+  actionButton("recalc", "New points")
+)
+
+server <- function(input, output) {
+
+  points <- eventReactive(input$recalc, {
+    cbind(rnorm(40) * 2 + 13, rnorm(40) + 48)
+  }, ignoreNULL = FALSE)
+
+  output$mymap <- renderLeaflet({
+    leaflet() %>%
+      addProviderTiles(providers$Stamen.TonerLite,
+        options = providerTileOptions(noWrap = TRUE)
+      ) %>%
+      addMarkers(data = points())
+  })
+}
+
+shinyApp(ui, server,
+         options = list(height = 800))
+```
+
+
 
 
 

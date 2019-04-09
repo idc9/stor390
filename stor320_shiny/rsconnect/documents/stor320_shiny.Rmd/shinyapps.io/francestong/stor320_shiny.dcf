@@ -1,0 +1,12 @@
+name: stor320_shiny
+title: stor320_shiny
+username:
+account: francestong
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 850615
+bundleId: 1998178
+url: https://francestong.shinyapps.io/stor320_shiny/
+when: 1554825238.28694
+asMultiple: FALSE
+asStatic: FALSE
