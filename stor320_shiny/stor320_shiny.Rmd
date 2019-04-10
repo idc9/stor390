@@ -21,9 +21,12 @@ library(leaflet)
 
 
 inputPanel(
-  numericInput("lat", "Latitude", value = 35.891681),
-  numericInput("lng", "Longitude", value = -78.8608968),
-  textInput("label", "Place", value = "BD Technologies & Innovation")
+  # numericInput("lat", "Latitude", value = 35.891681),
+  # numericInput("lng", "Longitude", value = -78.8608968),
+  # textInput("label", "Place", value = "BD Technologies & Innovation")
+  numericInput("lat", "Latitude", value = 35.910274),
+  numericInput("lng", "Longitude", value = -79.051004),
+  textInput("label", "Place", value = "You are here!")
 )
 
 renderLeaflet({
@@ -41,9 +44,9 @@ library(shiny)
 library(leaflet)
 
 ui <- fluidPage(
-  numericInput("lat", "Latitude", value = 35.891681),
-  numericInput("lng", "Longitude", value = -78.8608968),
-  textInput("label", "Place", value = "BD Technologies & Innovation"),
+  numericInput("lat", "Latitude", value = 35.910274),
+  numericInput("lng", "Longitude", value = -79.051004),
+  textInput("label", "Place", value = "You are here!")
   leafletOutput("mymap")
 )
 
