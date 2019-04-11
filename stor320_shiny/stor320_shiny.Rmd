@@ -4,7 +4,8 @@ author: |
   | Frances Tong
   | Data Scientist
   | BD Technologies & Innovation
-  |
+  | 
+  | [URL](https://francestong.shinyapps.io/stor320_shiny/) of talk 
   | Code for talk available  [here](https://github.com/francestong/stor390/tree/master/stor320_shiny/stor320_shiny.Rmd)
 runtime: shiny
 output: slidy_presentation
@@ -14,7 +15,111 @@ output: slidy_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Leaflet
+## Who am I?
+
+* PhD in statistics
+* Analysis of genomic data 
+* [list kinds of projects]
+* Demo of company app
+
+## Topics today
+
+[list topics]
+[include link to jump there]
+
+## renderUI 
+
+One of the more powerful render functions is renderUI() - it enables us to 
+generate dynamic UI, i.e. construct reactive objects that depend on user input. 
+We illustrate how it works with a toy example that requires this function.
+
+Let's say we are selecting colors for plotting in R, and we want to help the 
+user narrow down the choices through color families.
+
+If the user wants a red color, then the drop-down menu can display only the
+red options.  We can't put a `selectInput` drop down menu in **ui** when we 
+can't populate the choices argument with the correct list of colors that 
+depend on what the user chooses in the `radioButtons`.  This means that we need 
+to dynamically generate this `selectInput` inside `renderUI` (on the **server** side!)
+based on the user-chosen color family `input$color_family`.
+
+## renderUI example
+
+```{r}
+
+
+color_list <- list(red = c("tomato", "violetred", "firebrick"),
+                   green = c("chartreuse", "forestgreen", "olivedrab"),
+                   blue = c("navy", "dodgerblue", "torquoise"))
+
+inputPanel(
+      radioButtons(inputId = "color_family",
+                 label = "Choose a color family",
+                 choices = c("red", "green", "blue"))#,
+    
+    #uiOutput(outputId = "color_selector"),
+    
+    #verbatimTextOutput(outputId = "color_chosen")
+)
+
+renderUI({
+        
+        selectInput(inputId = "color",
+                    label = "Select color",
+                    choices = color_list[input$color_family])
+        
+    })
+        
+renderText({
+        paste("You chose this color:", input$color)
+    })
+    
+```
+
+
+## renderUI example code
+
+```{r, eval=FALSE}
+library(shiny)
+
+color_list <- list(red = c("tomato", "violetred", "firebrick"),
+                   green = c("chartreuse", "forestgreen", "olivedrab"),
+                   blue = c("navy", "dodgerblue", "torquoise"))
+
+ui <- fluidPage(
+    
+    radioButtons(inputId = "color_family",
+                 label = "Choose a color family",
+                 choices = c("red", "green", "blue")),
+    
+    uiOutput(outputId = "color_selector"),
+    
+    verbatimTextOutput(outputId = "color_chosen")
+    
+)
+
+server <- function(input, output) {
+    
+    output$color_selector <- renderUI({
+        
+        selectInput(inputId = "color",
+                    label = "Select color",
+                    choices = color_list[input$color_family])
+        
+    })
+        
+    output$color_chosen <- renderText({
+        paste("You chose this color:", input$color)
+    })
+    
+    
+}
+
+shinyApp(ui = ui, server = server,
+         options = list(height = 300))
+```
+
+## Leaflet example
 
 ```{r}
 library(leaflet)
@@ -37,7 +142,7 @@ renderLeaflet({
 ```
 
 
-## Leaflet code
+## Leaflet example code
 
 ```{r, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 library(shiny)
