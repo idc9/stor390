@@ -79,7 +79,7 @@ renderText({
 
 ## renderUI example code
 
-```{r, eval=FALSE}
+```{r, echo=TRUE, eval=FALSE}
 library(shiny)
 
 color_list <- list(red = c("tomato", "violetred", "firebrick"),
