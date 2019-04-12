@@ -29,6 +29,8 @@ knitr::opts_chunk$set(echo = FALSE)
 [list topics]
 [include link to jump there]
 
+**Reload the page if any app in a slide doesn't appear to be working**
+
 ## renderUI 
 
 One of the more powerful render functions is renderUI() - it enables us to 
@@ -207,6 +209,73 @@ server <- function(input, output) {
 shinyApp(ui = ui, server = server)
 ```
 
+## Interactive visualization
+
+There are several well-developed packages for generating interactive
+graphics in a Shiny app:
+
+- [Shiny built-in support for interacting with static plots](https://shiny.rstudio.com/articles/plot-interaction.html)
+- [plotly](https://plot.ly/)
+- [Leaflet](https://rstudio.github.io/leaflet/shiny.html) for interactive maps
+- [htmlwidgets for R](http://www.htmlwidgets.org/) - use JavaScript visualization libraries & [Crosstalk](http://rstudio.github.io/crosstalk/) - add-on to htmlwidgets
+- [ggvis](http://ggvis.rstudio.com/interactivity.html)
+
+
+## Plotly example
+
+```{r, echo=FALSE, eval=TRUE}
+library(plotly)
+
+renderPlotly({
+  plot_ly(x = rnorm(10), y = rnorm(10), z = rnorm(10)) %>% 
+    add_markers()
+})
+
+renderPrint({
+  d <- event_data("plotly_hover")
+  if (is.null(d)) "Hover events appear here (unhover to clear)" else d
+})
+
+renderPrint({
+  d <- event_data("plotly_click")
+  if (is.null(d)) "Click events appear here (double-click to clear)" else d
+})
+```
+
+
+## Plotly example code
+
+```{r, eval=FALSE, echo=TRUE}
+library(plotly)
+library(shiny)
+
+ui <- fluidPage(
+  plotlyOutput("plot"),
+  verbatimTextOutput("hover"),
+  verbatimTextOutput("click")
+)
+
+server <- function(input, output) {
+
+  output$plot <- renderPlotly({
+    plot_ly(x = rnorm(10), y = rnorm(10), z = rnorm(10)) %>% 
+          add_markers()
+  })
+
+  output$hover <- renderPrint({
+    d <- event_data("plotly_hover")
+    if (is.null(d)) "Hover events appear here (unhover to clear)" else d
+  })
+
+  output$click <- renderPrint({
+    d <- event_data("plotly_click")
+    if (is.null(d)) "Click events appear here (double-click to clear)" else d
+  })
+
+}
+
+shinyApp(ui, server)
+```
 
 ## Leaflet example
 

@@ -5,8 +5,8 @@ account: francestong
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 850615
-bundleId: 2004235
+bundleId: 2006149
 url: https://francestong.shinyapps.io/stor320_shiny/
-when: 1555012366.1612
+when: 1555080634.9774
 asMultiple: FALSE
 asStatic: FALSE
