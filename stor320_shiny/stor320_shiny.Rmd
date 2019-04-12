@@ -5,8 +5,10 @@ author: |
   | Data Scientist
   | BD Technologies & Innovation
   | 
-  | [URL](https://francestong.shinyapps.io/stor320_shiny/) of talk 
-  | Code for talk available  [here](https://github.com/francestong/stor390/tree/master/stor320_shiny/stor320_shiny.Rmd)
+  | Talk URL
+  | [https://francestong.shinyapps.io/stor320_shiny/](https://francestong.shinyapps.io/stor320_shiny/)
+  | Code of talk 
+  | [https://github.com/francestong/stor390/tree/master/stor320_shiny/stor320_shiny.Rmd](https://github.com/francestong/stor390/tree/master/stor320_shiny/stor320_shiny.Rmd)
 runtime: shiny
 output: slidy_presentation
 ---
@@ -46,34 +48,25 @@ based on the user-chosen color family `input$color_family`.
 ## renderUI example
 
 ```{r}
-
-
 color_list <- list(red = c("tomato", "violetred", "firebrick"),
                    green = c("chartreuse", "forestgreen", "olivedrab"),
                    blue = c("navy", "dodgerblue", "torquoise"))
 
 inputPanel(
-      radioButtons(inputId = "color_family",
-                 label = "Choose a color family",
-                 choices = c("red", "green", "blue"))#,
-    
-    #uiOutput(outputId = "color_selector"),
-    
-    #verbatimTextOutput(outputId = "color_chosen")
+  radioButtons(inputId = "color_family",
+               label = "Choose a color family",
+               choices = c("red", "green", "blue"))
 )
 
 renderUI({
-        
-        selectInput(inputId = "color",
-                    label = "Select color",
-                    choices = color_list[input$color_family])
-        
-    })
-        
+  selectInput(inputId = "color",
+              label = "Select color",
+              choices = color_list[input$color_family])
+})
+
 renderText({
-        paste("You chose this color:", input$color)
-    })
-    
+  paste("You chose this color:", input$color)
+})
 ```
 
 
@@ -115,9 +108,105 @@ server <- function(input, output) {
     
 }
 
-shinyApp(ui = ui, server = server,
-         options = list(height = 300))
+shinyApp(ui = ui, server = server)
 ```
+
+
+
+## Reactive expressions
+
+Reactive expressions are a way for your app to update efficiently when users
+interact with it.  They are a bit nuanced to use - here's the RStudio tutorial on them https://shiny.rstudio.com/tutorial/lesson6/. 
+
+In general, any code you put in a `render` function will continually be updated, 
+even if you don't necessarily need them to be rerun every single time.  This will
+slow down your app considerably.  If you want to use data inside a `render` function
+that does not need to be updated every time if `input` doesn't change, 
+then you can wrap your data inside a reactive expression that can be called inside `render`.
+The reactive expression will only recalculate if `input` has changed.
+
+
+- Reactive expressions depend on the status of `input` values or values from other reactive expressions.
+- You can create reactive expressions with `reactive({})`.
+- You can access a reactive expression with its name followed by `()`.
+- You can only call a reactive expression within a `reactive` or `render` function.
+
+## Reactive expression example
+
+```{r, eval=TRUE, echo=FALSE}
+inputPanel(
+  
+  sliderInput(inputId = "rate",
+              label = "Choose rate",
+              min = 0,
+              max = 1, 
+              value = 0.5),
+  
+  textOutput(outputId = "pct_std"),
+  
+  textOutput(outputId = "pct_half")
+)
+
+my_percent <- reactive({
+  input$rate * 100
+})
+
+my_half_percent <- reactive({
+  my_percent() / 2
+})
+
+renderText({
+  paste0("This is my percent: ", my_percent(), "%")
+})
+
+renderText({
+  paste0("This is my percent by half: ", my_half_percent(), "%")
+})
+```
+
+
+## Reactive expression example code
+
+```{r, eval=FALSE, echo=TRUE}
+library(shiny)
+
+ui <- fluidPage(
+    
+    sliderInput(inputId = "rate",
+                label = "Choose rate",
+                min = 0,
+                max = 1, 
+                value = 0.5),
+    
+    textOutput(outputId = "pct_std"),
+    
+    textOutput(outputId = "pct_half")
+    
+)
+
+server <- function(input, output) {
+    
+    my_percent <- reactive({
+        input$rate * 100
+    })
+    
+    my_half_percent <- reactive({
+        my_percent() / 2
+    })
+    
+    output$pct_std <- renderText({
+        paste0("This is my percent: ", my_percent(), "%")
+    })
+    
+    output$pct_half <- renderText({
+        paste0("This is my percent by half: ", my_half_percent(), "%")
+    })
+    
+}
+
+shinyApp(ui = ui, server = server)
+```
+
 
 ## Leaflet example
 
