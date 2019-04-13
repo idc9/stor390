@@ -2,8 +2,8 @@
 title: "STOR 320 Shiny"
 author: | 
   | Frances Tong
-  | Data Scientist
-  | BD Technologies & Innovation
+  | frances.p.tong@gmail.com
+  | Data Scientist @ BD Technologies & Innovation
   | 
   | Talk URL
   | [https://francestong.shinyapps.io/stor320_shiny/](https://francestong.shinyapps.io/stor320_shiny/)
@@ -24,13 +24,50 @@ knitr::opts_chunk$set(echo = FALSE)
 * [list kinds of projects]
 * Demo of company app
 
-## Topics today
+## R community in this area
 
-[list topics]
-[include link to jump there]
+
+**R Ladies**
+
+
+## Topics today - April 15, 2019
+
+This lecture is an introduction to Shiny and contains the basics that you 
+already learned at last Friday's lecture that you can reference later if you like.
+Today we will go into more advanced Shiny topics and skip ahead to those slides.
+
+* renderUI
+* interactive visualization
+* DataTables
+* dynamic document generation
+* modules
+
 
 **All the app examples in this lecture are complete - you should be able to copy and paste the provided code into R console and have the app work.**
+
 **Reload the page if any app in a slide doesn't appear to be working**
+
+
+## Introduction to Shiny
+
+You can make interactive web applications easily and entirely in R with Shiny.
+Shiny apps are a great way to share your analysis with others without them having to 
+run any R themselves.
+
+
+This lecture will cover 
+
+- first Shiny app
+- the basics of reactivity
+- renderUI
+- app layouts
+- interactive visualization
+- extra: 
+    - DataTables
+    - pdf/html/word generation
+    - modules
+    - hosting apps
+
 
 ## renderUI 
 
