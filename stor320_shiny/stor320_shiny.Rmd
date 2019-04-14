@@ -19,15 +19,24 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ## Who am I?
 
+
 * PhD in statistics
+* Data scientist at a medical tech company
 * Analysis of genomic data 
-* [list kinds of projects]
+* Currently working on antimicrobial resistance
+  - Use machine learning methods to predict resistance or susceptibility to a specific antibiotic for a bacterial isolate using next generation sequencing of the bacterial DNA
 * Demo of company app
 
-## R community in this area
 
+## R-Ladies RTP
 
-**R Ladies**
+* Great way to learn R and meet fellow R nerds
+* 5 minute lightning talks - so you can present your work
+* This group meets sometimes at UNC - free pizza dinner.
+
+https://www.meetup.com/R-Ladies-RTP/
+
+![](screenshots/rladies.png)
 
 
 ## Topics today - April 15, 2019
@@ -67,6 +76,267 @@ This lecture will cover
     - pdf/html/word generation
     - modules
     - hosting apps
+
+
+
+## **Hello Shiny!**
+
+Running the code below in the R console will start up a simple Shiny app that
+plots a histogram and lets the user choose the number of bins in the histogram 
+using a slider.  The code that powers the app is included, and relevant parts 
+of the code will be highlighted yellow as you interact with the app.
+
+
+```{r, echo=TRUE, eval=FALSE}
+if (!require('shiny')) install.packages("shiny")
+runExample("01_hello")
+```
+
+
+![](screenshots/hello_shiny_screenshot.jpeg)
+
+
+
+## Key components of a Shiny app
+
+A Shiny app is composed of two fundamental parts:
+
+- **ui** - This codes the __user interface__ that controls the layout and appearance of the app.
+- **server** - This codes the computations and plots that show up in the user interface.
+
+**File structure**
+
+These two parts can either be included in one file called **app.R** or 
+in two separate files called **ui.R** and **server.R**.  Both methods work
+equivalently, and it's a matter of preference which one you choose and may 
+depend on if your app is very short or long.
+
+This is the bare minimum code (it does nothing - a blank page shows up) 
+if the app is on one **app.R** file:
+
+```{r, echo=TRUE,eval=FALSE}
+library(shiny)
+
+ui <- fluidPage()
+
+server <- function(input, output) {}
+
+shinyApp(ui = ui, server = server)
+```
+
+For two separate files, **ui.R** will contain
+
+```{r, eval=FALSE,echo=TRUE}
+library(shiny)
+
+shinyUI(fluidPage(
+))
+```
+
+and **server.R** has
+
+```{r, eval=FALSE,echo=TRUE}
+library(shiny)
+
+shinyServer(function(input, output) {
+})
+```
+
+If the two files are stored in a directory called `my_app`, then you can run the
+app with:
+
+```{r, eval=FALSE,echo=TRUE}
+runApp("my_app",echo=TRUE)
+```
+
+Extra: if you want your code to show up alongside your app like in the example, 
+then change the display mode to `showcase`.
+
+```{r, eval=FALSE,echo=TRUE}
+runApp("my_app", display.mode = "showcase")
+```
+
+
+
+## Basics of reactivity
+
+The coolness of Shiny apps comes from its use of reactivity.  This means that 
+your apps come alive when you build reactive objects that interact with the user.
+
+You construct a reactive object in two parts:
+
+- **ui**: In the user-interface or ui part of your code, specify the type of object you want to include.
+This can be an _input_ or _widget_ object like a checkbox, drop-down menu or even a spreadsheet, 
+or an _output_ object like a plot, a table or just text display.
+- **server**: In the server part of your code, you code this object up.
+
+
+Here's the same example as before (with the histogram code rewritten with ggplot2).
+
+In the **ui** section below, there is an input/widget object `sliderInput` that codes for 
+a slider that the user can use to choose the number of bins in the histogram,
+and there's an output object `plotObject` that displays the histogram.
+
+In the **server** section below, the code that generates the histogram is 
+returned in a `renderPlot` function that is saved to the `output` vector under
+the same outputId `distPlot` as specified in `plotOutput`.  The user-supplied number of
+bins from the slider is available in the `input` vector under the same inputId `bins`
+as in `sliderInput`.
+
+```{r, echo=FALSE, eval=TRUE}
+inputPanel(sliderInput(inputId = "bins",
+                       label = "Number of bins:",
+                       min = 1,
+                       max = 50,
+                       value = 30)
+)
+
+renderPlot({
+  
+  ggplot(faithful, aes(x = waiting)) +
+    geom_histogram(bins = input$bins, colour = "white")
+  
+})
+
+```
+
+```{r, eval = FALSE, echo = TRUE}
+library(shiny)
+library(ggplot2)
+
+ui <- fluidPage(
+    
+    # Sidebar with a slider input for the number of bins
+    sidebarLayout(
+        sidebarPanel(
+            sliderInput(inputId = "bins",
+                        label = "Number of bins:",
+                        min = 1,
+                        max = 50,
+                        value = 30)
+        ),
+        
+        # Show a plot of the generated distribution
+        mainPanel(
+            plotOutput(outputId = "distPlot")
+        )
+    )
+    
+)
+
+server <- function(input, output) {
+    
+    # Expression that generates a histogram. The expression is
+    # wrapped in a call to renderPlot to indicate that:
+    #
+    #  1) It is "reactive" and therefore should be automatically
+    #     re-executed when inputs change
+    #  2) Its output type is a plot
+    
+    output$distPlot <- renderPlot({
+        
+        ggplot(faithful, aes(x = waiting)) +
+            geom_histogram(bins = input$bins, colour = "white")
+        
+    })
+    
+}
+
+shinyApp(ui = ui, server = server)
+```
+
+
+
+
+## UI input functions or Shiny widgets
+
+Shiny widgets are web elements that enable your user to interact with the app.
+There are several standard widgets available in Shiny.  You can play with them at the [Shiny widgets gallery](http://shiny.rstudio.com/gallery/widget-gallery.html).
+
+![Shiny Widgets Gallery](screenshots/shiny_widgets.png)
+
+
+| input function | widget |
+|----------------|---------|
+| actionButton | Action Button |
+| checkboxGroupInput | A group of check boxes |
+| checkboxInput | A single check box |
+| dateInput | A pair of calendars for selecting a date range |
+| fileInput | A file upload control wizard |
+| helpText | Help text that can be added to an input form |
+| numericInput |	A field to enter numbers |
+| radioButtons |	A set of radio buttons |
+| selectInput |	A box with choices to select from |
+| sliderInput |	A slider bar |
+| submitButton |	A submit button |
+| textInput	| A field to enter text |
+
+
+The first two arguments to a widget function are always
+
+- **inputId**: Give an unique id to the widget so that the server side knows how to access it
+- **label**: This is the text that shows up next to the widget to guide the user.
+
+The rest of the arguments depend on the function of the widget.  For example, 
+the `sliderInput` from the earlier example requires the setting of the
+minimum and maximum value of the slider, as well as the value it should be set
+as default when the user loads the app.
+
+```{r, echo=TRUE, eval=TRUE}
+sliderInput(inputId = "bins",
+            label = "Number of bins:",
+            min = 1,
+            max = 50,
+            value = 30)
+```
+
+
+
+## UI output and server render functions
+
+These are the standard output functions you would use in the **ui**.
+
+
+| output function | creates |
+|-----------------|---------|
+| htmlOutput | raw HTML |
+| imageOutput | image |
+| plotOutput | plot |
+| tableOutput | table |
+| textOutput | text |
+| uiOutput | raw HTML |
+| verbatimTextOutput | text |
+
+The one required argument to an output function is the `outputId`, which helps
+connect it to the render function on the server side that generates the output.  
+
+On the **ui** side:
+
+```{r, echo=TRUE, eval=FALSE}
+plotOutput(outputId = "distPlot")
+```
+
+On the **server** side:
+
+```{r, echo=TRUE, eval=FALSE}
+output$distPlot <- renderPlot({
+    
+  [...put your plotting code here...]
+    
+})
+```
+
+
+**Server render functions**
+
+| render function | creates |
+|-----------------|---------|
+| renderImage | images |
+| renderPlot | plots |
+| renderPrint | any printed output |
+| renderTable | data frame, matrix, other table like structures |
+| renderText | character strings |
+| renderUI | a Shiny tag object or HTML |
 
 
 ## renderUI 
@@ -479,6 +749,10 @@ downloadHandler(
 
 
 ## Dynamic document generation example code
+
+* Note that you'll need to install the TeX engine to produce pdfs.
+- Macs: https://tug.org/mactex/mactex-download.html
+- Windows: https://miktex.org/download
 
 
 ```{r, eval=FALSE, echo=TRUE}
