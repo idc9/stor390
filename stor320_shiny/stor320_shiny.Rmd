@@ -80,7 +80,7 @@ This lecture will cover
 
 
 
-## **Hello Shiny!**
+## Hello Shiny!
 
 Running the code below in the R console will start up a simple Shiny app that
 plots a histogram and lets the user choose the number of bins in the histogram 
