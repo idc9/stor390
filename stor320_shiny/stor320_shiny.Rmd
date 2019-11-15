@@ -39,7 +39,7 @@ https://www.meetup.com/R-Ladies-RTP/
 ![](screenshots/rladies.png)
 
 
-## Topics today - April 15, 2019
+## Topics today - November 18, 2019
 
 This lecture is an introduction to Shiny and contains the basics that you 
 already learned at last Friday's lecture that you can reference later if you like.
