@@ -606,7 +606,7 @@ Things that you can typically include in **global.R**:
 ## Reactive expressions
 
 Reactive expressions are a way for your app to update efficiently when users
-interact with it.  They are a bit nuanced to use - here's the RStudio tutorial on them https://shiny.rstudio.com/tutorial/lesson6/. 
+interact with it.  They are a bit nuanced to use - here's the RStudio tutorial on them https://shiny.rstudio.com/tutorial/written-tutorial/lesson6/. 
 
 In general, any code you put in a `render` function will continually be updated, 
 even if you don't necessarily need them to be rerun every single time.  This will
