@@ -28,12 +28,47 @@ knitr::opts_chunk$set(echo = FALSE)
   - Use machine learning methods to predict resistance or susceptibility to a specific antibiotic for a bacterial isolate using next generation sequencing of the bacterial DNA
 * Demo of company app
 
+## Data science - some thoughts
 
-## R-Ladies RTP
+* Data extraction, cleaning, organization, and manipulation: 80% of the job is "data janitor"
+* Basic statistics: understanding systematic and random error
+* Domain expertise: generating the right hypotheses and questions and answering them appropriately
+* Communication skills: clear visualizations, explaining things well, etc
+* Ability to learn new things quickly: google-fu
 
-* Great way to learn R and meet fellow R nerds
-* 5 minute lightning talks - so you can present your work
-* This group meets sometimes at UNC - free pizza dinner.
+
+
+![](screenshots/data_scientist_2.png)
+
+
+## Ways to meet local data scientists
+
+* Research Triangle Analysts
+
+https://www.meetup.com/Research-Triangle-Analysts
+
+* Data Science Connect
+
+https://www.meetup.com/pro/Data-Science-Connect
+
+
+* NC Data for Good
+
+https://www.meetup.com/NC-Data4Good
+
+
+
+* NC Women in Machine Learning and Data Science
+
+https://www.meetup.com/NC-Women-in-Machine-Learning-and-Data-Science/
+
+
+* Data Scientista Society
+
+https://www.meetup.com/DataScientistaSociety/
+
+
+* R-Ladies RTP
 
 https://www.meetup.com/R-Ladies-RTP/
 
@@ -740,8 +775,8 @@ inputPanel(
   # numericInput("lat", "Latitude", value = 35.891681),
   # numericInput("lng", "Longitude", value = -78.8608968),
   # textInput("label", "Place", value = "BD Technologies & Innovation")
-  numericInput("lat", "Latitude", value = 35.910274),
-  numericInput("lng", "Longitude", value = -79.051004),
+  numericInput("lat", "Latitude", value = 35.9107703),
+  numericInput("lng", "Longitude", value = -79.051447),
   textInput("label", "Place", value = "You are here!")
 )
 
