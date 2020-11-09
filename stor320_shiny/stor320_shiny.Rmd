@@ -771,12 +771,9 @@ shinyApp(ui, server)
 
 ```{r}
 library(leaflet)
-
+library(leaflet.extras)
 
 inputPanel(
-  # numericInput("lat", "Latitude", value = 35.891681),
-  # numericInput("lng", "Longitude", value = -78.8608968),
-  # textInput("label", "Place", value = "BD Technologies & Innovation")
   numericInput("lat", "Latitude", value = 35.9107703),
   numericInput("lng", "Longitude", value = -79.051447),
   textInput("label", "Place", value = "You are here!")
@@ -785,7 +782,8 @@ inputPanel(
 renderLeaflet({
   leaflet() %>%
     addTiles() %>%  # Add default OpenStreetMap map tiles
-    addMarkers(lng = input$lng, lat = input$lat, popup = input$label)
+    addMarkers(lng = input$lng, lat = input$lat, popup = input$label) %>% 
+    leaflet.extras::addSearchOSM(options = searchOptions(collapsed = FALSE))
 })
 ```
 
@@ -795,11 +793,12 @@ renderLeaflet({
 ```{r, echo=TRUE, eval=FALSE, message=FALSE, warning=FALSE}
 library(shiny)
 library(leaflet)
+library(leaflet.extras)
 
 ui <- fluidPage(
   numericInput("lat", "Latitude", value = 35.910274),
   numericInput("lng", "Longitude", value = -79.051004),
-  textInput("label", "Place", value = "You are here!")
+  textInput("label", "Place", value = "You are here!"),
   leafletOutput("mymap")
 )
 
@@ -807,7 +806,8 @@ server <- function(input, output) {
   output$mymap <- renderLeaflet({
     leaflet() %>%
       addTiles() %>%  # Add default OpenStreetMap map tiles
-      addMarkers(lng = input$lng, lat = input$lat, popup = input$label)
+      addMarkers(lng = input$lng, lat = input$lat, popup = input$label) %>% 
+      leaflet.extras::addSearchOSM(options = searchOptions(collapsed = FALSE))
   })
 }
 
