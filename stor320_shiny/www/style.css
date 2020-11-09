@@ -1,0 +1,78 @@
+div img {
+    box-shadow: 1px 2px 5px 0 #000000;
+}
+
+html, body {
+  background-color: #fff;
+  color: #0E4D92;
+  font-family: Monaco;
+}
+
+a:link {
+  color: #f442cb;
+}
+
+a:visited {
+  color: #f77016; 
+}
+
+img {
+  max-width: 70%;
+}
+
+pre code {
+   display: block; padding: 0.5em;
+   background-color: #f8f8f8;
+}
+
+code[class] {
+  background-color: #f8f8f8;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+h1 {
+	font-family: "Monaco";
+	font-size: 24px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 26.4px;
+}
+h3 {
+	font-family: "Monaco";
+	font-size: 14px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 15.4px;
+}
+p {
+	font-family: "Monaco";
+	font-size: 18px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 20px;
+}
+blockquote {
+	font-family: "Monaco";
+	font-size: 21px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 30px;
+}
+pre {
+	font-family: "Monaco";
+	font-size: 13px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	line-height: 18.5714px;
+}

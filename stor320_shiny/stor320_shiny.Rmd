@@ -11,7 +11,9 @@ author: |
   | [https://github.com/francestong/stor390/tree/master/stor320_shiny/stor320_shiny.Rmd](https://github.com/francestong/stor390/tree/master/stor320_shiny/stor320_shiny.Rmd)
 runtime: shiny
 output:
-  slidy_presentation
+  slidy_presentation:
+    highlight: pygments
+    css: "www/style.css"
 ---
 
 ```{r setup, include=FALSE}
@@ -75,7 +77,7 @@ https://www.meetup.com/R-Ladies-RTP/
 ![](screenshots/rladies.png)
 
 
-## Topics today - November 18, 2019
+## Topics today - November 9, 2020
 
 This lecture is an introduction to Shiny and contains the basics that you 
 already learned at the intro to Shiny lecture that you can reference later if you like.
