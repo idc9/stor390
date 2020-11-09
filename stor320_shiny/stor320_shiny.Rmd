@@ -26,11 +26,18 @@ knitr::opts_chunk$set(echo = FALSE)
 * PhD in statistics
 * Data scientist at a medical tech company
 * Analysis of genomic data 
-* Currently working on antimicrobial resistance
-  - Use machine learning methods to predict resistance or susceptibility to a specific antibiotic for a bacterial isolate using next generation sequencing of the bacterial DNA
+* Working on 
+  - Antimicrobial resistance
+    - Use machine learning methods to predict resistance or susceptibility to a specific antibiotic for a bacterial isolate using next generation sequencing of the bacterial DNA
+    - Build a PostgreSQL database to store all predictions and related experimental metadata
+  - Molecular point-of-care (POC) assays
+    - Past few months on Veritor SARS-CoV-2 antigen rapid test
+    - Rapid isothermal tests for STIs, Flu A+B, etc 
 * Demo of company app
 
 ## Data science - some thoughts
+
+![](screenshots/data_scientist_2.png)
 
 * Data extraction, cleaning, organization, and manipulation: 80% of the job is "data janitor"
 * Basic statistics: understanding systematic and random error
@@ -40,7 +47,8 @@ knitr::opts_chunk$set(echo = FALSE)
 
 
 
-![](screenshots/data_scientist_2.png)
+
+![](screenshots/yoda_googlefu.jpg)
 
 
 ## Ways to meet local data scientists (Pre-Covid Links)
