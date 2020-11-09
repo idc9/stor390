@@ -43,7 +43,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ![](screenshots/data_scientist_2.png)
 
 
-## Ways to meet local data scientists
+## Ways to meet local data scientists (Pre-Covid Links)
 
 * Research Triangle Analysts
 
@@ -988,7 +988,65 @@ shinyApp(
 ```
 
 
+## Shiny gadgets
 
+You can also use the power of Shiny in your everyday analysis within RStudio.
+A great example is being able to select points in your plot of any dataset
+and have it saved in the console.  These Shiny based tools are called gagdets.
+
+[https://shiny.rstudio.com/articles/gadgets.html](https://shiny.rstudio.com/articles/gadgets.html)
+
+![](screenshots/gadget.png)
+
+
+## Shiny gadgets example
+
+1. Make a function that has the same `ui` and `server` parts as a regular app but use the miniUI package with `miniPage`, `miniContentPanel`, `gadgetTitleBar` functions instead for better gadget capabilities inside RStudio.
+
+
+```{r, eval=FALSE, echo=TRUE}
+library(shiny)
+library(miniUI)
+library(ggplot2)
+
+ggbrush <- function(data, xvar, yvar) {
+    
+    ui <- miniPage(
+        gadgetTitleBar("Drag to select points"),
+        miniContentPanel(
+            # The brush="brush" argument means we can listen for
+            # brush events on the plot using input$brush.
+            plotOutput("plot", height = "100%", brush = "brush")
+        )
+    )
+    
+    server <- function(input, output, session) {
+        
+        # Render the plot
+        output$plot <- renderPlot({
+            # Plot the data with x/y vars indicated by the caller.
+            ggplot(data, aes_string(xvar, yvar)) + geom_point()
+        })
+        
+        # Handle the Done button being pressed.
+        observeEvent(input$done, {
+            # Return the brushed points. See ?shiny::brushedPoints.
+            stopApp(brushedPoints(data, input$brush))
+        })
+    }
+    
+    runGadget(ui, server)
+}
+```
+
+
+2. Source the function in the console.
+
+3. Call the function on data.
+
+```{r, eval=FALSE, echo=TRUE}
+ggbrush(mtcars, "hp", "mpg")
+```
 
 
 ## Shiny modules
