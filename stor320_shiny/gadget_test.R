@@ -2,6 +2,8 @@ library(shiny)
 library(miniUI)
 library(ggplot2)
 
+# Example: ggbrush(mtcars, "hp", "mpg")
+
 ggbrush <- function(data, xvar, yvar) {
     
     ui <- miniPage(
@@ -30,3 +32,4 @@ ggbrush <- function(data, xvar, yvar) {
     
     runGadget(ui, server)
 }
+

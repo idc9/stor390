@@ -23,9 +23,10 @@ knitr::opts_chunk$set(echo = FALSE)
 ## Who am I?
 
 
-* PhD in statistics
-* Data scientist at a medical tech company
-* Analysis of genomic data 
+* Data scientist at a medical tech company, BD
+* Background in statistics (PhD), bioinformatics, and biology
+* I know more computing than an average statistician and more stats than an average computer scientist
+* Analysis of genomic data - previously single cell RNA-Seq, cancer panels, high throughput sequencing library prep instruments
 * Working on 
   - Antimicrobial resistance
     - Use machine learning methods to predict resistance or susceptibility to a specific antibiotic for a bacterial isolate using next generation sequencing of the bacterial DNA
@@ -35,15 +36,21 @@ knitr::opts_chunk$set(echo = FALSE)
     - Rapid isothermal tests for STIs, Flu A+B, etc 
 * Demo of company app
 
+
+
+![](screenshots/data_scientist.jpeg){width=50%}
+
+
 ## Data science - some thoughts
 
 ![](screenshots/data_scientist_2.png)
 
 * Data extraction, cleaning, organization, and manipulation: 80% of the job is "data janitor"
 * Basic statistics: understanding systematic and random error
-* Domain expertise: generating the right hypotheses and questions and answering them appropriately
-* Communication skills: clear visualizations, explaining things well, etc
+* <span style="color: red;">Domain expertise: generating the right hypotheses and questions and answering them appropriately</span>
+* <span style="color: red;">Communication skills: clear visualizations, explaining things well, actionable results, "managing up", etc</span>
 * Ability to learn new things quickly: google-fu
+* Please feel free to email me any questions at frances.p.tong@gmail.com
 
 
 
@@ -51,7 +58,7 @@ knitr::opts_chunk$set(echo = FALSE)
 ![](screenshots/yoda_googlefu.jpg)
 
 
-## Ways to meet local data scientists (Pre-Covid Links)
+## Ways to meet local data scientists (Pre-Covid Links - some may still be doing virtual meetings)
 
 * Research Triangle Analysts
 
@@ -84,8 +91,16 @@ https://www.meetup.com/R-Ladies-RTP/
 
 ![](screenshots/rladies.png)
 
+## Work-life balance
 
-## Topics today - November 9, 2020
+* Can work entirely from home as long as I have a work laptop and decent internet (and childcare!) and probably will until next fall
+* WFH indefinitely is not preferable - my scientist colleagues will tell me more about their projects if I'm there in person, and I can learn more from my data scientist colleagues if I'm sitting near them
+* Flexible hours - I only need to make sure I get my work done
+* My usual day consists of checking email, attending meetings, and coding in R with RStudio.  (I will use Python if it will get done much better and faster in Python.)
+* Sometimes meeting deadlines means super crazy intense work days, late nights, and weekends (i.e. Covid test development), but this doesn't happen all the time
+
+
+## Topics today - November 11, 2020
 
 This lecture is an introduction to Shiny and contains the basics that you 
 already learned at the intro to Shiny lecture that you can reference later if you like.
@@ -96,7 +111,7 @@ Today we will go into more advanced Shiny topics and skip ahead to those slides.
 * interactive visualization
 * DataTables
 * dynamic document generation
-* modules
+* gadgets
 
 
 **All the app examples in this lecture are complete - you should be able to copy and paste the provided code into R console and have the app work.**
@@ -851,6 +866,7 @@ Here's how that table gets into a Shiny app:
 
 ```{r, eval=FALSE, echo=TRUE}
 library(shiny)
+library(DT)
 
 ui <- fluidPage(
     DT::dataTableOutput('tbl')
@@ -1000,7 +1016,7 @@ shinyApp(
 
 You can also use the power of Shiny in your everyday analysis within RStudio.
 A great example is being able to select points in your plot of any dataset
-and have it saved in the console.  These Shiny based tools are called gagdets.
+and have it saved in the console.  These Shiny based tools are called gadgets.
 
 [https://shiny.rstudio.com/articles/gadgets.html](https://shiny.rstudio.com/articles/gadgets.html)
 
